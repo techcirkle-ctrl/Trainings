@@ -1,0 +1,10 @@
+# Personal / non-course material — never tracked
+raw_docs/
+build_cv.js
+shekhar_resume/
+
+# OS / build noise
+.DS_Store
+**/.DS_Store
+dist/
+node_modules/
