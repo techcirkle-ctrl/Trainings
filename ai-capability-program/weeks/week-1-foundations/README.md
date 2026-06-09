@@ -9,7 +9,7 @@
 
 | Phase | ~Time | Where |
 |---|---|---|
-| Pre-work | ~5 hrs | [`00-preread/`](00-preread/) |
+| Pre-work | ~2–3 hrs | [`00-preread/week-1-prework.html`](00-preread/week-1-prework.html) — one interactive file, 6 sections |
 | Session | 5 hrs | [`01-workshop/run-of-show.md`](01-workshop/run-of-show.md) |
 | Homework | ~3 hrs | [`02-homework/homework-1.md`](02-homework/homework-1.md) |
 
@@ -21,4 +21,4 @@
 4. **RAG deep dive** — how retrieval-augmented generation works; live demo with a Claude Project on sample docs.
 5. **Concept of agents** — agent vs chatbot; each participant writes a 1-paragraph agent spec for Week 2.
 
-> Week 1 is authored: 5 HTML prereads (4 wrappers + 1 authored stack lesson), a full run-of-show, and the homework brief. The de-facto template for Weeks 2–4.
+> Week 1 is authored: one interactive prework file (6 tabbed, self-teaching sections mirroring the run-of-show), a full run-of-show, and the homework brief. The de-facto template for Weeks 2–4. Format: `.claude/skills/teach/LESSON-FORMAT.md`.

@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<!--
+  AI Capability Program — Week 1 Prework (single-file, tabbed, self-teaching).
+  Self-contained: inline CSS + vanilla JS, no network, no build. Open with:
+      open "week-1-prework.html"
+  Six sections mirror the Week-1 run-of-show. Progress is saved locally (this device only) — nothing is sent anywhere.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Week 1 Prework — AI Capability Program</title>
+<style>
+  :root{
+    --ink:#16202b; --muted:#5c6b7a; --line:#e4e8ec;
+    --paper:#ffffff; --wash:#f6f8fa; --accent:#0b6e6e; --accent-soft:#e2f0ef;
+    --warn:#b06a00; --good:#1c7a4a; --bad:#b23b3b;
+    --maxw:820px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--wash); color:var(--ink);
+    font:17px/1.65 ui-serif,Georgia,"Iowan Old Style",Palatino,serif; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px 110px}
+  header.masthead{max-width:var(--maxw); margin:0 auto; padding:30px 22px 6px}
+  .kicker{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--accent)}
+  h1{font-size:2.05rem; line-height:1.12; margin:.3em 0 .15em; letter-spacing:-.01em}
+  .meta{font:14px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .sans{font-family:ui-sans-serif,system-ui,sans-serif}
+  .small{font-size:.86rem}
+  .muted{color:var(--muted)}
+  p{margin:.7em 0}
+  a{color:var(--accent); text-underline-offset:3px}
+  .lead{font-size:1.12rem; color:#26323d}
+  h2{font-size:1.45rem; margin:.2em 0 .4em; letter-spacing:-.01em}
+  h3{font:600 1.05rem/1.4 ui-sans-serif,system-ui,sans-serif; margin:1.3em 0 .3em}
+  .card{background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:22px 24px; margin:16px 0; box-shadow:0 1px 2px rgba(16,32,43,.04)}
+
+  /* progress + pills (sticky nav) */
+  .navbar{position:sticky; top:0; z-index:20; background:rgba(246,248,250,.92); backdrop-filter:saturate(1.2) blur(6px);
+    border-bottom:1px solid var(--line); padding:10px 0 12px; margin-bottom:8px}
+  .navbar .inner{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+  .prog{display:flex; align-items:center; gap:12px; margin:2px 0 10px}
+  .prog .bar{flex:1; height:8px; background:#e7edf0; border-radius:99px; overflow:hidden}
+  .prog .fill{height:100%; width:0; background:var(--accent); border-radius:99px; transition:width .35s ease}
+  .prog .lbl{font:600 13px ui-sans-serif,system-ui,sans-serif; color:var(--accent); white-space:nowrap}
+  .pills{display:flex; flex-wrap:wrap; gap:8px}
+  .pill{cursor:pointer; border:1px solid var(--line); background:var(--paper); color:var(--ink);
+    font:600 13px/1 ui-sans-serif,system-ui,sans-serif; padding:9px 12px 9px 11px; border-radius:99px; display:flex; align-items:center; gap:7px;
+    transition:border-color .12s, background .12s, color .12s}
+  .pill:hover{border-color:var(--accent)}
+  .pill.active{background:var(--accent); color:#fff; border-color:var(--accent)}
+  .pill .num{display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%;
+    background:var(--wash); color:var(--accent); font-size:11px; font-weight:700}
+  .pill.active .num{background:rgba(255,255,255,.22); color:#fff}
+  .pill.done .num{background:var(--good); color:#fff}
+  .pill.done.active .num{background:#fff; color:var(--good)}
+
+  /* panels */
+  .panel{display:none; animation:fade .25s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none}}
+  .why{background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:14px; padding:16px 20px; margin:14px 0}
+  .why .kicker{color:var(--accent)}
+  .tag{display:inline-block; font:600 11px/1 ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); background:var(--wash); border:1px solid var(--line); border-radius:6px; padding:5px 8px; margin-right:6px}
+
+  /* generic interactive widget shell */
+  .lab{background:#fbfdfd; border:1px solid #cfe6e4; border-radius:14px; padding:18px 20px; margin:16px 0}
+  .lab .hint{font:13px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin-top:8px}
+  .btn{display:inline-block; cursor:pointer; font:600 14px ui-sans-serif,system-ui,sans-serif;
+    background:var(--accent); color:#fff; border:0; border-radius:9px; padding:10px 15px; margin:6px 6px 0 0}
+  .btn.ghost{background:transparent; color:var(--accent); border:1px solid var(--accent)}
+  .btn:disabled{opacity:.45; cursor:default}
+  .out{font:15px/1.55 ui-sans-serif,system-ui,sans-serif; background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-top:12px}
+
+  /* token predictor */
+  .pred .stream{font:600 18px/1.7 ui-sans-serif,system-ui,sans-serif; background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 16px; min-height:54px}
+  .pred .stream .new{color:var(--accent)}
+  .cands{display:grid; gap:8px; margin-top:12px}
+  .cand{display:flex; align-items:center; gap:10px; cursor:pointer; border:1px solid var(--line); background:#fff; border-radius:9px; padding:8px 10px;
+    font:14px ui-sans-serif,system-ui,sans-serif; text-align:left}
+  .cand:hover{border-color:var(--accent)}
+  .cand .word{width:96px; font-weight:600}
+  .cand .track{flex:1; height:10px; background:#eef2f4; border-radius:99px; overflow:hidden}
+  .cand .pct{height:100%; background:var(--accent-soft); border-right:2px solid var(--accent)}
+  .cand .val{width:42px; text-align:right; color:var(--muted); font-variant-numeric:tabular-nums}
+
+  /* attention */
+  .att .sent{font:600 19px/2.1 ui-sans-serif,system-ui,sans-serif}
+  .att .w{cursor:pointer; padding:3px 5px; border-radius:6px; transition:background .15s, color .15s; border:1px solid transparent}
+  .att .w:hover{border-color:#cfe6e4}
+  .att .w.focus{outline:2px solid var(--accent); outline-offset:1px}
+
+  /* context window */
+  .ctx .frame{border:2px dashed #cfe6e4; border-radius:12px; padding:12px; min-height:64px; display:flex; flex-wrap:wrap; gap:6px; background:#fff}
+  .ctx .tok{font:13px ui-sans-serif,system-ui,sans-serif; background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:7px; padding:5px 8px; transition:opacity .3s}
+  .ctx .tok.dropped{opacity:.22; text-decoration:line-through}
+
+  /* stack ladder */
+  .rung{border:1px solid var(--line); border-left:5px solid var(--accent); border-radius:10px; padding:14px 16px; margin:10px 0; background:#fff; cursor:pointer}
+  .rung .layer{font:700 12px/1.3 ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--accent)}
+  .rung h4{font:600 1.02rem ui-sans-serif,system-ui,sans-serif; margin:.2em 0 .1em}
+  .rung .body{display:none; margin-top:8px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif}
+  .rung.open .body{display:block}
+  .rung .eg{font-size:.92rem; background:var(--wash); border-radius:8px; padding:9px 11px; margin:.5em 0}
+  .rung .ceiling{color:var(--warn); font-size:.9rem; font-weight:600; border-top:1px dashed #e7d6b8; margin-top:8px; padding-top:7px}
+
+  table.lens{width:100%; border-collapse:collapse; font:14.5px/1.5 ui-sans-serif,system-ui,sans-serif}
+  table.lens th,table.lens td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top}
+  table.lens th{background:var(--wash); font-weight:600}
+
+  /* prompt builder */
+  .pb .toggles{display:flex; flex-wrap:wrap; gap:8px}
+  .pb .tg{cursor:pointer; border:1px solid var(--line); background:#fff; border-radius:8px; padding:8px 11px; font:600 13px ui-sans-serif,system-ui,sans-serif}
+  .pb .tg.on{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+  .pb pre{white-space:pre-wrap; font:13.5px/1.6 ui-monospace,Menlo,Consolas,monospace; background:#fff; border:1px solid var(--line);
+    border-radius:10px; padding:12px 14px; margin-top:12px; color:#24323c}
+  .meter{height:10px; background:#eef2f4; border-radius:99px; overflow:hidden; margin-top:10px}
+  .meter .fill{height:100%; width:0; background:var(--accent); transition:width .3s}
+
+  /* rag + agent steppers */
+  .stepper{display:flex; gap:8px; align-items:center; margin:10px 0}
+  .dot{width:26px; height:26px; border-radius:50%; border:1px solid var(--line); background:#fff; display:flex; align-items:center; justify-content:center;
+    font:700 12px ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .dot.on{background:var(--accent); color:#fff; border-color:var(--accent)}
+  .stage{background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 16px; font:15px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:80px}
+  .chunk{background:#fff8e8; border:1px solid #f0e1c2; border-radius:8px; padding:8px 10px; margin:6px 0; font-size:.92rem}
+  .chunk.hit{background:#eaf6ef; border-color:#bfe3cd}
+  .agentline{display:none; border-left:3px solid var(--accent); background:#fff; border-radius:0 8px 8px 0; padding:8px 12px; margin:8px 0;
+    font:14.5px/1.5 ui-sans-serif,system-ui,sans-serif}
+  .agentline.show{display:block}
+  .agentline b{color:var(--accent)}
+
+  /* data sorter */
+  .sorter{display:grid; gap:8px}
+  .item{display:flex; align-items:center; gap:10px; flex-wrap:wrap; background:#fff; border:1px solid var(--line); border-radius:9px; padding:9px 11px}
+  .item .label{flex:1; font:14.5px ui-sans-serif,system-ui,sans-serif; min-width:160px}
+  .item .pick{cursor:pointer; border:1px solid var(--line); background:#fff; border-radius:7px; padding:6px 10px; font:600 12.5px ui-sans-serif,system-ui,sans-serif}
+  .item .pick.sel{border-color:var(--accent); background:var(--accent-soft); color:var(--accent)}
+  .item .verdict{font:600 12.5px ui-sans-serif,system-ui,sans-serif; min-width:120px}
+  .item .verdict.ok{color:var(--good)} .item .verdict.no{color:var(--bad)}
+
+  /* quiz */
+  .quiz .q{border-top:1px solid var(--line); padding:16px 0}
+  .quiz .q:first-of-type{border-top:0}
+  .quiz .stem{font-weight:600; font-family:ui-sans-serif,system-ui,sans-serif}
+  .quiz .opts{list-style:none; margin:.6em 0 0; padding:0}
+  .quiz .opts li{margin:7px 0}
+  .quiz button.opt{width:100%; text-align:left; cursor:pointer; font:14.5px/1.45 ui-sans-serif,system-ui,sans-serif;
+    background:#fff; border:1px solid var(--line); border-radius:9px; padding:10px 12px; color:var(--ink)}
+  .quiz button.opt:hover{border-color:var(--accent)}
+  .quiz button.opt.correct{border-color:var(--good); background:#eaf6ef}
+  .quiz button.opt.wrong{border-color:var(--bad); background:#fbeaea}
+  .quiz button.opt[disabled]{cursor:default}
+  .quiz .fb{display:none; margin-top:9px; font:13.5px/1.55 ui-sans-serif,system-ui,sans-serif; padding:9px 11px; border-radius:8px}
+  .quiz .fb.show{display:block}
+  .quiz .fb.ok{background:#eaf6ef; color:var(--good)}
+  .quiz .fb.no{background:#fbeaea; color:var(--bad)}
+
+  /* local reflection */
+  textarea{width:100%; min-height:84px; resize:vertical; font:15px/1.55 ui-sans-serif,system-ui,sans-serif;
+    border:1px solid var(--line); border-radius:10px; padding:11px 12px; color:var(--ink)}
+  .deeper{font:14px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted); background:var(--wash); border:1px solid var(--line);
+    border-radius:10px; padding:11px 14px; margin-top:16px}
+  .deeper b{color:var(--ink)}
+
+  /* section nav + complete */
+  .secfoot{display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; margin-top:22px;
+    border-top:1px solid var(--line); padding-top:16px}
+  .done{cursor:pointer; font:600 14px ui-sans-serif,system-ui,sans-serif; background:var(--good); color:#fff; border:0; border-radius:9px; padding:11px 16px}
+  .done.is-done{background:#eaf6ef; color:var(--good); border:1px solid #bfe3cd}
+  .ask{background:#fff7ea; border:1px solid #f0e1c2; border-radius:12px; padding:13px 16px; font:.93rem/1.55 ui-sans-serif,system-ui,sans-serif; margin-top:16px}
+  .finale{display:none; background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:14px; padding:18px 22px; margin-top:18px}
+  .finale.show{display:block}
+  footer.ft{max-width:var(--maxw); margin:26px auto 0; padding:20px 22px; border-top:1px solid var(--line); color:var(--muted); font:.85rem ui-sans-serif,system-ui,sans-serif}
+
+  @media print{
+    .navbar{position:static} .panel{display:block !important; page-break-inside:avoid}
+    .btn,.done,.pill{display:none !important} .rung .body{display:block} .quiz .fb{display:block !important}
+    body{background:#fff} .lab,.card,.why{box-shadow:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="kicker">AI Capability Program · Week 1 — Foundations</div>
+  <h1>Week 1 Prework</h1>
+  <div class="meta">Work at your own pace · ~2–3 hrs total · 6 short, interactive sections. <b>Your progress is saved on this device only — nothing is sent anywhere.</b></div>
+</header>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="prog">
+      <div class="bar"><div class="fill" id="progFill"></div></div>
+      <div class="lbl" id="progLbl">0 / 6 complete</div>
+    </div>
+    <div class="pills" id="pills"></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ============================ SECTION 1 ============================ -->
+  <section class="panel" id="s1">
+    <span class="tag">Section 1 of 6</span><span class="tag">~20 min</span>
+    <h2>How generative AI predicts</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">Before you sponsor a tool built on this, you need a gut feel for what it's actually doing — because that explains both its magic and its one dangerous failure mode.</p></div>
+
+    <p class="lead">Traditional software follows rules a person wrote. Generative AI doesn't follow rules — <b>it predicts</b>. It learned the patterns in a vast amount of text, and it writes by repeatedly guessing the most plausible next chunk of words. That's the whole trick. Try it:</p>
+
+    <div class="lab pred">
+      <div class="kicker" style="margin-bottom:8px">Build a sentence, one prediction at a time</div>
+      <div class="stream" id="predStream">Our customer was very</div>
+      <div class="cands" id="predCands"></div>
+      <div style="margin-top:6px">
+        <button class="btn" id="predTop">Take the most likely word</button>
+        <button class="btn ghost" id="predSample">Sample one (what GenAI really does)</button>
+        <button class="btn ghost" id="predReset">Start over</button>
+      </div>
+      <div class="hint" id="predHint">Each word it adds becomes part of the input for guessing the next one. Click a bar to pick that word yourself, or let it predict.</div>
+    </div>
+
+    <h3>The two things to take from that</h3>
+    <table class="lens">
+      <tr><th>What you saw</th><th>What it means for you</th></tr>
+      <tr><td>It chose from <b>probabilities</b>, and "Sample" can give a different sentence each run</td><td>It's <b>probabilistic</b> — great for drafting and ideas, awkward when you need one exact, repeatable answer</td></tr>
+      <tr><td>It never <i>looked anything up</i> — it generated plausible words</td><td><b>Fluency ≠ accuracy.</b> A confident, well-written answer can still be invented. This is the failure mode to manage</td></tr>
+    </table>
+
+    <div class="card quiz" id="q1"></div>
+
+    <div class="deeper">📚 <b>Go deeper (optional):</b> Google Cloud — <a href="https://www.cloudskillsboost.google/course_templates/536" target="_blank" rel="noopener">Introduction to Generative AI</a> (~1 hr). Tracked as R1 in <code>RESOURCES.md</code>.</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s1">Mark this section complete</button>
+      <button class="btn ghost" data-next="s2">Next: Inside an LLM →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 2 ============================ -->
+  <section class="panel" id="s2">
+    <span class="tag">Section 2 of 6</span><span class="tag">~25 min</span>
+    <h2>Inside an LLM</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">Knowing the engine's two hard limits is what lets you tell a realistic AI proposal from a fantasy one when your team brings you ideas. Everything else this week exists to work around these two limits.</p></div>
+
+    <p class="lead">An LLM learns by reading enormous amounts of text and predicting the next <b>token</b> (a word-chunk). Two ideas explain why it's so capable — and exactly where it falls short.</p>
+
+    <h3>1. Attention — how it "knows what you mean"</h3>
+    <p>When the model reads a word, it weighs which earlier words matter most for understanding it. That's <b>attention</b>. Click any word below to see what it leans on:</p>
+    <div class="lab att">
+      <div class="sent" id="attSent"></div>
+      <div class="out" id="attOut">Click a word — especially <b>“it”</b> — to see which earlier words the model attends to.</div>
+    </div>
+
+    <h3>2. The context window — its working memory</h3>
+    <p>The model can only "hold in mind" what's in the current conversation — the <b>context window</b>. Fill it past its limit and the earliest content drops off. Watch it happen:</p>
+    <div class="lab ctx">
+      <div class="frame" id="ctxFrame"></div>
+      <div style="margin-top:10px">
+        <button class="btn" id="ctxAdd">Add a message</button>
+        <button class="btn ghost" id="ctxReset">Reset</button>
+      </div>
+      <div class="hint" id="ctxHint">Window holds 8 chunks. Keep adding — see what falls out.</div>
+    </div>
+
+    <h3>So here are the two limits</h3>
+    <table class="lens">
+      <tr><th>Limit</th><th>Why</th><th>What fixes it this week</th></tr>
+      <tr><td><b>It only knows its training data</b> — blind to your business & to anything recent</td><td>Knowledge is frozen at training time</td><td><b>RAG</b> (Section 5)</td></tr>
+      <tr><td><b>It only produces text</b> — it can't take actions</td><td>It outputs words, nothing else</td><td><b>Agents + tools</b> (Section 6)</td></tr>
+    </table>
+    <p class="small muted">One more leader-level decision: <b>model choice</b>. Newer/bigger isn't always right — you trade capability against speed and cost. In the session you'll meet the Claude family and when to reach for each.</p>
+
+    <div class="card quiz" id="q2"></div>
+
+    <div class="deeper">📚 <b>Go deeper (optional):</b> Google Cloud — <a href="https://www.cloudskillsboost.google/course_templates/539" target="_blank" rel="noopener">Introduction to Large Language Models</a> (~1 hr). Tracked as R2.</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s2">Mark this section complete</button>
+      <button class="btn ghost" data-next="s3">Next: The AI Evolution Stack →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 3 ============================ -->
+  <section class="panel" id="s3">
+    <span class="tag">Section 3 of 6</span><span class="tag">~25 min</span>
+    <h2>The AI Evolution Stack</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">Every AI initiative you'll ever sponsor sits on one of four layers. Naming the <b>lowest layer that solves a problem</b> is the single most useful judgement an AI-capable leader has — it decides cost, risk, and whether the thing works. This is the backbone of the whole program.</p></div>
+
+    <p class="lead">Each layer adds one capability the one below it lacks. You only climb when the layer below genuinely can't do the job. <b>Click each rung to open it.</b></p>
+
+    <div id="ladder">
+      <div class="rung" data-rung><div class="layer">Layer 1 · LLM</div><h4>A reasoning engine ▾</h4>
+        <div class="body"><p>Reads and writes language, reasons over what it's given. On its own it's brilliant but <b>blind to your business</b> and <b>forgets every conversation</b>.</p>
+          <div class="eg"><b>In your function:</b> draft a customer email, summarise a report you paste in, brainstorm options.</div>
+          <div class="ceiling">⤒ can't see your live data, and can't <i>do</i> anything beyond producing text.</div></div></div>
+
+      <div class="rung" data-rung><div class="layer">Layer 2 · RAG</div><h4>The engine, grounded in your documents ▾</h4>
+        <div class="body"><p>Fetches the relevant pieces of <i>your own</i> content at the moment of the question, so answers are grounded and can <b>cite their source</b>.</p>
+          <div class="eg"><b>In your function:</b> “Answer only from our latest pricing & policy docs,” with the source shown.</div>
+          <div class="ceiling">⤒ still only <i>answers</i> — it doesn't take actions or complete multi-step work.</div></div></div>
+
+      <div class="rung" data-rung><div class="layer">Layer 3 · Agent</div><h4>The engine, given tools and a goal ▾</h4>
+        <div class="body"><p>An LLM that can <b>use tools, take steps in a loop, and keep state</b> — look something up, act, check the result, continue — until a goal is met. Where AI stops answering and starts <i>doing work</i>.</p>
+          <div class="eg"><b>In your function:</b> “Take an inbound RFP, pull the right specs, draft a quote, flag anything needing my sign-off.”</div>
+          <div class="ceiling">⤒ one agent juggling many specialised jobs gets unreliable and hard to govern.</div></div></div>
+
+      <div class="rung" data-rung><div class="layer">Layer 4 · Multi-Agent</div><h4>A team of specialised agents, coordinated ▾</h4>
+        <div class="body"><p>Several focused agents coordinated by an orchestrator. Powerful for genuinely complex workflows — and the layer with the <b>highest cost, latency, and governance burden</b>. Most problems never need it.</p>
+          <div class="eg"><b>In your function:</b> a full deal-desk — one agent researches, one prices, one checks compliance, one drafts.</div>
+          <div class="ceiling">⤒ complexity and cost — reach here only when a single agent provably can't cope.</div></div></div>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">The leader's decision lens</h3>
+      <table class="lens">
+        <tr><th>If the problem is…</th><th>You need at most…</th></tr>
+        <tr><td>Generate / rewrite / summarise text I give it</td><td><b>LLM</b></td></tr>
+        <tr><td>Answer questions <i>from our own documents</i>, with sources</td><td><b>RAG</b></td></tr>
+        <tr><td>Complete a multi-step job that <i>takes actions</i> in tools</td><td><b>Agent</b></td></tr>
+        <tr><td>Coordinate several distinct specialised jobs at once</td><td><b>Multi-Agent</b></td></tr>
+      </table>
+      <p class="small muted" style="margin-bottom:0">Rule of thumb: <b>the cheapest layer that works, wins.</b> Reaching too high is the most common and most expensive mistake.</p>
+    </div>
+
+    <div class="card quiz" id="q3"></div>
+
+    <div class="deeper">📚 <b>Go deeper (optional):</b> Anthropic — <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building Effective Agents</a> (the “simplest thing that works” principle). Tracked as R5.</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s3">Mark this section complete</button>
+      <button class="btn ghost" data-next="s4">Next: Prompting that works →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 4 ============================ -->
+  <section class="panel" id="s4">
+    <span class="tag">Section 4 of 6</span><span class="tag">~25 min</span>
+    <h2>Prompting that works</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">This is the highest-leverage skill you'll use daily. Because the model just continues from what you give it, <b>the structure of your instruction is your control</b>. In the session you'll write three of these for your own problem — here's the anatomy.</p></div>
+
+    <p class="lead">A vague ask gets a vague answer. A production prompt has up to six parts. Toggle them on and watch the prompt — and its reliability — come together:</p>
+
+    <div class="lab pb">
+      <div class="kicker" style="margin-bottom:8px">Assemble a production prompt</div>
+      <div class="toggles" id="pbToggles"></div>
+      <div class="meter"><div class="fill" id="pbMeter"></div></div>
+      <div class="hint" id="pbMeterLbl">Reliability: bare minimum</div>
+      <pre id="pbPreview"></pre>
+      <div class="hint"><b>Task</b> is the only must-have. Each other part removes a way the model could guess wrong.</div>
+    </div>
+
+    <div class="card quiz" id="q4"></div>
+
+    <div class="deeper">📚 <b>Go deeper (optional):</b> Anthropic — <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">Prompt Engineering Guide</a> (the full systematic version — Week 3's deep dive). Tracked as R6.</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s4">Mark this section complete</button>
+      <button class="btn ghost" data-next="s5">Next: RAG →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 5 ============================ -->
+  <section class="panel" id="s5">
+    <span class="tag">Section 5 of 6</span><span class="tag">~25 min</span>
+    <h2>RAG — grounding in your documents</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">"It doesn't know our business" was Limit 1 from Section 2. RAG is the fix — and the most common, lowest-risk way to get real value from AI on your own content. You'll see one built live in the session.</p></div>
+
+    <p class="lead">RAG = <b>Retrieval-Augmented Generation</b>. Instead of trusting the model's frozen memory, you <i>retrieve</i> the relevant pieces of your documents at question time and hand them over — so the answer is grounded and <b>cites its source</b>. Step through it:</p>
+
+    <div class="lab">
+      <div class="kicker" style="margin-bottom:8px">A question, answered two ways</div>
+      <div class="stepper" id="ragDots"></div>
+      <div class="stage" id="ragStage"></div>
+      <div style="margin-top:10px">
+        <button class="btn ghost" id="ragPrev">← Back</button>
+        <button class="btn" id="ragNext">Next step →</button>
+      </div>
+    </div>
+
+    <p>The contrast is the whole point: <b>without RAG</b>, the model fills the gap with a plausible-sounding guess. <b>With RAG</b>, it answers only from what's retrieved — and if the answer isn't in your documents, a well-built RAG system <i>says so</i> instead of inventing.</p>
+
+    <div class="card quiz" id="q5"></div>
+
+    <div class="deeper">📚 <b>Go deeper (optional):</b> covered hands-on in the Week-1 session (live Claude Project demo) and in R2 above.</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s5">Mark this section complete</button>
+      <button class="btn ghost" data-next="s6">Next: Agents & responsible use →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 6 ============================ -->
+  <section class="panel" id="s6">
+    <span class="tag">Section 6 of 6</span><span class="tag">~25 min</span>
+    <h2>Agents vs. chatbots — and using them responsibly</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">An <b>agent</b> is the thing you'll build and deploy in this program. And because you'll build it on <i>real</i> data, responsible use isn't a compliance box — it's how you avoid leaking, misleading, or embarrassing your team. Both live here.</p></div>
+
+    <h3>A chatbot answers. An agent does the work.</h3>
+    <p>Give an agent a <b>goal</b> (not a question); it uses <b>tools</b>, takes <b>steps in a loop</b>, and tracks where it is until the goal is met. Step the agent and watch the loop:</p>
+    <div class="lab">
+      <div class="out" style="margin-top:0"><b>Chatbot</b>, asked the same thing: <i>“Here's a draft reply to one complaint.”</i> — one turn, then it stops.</div>
+      <div id="agentLines" style="margin-top:12px"></div>
+      <div style="margin-top:8px">
+        <button class="btn" id="agentStep">Step the agent →</button>
+        <button class="btn ghost" id="agentReset">Reset</button>
+      </div>
+      <div class="hint">Goal handed to the agent: <i>“Clear the overnight complaint queue: triage each, draft replies, escalate the severe ones to me.”</i></div>
+    </div>
+
+    <h3>Responsible use — the three risks that actually bite</h3>
+    <p>You'll build with real data, so sort these honestly: <b>which can safely go into a public AI tool, and which never can?</b> Click a choice on each.</p>
+    <div class="lab">
+      <div class="sorter" id="sorter"></div>
+      <div class="out" id="sorterOut" style="margin-top:12px">Make a call on each item — you'll get instant feedback. This is your first input to Sandvik's data-sensitivity rule.</div>
+    </div>
+    <table class="lens" style="margin-top:14px">
+      <tr><th>Risk</th><th>Your guardrail</th></tr>
+      <tr><td><b>Data leakage</b> — confidential info into a tool that may store it</td><td>A clear rule on what data can/can't go in (set in Week 0)</td></tr>
+      <tr><td><b>Bias</b> — output that quietly disadvantages a group</td><td>Test varied cases; never auto-decide on people without review</td></tr>
+      <tr><td><b>Unchecked output</b> — a confident, wrong answer acted on</td><td><b>Human-in-the-loop</b> on anything consequential</td></tr>
+    </table>
+
+    <div class="card quiz" id="q6"></div>
+
+    <h3>One thing to mull before the session (for you, not to submit)</h3>
+    <p class="small muted">Jot a note if it helps — it saves on this device only. In the session you'll turn the best of these into the one problem you carry through all four weeks.</p>
+    <textarea id="reflect" placeholder="An agent-shaped task in my function (multi-step, takes actions, worth automating): …"></textarea>
+
+    <div class="ask">💬 <b>Your trainer is your teacher.</b> Anything here unclear — bring it to the mid-week clinic or the Teams doubt channel (answered within 1 business day). The prework builds intuition; the session is where you ask.</div>
+
+    <div class="deeper">📚 <b>Go deeper (optional):</b> Google — <a href="https://www.cloudskillsboost.google/" target="_blank" rel="noopener">Introduction to AI Agents</a> (R4) and Google — <a href="https://www.cloudskillsboost.google/course_templates/554" target="_blank" rel="noopener">Introduction to Responsible AI</a> (R3).</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s6">Mark this section complete</button>
+      <span class="small muted">That's the set — see you in the session.</span>
+    </div>
+  </section>
+
+  <div class="finale" id="finale">
+    <div class="kicker">All six done 🎉</div>
+    <p style="margin:.3em 0 0">You've got the foundations: how it predicts, its two limits, the four-layer stack, prompting, RAG, and agents. Come to the session with one thing on your mind — a real, agent-shaped problem from your function worth four weeks of your time.</p>
+  </div>
+
+</div>
+
+<footer class="ft">
+  AI Capability Program · Week 1 — Foundations · Prework. Compressed essentials live in <code>reference/glossary.html</code>. All external links are tracked in <code>RESOURCES.md</code>. Progress is stored in your browser on this device only.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var SECTIONS = ["s1","s2","s3","s4","s5","s6"];
+  var TITLES = {s1:"GenAI predicts", s2:"Inside an LLM", s3:"The Stack", s4:"Prompting", s5:"RAG", s6:"Agents & ethics"};
+  var KEY = "acp-w1-prework-v1";
+
+  /* ---------- progress / tabs ---------- */
+  var state = load();
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || {done:[], reflect:""}; }catch(e){ return {done:[], reflect:""}; } }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+  var pillsEl = document.getElementById("pills");
+  SECTIONS.forEach(function(id, i){
+    var b = document.createElement("button");
+    b.className = "pill"; b.dataset.target = id;
+    b.innerHTML = '<span class="num">'+(i+1)+'</span>'+TITLES[id];
+    b.onclick = function(){ show(id); };
+    pillsEl.appendChild(b);
+  });
+
+  function show(id){
+    SECTIONS.forEach(function(s){
+      document.getElementById(s).classList.toggle("active", s===id);
+      var p = pillsEl.querySelector('[data-target="'+s+'"]');
+      if(p) p.classList.toggle("active", s===id);
+    });
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  function renderProgress(){
+    var n = state.done.length;
+    document.getElementById("progFill").style.width = (n/SECTIONS.length*100)+"%";
+    document.getElementById("progLbl").textContent = n + " / " + SECTIONS.length + " complete";
+    SECTIONS.forEach(function(s){
+      var p = pillsEl.querySelector('[data-target="'+s+'"]');
+      if(p) p.classList.toggle("done", state.done.indexOf(s)>=0);
+      var btn = document.querySelector('.done[data-sec="'+s+'"]');
+      if(btn){
+        var isDone = state.done.indexOf(s)>=0;
+        btn.classList.toggle("is-done", isDone);
+        btn.textContent = isDone ? "✓ Completed — click to undo" : "Mark this section complete";
+      }
+    });
+    document.getElementById("finale").classList.toggle("show", n===SECTIONS.length);
+  }
+
+  document.querySelectorAll(".done").forEach(function(btn){
+    btn.onclick = function(){
+      var s = btn.dataset.sec, i = state.done.indexOf(s);
+      if(i>=0) state.done.splice(i,1); else state.done.push(s);
+      save(); renderProgress();
+      if(i<0){ var nx = document.querySelector('#'+s+' [data-next]'); if(nx) setTimeout(function(){ show(nx.dataset.next); }, 250); }
+    };
+  });
+  document.querySelectorAll("[data-next]").forEach(function(b){ b.onclick = function(){ show(b.dataset.next); }; });
+
+  /* ---------- generic quiz ---------- */
+  function makeQuiz(elId, questions){
+    var el = document.getElementById(elId); if(!el) return;
+    questions.forEach(function(q, i){
+      var wrapEl = document.createElement("div"); wrapEl.className="q";
+      var stem = document.createElement("div"); stem.className="stem"; stem.textContent=(i+1)+". "+q.stem; wrapEl.appendChild(stem);
+      var ul = document.createElement("ul"); ul.className="opts";
+      var fb = document.createElement("div"); fb.className="fb";
+      q.opts.forEach(function(opt, j){
+        var li=document.createElement("li");
+        var b=document.createElement("button"); b.className="opt"; b.textContent=opt;
+        b.onclick=function(){
+          if(b.disabled) return;
+          Array.prototype.forEach.call(ul.querySelectorAll("button"), function(x){ x.disabled=true; });
+          if(j===q.answer){ b.classList.add("correct"); fb.className="fb ok show"; fb.textContent="Correct. "+q.why; }
+          else { b.classList.add("wrong"); ul.querySelectorAll("button")[q.answer].classList.add("correct"); fb.className="fb no show"; fb.textContent="Not quite. "+q.why; }
+        };
+        li.appendChild(b); ul.appendChild(li);
+      });
+      wrapEl.appendChild(ul); wrapEl.appendChild(fb); el.appendChild(wrapEl);
+    });
+  }
+
+  /* ---------- S1: token predictor ---------- */
+  (function(){
+    var TABLE = {
+      "very": [["happy",34],["frustrated",26],["pleased",18],["upset",13],["specific",9]],
+      "happy": [["with",40],["about",28],["that",20],["and",12]],
+      "frustrated": [["with",44],["by",30],["that",16],["because",10]],
+      "pleased": [["with",46],["to",30],["that",24]],
+      "upset": [["about",42],["that",30],["with",28]],
+      "with": [["the",38],["our",30],["how",20],["us",12]],
+      "the": [["service",36],["delay",30],["result",20],["team",14]],
+      "our": [["response",40],["product",34],["team",26]]
+    };
+    var stream = document.getElementById("predStream");
+    var cands = document.getElementById("predCands");
+    var hint = document.getElementById("predHint");
+    var base = "Our customer was very";
+    var last = "very", steps = 0;
+
+    function curList(){ return TABLE[last] || null; }
+    function render(){
+      cands.innerHTML = "";
+      var list = curList();
+      if(!list || steps>=5){
+        cands.innerHTML = '<div class="hint">…and it would keep going like this. Notice: it never looked anything up — it just kept predicting plausible next words.</div>';
+        return;
+      }
+      list.forEach(function(p){
+        var row=document.createElement("button"); row.className="cand";
+        row.innerHTML='<span class="word">'+p[0]+'</span><span class="track"><span class="pct" style="width:'+p[1]+'%"></span></span><span class="val">'+p[1]+'%</span>';
+        row.onclick=function(){ add(p[0]); };
+        cands.appendChild(row);
+      });
+    }
+    function add(w){
+      stream.innerHTML += ' <span class="new">'+w+'</span>';
+      last = w; steps++; render();
+    }
+    function pickTop(){ var l=curList(); if(l&&steps<5) add(l[0][0]); }
+    function pickSample(){
+      var l=curList(); if(!l||steps>=5) return;
+      var total=l.reduce(function(a,b){return a+b[1];},0), r=Math.random()*total, acc=0, chosen=l[0][0];
+      for(var k=0;k<l.length;k++){ acc+=l[k][1]; if(r<=acc){ chosen=l[k][0]; break; } }
+      add(chosen);
+      hint.textContent = "“Sample” picks by probability — run it again from the start and you may get a different sentence. That's GenAI's normal behaviour.";
+    }
+    document.getElementById("predTop").onclick=pickTop;
+    document.getElementById("predSample").onclick=pickSample;
+    document.getElementById("predReset").onclick=function(){ stream.innerHTML=base; last="very"; steps=0; hint.textContent="Each word it adds becomes part of the input for guessing the next one. Click a bar to pick that word yourself, or let it predict."; render(); };
+    render();
+  })();
+
+  /* ---------- S2: attention ---------- */
+  (function(){
+    var words = ["The","trophy","didn't","fit","in","the","suitcase","because","it","was","too","big","."];
+    // weights[i] = array over words (0..1); higher = attends more
+    var notes = {};
+    var W = words.map(function(_, i){
+      return words.map(function(__, j){ return j===i?1 : (j===i-1?0.45:0.06); });
+    });
+    // hand-tuned interesting ones
+    W[8] = [0.05,0.92,0.04,0.06,0.03,0.04,0.30,0.05,1,0.04,0.03,0.05,0.02]; notes[8]="“it” attends most to “trophy” — that's how the model figures out what “it” refers to. (Change one word and that can flip.)";
+    W[3] = [0.05,0.85,0.10,1,0.06,0.04,0.55,0.04,0.05,0.04,0.03,0.05,0.02]; notes[3]="“fit” leans on “trophy” and “suitcase” — the two things whose sizes decide whether it fits.";
+    W[11]= [0.04,0.80,0.05,0.20,0.03,0.04,0.20,0.05,0.45,0.06,0.30,1,0.02]; notes[11]="“big” connects back to “trophy” and “too” — it's describing the trophy's size.";
+    W[6] = [0.06,0.30,0.05,0.40,0.10,0.30,1,0.04,0.05,0.04,0.03,0.05,0.02]; notes[6]="“suitcase” pairs with “fit” — the container in the fitting relationship.";
+
+    var sent = document.getElementById("attSent");
+    var out = document.getElementById("attOut");
+    words.forEach(function(w, i){
+      var s=document.createElement("span"); s.className="w"; s.textContent=w; s.dataset.i=i;
+      s.onclick=function(){
+        Array.prototype.forEach.call(sent.children, function(c, j){
+          c.classList.toggle("focus", j===i);
+          var a = W[i][j];
+          c.style.background = j===i ? "var(--accent)" : "rgba(11,110,110,"+(a*0.85)+")";
+          c.style.color = (j===i || a>0.5) ? "#fff" : "var(--ink)";
+        });
+        out.innerHTML = notes[i] || ("“"+words[i]+"” mostly attends to the word just before it. Click <b>“it”</b>, <b>“fit”</b> or <b>“big”</b> for the interesting cases.");
+      };
+      sent.appendChild(s);
+      sent.appendChild(document.createTextNode(" "));
+    });
+  })();
+
+  /* ---------- S2: context window ---------- */
+  (function(){
+    var CAP = 8;
+    var frame = document.getElementById("ctxFrame");
+    var hint = document.getElementById("ctxHint");
+    var toks = [];
+    var pool = ["greeting","your question","my answer","follow-up","a long doc you pasted","clarification","another reply","new request","more detail","correction"];
+    var n = 0;
+    function render(){
+      frame.innerHTML="";
+      toks.forEach(function(t, i){
+        var d=document.createElement("span"); d.className="tok"+(i<toks.length-CAP?" dropped":""); d.textContent=t;
+        frame.appendChild(d);
+      });
+      var dropped = Math.max(0, toks.length-CAP);
+      hint.textContent = dropped ? (dropped+" earliest chunk"+(dropped>1?"s have":" has")+" fallen out of the window — the model can no longer “see” "+(dropped>1?"them":"it")+".") : "Window holds "+CAP+" chunks. Keep adding — see what falls out.";
+    }
+    document.getElementById("ctxAdd").onclick=function(){ toks.push(pool[n%pool.length]); n++; render(); };
+    document.getElementById("ctxReset").onclick=function(){ toks=[]; n=0; render(); };
+    render();
+  })();
+
+  /* ---------- S3: ladder expand ---------- */
+  document.querySelectorAll("[data-rung]").forEach(function(r){
+    r.onclick=function(){ r.classList.toggle("open"); };
+  });
+
+  /* ---------- S4: prompt builder ---------- */
+  (function(){
+    var PARTS = [
+      {key:"role", label:"Role", text:"You are a senior sales operations analyst."},
+      {key:"task", label:"Task", text:"Summarise this RFP into a one-page brief for the deal team."},
+      {key:"context", label:"Context", text:"Context: we sell industrial cutting tools; the buyer is a mid-size automotive supplier."},
+      {key:"constraints", label:"Constraints", text:"Use only facts in the RFP. Flag anything missing rather than guessing."},
+      {key:"format", label:"Output format", text:"Output: 5 bullet points, then a 'Risks' line."},
+      {key:"examples", label:"Examples", text:"Example of a good bullet: '• Volume: 12k units/yr, ramping from Q3.'"}
+    ];
+    var on = {task:true};
+    var togWrap = document.getElementById("pbToggles");
+    PARTS.forEach(function(p){
+      var t=document.createElement("button"); t.className="tg"+(on[p.key]?" on":""); t.textContent=p.label;
+      t.onclick=function(){ on[p.key]=!on[p.key]; t.classList.toggle("on", on[p.key]); render(); };
+      togWrap.appendChild(t);
+    });
+    var pre=document.getElementById("pbPreview"), meter=document.getElementById("pbMeter"), lbl=document.getElementById("pbMeterLbl");
+    var LEVELS=["bare minimum","getting there","solid","strong","production-grade","production-grade"];
+    function render(){
+      var lines=PARTS.filter(function(p){return on[p.key];}).map(function(p){return p.text;});
+      pre.textContent = lines.length? lines.join("\n") : "(empty — at minimum you need a Task)";
+      var c = PARTS.filter(function(p){return on[p.key];}).length;
+      meter.style.width=(c/6*100)+"%";
+      lbl.textContent = "Reliability: " + (on.task ? LEVELS[c-1] : "won't work without a Task");
+      meter.style.background = on.task ? "var(--accent)" : "var(--bad)";
+    }
+    render();
+  })();
+
+  /* ---------- S5: RAG stepper ---------- */
+  (function(){
+    var STEPS = [
+      {t:"<b>The question</b><br>A team member asks your assistant: <i>“What's our current volume discount for orders over 10,000 units?”</i>"},
+      {t:"<b>Without RAG</b> — the model answers from frozen memory and <span style='color:var(--bad)'>invents a plausible number</span>: <i>“Around 12%.”</i> It sounds confident. It has no idea what your real policy says."},
+      {t:"<b>With RAG · step 1 — retrieve</b><br>The system searches <i>your</i> documents and pulls the relevant chunks:" +
+         "<div class='chunk hit'>pricing_policy_2026.pdf — “Orders ≥ 10,000 units: <b>9% volume discount</b>, approval by regional head.”</div>" +
+         "<div class='chunk'>terms.pdf — payment terms, net 45… (not relevant)</div>"},
+      {t:"<b>With RAG · step 2 — grounded answer</b> <span style='color:var(--good)'>with a citation</span>:<br><i>“9% for orders of 10,000+ units, with regional-head approval.”</i> <span class='small'>(source: pricing_policy_2026.pdf)</span><br><br>And if the policy weren't in the documents, a well-built RAG system would say <i>“I don't have that in our documents,”</i> rather than guess."}
+    ];
+    var dots=document.getElementById("ragDots"), stage=document.getElementById("ragStage");
+    var i=0;
+    STEPS.forEach(function(_, k){ var d=document.createElement("div"); d.className="dot"; d.textContent=k+1; dots.appendChild(d); });
+    function render(){
+      stage.innerHTML=STEPS[i].t;
+      Array.prototype.forEach.call(dots.children, function(d, k){ d.classList.toggle("on", k<=i); });
+      document.getElementById("ragPrev").disabled = i===0;
+      document.getElementById("ragNext").disabled = i===STEPS.length-1;
+    }
+    document.getElementById("ragNext").onclick=function(){ if(i<STEPS.length-1){ i++; render(); } };
+    document.getElementById("ragPrev").onclick=function(){ if(i>0){ i--; render(); } };
+    render();
+  })();
+
+  /* ---------- S6: agent loop ---------- */
+  (function(){
+    var LINES = [
+      "<b>Plan</b> — “Fetch overnight complaints, handle each, escalate the severe ones.”",
+      "<b>Tool</b> — read inbox → finds 7 complaints.",
+      "<b>Observe</b> — 5 routine, 2 mention safety.",
+      "<b>Act</b> — draft replies for the 5 routine complaints.",
+      "<b>Decide</b> — the 2 safety ones exceed the threshold → escalate.",
+      "<b>Tool</b> — flag the 2 safety complaints to you with a summary.",
+      "<b>Done</b> — queue cleared; you only handle the 2 that needed a human. ✅"
+    ];
+    var box=document.getElementById("agentLines");
+    LINES.forEach(function(t){ var d=document.createElement("div"); d.className="agentline"; d.innerHTML=t; box.appendChild(d); });
+    var shown=0;
+    document.getElementById("agentStep").onclick=function(){
+      if(shown<LINES.length){ box.children[shown].classList.add("show"); shown++; }
+      if(shown===LINES.length){ this.disabled=true; }
+    };
+    document.getElementById("agentReset").onclick=function(){
+      shown=0; Array.prototype.forEach.call(box.children, function(c){ c.classList.remove("show"); });
+      document.getElementById("agentStep").disabled=false;
+    };
+  })();
+
+  /* ---------- S6: data sorter ---------- */
+  (function(){
+    var ITEMS = [
+      {label:"A published product brochure", ok:true,  why:"Already public — no leakage risk."},
+      {label:"Next quarter's unreleased price list", ok:false, why:"Confidential & market-sensitive — never into a public tool."},
+      {label:"A customer's personal contact details", ok:false, why:"Personal data (PII) — protected; keep it out."},
+      {label:"Your company's published annual report", ok:true,  why:"Public by definition — fine."},
+      {label:"An internal memo about a possible acquisition", ok:false, why:"Highly confidential — a leak here is serious."},
+      {label:"A draft of a public marketing blog post", ok:true,  why:"Intended for the public anyway — low risk."}
+    ];
+    var wrap=document.getElementById("sorter"), out=document.getElementById("sorterOut");
+    var decided=0;
+    ITEMS.forEach(function(it){
+      var row=document.createElement("div"); row.className="item";
+      var lab=document.createElement("span"); lab.className="label"; lab.textContent=it.label;
+      var okB=document.createElement("button"); okB.className="pick"; okB.textContent="OK in public tool";
+      var noB=document.createElement("button"); noB.className="pick"; noB.textContent="Never";
+      var v=document.createElement("span"); v.className="verdict";
+      function choose(saidOk){
+        okB.classList.toggle("sel", saidOk); noB.classList.toggle("sel", !saidOk);
+        var right = (saidOk===it.ok);
+        if(v.textContent==="") decided++;
+        v.className="verdict "+(right?"ok":"no");
+        v.textContent=(right?"✓ ":"✗ ")+it.why;
+        if(decided===ITEMS.length) out.innerHTML="You've sorted all six. <b>The rule of thumb:</b> if it isn't already public, treat it as off-limits to public AI tools until Sandvik's data rule says otherwise.";
+      }
+      okB.onclick=function(){ choose(true); }; noB.onclick=function(){ choose(false); };
+      row.appendChild(lab); row.appendChild(okB); row.appendChild(noB); row.appendChild(v); wrap.appendChild(row);
+    });
+  })();
+
+  /* ---------- S6: local reflection ---------- */
+  (function(){
+    var ta=document.getElementById("reflect");
+    ta.value = state.reflect || "";
+    ta.addEventListener("input", function(){ state.reflect=ta.value; save(); });
+  })();
+
+  /* ---------- quizzes ---------- */
+  makeQuiz("q1",[
+    {stem:"Why can a generative model state something false with full confidence?",
+     opts:["It predicts what's plausible next, with no built-in check on what's true","It lost its internet connection","It was asked the question twice"], answer:0,
+     why:"It generates by predicting likely text, not by retrieving verified facts. Fluent and wrong can look identical."},
+    {stem:"You run the same prompt twice and get two differently-worded answers. What's happening?",
+     opts:["The tool is broken","Generation is probabilistic — variation is normal","Someone edited your prompt"], answer:1,
+     why:"It's probabilistic by design — great for drafting, something to manage when you need one exact answer."}
+  ]);
+  makeQuiz("q2",[
+    {stem:"Your assistant answers confidently — and wrongly — about a policy you changed last week. Why?",
+     opts:["Its knowledge is frozen at training time; it never saw the change","The context window is too small for policies","LLMs can't read policies at all"], answer:0,
+     why:"It only knows its training data. Recent/internal facts aren't there — exactly the gap RAG closes."},
+    {stem:"What is the 'context window'?",
+     opts:["Its permanent memory of every chat","The working memory of the current conversation","A time limit before the session expires"], answer:1,
+     why:"It's live working memory for this conversation; nothing persists once it's full or closed."}
+  ]);
+  makeQuiz("q3",[
+    {stem:"A bot must answer strictly from this quarter's price & policy PDFs, with the source shown. Lowest layer?",
+     opts:["LLM","RAG","Agent","Multi-Agent"], answer:1,
+     why:"Grounded in your own documents and cited = RAG. No actions taken, so an agent would be overkill."},
+    {stem:"True or false: when in doubt, reach for multi-agent because it's the most capable.",
+     opts:["True","False"], answer:1,
+     why:"False. The cheapest layer that works wins. Multi-agent carries the most cost and governance burden."}
+  ]);
+  makeQuiz("q4",[
+    {stem:"Which single part is the one a prompt can't do without?",
+     opts:["Examples","Role","Task","Output format"], answer:2,
+     why:"Task is the irreducible core. The others raise reliability, but with no task there's nothing to do."},
+    {stem:"What does adding 'Constraints' (e.g. 'use only facts in the document; flag gaps') buy you?",
+     opts:["A friendlier tone","Fewer confident wrong guesses","A longer answer"], answer:1,
+     why:"Constraints close off ways the model could guess wrong — directly attacking the fluency-≠-accuracy risk."}
+  ]);
+  makeQuiz("q5",[
+    {stem:"What does RAG actually change about how the model answers?",
+     opts:["It makes the model bigger","It feeds in relevant pieces of your documents at question time","It speeds up typing"], answer:1,
+     why:"Retrieval grounds the answer in your current content — and lets it cite the source."},
+    {stem:"A question's answer isn't in your documents. What should a well-built RAG system do?",
+     opts:["Invent a plausible answer","Say it doesn't have that in the documents","Return the whole document"], answer:1,
+     why:"Grounding includes knowing when it doesn't know — refusing beats inventing."}
+  ]);
+  makeQuiz("q6",[
+    {stem:"Which is genuinely agent-shaped, not a job a chatbot already does?",
+     opts:["Rewrite this paragraph more warmly","Each morning, triage overnight tickets, draft replies, escalate the urgent ones","Define RAG"], answer:1,
+     why:"Multiple steps, takes actions, loops to a goal = agent. The others are single answers."},
+    {stem:"An AI helps decide something that affects a customer. The strongest guardrail is…",
+     opts:["Telling staff to be careful","A human reviews the output before it's acted on","Trusting it because it sounded sure"], answer:1,
+     why:"Human-in-the-loop on consequential output is the standard control. Confidence isn't correctness."}
+  ]);
+
+  /* ---------- boot ---------- */
+  renderProgress();
+  show("s1");
+})();
+</script>
+</body>
+</html>

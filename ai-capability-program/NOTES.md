@@ -16,4 +16,6 @@ Working notes for the program. Not the contract — that's `overview.md`.
 
 ## Status
 
+- **Prework format (locked, ADR 0001):** one self-contained, tabbed, interactive HTML file per week (`week-N-prework.html`). Sections teach concepts in-file (Brilliant-style widgets), mirror the run-of-show, track completion locally (localStorage), and treat external courses as optional "go deeper" links. No flow-back / no copy-to-Teams. Reference: `weeks/week-1-foundations/00-preread/week-1-prework.html`. Week 1 prework is fully built.
+
 - **Week-level files (preread / run-of-show / homework) are indicative only.** Scaffolding from the v3 proposal — not yet authored. Real per-week planning hasn't started. The contract lives in `overview.md`; week files get built to it during week planning. Don't treat current week-file contents as decisions.
