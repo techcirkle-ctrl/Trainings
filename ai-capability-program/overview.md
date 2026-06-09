@@ -49,10 +49,12 @@ Pre-work (self-paced)  →  Session (5 hrs, trainer-led)  →  Homework (build/a
 
 | Week | Theme | Verb | Artifact produced |
 |---|---|---|---|
-| **1** | AI Foundations | Understand | 2-page architecture doc (a real problem mapped across the AI stack) |
-| **2** | Agentic Deep Dive | Decode | Working agent (built no-code) + 1-page design doc |
-| **3** | Hands-On Building | Practice | Capstone v1 prototype + spec + colleague feedback |
-| **4** | Build & Lead | Deploy | Production agent + 30-day deployment + 90-day project plan |
+| **1** | AI Foundations | Understand | 2-page architecture doc — **one real problem from their function**, mapped across the AI stack |
+| **2** | Agentic Deep Dive | Decode | **That problem, built as a working agent** (no-code Gem) + 1-page design doc |
+| **3** | Hands-On Building | Practice | **The same agent hardened into a capstone v1** + spec + colleague feedback |
+| **4** | Build & Lead | Deploy | **The capstone, productionised** + 30-day deployment + 90-day project plan |
+
+**One escalating artifact, not four.** The problem each leader picks in Week 1 is the *same* problem they scope → build → harden → deploy across all four weeks. Each week's homework advances that single artifact; no week reseeds a new use case. This is the spine that carries the outcome contract — week-level material (spec sheets, sprints) feeds this one thread, never forks it.
 
 Each week's detail lives in [`weeks/`](weeks/).
 

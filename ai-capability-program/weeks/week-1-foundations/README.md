@@ -3,7 +3,7 @@
 
 **Objective:** Understand the full AI stack — LLM → RAG → Agents with tools → Multi-agent systems.
 
-**Participant artifact:** A 2-page architecture document showing how you'd solve a real problem from your function across the whole stack.
+**Participant artifact:** A 2-page architecture document mapping **the one problem each leader carries through all four weeks** across the whole stack — scoped here, built (W2), hardened (W3), deployed (W4). Includes 3 tested prompts + an agent spec.
 
 ## The week at a glance
 
@@ -21,4 +21,4 @@
 4. **RAG deep dive** — how retrieval-augmented generation works; live demo with a Claude Project on sample docs.
 5. **Concept of agents** — agent vs chatbot; each participant writes a 1-paragraph agent spec for Week 2.
 
-> Ported from the v3 proposal deck — your starting point. Edit freely.
+> Week 1 is authored: 5 HTML prereads (4 wrappers + 1 authored stack lesson), a full run-of-show, and the homework brief. The de-facto template for Weeks 2–4.
