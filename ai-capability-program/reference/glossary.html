@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--
+  AI Capability Program — Glossary (reference).
+  The compressed, revisited layer: leaders keep this on the desk. Lessons defer to these definitions.
+  Open with:  open "glossary.html"  · prints cleanly to one or two pages.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Glossary — AI Capability Program</title>
+<style>
+  :root{--ink:#16202b;--muted:#5c6b7a;--line:#e4e8ec;--wash:#f6f8fa;--accent:#0b6e6e;--accent-soft:#e2f0ef;}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--wash);color:var(--ink);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:820px;margin:0 auto;padding:36px 22px 80px}
+  .kicker{font:600 12px/1.4 sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+  h1{font-size:2rem;margin:.3em 0 .15em;letter-spacing:-.01em}
+  .sub{color:var(--muted);margin:0 0 8px}
+  .grid{display:grid;gap:14px;margin-top:22px}
+  .term{background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:16px 18px}
+  .term dt{font-weight:700;font-size:1.05rem}
+  .term .also{font-size:.8rem;color:var(--muted);font-weight:500}
+  .term dd{margin:.4em 0 0;color:#26323d}
+  .term dd .tie{display:block;margin-top:.45em;font-size:.86rem;color:var(--muted)}
+  .term dd .tie b{color:var(--accent)}
+  footer{margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:.85rem}
+  @media print{body{background:#fff}.term{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kicker">AI Capability Program · Reference</div>
+  <h1>Glossary</h1>
+  <p class="sub">The shared vocabulary of the program. Once a term is defined here, every lesson uses it the same way. Starts with Week&nbsp;1; grows each week.</p>
+
+  <dl class="grid">
+
+    <div class="term"><dt>LLM <span class="also">— Large Language Model</span></dt>
+      <dd>A model that reads and writes language and reasons over what it's given, using general knowledge learned in training. The reasoning engine under everything else.
+      <span class="tie"><b>Layer 1</b> of the AI Evolution Stack.</span></dd></div>
+
+    <div class="term"><dt>Context window</dt>
+      <dd>How much text a model can "hold in mind" at once — your prompt plus everything you've pasted in. Exceed it and the earliest content drops off.</dd></div>
+
+    <div class="term"><dt>Prompt</dt>
+      <dd>The instruction and information you give the model. Good prompting — clear role, task, constraints, examples — is the highest-leverage skill for getting reliable output.</dd></div>
+
+    <div class="term"><dt>RAG <span class="also">— Retrieval-Augmented Generation</span></dt>
+      <dd>Fetching the relevant pieces of <i>your own</i> documents at question time and giving them to the model, so answers are grounded in your reality and can cite sources.
+      <span class="tie"><b>Layer 2</b> of the AI Evolution Stack.</span></dd></div>
+
+    <div class="term"><dt>Tool use</dt>
+      <dd>Letting a model call external functions — search a database, send an email, hit an API — so it can act, not just talk. The capability that turns an LLM into an agent.</dd></div>
+
+    <div class="term"><dt>Agent</dt>
+      <dd>An LLM that uses tools, takes steps in a loop, and keeps state to reach a goal — it does multi-step work rather than just answering.
+      <span class="tie"><b>Layer 3</b> of the AI Evolution Stack.</span></dd></div>
+
+    <div class="term"><dt>Multi-agent system</dt>
+      <dd>Several specialised agents coordinated by an orchestrator for genuinely complex workflows. The most capable and the most costly layer — used only when one agent can't cope.
+      <span class="tie"><b>Layer 4</b> of the AI Evolution Stack.</span></dd></div>
+
+    <div class="term"><dt>Claude Project</dt>
+      <dd>A no-code workspace where you give Claude persistent instructions and knowledge for a specific job — how leaders in this program build their agents without writing code.</dd></div>
+
+    <div class="term"><dt>Hallucination</dt>
+      <dd>When a model states something false with confidence. Grounding (RAG), citations, and human review are the standard guardrails — central to responsible use.</dd></div>
+
+    <div class="term"><dt>Zone of proximal development</dt>
+      <dd>The sweet spot just beyond what you can already do — challenging enough to grow, not so hard you stall. Each lesson is pitched here.</dd></div>
+
+  </dl>
+
+  <footer>AI Capability Program · Reference layer. Terms are added as each week introduces them. Definitions here are authoritative across all lessons.</footer>
+</div>
+</body>
+</html>

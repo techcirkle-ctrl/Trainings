@@ -17,13 +17,15 @@ Every participant leaves with:
 
 **No formal grading.** Capability is evidenced by what each leader ships — the working agent and the 90-day plan speak for themselves. No scores, hours, badges, or leaderboards.
 
-## How the depth lands (full technical depth, no-code build)
+## How the depth lands (full technical depth, tiered build)
 
 The program keeps **full technical depth** — agent lifecycle, tool use, MCP, multi-agent orchestration. For a non-engineer cohort, that depth lands through a consistent move every session:
 
-> **Trainer demos the technical internals live → leaders build the no-code equivalent in Claude Projects, anchored to their own workflow.**
+> **Trainer demos the technical internals live in Claude Code → core leaders build the no-code equivalent in Gems / Claude Projects, anchored to their own workflow.**
 
-Leaders never write code. Every concept is taught through their own function's problems, not abstractly.
+**Claude Code is the trainer's master instrument** — it scaffolds projects, wires MCPs, generates the ADK code, even helps author Gems. Core leaders touch its *outputs* (Gems, connected Projects), not the terminal.
+
+Build runs on two tracks (see the Tooling section below): a **no-code core** every leader completes, and an optional **stretch track** into Claude Code + ADK for the keen. Every concept is taught through their own function's problems, not abstractly.
 
 ## Weekly rhythm
 
@@ -77,9 +79,38 @@ The client-requested support layer. Same shape every week, described once here:
 
 2 fortnightly 1-hr check-ins with the trainer to pressure-test the 90-day plans against real results and ensure AI practices land in the workflow. Validated program then scales to the wider GCC.
 
-## Tooling
+## Tooling & two-track delivery
 
-Claude as the AI engine; agents built in Claude Projects (no-code). The client may bring its own tool preferences — these are our recommendations.
+Environment: **Google Workspace**. The stack, as a capability ladder:
+
+| Rung | Tool | Who builds | Week |
+|---|---|---|---|
+| 1. Prompt / chat | Claude Code · Claude chat | Leader | W1 |
+| 2. Connected knowledge project | Claude Projects + connectors | Leader | W1–2 |
+| 3. No-code agent | **Gems** (Workspace-connected) | Leader | W2–3 |
+| 4. Tooled agent | Claude Code + MCPs | Leader *with* trainer (stretch) | W3 |
+| 5. Multi-agent | **Google ADK** | Trainer demo → govern (stretch build) | W4 |
+
+**Claude Code sits at the center** — the universal builder behind every rung. Gems and ADK are what gets produced around it.
+
+### Two tracks
+
+- **Core (all 5, no-code)** — rungs 1–3. Carries the entire outcome contract. Claude Projects + Gems.
+- **Stretch (optional, self-selecting)** — rungs 4–5. Claude Code + MCPs, ADK multi-agent.
+
+| Week | Core — all 5, no-code | Stretch — optional |
+|---|---|---|
+| **W1** | Claude chat + first connected Claude Project | Drive Claude Code — scaffold a project |
+| **W2** | Build a Gem, Workspace-connected | Add an MCP / tool via Claude Code |
+| **W3** | Harden the capstone (Gem / Project) | Rebuild the use case in Claude Code + MCPs |
+| **W4** | Deploy no-code agent + 90-day plan | ADK multi-agent: demo → keen build |
+
+**Guardrails:**
+- The outcome contract is met **entirely on the core track**. Stretch never gates the artifact or the 90-day plan.
+- **Stretch lives in the mid-week clinics + recordings, not core session time** — protects the 5-hr session and keeps the room together.
+- **Multi-agent = literacy for core** (trainer-demo'd in ADK so leaders can govern it), **build for stretch**.
+
+The client may bring its own tool preferences — these are our recommendations.
 
 ## Calendar — TO CONFIRM
 
