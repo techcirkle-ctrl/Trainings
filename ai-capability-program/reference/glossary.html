@@ -36,12 +36,19 @@
 
   <dl class="grid">
 
+    <div class="term"><dt>AI Evolution Stack <span class="also">— informally: the ladder; its levels, the rungs</span></dt>
+      <dd>The program's backbone: four layers of AI capability, each adding one thing the layer below lacks — <b>LLM</b> → <b>RAG</b> → <b>Agent</b> → <b>Multi-agent system</b>. The core leadership judgement is naming the <i>lowest layer that solves a problem</i>: the cheapest layer that works wins.
+      <span class="tie">Canonical name: <b>AI Evolution Stack</b>; its levels are <b>Layers</b>. "Ladder" and "rung" are the same idea, used informally.</span></dd></div>
+
     <div class="term"><dt>LLM <span class="also">— Large Language Model</span></dt>
       <dd>A model that reads and writes language and reasons over what it's given, using general knowledge learned in training. The reasoning engine under everything else.
       <span class="tie"><b>Layer 1</b> of the AI Evolution Stack.</span></dd></div>
 
     <div class="term"><dt>Context window</dt>
       <dd>How much text a model can "hold in mind" at once — your prompt plus everything you've pasted in. Exceed it and the earliest content drops off.</dd></div>
+
+    <div class="term"><dt>Attention</dt>
+      <dd>How a model weighs which earlier words matter most when interpreting each word — for example, working out what "it" refers to in a sentence. The mechanism behind its grasp of language; you don't operate it, but it explains why context and clear phrasing change the output.</dd></div>
 
     <div class="term"><dt>Prompt</dt>
       <dd>The instruction and information you give the model. Good prompting — clear role, task, constraints, examples — is the highest-leverage skill for getting reliable output.</dd></div>
@@ -75,6 +82,12 @@
 
     <div class="term"><dt>Hallucination</dt>
       <dd>When a model states something false with confidence. Grounding (RAG), citations, and human review are the standard guardrails — central to responsible use.</dd></div>
+
+    <div class="term"><dt>Training data</dt>
+      <dd>The large body of text an LLM learned its patterns from. Its knowledge is frozen at training time — blind to anything more recent or private to your business, which is the gap RAG closes.</dd></div>
+
+    <div class="term"><dt>Temperature</dt>
+      <dd>The creativity dial on a model's output. Low temperature → consistent, repeatable answers (it favours the most likely token); high temperature → more varied and creative, less predictable. Turn it down for factual work, up for brainstorming.</dd></div>
 
     <div class="term"><dt>Human-in-the-loop</dt>
       <dd>A person reviews or approves an AI's output before it's acted on. The core guardrail for any decision with real consequences — accountability stays human.</dd></div>

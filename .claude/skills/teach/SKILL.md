@@ -17,8 +17,10 @@ The teaching workspace is **`ai-capability-program/`** (relative to repo root). 
 | `MISSION.md` | Program mission + one block per leader (from the Week-0 intake). Grounds all tailoring. → `MISSION-FORMAT.md` |
 | `RESOURCES.md` | Trusted-source registry. Single source of truth for every external link. → `RESOURCES-FORMAT.md` |
 | `reference/glossary.html` | Authoritative program vocabulary. Lessons defer to it. → `GLOSSARY-FORMAT.md` |
+| `reference/DESIGN.md` | The program's visual canon — tokens, fonts, the two-pole rule. **Defer to it for all visual decisions** in any HTML artifact. |
 | `weeks/week-N-<theme>/00-preread/week-N-prework.html` | **The week's prework** — one self-contained, tabbed, interactive HTML file (the primary unit you produce). → `LESSON-FORMAT.md` |
 | `weeks/week-N-<theme>/01-workshop/run-of-show.md` | The 5-hr facilitator script. Hr 1 always opens by *using* the preread. |
+| `weeks/week-N-<theme>/01-workshop/keynote.html` | The **secondary** per-week artifact — a ~10-min TED-style Sparkline cold open delivered before Hr 1. → `KEYNOTE-FORMAT.md` |
 | `weeks/week-N-<theme>/02-homework/` | The build/apply artifact for the week. |
 | `learning-records/*.md` | Per-leader insights that change tailoring (lazy — create on first write). → `LEARNING-RECORD-FORMAT.md` |
 | `NOTES.md` | Trainer preferences and working notes (lazy). |
@@ -44,6 +46,8 @@ The primary unit is **one self-contained, tabbed, interactive HTML file per week
 7. **Local, not submitted** — progress + reflections persist to `localStorage` on the leader's device only; nothing flows back. No "copy to Teams / Hour 1 consumes this" mechanics.
 
 The reference implementation is `weeks/week-1-foundations/00-preread/week-1-prework.html` — **copy its visual system and interaction patterns** so every week looks and feels consistent.
+
+**Secondary artifact — the keynote.** Each week also gets a `01-workshop/keynote.html`: a ~10-min TED-style **Sparkline cold open** (Duarte's *What Is → What Could Be*) the trainer delivers before Hr 1 to sell the week's promise. It's a *persuasion* artifact, not a knowledge one — full conventions in **`KEYNOTE-FORMAT.md`**; visual canon in `reference/DESIGN.md`. The prework remains the primary unit; the keynote frames it.
 
 ## How to decide what to build
 

@@ -1,9 +1,9 @@
 # Week 1 — Run of Show
 ### AI Foundations · 5 hrs, trainer-led · in person
 
-> Facilitator script. The session is **flipped**: every hour builds on the five prereads, and **Hour 1 opens by consuming their outputs** — the trust/not-trust call (P1), the blocking LLM-limit (P2), the data-sensitivity input (P3), the agent-shaped task (P4), and the workflow→layer mapping (P5). Each leader pasted these into the Teams channel before the session; have them open in front of you.
+> Facilitator script. The session is **flipped**: every hour builds on the prework — one interactive file of **six teaching sections** each leader works through beforehand. The prework is **local by design — nothing is submitted**; leaders arrive with intuition, not artifacts. Your job in **Hour 1 is to elicit five things live** from what they learned: the trust/don't-trust call (§1), the blocking LLM-limit (§2), the workflow→layer mapping (§3), the data-sensitivity instinct (§6), and the agent-shaped task (§6 reflection). Open the prework in front of you for reference.
 >
-> **The depth move, every hour:** trainer demos the technical internals live in **Claude Code (run as a Claude Project — the program's build engine)**; leaders touch the *outputs*, not the terminal. The no-code build surface leaders will use from Week 2 is **Gems**. Week 1 is Understand — concepts, prompting, and the first connected project — so the build itself is light here.
+> **The depth move, every hour:** trainer demos the technical internals live in **Claude Code (run as a Claude Project — the program's build engine)**; leaders touch the *outputs*, not the terminal. The no-code build surface leaders will use from Week 2 is **Gems / Claude Projects** (the Workspace-connected no-code core). Week 1 is Understand — concepts, prompting, and the first connected project — so the build itself is light here.
 >
 > **Materials to prep:** slides per hour; the prereads open for reference; a shared Claude workspace with leader access provisioned (Week 0); a sample-docs pack for the RAG demo (non-sensitive); the Stack one-pager (from `reference/glossary.html`); printed copies of the Week-1 homework brief.
 
@@ -14,10 +14,10 @@
 ## Hr 1 — Pre-work debrief + LLMs, deeper
 **Goal of the hour:** close the flipped loop, level-set the cohort, and surface the real problems leaders brought.
 
-**Opens with the prereads (0:00–0:25) — this is non-negotiable.**
-- Round the room on **Preread 5**: each leader reads their *workflow → lowest layer → why not the layer above*. Capture all five on a visible board under LLM / RAG / Agent / Multi-Agent. (This board stays up all day — every later hour points back to it.)
-- Pull in **Preread 1** (trust / don't-trust) and **Preread 2** (the limit that blocks a task) as you go — they explain *why* each problem sits where it does.
-- Park **Preread 3** outputs (data sensitivity) for Hr 4, and **Preread 4** outputs (agent-shaped task) for Hr 5. Tell them you're parking these, so they know they'll be used.
+**Opens by eliciting the prework (0:00–0:25) — this is non-negotiable.**
+- Round the room on the **Stack section (§3)**: each leader names a *workflow → lowest layer → why not the layer above*. Capture all on a visible board under LLM / RAG / Agent / Multi-Agent. (This board stays up all day — every later hour points back to it.)
+- Pull in **§1** (trust / don't-trust) and **§2** (the limit that blocks a task) as you go — they explain *why* each problem sits where it does.
+- Flag that you'll come back for their **data-sensitivity instinct (§6)** in Hr 4 and their **agent-shaped task (§6 reflection)** in Hr 5 — so they know those will be used. (These live locally in each leader's prework; have them read their own notes out, don't expect a Teams paste.)
 
 **Talk track (0:25–0:55):**
 - Level-set the vocabulary the half-day workshop left them with: AI / ML / GenAI / LLM — one clean slide, no dwelling. Most of this was the prereads; confirm, don't re-teach.
@@ -36,7 +36,7 @@
 - Hammer the rule of thumb: **the cheapest layer that works, wins.** Climbing too high is the most common and most expensive mistake — name it now so it governs every build decision in Weeks 2–4.
 
 **Demo (0:35–0:55) — the depth move:**
-- In **Claude Code**, show the same simple task solved at two layers: a plain prompt vs. the same task grounded in a document. Leaders see the *difference in behaviour*, not the code. Point out: "you'll build the no-code version of this in a Gem from next week."
+- In **Claude Code**, show the same simple task solved at two layers: a plain prompt vs. the same task grounded in a document. Leaders see the *difference in behaviour*, not the code. Point out: "you'll build the no-code version of this in a Gem / Claude Project from next week."
 
 **Exercise (0:55–1:00):** each leader re-confirms or *moves* their problem on the board now that they've seen the rungs live. Movement is the point — it means the model is landing.
 
@@ -64,7 +64,7 @@
 ## Hr 4 — RAG deep dive
 **Goal of the hour:** make "ground it in our own documents" concrete — and connect it to responsible use.
 
-**Open with Preread 3 (0:00–0:10):** round on the *data-sensitivity* inputs leaders brought. Build a shared first-draft list: **what data can / can't go into an AI tool.** This is the leaders' contribution to Sandvik's Week-0 data rule — capture it; it's a real artifact, not a warm-up.
+**Open on data sensitivity (§6) (0:00–0:10):** round on the *data-sensitivity* instinct leaders built in the prework's responsible-use section. Build a shared first-draft list: **what data can / can't go into an AI tool.** This is the leaders' contribution to Sandvik's Week-0 data rule — capture it; it's a real artifact, not a warm-up.
 
 **Talk track (0:10–0:30):**
 - How RAG works at a leader's altitude: retrieve the relevant pieces of *your* content at question time → hand them to the model → grounded answer **with sources**. Contrast with the LLM-alone failure mode from Preread 1 (confident and wrong).
@@ -81,7 +81,7 @@
 ## Hr 5 — Concept of agents → write your spec
 **Goal of the hour:** converge the day onto **one problem each leader will carry through all four weeks**, captured as a one-paragraph agent spec.
 
-**Open with Preread 4 (0:00–0:15):** round on the *agent-shaped tasks* leaders brought. Test each against the bar: multi-step? takes actions? loops to a goal? Kill the ones that are really just chatbot questions — be ruthless, it saves them three weeks on the wrong problem.
+**Open on the agent-shaped task (§6) (0:00–0:15):** round on the *agent-shaped tasks* leaders sketched in the prework's reflection box (local to them — have them read it out). Test each against the bar: multi-step? takes actions? loops to a goal? Kill the ones that are really just chatbot questions — be ruthless, it saves them three weeks on the wrong problem.
 
 **Talk track (0:15–0:30):**
 - Agent vs. chatbot, now with authority: goal not question, tools to act, a loop to completion (Layer 3). Reuse the board.

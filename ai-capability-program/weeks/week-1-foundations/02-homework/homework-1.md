@@ -79,4 +79,4 @@ Capability shows in the artifact, not a score. Before you hand in, check:
 Blockers go to the **mid-week clinic** (~3 days after the session) or the **Teams doubt channel** — trainer responds within 1 business day. Don't burn an hour stuck; that's what the support layer is for.
 
 ## What this feeds
-Week 2 opens (Hr 1) by critiquing these stack maps as a group, then you **build the agent part** as a no-code **Gem**. Bring this document — it's your build brief.
+Week 2 opens (Hr 1) by critiquing these stack maps as a group, then you **build the agent part** as a no-code **Gem / Claude Project**. Bring this document — it's your build brief.

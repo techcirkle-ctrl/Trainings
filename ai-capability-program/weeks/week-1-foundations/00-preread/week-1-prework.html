@@ -83,14 +83,40 @@
   .cand:hover{border-color:var(--accent)}
   .cand .word{width:96px; font-weight:600}
   .cand .track{flex:1; height:10px; background:#eef2f4; border-radius:99px; overflow:hidden}
-  .cand .pct{height:100%; background:var(--accent-soft); border-right:2px solid var(--accent)}
+  .cand .pct{display:block; height:100%; background:var(--accent-soft); border-right:2px solid var(--accent)}
   .cand .val{width:42px; text-align:right; color:var(--muted); font-variant-numeric:tabular-nums}
+
+  /* token chips + range dial (S1) */
+  .toks{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font:15px ui-sans-serif,system-ui,sans-serif; margin:2px 0}
+  .toks .tk{background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:7px; padding:4px 8px}
+  .toks .br{flex-basis:9px}
+  input[type=range]{accent-color:var(--accent); height:22px}
 
   /* attention */
   .att .sent{font:600 19px/2.1 ui-sans-serif,system-ui,sans-serif}
   .att .w{cursor:pointer; padding:3px 5px; border-radius:6px; transition:background .15s, color .15s; border:1px solid transparent}
   .att .w:hover{border-color:#cfe6e4}
   .att .w.focus{outline:2px solid var(--accent); outline-offset:1px}
+
+  /* neural network (S2) */
+  .net svg{width:100%; height:auto; display:block; max-height:320px}
+  .net .edge{stroke:#cfe6e4; stroke-width:1.1; transition:stroke .3s, stroke-width .3s, opacity .3s}
+  .net .edge.hot{stroke:var(--accent); stroke-width:2.2}
+  .net .edge.dim{opacity:.14}
+  .net .node{fill:#fff; stroke:#9fc7c4; stroke-width:1.6; cursor:pointer; transition:fill .35s, stroke .35s}
+  .net .node:hover{stroke:var(--accent)}
+  .net .node.fired{fill:var(--accent); stroke:var(--accent)}
+  .net .node.sel{stroke:var(--warn); stroke-width:3.4}
+  .net .nlabel{font:11px ui-sans-serif,system-ui,sans-serif; fill:var(--ink)}
+  .net .olabel{font:600 11.5px ui-sans-serif,system-ui,sans-serif; fill:var(--ink)}
+  .net .obar{fill:var(--accent-soft); transition:width .45s ease}
+  .net .layercap{font:600 10px ui-sans-serif,system-ui,sans-serif; fill:var(--muted); letter-spacing:.08em; text-transform:uppercase}
+
+  /* learning meter (S2) */
+  .learn .errwrap{display:flex; align-items:center; gap:10px; margin:4px 0 6px}
+  .learn .errbar{flex:1; height:14px; background:#f3f6f8; border-radius:99px; overflow:hidden}
+  .learn .errfill{height:100%; width:90%; background:var(--bad); border-radius:99px; transition:width .5s ease, background .5s}
+  .learn .epoch{font:600 13px ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
 
   /* context window */
   .ctx .frame{border:2px dashed #cfe6e4; border-radius:12px; padding:12px; min-height:64px; display:flex; flex-wrap:wrap; gap:6px; background:#fff}
@@ -105,6 +131,65 @@
   .rung.open .body{display:block}
   .rung .eg{font-size:.92rem; background:var(--wash); border-radius:8px; padding:9px 11px; margin:.5em 0}
   .rung .ceiling{color:var(--warn); font-size:.9rem; font-weight:600; border-top:1px dashed #e7d6b8; margin-top:8px; padding-top:7px}
+
+  /* system builder (S3) — compose capabilities onto the engine */
+  .build .engine-row{display:flex; align-items:stretch; gap:12px; flex-wrap:wrap}
+  .build .ecore{flex:0 0 150px; background:var(--accent); color:#fff; border-radius:12px; padding:13px 15px;
+    display:flex; flex-direction:column; justify-content:center; font:700 15px ui-sans-serif,system-ui,sans-serif}
+  .build .ecore small{display:block; font:500 11.5px ui-sans-serif,system-ui,sans-serif; opacity:.85; margin-top:3px}
+  .build .plus{display:flex; align-items:center; font:700 22px ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .build .caps{display:flex; gap:8px; flex:1; flex-wrap:wrap}
+  .build .cap{flex:1; min-width:148px; cursor:pointer; text-align:left; border:1px solid var(--line); background:#fff; border-radius:11px; padding:11px 13px;
+    font:700 14px ui-sans-serif,system-ui,sans-serif; color:var(--ink); transition:background .18s, border-color .18s, box-shadow .18s, opacity .18s}
+  .build .cap small{display:block; font:500 11.5px/1.35 ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin-top:3px}
+  .build .cap:hover{border-color:var(--accent)}
+  .build .cap.on{background:var(--accent-soft); border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent)}
+  .build .cap.on small{color:var(--accent)}
+  .build .cap.dim{opacity:.45}
+  .build .buildresult{margin-top:14px; background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 16px}
+  .build .brow{display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap}
+  .build .bname{font:700 1.05rem ui-sans-serif,system-ui,sans-serif; color:var(--accent)}
+  .build .meter .fill.cost{background:var(--warn)}
+  .build .bcando{font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; margin-top:10px}
+  .build .bcando .eg{font-size:.92rem; background:var(--wash); border-radius:8px; padding:9px 11px; margin-top:.6em}
+  .build .bcando .cant{color:var(--warn); font-size:.92rem; margin-top:.5em; display:block}
+  .build .taskmeta{font:700 11px ui-sans-serif,system-ui,sans-serif; color:var(--accent); letter-spacing:.06em; text-transform:uppercase}
+  .build .taskcard{background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin:8px 0 12px;
+    font:600 15.5px/1.5 ui-sans-serif,system-ui,sans-serif; min-height:60px; display:flex; align-items:center}
+  .build .placefb{font:14px/1.55 ui-sans-serif,system-ui,sans-serif; color:var(--muted); min-height:38px; margin-top:8px}
+  .build .placefb.ok{color:var(--good)} .build .placefb.warn{color:var(--warn)} .build .placefb.bad{color:var(--bad)}
+
+  /* RAG machine (S5) */
+  .ragm .qshow{font:600 15.5px/1.5 ui-sans-serif,system-ui,sans-serif; background:#fff; border:1px solid var(--line); border-radius:10px; padding:11px 14px; margin:8px 0 12px}
+  .ragm .qpills{display:flex; flex-wrap:wrap; gap:8px}
+  .ragm .qpill{cursor:pointer; border:1px solid var(--line); background:var(--paper); color:var(--ink);
+    font:600 13px ui-sans-serif,system-ui,sans-serif; padding:8px 14px; border-radius:99px; transition:border-color .15s, background .15s, color .15s}
+  .ragm .qpill:hover{border-color:var(--accent)}
+  .ragm .qpill.on{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
+  .ragm .controls{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px}
+  .ragm .seg{display:inline-flex; gap:2px; border:1px solid var(--line); border-radius:99px; background:var(--wash); padding:3px}
+  .ragm .seg button{border:0; background:transparent; cursor:pointer; color:var(--muted);
+    font:700 12.5px ui-sans-serif,system-ui,sans-serif; padding:7px 15px; border-radius:99px; transition:background .18s, color .18s, box-shadow .18s}
+  .ragm .seg button[data-rag="off"].on{background:#e7ebee; color:var(--ink); box-shadow:0 1px 2px rgba(16,32,43,.10)}
+  .ragm .seg button[data-rag="on"].on{background:var(--accent); color:#fff; box-shadow:0 1px 3px rgba(11,110,110,.32)}
+  .ragm .lib{display:grid; gap:7px}
+  .ragm .chunk{position:relative; transition:opacity .3s, background .3s, border-color .3s}
+  .ragm .chunk.dim{opacity:.36}
+  .ragm .doc{font:700 11px ui-sans-serif,system-ui,sans-serif; color:var(--accent); display:block; margin-bottom:2px}
+  .ragm .relrow{display:flex; align-items:center; gap:8px; margin-top:7px}
+  .ragm .relbar{flex:1; height:6px; background:#eef2f4; border-radius:99px; overflow:hidden}
+  .ragm .relfill{height:100%; width:0; background:var(--muted); border-radius:99px; transition:width .5s ease}
+  .ragm .chunk.hit .relfill{background:var(--good)}
+  .ragm .relpct{font:600 11px ui-sans-serif,system-ui,sans-serif; color:var(--muted); width:34px; text-align:right; font-variant-numeric:tabular-nums}
+  .ragm .ctxbox{background:#fff; border:1px dashed #cfe6e4; border-radius:10px; padding:10px 12px; margin-top:6px; min-height:38px; font:.92rem/1.5 ui-sans-serif,system-ui,sans-serif}
+  .ragm .ctxbox .empty{color:var(--muted)}
+  .ragm .ans{margin-top:6px; border:1px solid var(--line); border-radius:10px; padding:12px 14px; font:15px/1.55 ui-sans-serif,system-ui,sans-serif; background:#fff}
+  .ragm .ans.bad{border-color:#e3b7b7; background:#fdf5f5}
+  .ragm .ans.good{border-color:#bfe3cd; background:#f4fbf6}
+  .ragm .ans .src{display:block; margin-top:7px; font-size:.82rem; color:var(--muted)}
+  .ragm .ans .flag{font-weight:700}
+  .ragm .ans.bad .flag{color:var(--bad)}
+  .ragm .ans.good .flag{color:var(--good)}
 
   table.lens{width:100%; border-collapse:collapse; font:14.5px/1.5 ui-sans-serif,system-ui,sans-serif}
   table.lens th,table.lens td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top}
@@ -223,11 +308,61 @@
       <div class="hint" id="predHint">Each word it adds becomes part of the input for guessing the next one. Click a bar to pick that word yourself, or let it predict.</div>
     </div>
 
-    <h3>The two things to take from that</h3>
+    <h3>The dial you just felt: <i>temperature</i></h3>
+    <p>"Take the most likely word" vs "Sample" wasn't a toy — it's a real control called <b>temperature</b>, the creativity dial. <b>Low</b> temperature → it almost always takes the top word: consistent, repeatable. <b>High</b> temperature → it samples more widely: more varied and creative, less predictable. Drag it, then generate a few times and watch the spread:</p>
+    <div class="lab pred">
+      <div class="kicker" style="margin-bottom:8px">The creativity dial — drag, then generate</div>
+      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap">
+        <span class="small muted">Low</span>
+        <input id="tempSlider" type="range" min="0" max="100" value="20" style="flex:1; min-width:160px">
+        <span class="small muted">High</span>
+      </div>
+      <div class="hint" id="tempLbl" style="margin-top:4px"></div>
+      <div class="stream" id="tempOut" style="margin-top:10px">Our customer was very …</div>
+      <div style="margin-top:8px">
+        <button class="btn" id="tempGen">Generate 5 times</button>
+        <button class="btn ghost" id="tempReset">Clear</button>
+      </div>
+      <div class="hint" id="tempHint">Low temperature picks the top word almost every time — consistent. Crank it up and it samples wider — more variety, more risk.</div>
+    </div>
+    <p class="small muted"><b>Leader's read:</b> turn temperature <i>down</i> for anything that must be consistent and factual; <i>up</i> for brainstorming and first drafts. It's a knob your teams will set on the tools they build.</p>
+
+    <h3>So where do those percentages come from?</h3>
+    <p>Nobody programmed "after <i>very</i>, the word <i>happy</i> is 34% likely." The model <b>learned it</b> — by reading an enormous amount of text (books, articles, code, the public web) and noticing, billions of times over, which words tend to follow which. That body of text is its <b>training data</b>, and those learned tendencies <i>are</i> the percentages you just clicked. Three things fall straight out of that — each one changes how you should use it:</p>
+    <ul>
+      <li><b>It's only as current as its training.</b> Anything that happened — or changed in your business — after training simply isn't in there. (That gap is Section 2's first limit.)</li>
+      <li><b>It inherits its sources.</b> Whatever patterns, blind spots and biases live in the text it learned from, it absorbs. Good reason to check, not assume.</li>
+      <li><b>It generates, it never retrieves.</b> It isn't looking anything up in a database — it's predicting plausible text. That single fact explains the failure mode below.</li>
+    </ul>
+
+    <h3>It predicts in chunks called <i>tokens</i></h3>
+    <p>One more piece of plumbing worth knowing, because it's the unit everything is priced and measured in. The model doesn't read whole words — it reads <b>tokens</b>: common chunks of text. Short words are one token; longer ones split into several. It's literally guessing the next <i>chunk</i>, over and over:</p>
+    <div class="lab">
+      <div class="kicker" style="margin-bottom:8px">One word ≠ one token</div>
+      <div class="toks">
+        <span class="tk">Our</span><span class="br"></span>
+        <span class="tk">cust</span><span class="tk">omer</span><span class="br"></span>
+        <span class="tk">was</span><span class="br"></span>
+        <span class="tk">very</span><span class="br"></span>
+        <span class="tk">frus</span><span class="tk">trated</span>
+      </div>
+      <div class="hint">Roughly ¾ of a word per token. When you hear "context window" or "cost per million tokens" later, this is the unit they mean.</div>
+    </div>
+
+    <h3>The one failure mode that actually bites</h3>
+    <p>Because it generates plausible text rather than checking facts, it can be <b>completely confident and completely wrong</b> — a <b>hallucination</b>. The trap: it writes <i>just as fluently</i> when it's wrong as when it's right. Test your own instinct — which of these would you trust as-is?</p>
+    <div class="lab">
+      <div class="kicker" style="margin-bottom:8px">Which would you trust?</div>
+      <div class="sorter" id="spotWrap"></div>
+      <div class="out" id="spotOut" style="margin-top:12px">Make a call on each — then see the catch.</div>
+    </div>
+
+    <h3>The three things to take from that</h3>
     <table class="lens">
       <tr><th>What you saw</th><th>What it means for you</th></tr>
-      <tr><td>It chose from <b>probabilities</b>, and "Sample" can give a different sentence each run</td><td>It's <b>probabilistic</b> — great for drafting and ideas, awkward when you need one exact, repeatable answer</td></tr>
-      <tr><td>It never <i>looked anything up</i> — it generated plausible words</td><td><b>Fluency ≠ accuracy.</b> A confident, well-written answer can still be invented. This is the failure mode to manage</td></tr>
+      <tr><td>It chose from <b>probabilities</b>, and higher temperature gives a different sentence each run</td><td>It's <b>probabilistic</b> — great for drafting and ideas, something to control (turn temperature down) when you need one exact, repeatable answer</td></tr>
+      <tr><td>The percentages were <b>learned from training data</b>, frozen at training time</td><td>It's <b>blind to anything recent or internal</b> to your business — the gap Section 2 names and RAG later closes</td></tr>
+      <tr><td>It <b>generates, never looks up</b> — fluent whether right or wrong</td><td><b>Fluency ≠ accuracy.</b> A confident, well-written answer can still be invented. This is the failure mode to manage with review</td></tr>
     </table>
 
     <div class="card quiz" id="q1"></div>
@@ -247,7 +382,20 @@
     <div class="why"><div class="kicker">Why this matters to you</div>
       <p style="margin:.2em 0">Knowing the engine's two hard limits is what lets you tell a realistic AI proposal from a fantasy one when your team brings you ideas. Everything else this week exists to work around these two limits.</p></div>
 
-    <p class="lead">An LLM learns by reading enormous amounts of text and predicting the next <b>token</b> (a word-chunk). Two ideas explain why it's so capable — and exactly where it falls short.</p>
+    <p class="lead">An LLM learns by reading enormous amounts of text and predicting the next <b>token</b> (a word-chunk). Underneath the chat box it's a single machine — a vast <b>network of numbers</b>. We'll open it up, then meet the two ideas that explain why it's so capable, and exactly where it falls short.</p>
+
+    <h3>First — what the engine actually is</h3>
+    <p>Strip away the chat box and an LLM is one machine: a huge <b>network</b> of simple units (loosely, "neurons") wired together in layers. Your words enter on the left; each layer passes numbers to the next; a prediction comes out on the right. The wires carry <b>weights</b> — numbers saying how much one unit's signal counts toward the next. A real model has <b>billions</b> of them. <b>Press Run</b> to send a prompt through — and <b>click any neuron</b> to see what it actually does:</p>
+    <div class="lab net">
+      <div class="kicker" style="margin-bottom:8px">A tiny network, predicting the next word</div>
+      <div id="netHost"></div>
+      <div style="margin-top:6px">
+        <button class="btn" id="netRun">Run a prediction →</button>
+        <button class="btn ghost" id="netReset">Clear</button>
+      </div>
+      <div class="hint" id="netHint">Press Run to watch the signal flow, or click a neuron to inspect its connections.</div>
+    </div>
+    <p class="small muted"><b>Leader's read:</b> nothing is stored in here like a database — there are only these weights. "Training" means setting them, and the model's entire knowledge <i>is</i> that pattern of numbers. Hold that picture: it explains both why it's so fluent and why it can be confidently wrong.</p>
 
     <h3>1. Attention — how it "knows what you mean"</h3>
     <p>When the model reads a word, it weighs which earlier words matter most for understanding it. That's <b>attention</b>. Click any word below to see what it leans on:</p>
@@ -255,6 +403,7 @@
       <div class="sent" id="attSent"></div>
       <div class="out" id="attOut">Click a word — especially <b>“it”</b> — to see which earlier words the model attends to.</div>
     </div>
+    <p class="small muted"><b>Leader's read:</b> attention is why the model handles pronouns, long sentences and cross-references so fluently — and why a <i>clearer</i> prompt genuinely helps. The less ambiguous the words you give it, the less it has to guess what refers to what. Vague input doesn't break it; it just makes it guess.</p>
 
     <h3>2. The context window — its working memory</h3>
     <p>The model can only "hold in mind" what's in the current conversation — the <b>context window</b>. Fill it past its limit and the earliest content drops off. Watch it happen:</p>
@@ -266,6 +415,32 @@
       </div>
       <div class="hint" id="ctxHint">Window holds 8 chunks. Keep adding — see what falls out.</div>
     </div>
+    <p>This toy window holds 8 chunks. A real one holds far more — today's larger models hold the equivalent of several hundred pages at once. But three consequences follow, and each one costs you money or accuracy if ignored:</p>
+    <ul>
+      <li><b>Everything shares the one window.</b> Your instructions, every document you paste, the whole back-and-forth, <i>and</i> the answer all compete for the same space.</li>
+      <li><b>Long chats quietly forget.</b> In a marathon conversation the earliest turns fall out of the window — which is exactly why an assistant can "lose the thread" halfway through.</li>
+      <li><b>You pay per token, every turn.</b> The context is re-sent with each message, so a giant window is powerful but never free.</li>
+    </ul>
+    <p class="small muted"><b>Leader's read:</b> for big or numerous documents, <i>retrieving</i> the relevant pieces (Section 5's RAG) usually beats stuffing everything into the window — cheaper, and the model stays focused on what actually matters.</p>
+
+    <h3>3. How it learned — and how it gets tuned</h3>
+    <p>Two stages, worth separating because teams constantly confuse them — and the confusion drives bad proposals:</p>
+    <ul>
+      <li><b>Pre-training</b> — the model reads a vast, general body of text and learns language, facts and reasoning patterns. Expensive, done once, by the model maker. This is the knowledge that's "frozen at training time."</li>
+      <li><b>Fine-tuning</b> — a much smaller, targeted pass that shapes <i>behaviour</i> (tone, format, instruction-following, staying safe) — <b>not</b> fresh facts. When someone says "let's fine-tune it on our data," the honest question is: do you need new <i>facts</i> (that's RAG) or new <i>behaviour</i> (that's fine-tuning)? They get mixed up constantly, and picking wrong wastes months.</li>
+    </ul>
+    <p>So what <i>is</i> "learning"? Just nudging those billions of weights to make better predictions. Feed the network examples and watch the error fall:</p>
+    <div class="lab learn">
+      <div class="kicker" style="margin-bottom:8px">Watch it "learn" — every example nudges the numbers</div>
+      <div class="errwrap"><span class="epoch">Prediction error</span><div class="errbar"><div class="errfill" id="errFill"></div></div></div>
+      <div class="epoch" id="epochLbl">Examples read: 0</div>
+      <div class="out" id="learnPred" style="margin-top:10px"></div>
+      <div style="margin-top:8px">
+        <button class="btn" id="learnStep">Read 250,000 examples →</button>
+        <button class="btn ghost" id="learnReset">Reset</button>
+      </div>
+      <div class="hint" id="learnHint"></div>
+    </div>
 
     <h3>So here are the two limits</h3>
     <table class="lens">
@@ -273,7 +448,15 @@
       <tr><td><b>It only knows its training data</b> — blind to your business & to anything recent</td><td>Knowledge is frozen at training time</td><td><b>RAG</b> (Section 5)</td></tr>
       <tr><td><b>It only produces text</b> — it can't take actions</td><td>It outputs words, nothing else</td><td><b>Agents + tools</b> (Section 6)</td></tr>
     </table>
-    <p class="small muted">One more leader-level decision: <b>model choice</b>. Newer/bigger isn't always right — you trade capability against speed and cost. In the session you'll meet the Claude family and when to reach for each.</p>
+    <h3>One more lever: which model</h3>
+    <p>Not every job needs the biggest model. You're trading three things against each other, and defaulting to "the largest, newest one" for everything is one of the most common and most expensive habits:</p>
+    <table class="lens">
+      <tr><th></th><th>Bigger / newer model</th><th>Smaller / faster model</th></tr>
+      <tr><td><b>Hard reasoning</b></td><td>Stronger on ambiguous, multi-step problems</td><td>Can stumble on the genuinely tricky ones</td></tr>
+      <tr><td><b>Speed &amp; cost</b></td><td>Slower, more expensive per token</td><td>Faster and far cheaper at volume</td></tr>
+      <tr><td><b>Reach for it when…</b></td><td>Complex analysis, nuanced drafting, ambiguous tasks</td><td>High-volume, simple, well-defined tasks</td></tr>
+    </table>
+    <p class="small muted"><b>Leader's read:</b> match the model to the job, not to its reputation. A cheap model that's clearly good enough, run thousands of times, beats an expensive one used out of habit. You'll meet the Claude family (Haiku / Sonnet / Opus tiers) and when to reach for each in the session.</p>
 
     <div class="card quiz" id="q2"></div>
 
@@ -290,42 +473,65 @@
     <span class="tag">Section 3 of 6</span><span class="tag">~25 min</span>
     <h2>The AI Evolution Stack</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
-      <p style="margin:.2em 0">Every AI initiative you'll ever sponsor sits on one of four layers. Naming the <b>lowest layer that solves a problem</b> is the single most useful judgement an AI-capable leader has — it decides cost, risk, and whether the thing works. This is the backbone of the whole program.</p></div>
+      <p style="margin:.2em 0">Almost every AI initiative you'll sponsor is some <b>combination of a few capabilities</b> bolted onto a language engine. Knowing which ones a problem actually needs — and which it doesn't — is the single most useful judgement an AI-capable leader has. It decides cost, risk, and whether the thing works.</p></div>
 
-    <p class="lead">Each layer adds one capability the one below it lacks. You only climb when the layer below genuinely can't do the job. <b>Click each rung to open it.</b></p>
+    <p class="lead">An LLM is the <b>engine</b>. Everything people call "the stack" is really a set of <b>capabilities you bolt on — by need, not by rank</b>. Two <i>independent</i> questions decide what you add:</p>
+    <ul>
+      <li><b>Does it need to know <i>your</i> world?</b> Your documents, your data. If yes, give it <b>retrieval</b> — that's <b>RAG</b>.</li>
+      <li><b>Does it need to <i>act</i>?</b> Use tools, take steps, not just talk. If yes, wrap it in a <b>tool-using loop</b> — that's an <b>agent</b>.</li>
+    </ul>
+    <p>These are <b>independent</b>: add neither, either, or both. An agent might use retrieval — or act purely on live systems with <i>no documents at all</i>. A RAG assistant needn't take a single action. And when one agent juggling everything gets unreliable, you split the work across <b>several coordinated agents</b> (multi-agent). <b>Assemble a system and see what you get:</b></p>
 
-    <div id="ladder">
-      <div class="rung" data-rung><div class="layer">Layer 1 · LLM</div><h4>A reasoning engine ▾</h4>
-        <div class="body"><p>Reads and writes language, reasons over what it's given. On its own it's brilliant but <b>blind to your business</b> and <b>forgets every conversation</b>.</p>
-          <div class="eg"><b>In your function:</b> draft a customer email, summarise a report you paste in, brainstorm options.</div>
-          <div class="ceiling">⤒ can't see your live data, and can't <i>do</i> anything beyond producing text.</div></div></div>
+    <div class="lab build">
+      <div class="kicker" style="margin-bottom:10px">The engine is always on. Switch on what your problem needs:</div>
+      <div class="engine-row">
+        <div class="ecore">LLM engine<small>reads · writes · reasons</small></div>
+        <div class="plus">+</div>
+        <div class="caps" id="buildCaps">
+          <button class="cap" data-cap="rag">Retrieval<small>knows your documents · RAG</small></button>
+          <button class="cap" data-cap="tools">Tools &amp; loop<small>takes actions · Agent</small></button>
+          <button class="cap" data-cap="multi">Coordinate agents<small>several specialists · Multi-agent</small></button>
+        </div>
+      </div>
+      <div class="buildresult">
+        <div class="brow"><span class="bname" id="buildName">Plain LLM</span><span class="small muted" id="buildCostLbl">Cost &amp; complexity: low</span></div>
+        <div class="meter"><div class="fill cost" id="buildCost"></div></div>
+        <div class="bcando" id="buildDetail"></div>
+      </div>
+    </div>
 
-      <div class="rung" data-rung><div class="layer">Layer 2 · RAG</div><h4>The engine, grounded in your documents ▾</h4>
-        <div class="body"><p>Fetches the relevant pieces of <i>your own</i> content at the moment of the question, so answers are grounded and can <b>cite their source</b>.</p>
-          <div class="eg"><b>In your function:</b> “Answer only from our latest pricing & policy docs,” with the source shown.</div>
-          <div class="ceiling">⤒ still only <i>answers</i> — it doesn't take actions or complete multi-step work.</div></div></div>
+    <p>Two things to take from that. <b>One:</b> the capabilities <i>compose</i> — there's no fixed order, and "agent" does not imply "RAG." <b>Two:</b> the cost bar climbs with every capability you switch on, so the leader's discipline is simple — <b>add the fewest capabilities that actually solve the problem.</b> Over-building is the most common and most expensive mistake.</p>
 
-      <div class="rung" data-rung><div class="layer">Layer 3 · Agent</div><h4>The engine, given tools and a goal ▾</h4>
-        <div class="body"><p>An LLM that can <b>use tools, take steps in a loop, and keep state</b> — look something up, act, check the result, continue — until a goal is met. Where AI stops answering and starts <i>doing work</i>.</p>
-          <div class="eg"><b>In your function:</b> “Take an inbound RFP, pull the right specs, draft a quote, flag anything needing my sign-off.”</div>
-          <div class="ceiling">⤒ one agent juggling many specialised jobs gets unreliable and hard to govern.</div></div></div>
-
-      <div class="rung" data-rung><div class="layer">Layer 4 · Multi-Agent</div><h4>A team of specialised agents, coordinated ▾</h4>
-        <div class="body"><p>Several focused agents coordinated by an orchestrator. Powerful for genuinely complex workflows — and the layer with the <b>highest cost, latency, and governance burden</b>. Most problems never need it.</p>
-          <div class="eg"><b>In your function:</b> a full deal-desk — one agent researches, one prices, one checks compliance, one drafts.</div>
-          <div class="ceiling">⤒ complexity and cost — reach here only when a single agent provably can't cope.</div></div></div>
+    <h3>Now you try: what does each task need?</h3>
+    <p>One task at a time. Switch on the capabilities you think it needs, then check. Adding one it doesn't need is over-building; missing one means it won't work:</p>
+    <div class="lab build">
+      <div class="kicker" style="margin-bottom:10px">Switch on what this task needs, then check</div>
+      <div class="taskmeta" id="cTaskMeta"></div>
+      <div class="taskcard" id="cTaskCard"></div>
+      <div class="caps" id="cCaps">
+        <button class="cap" data-cap="rag">Retrieval<small>knows your documents · RAG</small></button>
+        <button class="cap" data-cap="tools">Tools &amp; loop<small>takes actions · Agent</small></button>
+        <button class="cap" data-cap="multi">Coordinate agents<small>several specialists · Multi-agent</small></button>
+      </div>
+      <div style="margin-top:12px">
+        <button class="btn" id="cCheck">Check</button>
+        <button class="btn ghost" id="cNext" style="display:none">Next task →</button>
+      </div>
+      <div class="placefb" id="cFb"></div>
+      <div class="out" id="cScore" style="margin-top:8px">Six tasks — your running score appears here.</div>
     </div>
 
     <div class="card">
-      <h3 style="margin-top:0">The leader's decision lens</h3>
+      <h3 style="margin-top:0">Keep this: the composition lens</h3>
       <table class="lens">
-        <tr><th>If the problem is…</th><th>You need at most…</th></tr>
-        <tr><td>Generate / rewrite / summarise text I give it</td><td><b>LLM</b></td></tr>
-        <tr><td>Answer questions <i>from our own documents</i>, with sources</td><td><b>RAG</b></td></tr>
-        <tr><td>Complete a multi-step job that <i>takes actions</i> in tools</td><td><b>Agent</b></td></tr>
-        <tr><td>Coordinate several distinct specialised jobs at once</td><td><b>Multi-Agent</b></td></tr>
+        <tr><th>If the problem needs to…</th><th>Add…</th><th>You've built…</th></tr>
+        <tr><td>Transform / answer text I give it</td><td>nothing</td><td><b>Plain LLM</b></td></tr>
+        <tr><td>Answer from our own documents, with sources</td><td><b>Retrieval</b></td><td><b>RAG</b></td></tr>
+        <tr><td>Take actions / multi-step work</td><td><b>Tools &amp; a loop</b></td><td><b>Agent</b></td></tr>
+        <tr><td>…act <i>and</i> draw on our data</td><td><b>Both</b></td><td><b>Agent with retrieval</b></td></tr>
+        <tr><td>Coordinate work too big for one agent</td><td><b>Several agents</b></td><td><b>Multi-agent</b></td></tr>
       </table>
-      <p class="small muted" style="margin-bottom:0">Rule of thumb: <b>the cheapest layer that works, wins.</b> Reaching too high is the most common and most expensive mistake.</p>
+      <p class="small muted" style="margin-bottom:0">Retrieval and agents are <b>independent</b> — mix them as the problem demands. Rule of thumb: <b>the fewest capabilities that work, win.</b></p>
     </div>
 
     <div class="card quiz" id="q3"></div>
@@ -356,6 +562,48 @@
       <div class="hint"><b>Task</b> is the only must-have. Each other part removes a way the model could guess wrong.</div>
     </div>
 
+    <h3>The six parts, one line each</h3>
+    <p>A quick reference — what each part is actually <i>for</i>:</p>
+    <table class="lens">
+      <tr><th>Part</th><th>What it does</th><th>Example</th></tr>
+      <tr><td><b>Role</b></td><td>Sets the expertise and voice to answer in</td><td>"You are a senior sales-ops analyst."</td></tr>
+      <tr><td><b>Task</b> <span class="small muted">(must-have)</span></td><td>The one thing to actually do</td><td>"Summarise this RFP into a one-page brief."</td></tr>
+      <tr><td><b>Context</b></td><td>Facts it can't infer on its own</td><td>"We sell cutting tools; buyer is automotive."</td></tr>
+      <tr><td><b>Constraints</b></td><td>Closes off ways it could guess wrong</td><td>"Use only facts in the RFP; flag gaps."</td></tr>
+      <tr><td><b>Output format</b></td><td>The shape you can use directly</td><td>"5 bullets, then a 'Risks' line."</td></tr>
+      <tr><td><b>Examples</b></td><td>Shows — not tells — what "good" looks like</td><td>"• Volume: 12k units/yr, ramping from Q3."</td></tr>
+    </table>
+
+    <h3>When it goes wrong, the part that fixes it</h3>
+    <p>Most disappointing answers trace to a missing part. Diagnose, don't just re-ask:</p>
+    <table class="lens">
+      <tr><th>What went wrong</th><th>The part to add</th></tr>
+      <tr><td>It invented a number or fact</td><td><b>Constraints</b> — "use only what's here; flag gaps"</td></tr>
+      <tr><td>Wall of prose you can't use</td><td><b>Output format</b></td></tr>
+      <tr><td>Too generic / off your domain</td><td><b>Context</b> + <b>Role</b></td></tr>
+      <tr><td>Misjudged what "good" means</td><td><b>Examples</b></td></tr>
+      <tr><td>Did the wrong thing entirely</td><td><b>Task</b> — sharpen the actual ask</td></tr>
+    </table>
+
+    <h3>Same ask, two results</h3>
+    <p>The builder shows the <b>parts</b>; this shows what they buy you. Pick a real task, then flip between a <b>vague ask</b> and a <b>structured prompt</b> — same model, same input, very different output. Each one shows a <i>different</i> way a vague ask goes wrong:</p>
+    <div class="lab pb">
+      <div class="kicker" style="margin-bottom:6px">Pick a task</div>
+      <div class="toggles" id="cmpScenarios"></div>
+      <div class="toggles" id="cmpToggles" style="margin-top:10px">
+        <button class="tg on" data-cmp="0">Vague ask</button>
+        <button class="tg" data-cmp="1">Structured prompt</button>
+      </div>
+      <div class="kicker" style="margin:12px 0 6px">What you send</div>
+      <pre id="cmpPrompt"></pre>
+      <div class="kicker" style="margin:12px 0 6px">What comes back</div>
+      <div class="out" id="cmpOut" style="margin-top:0"></div>
+      <div class="hint" id="cmpHint"></div>
+    </div>
+
+    <div class="why"><div class="kicker">The real skill is the loop</div>
+      <p style="margin:.2em 0">A strong prompt is rarely right first try. The work is: <b>draft → run → critique against the six parts → improve.</b> That's exactly what you'll do in the session — three prompts for your own problem — and again in the homework. Structure beats cleverness; iteration beats both.</p></div>
+
     <div class="card quiz" id="q4"></div>
 
     <div class="deeper">📚 <b>Go deeper (optional):</b> Anthropic — <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">Prompt Engineering Guide</a> (the full systematic version — Week 3's deep dive). Tracked as R6.</div>
@@ -373,23 +621,51 @@
     <div class="why"><div class="kicker">Why this matters to you</div>
       <p style="margin:.2em 0">"It doesn't know our business" was Limit 1 from Section 2. RAG is the fix — and the most common, lowest-risk way to get real value from AI on your own content. You'll see one built live in the session.</p></div>
 
-    <p class="lead">RAG = <b>Retrieval-Augmented Generation</b>. Instead of trusting the model's frozen memory, you <i>retrieve</i> the relevant pieces of your documents at question time and hand them over — so the answer is grounded and <b>cites its source</b>. Step through it:</p>
+    <p class="lead">RAG = <b>Retrieval-Augmented Generation</b> — the fix for "it doesn't know our business." Instead of trusting the model's frozen memory, you <i>retrieve</i> the relevant pieces of your own documents at question time and hand them over. Grounded answers that <b>cite their source</b> — and admit when they don't know. Don't take that on faith. <b>Drive it yourself:</b></p>
 
-    <div class="lab">
-      <div class="kicker" style="margin-bottom:8px">A question, answered two ways</div>
-      <div class="stepper" id="ragDots"></div>
-      <div class="stage" id="ragStage"></div>
-      <div style="margin-top:10px">
-        <button class="btn ghost" id="ragPrev">← Back</button>
-        <button class="btn" id="ragNext">Next step →</button>
+    <div class="lab ragm">
+      <div class="kicker" style="margin-bottom:8px">Pick a question · flip RAG on and off · press Answer</div>
+      <div class="qpills" id="ragQs"></div>
+      <div class="qshow" id="ragQshow"></div>
+      <div class="controls">
+        <span class="small muted">RAG</span>
+        <div class="seg" id="ragSwitch">
+          <button data-rag="off" class="on">OFF · from memory</button>
+          <button data-rag="on">ON · from our docs</button>
+        </div>
+        <button class="btn" id="ragRun">Answer →</button>
       </div>
+      <div class="kicker" style="margin:12px 0 6px">Your document library <span class="small muted" style="font-weight:400; text-transform:none; letter-spacing:0">— relevance to the question shows when RAG is on</span></div>
+      <div class="lib" id="ragLib"></div>
+      <div class="kicker" style="margin:12px 0 6px">Context handed to the model</div>
+      <div class="ctxbox" id="ragCtx"><span class="empty">— nothing retrieved yet —</span></div>
+      <div class="kicker" style="margin:12px 0 6px">The answer</div>
+      <div class="ans" id="ragAns">Pick a question, choose RAG off or on, then press <b>Answer</b>.</div>
+      <div class="hint" id="ragHint">Tip: try a question with RAG <b>off</b> first, then flip it <b>on</b> and watch what changes.</div>
     </div>
 
-    <p>The contrast is the whole point: <b>without RAG</b>, the model fills the gap with a plausible-sounding guess. <b>With RAG</b>, it answers only from what's retrieved — and if the answer isn't in your documents, a well-built RAG system <i>says so</i> instead of inventing.</p>
+    <h3>What you just watched — the three steps, every time</h3>
+    <ul>
+      <li><b>Chunk</b> — your documents are pre-split into bite-size passages.</li>
+      <li><b>Match by meaning</b> — the question finds the passages closest in <i>meaning</i>, not just matching keywords (those relevance bars). "Bulk-order discount" still finds a passage headed "volume pricing."</li>
+      <li><b>Ground</b> — the top passages are pasted into the prompt; the model answers from them and cites them. Nothing clears the bar → it says so, instead of inventing.</li>
+    </ul>
+    <p class="small muted"><b>Leader's read:</b> a RAG system lives or dies on the documents behind it. Out-of-date or contradictory sources produce confidently grounded — but wrong — answers. "Set up RAG" is maybe 20% model and 80% getting your content clean, current and well-organised.</p>
+
+    <div class="card">
+      <h3 style="margin-top:0">Keep this</h3>
+      <table class="lens">
+        <tr><th>RAG is great at…</th><th>RAG won't fix on its own…</th></tr>
+        <tr><td>Answering from your own, current documents — with sources</td><td>Taking actions in other systems (that's an <b>agent</b>)</td></tr>
+        <tr><td>Cutting hallucination on factual lookups</td><td>Bad or out-of-date source documents</td></tr>
+        <tr><td>Staying current without retraining the model</td><td>Reasoning the documents don't support</td></tr>
+      </table>
+      <p class="small muted" style="margin:12px 0 0"><b>And it's not the only way to feed in your content:</b> for a one-off, just <b>paste</b> a document into the window; for a large, changing body you query often and want cited, use <b>RAG</b>; to change <i>behaviour</i> (tone, format) rather than facts, <b>fine-tune</b> — rarely the answer to "it doesn't know our data."</p>
+    </div>
 
     <div class="card quiz" id="q5"></div>
 
-    <div class="deeper">📚 <b>Go deeper (optional):</b> covered hands-on in the Week-1 session (live Claude Project demo) and in R2 above.</div>
+    <div class="deeper">📚 <b>Go deeper (optional):</b> Google Cloud — <a href="https://cloud.google.com/use-cases/retrieval-augmented-generation" target="_blank" rel="noopener">What is Retrieval-Augmented Generation (RAG)?</a> (R9). Also covered hands-on in the Week-1 session (live Claude Project demo).</div>
 
     <div class="secfoot">
       <button class="done" data-sec="s5">Mark this section complete</button>
@@ -415,6 +691,34 @@
       </div>
       <div class="hint">Goal handed to the agent: <i>“Clear the overnight complaint queue: triage each, draft replies, escalate the severe ones to me.”</i></div>
     </div>
+
+    <table class="lens" style="margin-top:14px">
+      <tr><th></th><th>Chatbot</th><th>Agent</th></tr>
+      <tr><td><b>You give it</b></td><td>A question</td><td>A goal</td></tr>
+      <tr><td><b>It</b></td><td>Produces one answer</td><td>Plans, uses tools, loops, tracks where it is</td></tr>
+      <tr><td><b>Stops</b></td><td>After one turn</td><td>When the goal is met — or it hits a guardrail</td></tr>
+      <tr><td><b>Good for</b></td><td>Drafting, Q&amp;A, explaining</td><td>Multi-step jobs that take actions</td></tr>
+      <tr><td><b>Main risk</b></td><td>Wrong <i>text</i></td><td>Wrong <i>actions</i> — so guardrails matter far more</td></tr>
+    </table>
+
+    <h3>What makes the loop work</h3>
+    <p>Four parts are what turn a chatbot into an agent — the same four you just stepped through:</p>
+    <ul>
+      <li><b>Goal</b> — an outcome to reach, not a single question to answer.</li>
+      <li><b>Tools</b> — ways to act and look things up: read a system, query a database, send a draft.</li>
+      <li><b>Loop</b> — act → observe the result → decide the next step, repeated.</li>
+      <li><b>Stopping condition</b> — how it knows it's done, and when to hand back to a human.</li>
+    </ul>
+
+    <h3>Is it actually worth an agent?</h3>
+    <p>An agent earns its extra cost and risk only when the task is <b>all four</b> of these:</p>
+    <ul>
+      <li><b>Multi-step</b> — not a single answer a chatbot already gives you.</li>
+      <li><b>Acts in tools</b> — it has to <i>do</i> things, not just write.</li>
+      <li><b>Repeats often</b> — frequent enough to be worth building and maintaining.</li>
+      <li><b>Has clear rules</b> for what "done" and "escalate" mean.</li>
+    </ul>
+    <p class="small muted"><b>Leader's read:</b> more autonomy isn't automatically better. The real design question is <i>where the human sits</i> — reviewing every action, or only the consequential ones? That single choice is most of your risk management. Miss the clear rules and you get an unreliable agent; build one for a rare task and you've over-engineered.</p>
 
     <h3>Responsible use — the three risks that actually bite</h3>
     <p>You'll build with real data, so sort these honestly: <b>which can safely go into a public AI tool, and which never can?</b> Click a choice on each.</p>
@@ -587,6 +891,76 @@
     render();
   })();
 
+  /* ---------- S1: temperature dial ---------- */
+  (function(){
+    var BASE = [["happy",34],["frustrated",26],["pleased",18],["upset",13],["specific",9]];
+    var slider=document.getElementById("tempSlider"), out=document.getElementById("tempOut"),
+        lbl=document.getElementById("tempLbl"), gen=document.getElementById("tempGen"),
+        reset=document.getElementById("tempReset"), hint=document.getElementById("tempHint");
+    if(!slider||!out) return;
+    function temp(){ return Math.max(0.05, slider.value/50); } /* 0→.05, 50→1.0, 100→2.0 */
+    function dist(T){
+      var scaled = BASE.map(function(b){ return Math.exp(Math.log(b[1]/100)/T); });
+      var Z = scaled.reduce(function(a,b){ return a+b; }, 0);
+      return scaled.map(function(s){ return s/Z; });
+    }
+    function pick(p){
+      var r=Math.random(), acc=0;
+      for(var i=0;i<p.length;i++){ acc+=p[i]; if(r<=acc) return BASE[i][0]; }
+      return BASE[BASE.length-1][0];
+    }
+    function describe(T){
+      if(T<=0.3) return "Temperature "+T.toFixed(2)+" — near-deterministic: it takes the top word almost every time.";
+      if(T<=1.05) return "Temperature "+T.toFixed(2)+" — balanced: likely words usually win, but not always.";
+      return "Temperature "+T.toFixed(2)+" — wild: even unlikely words get a real chance.";
+    }
+    function updateLbl(){ lbl.textContent = describe(temp()); }
+    slider.oninput = updateLbl;
+    gen.onclick = function(){
+      var p=dist(temp()), runs=[];
+      for(var i=0;i<5;i++) runs.push(pick(p));
+      out.innerHTML = "Our customer was very " + runs.map(function(w){ return '<span class="new">'+w+'</span>'; }).join(" · ");
+      var distinct = runs.filter(function(w,i){ return runs.indexOf(w)===i; }).length;
+      hint.textContent = distinct===1
+        ? "5 runs → the same word every time. That's low temperature: consistent and repeatable."
+        : "5 runs → "+distinct+" different words. Higher temperature trades consistency for variety.";
+    };
+    reset.onclick = function(){
+      out.textContent="Our customer was very …";
+      hint.textContent="Low temperature picks the top word almost every time — consistent. Crank it up and it samples wider — more variety, more risk.";
+    };
+    updateLbl();
+  })();
+
+  /* ---------- S1: spot the confident-but-maybe-wrong ---------- */
+  (function(){
+    var ITEMS = [
+      "“Sandvik reported exactly 41,387 employees in its 2019 annual report.”",
+      "“The standard payment term for tier-1 automotive suppliers is net 45 days.”",
+      "“Tungsten-carbide cutting tools keep their hardness up to about 1,000 °C.”"
+    ];
+    var wrap=document.getElementById("spotWrap"), out=document.getElementById("spotOut");
+    if(!wrap) return;
+    var decided=0;
+    ITEMS.forEach(function(claim){
+      var row=document.createElement("div"); row.className="item";
+      var lab=document.createElement("span"); lab.className="label"; lab.textContent=claim;
+      var t=document.createElement("button"); t.className="pick"; t.textContent="Trust it";
+      var v=document.createElement("button"); v.className="pick"; v.textContent="Verify first";
+      var verd=document.createElement("span"); verd.className="verdict";
+      var answered=false;
+      function choose(trust){
+        t.classList.toggle("sel", trust); v.classList.toggle("sel", !trust);
+        if(!answered){ answered=true; decided++; }
+        verd.className="verdict "+(trust?"no":"ok");
+        verd.textContent = trust ? "✗ It reads just as confidently whether it's true or not." : "✓ Right instinct.";
+        if(decided===ITEMS.length) out.innerHTML="The catch: <b>all three are equally fluent</b>, and a model states each with the same confidence whether it's accurate or invented. <b>Fluency tells you nothing about accuracy</b> — which is exactly why anything consequential gets checked by a human.";
+      }
+      t.onclick=function(){ choose(true); }; v.onclick=function(){ choose(false); };
+      row.appendChild(lab); row.appendChild(t); row.appendChild(v); row.appendChild(verd); wrap.appendChild(row);
+    });
+  })();
+
   /* ---------- S2: attention ---------- */
   (function(){
     var words = ["The","trophy","didn't","fit","in","the","suitcase","because","it","was","too","big","."];
@@ -641,10 +1015,306 @@
     render();
   })();
 
-  /* ---------- S3: ladder expand ---------- */
-  document.querySelectorAll("[data-rung]").forEach(function(r){
-    r.onclick=function(){ r.classList.toggle("open"); };
-  });
+  /* ---------- S2: neural network forward pass ---------- */
+  (function(){
+    var host=document.getElementById("netHost");
+    if(!host) return;
+    var NS="http://www.w3.org/2000/svg";
+    var W=640, H=300;
+    var layers=[
+      {x:100, n:3, cap:"Input", labels:["Our","customer","very"]},
+      {x:245, n:5, cap:"Hidden"},
+      {x:385, n:5, cap:"Hidden"},
+      {x:510, n:4, cap:"Output"}
+    ];
+    var OUT=[["happy",34],["frustrated",26],["pleased",18],["upset",13]];
+    function ys(n){ var gap=44, mid=150, arr=[], start=mid-(n-1)*gap/2; for(var i=0;i<n;i++) arr.push(start+i*gap); return arr; }
+    layers.forEach(function(L){ L.ys=ys(L.n); });
+
+    var svg=document.createElementNS(NS,"svg");
+    svg.setAttribute("viewBox","0 0 "+W+" "+H);
+
+    var edges=[];
+    for(var li=0; li<layers.length-1; li++){
+      (function(li){
+        var A=layers[li], B=layers[li+1];
+        A.ys.forEach(function(ay,ai){
+          B.ys.forEach(function(by,bi){
+            var e=document.createElementNS(NS,"line");
+            e.setAttribute("x1",A.x); e.setAttribute("y1",ay);
+            e.setAttribute("x2",B.x); e.setAttribute("y2",by);
+            e.setAttribute("class","edge");
+            e.dataset.from=li+"-"+ai; e.dataset.to=(li+1)+"-"+bi;
+            svg.appendChild(e); edges.push({el:e, into:li+1});
+          });
+        });
+      })(li);
+    }
+    layers.forEach(function(L){
+      var t=document.createElementNS(NS,"text"); t.setAttribute("x",L.x); t.setAttribute("y",22);
+      t.setAttribute("text-anchor","middle"); t.setAttribute("class","layercap"); t.textContent=L.cap; svg.appendChild(t);
+    });
+    var nodes={};
+    layers.forEach(function(L, li){
+      L.ys.forEach(function(y, ni){
+        var c=document.createElementNS(NS,"circle");
+        c.setAttribute("cx",L.x); c.setAttribute("cy",y); c.setAttribute("r",12);
+        c.setAttribute("class","node"); c.dataset.key=li+"-"+ni;
+        svg.appendChild(c); nodes[li+"-"+ni]=c;
+        if(L.labels){
+          var t=document.createElementNS(NS,"text"); t.setAttribute("x",L.x-18); t.setAttribute("y",y+4);
+          t.setAttribute("text-anchor","end"); t.setAttribute("class","nlabel"); t.textContent=L.labels[ni]; svg.appendChild(t);
+        }
+      });
+    });
+    var bx=layers[3].x+22, bw=90;
+    OUT.forEach(function(o,i){
+      var y=layers[3].ys[i];
+      var bg=document.createElementNS(NS,"rect"); bg.setAttribute("x",bx); bg.setAttribute("y",y-6); bg.setAttribute("width",bw); bg.setAttribute("height",12); bg.setAttribute("rx",6); bg.setAttribute("fill","#eef2f4"); svg.appendChild(bg);
+      var fill=document.createElementNS(NS,"rect"); fill.setAttribute("x",bx); fill.setAttribute("y",y-6); fill.setAttribute("width",0); fill.setAttribute("height",12); fill.setAttribute("rx",6); fill.setAttribute("class","obar"); fill.dataset.w=Math.round(o[1]/100*bw*2.4); svg.appendChild(fill); o.fillEl=fill;
+      var t=document.createElementNS(NS,"text"); t.setAttribute("x",bx); t.setAttribute("y",y-10); t.setAttribute("class","olabel"); t.textContent=o[0]+" "+o[1]+"%"; svg.appendChild(t);
+    });
+    host.appendChild(svg);
+
+    var hint=document.getElementById("netHint");
+    var DEFAULT="Press Run to watch the signal flow, or click a neuron to inspect its connections.";
+    var running=false;
+    function clearAll(){
+      edges.forEach(function(e){ e.el.classList.remove("hot","dim"); });
+      Object.keys(nodes).forEach(function(k){ nodes[k].classList.remove("fired","sel"); });
+      OUT.forEach(function(o){ o.fillEl.setAttribute("width",0); });
+    }
+    function run(){
+      if(running) return; running=true; clearAll();
+      hint.textContent="Signal flowing left → right: each layer transforms the numbers and passes them on.";
+      var t=0;
+      for(var li=0; li<layers.length; li++){
+        (function(li){ setTimeout(function(){
+          layers[li].ys.forEach(function(_,ni){ nodes[li+"-"+ni].classList.add("fired"); });
+          edges.forEach(function(e){ if(e.into===li) e.el.classList.add("hot"); });
+        }, t); })(li);
+        t+=520;
+      }
+      setTimeout(function(){
+        OUT.forEach(function(o){ o.fillEl.setAttribute("width", o.fillEl.dataset.w); });
+        hint.innerHTML="Out comes a probability for each next word — the same percentages you met in Section 1. <b>They're produced entirely by the connection weights the model learned.</b>";
+        running=false;
+      }, t+120);
+    }
+    var sel=null;
+    svg.addEventListener("click", function(ev){
+      var c=ev.target; if(c.tagName!=="circle" || running) return;
+      var key=c.dataset.key;
+      if(sel===key){ sel=null; clearAll(); hint.textContent=DEFAULT; return; }
+      sel=key;
+      Object.keys(nodes).forEach(function(k){ nodes[k].classList.remove("fired"); nodes[k].classList.toggle("sel", k===key); });
+      OUT.forEach(function(o){ o.fillEl.setAttribute("width",0); });
+      edges.forEach(function(e){
+        var touch=(e.el.dataset.from===key || e.el.dataset.to===key);
+        e.el.classList.toggle("hot", touch);
+        e.el.classList.toggle("dim", !touch);
+      });
+      hint.innerHTML="This neuron adds up every number flowing into it — each one multiplied by the <b>weight</b> on its wire — and passes the result on. That's the whole operation, repeated across <b>billions</b> of connections.";
+    });
+    document.getElementById("netRun").onclick=run;
+    document.getElementById("netReset").onclick=function(){ sel=null; clearAll(); hint.textContent=DEFAULT; };
+  })();
+
+  /* ---------- S2: learning meter ---------- */
+  (function(){
+    var bar=document.getElementById("errFill");
+    if(!bar) return;
+    var ep=document.getElementById("epochLbl"), pred=document.getElementById("learnPred"),
+        btn=document.getElementById("learnStep"), rst=document.getElementById("learnReset"), hint=document.getElementById("learnHint");
+    var STEPS=[ {err:90,conf:17}, {err:62,conf:33}, {err:40,conf:49}, {err:24,conf:64}, {err:12,conf:80}, {err:5,conf:92} ];
+    var i=0, read=0;
+    function render(){
+      var s=STEPS[i];
+      bar.style.width=s.err+"%";
+      bar.style.background = s.err>50 ? "var(--bad)" : (s.err>20 ? "var(--warn)" : "var(--good)");
+      ep.textContent="Examples read: "+read.toLocaleString();
+      pred.innerHTML="After “Our customer was very …” → predicts <b>“happy”</b> with <b>"+s.conf+"%</b> confidence";
+      if(i===0) hint.textContent="Untrained, the weights are random — it barely beats guessing.";
+      else if(i<STEPS.length-1) hint.textContent="Each batch nudged millions of weights to cut the error. That nudging is all “learning” is.";
+      else { hint.innerHTML="<b>Trained.</b> Those millions of tiny adjustments <i>are</i> the model's knowledge — and they <b>freeze</b> the moment training stops. That's exactly why it's blind to anything newer."; }
+      btn.disabled = (i===STEPS.length-1);
+    }
+    btn.onclick=function(){ if(i<STEPS.length-1){ i++; read+=250000; render(); } };
+    rst.onclick=function(){ i=0; read=0; render(); };
+    render();
+  })();
+
+  /* ---------- S3: assemble a system (compose capabilities) ---------- */
+  (function(){
+    var capsWrap=document.getElementById("buildCaps"); if(!capsWrap) return;
+    var nameEl=document.getElementById("buildName"), costEl=document.getElementById("buildCost"),
+        costLbl=document.getElementById("buildCostLbl"), detail=document.getElementById("buildDetail");
+    var on={rag:false, tools:false, multi:false}, btns={};
+    Array.prototype.forEach.call(capsWrap.querySelectorAll(".cap"), function(b){
+      btns[b.dataset.cap]=b;
+      b.onclick=function(){
+        var c=b.dataset.cap; on[c]=!on[c];
+        if(c==="multi" && on.multi) on.tools=true;     /* coordinating agents implies the agent loop */
+        if(c==="tools" && !on.tools) on.multi=false;    /* no agents → nothing to coordinate */
+        render();
+      };
+    });
+    function cfg(){
+      if(on.multi) return on.rag?"gma":"ma";
+      if(on.tools) return on.rag?"gagent":"agent";
+      if(on.rag) return "rag";
+      return "llm";
+    }
+    var DATA={
+      llm:{name:"Plain LLM", cost:18, lbl:"low",
+        cando:"Drafts, rewrites, summarises and reasons over whatever you give it.",
+        cant:"Blind to your private data, and takes no actions.",
+        eg:"Rewrite this email; summarise a report you paste in."},
+      rag:{name:"RAG system", cost:40, lbl:"low–moderate",
+        cando:"Answers grounded in <i>your</i> documents, with citations — and says “not in our docs” instead of guessing.",
+        cant:"Still only answers; it takes no actions.",
+        eg:"Answer staff questions from our HR handbook, with the source shown."},
+      agent:{name:"Agent", cost:52, lbl:"moderate",
+        cando:"Uses tools and loops over steps to reach a goal — it <i>acts</i>, not just talks.",
+        cant:"Knows only its general training — not your private documents (until you add retrieval).",
+        eg:"Look up an order in our system and post the refund."},
+      gagent:{name:"Agent with retrieval", cost:70, lbl:"moderate–high",
+        cando:"Acts in your systems <i>and</i> grounds itself in your documents — the shape of most real assistants.",
+        cant:"More moving parts to build, test and govern.",
+        eg:"Pull the customer's account, find the fix in our help-centre docs, draft the reply."},
+      ma:{name:"Multi-agent system", cost:84, lbl:"high",
+        cando:"Several specialist agents coordinated by an orchestrator — for work too big or varied for one.",
+        cant:"Highest cost, latency and governance burden. Most problems never need it.",
+        eg:"A deal desk: separate agents research, price and draft."},
+      gma:{name:"Grounded multi-agent system", cost:98, lbl:"highest",
+        cando:"Coordinated specialists, each grounded in the relevant documents — the most powerful, and most expensive, thing here.",
+        cant:"Reach for it only when a single agent provably can't cope.",
+        eg:"A full deal desk: research, price from rate cards, check compliance policies, draft — as a team."}
+    };
+    function render(){
+      Object.keys(btns).forEach(function(c){ btns[c].classList.toggle("on", on[c]); });
+      btns.multi.classList.toggle("dim", !on.tools);
+      var d=DATA[cfg()];
+      nameEl.textContent=d.name;
+      costEl.style.width=d.cost+"%";
+      costLbl.innerHTML="Cost &amp; complexity: "+d.lbl;
+      detail.innerHTML = d.cando
+        + '<span class="cant">⤒ '+d.cant+'</span>'
+        + '<div class="eg"><b>Good for:</b> '+d.eg+'</div>';
+    }
+    render();
+  })();
+
+  /* ---------- S3: what does each task need? ---------- */
+  (function(){
+    var capsWrap=document.getElementById("cCaps"); if(!capsWrap) return;
+    var meta=document.getElementById("cTaskMeta"), card=document.getElementById("cTaskCard"),
+        fb=document.getElementById("cFb"), check=document.getElementById("cCheck"),
+        next=document.getElementById("cNext"), score=document.getElementById("cScore");
+    var LBL={rag:"Retrieval", tools:"Tools & loop", multi:"Coordinate agents"};
+    var TASKS=[
+      {text:"Rewrite this job ad in a warmer tone.", need:[],
+       why:"Pure text in, text out — a plain LLM. No data, no actions."},
+      {text:"Answer staff questions using only our HR handbook, citing the source.", need:["rag"],
+       why:"It must draw on your documents and cite them — that's retrieval (RAG). No actions needed."},
+      {text:"Look up an order's status in our system and issue the refund.", need:["tools"],
+       why:"It acts in your systems across steps — that's an agent. Note: <b>no documents involved, so no RAG.</b>"},
+      {text:"Handle a support ticket: pull the customer's account, find the fix in our help-centre docs, then draft a reply.", need:["rag","tools"],
+       why:"It must act (pull the account) <i>and</i> ground itself in your docs — retrieval and tools together."},
+      {text:"Translate this paragraph into French.", need:[],
+       why:"A plain LLM transforms text you give it. Nothing to retrieve, nothing to do."},
+      {text:"Run a deal desk: research the buyer, price from our rate cards, check our compliance policies, draft the quote — as coordinated specialists.", need:["rag","tools","multi"],
+       why:"Several specialists, each acting and drawing on documents, coordinated — a grounded multi-agent system."}
+    ];
+    var on={rag:false, tools:false, multi:false}, btns={}, i=0, right=0, answered=false;
+    Array.prototype.forEach.call(capsWrap.querySelectorAll(".cap"), function(b){
+      btns[b.dataset.cap]=b;
+      b.onclick=function(){ if(answered) return; var c=b.dataset.cap; on[c]=!on[c]; paint(); };
+    });
+    function paint(){ Object.keys(btns).forEach(function(c){ btns[c].classList.toggle("on", on[c]); }); }
+    function load(){
+      answered=false; on={rag:false, tools:false, multi:false}; paint();
+      meta.textContent="Task "+(i+1)+" of "+TASKS.length;
+      card.textContent=TASKS[i].text;
+      fb.className="placefb"; fb.textContent="Switch on the capabilities this needs, then press Check.";
+      check.style.display="inline-block"; next.style.display="none";
+    }
+    function doCheck(){
+      if(answered) return; answered=true;
+      var need=TASKS[i].need;
+      var missing=need.filter(function(c){ return !on[c]; });
+      var extra=Object.keys(on).filter(function(c){ return on[c] && need.indexOf(c)<0; });
+      if(missing.length===0 && extra.length===0){
+        right++; fb.className="placefb ok"; fb.innerHTML="✓ "+TASKS[i].why;
+      } else {
+        var parts=[];
+        if(extra.length) parts.push("you added <b>"+extra.map(function(c){return LBL[c];}).join(", ")+"</b> it doesn't need (over-building)");
+        if(missing.length) parts.push("it also needs <b>"+missing.map(function(c){return LBL[c];}).join(", ")+"</b>");
+        fb.className="placefb "+((extra.length && !missing.length)?"warn":"bad");
+        fb.innerHTML="✗ Not quite — "+parts.join("; ")+". "+TASKS[i].why;
+      }
+      check.style.display="none";
+      if(i===TASKS.length-1){
+        next.style.display="none";
+        score.innerHTML="Done — <b>"+right+" / "+TASKS.length+"</b>. The discipline: name the <i>fewest</i> capabilities that fully solve it — and notice retrieval and actions are separate choices.";
+      } else {
+        next.style.display="inline-block";
+        score.textContent="Score so far: "+right+" / "+(i+1);
+      }
+    }
+    check.onclick=doCheck;
+    next.onclick=function(){ if(i<TASKS.length-1){ i++; load(); } };
+    load();
+  })();
+
+  /* ---------- S3: place the task on the lowest layer ---------- */
+  (function(){
+    var stackEl=document.getElementById("placeStack"); if(!stackEl) return;
+    var LAYERS=[{n:"LLM",t:"Layer 1"},{n:"RAG",t:"Layer 2"},{n:"Agent",t:"Layer 3"},{n:"Multi-Agent",t:"Layer 4"}];
+    var TASKS=[
+      {text:"Rewrite this job ad in a warmer tone.", ans:0, why:"Pure text in, text out — no data lookup, no actions. A plain LLM is all it needs."},
+      {text:"Answer staff questions strictly from our HR handbook, with the source shown.", ans:1, why:"It must pull from your own documents and cite them — that's RAG. An LLM alone doesn't know your handbook."},
+      {text:"When a refund request arrives, check the order, apply the policy, then issue it or escalate.", ans:2, why:"It takes actions across several steps with a decision point — that's an agent."},
+      {text:"Summarise the three paragraphs I just pasted.", ans:0, why:"You handed it the text; it only transforms it. LLM is plenty."},
+      {text:"Run a full deal desk: one specialist researches, one prices, one checks compliance, one drafts.", ans:3, why:"Several distinct specialist jobs coordinated at once — the rare case that genuinely needs multi-agent."},
+      {text:"Look up this customer's last 3 orders in our system and draft a tailored renewal email.", ans:2, why:"It must act in your system (look up orders) then produce — RAG only answers; this needs an agent."}
+    ];
+    var meta=document.getElementById("taskMeta"), card=document.getElementById("taskCard"),
+        fb=document.getElementById("placeFb"), next=document.getElementById("placeNext"), score=document.getElementById("placeScore");
+    var blocks=[], i=0, right=0, answered=false;
+    for(var k=LAYERS.length-1;k>=0;k--){ (function(k){
+      var b=document.createElement("div"); b.className="blk";
+      b.innerHTML='<div class="bt">'+LAYERS[k].t+'</div><div class="bn">'+LAYERS[k].n+'</div>';
+      b.onclick=function(){ choose(k); };
+      stackEl.appendChild(b); blocks[k]=b;
+    })(k); }
+    function loadTask(){
+      answered=false;
+      blocks.forEach(function(b){ b.className="blk"; });
+      meta.textContent="Task "+(i+1)+" of "+TASKS.length;
+      card.textContent=TASKS[i].text;
+      fb.className="placefb"; fb.textContent="Click the lowest layer that handles this.";
+      next.style.display="none";
+    }
+    function choose(k){
+      if(answered) return; answered=true;
+      var T=TASKS[i], c=T.ans;
+      blocks.forEach(function(b,idx){ b.classList.add("locked"); if(idx!==k && idx!==c) b.classList.add("faded"); });
+      blocks[c].classList.add("correct");
+      if(k===c){ right++; fb.className="placefb ok"; fb.textContent="✓ "+T.why; }
+      else if(k>c){ blocks[k].classList.add("over"); fb.className="placefb warn"; fb.innerHTML="✗ Over-reaching — <b>"+LAYERS[k].n+"</b> would work, but <b>"+LAYERS[c].n+"</b> already does it for less. "+T.why; }
+      else { blocks[k].classList.add("under"); fb.className="placefb bad"; fb.innerHTML="✗ Too low — <b>"+LAYERS[k].n+"</b> can't cover this; you need <b>"+LAYERS[c].n+"</b>. "+T.why; }
+      if(i===TASKS.length-1){
+        next.style.display="none";
+        score.innerHTML="Done — <b>"+right+" / "+TASKS.length+"</b>. The instinct to build: name the lowest layer that fully solves it — and notice how often the honest answer sits <i>lower</i> than it first feels.";
+      } else {
+        next.style.display="inline-block";
+        score.textContent="Score so far: "+right+" / "+(i+1);
+      }
+    }
+    next.onclick=function(){ if(i<TASKS.length-1){ i++; loadTask(); } };
+    loadTask();
+  })();
 
   /* ---------- S4: prompt builder ---------- */
   (function(){
@@ -676,28 +1346,171 @@
     render();
   })();
 
-  /* ---------- S5: RAG stepper ---------- */
+  /* ---------- S4: vague vs structured comparison (multi-scenario) ---------- */
   (function(){
-    var STEPS = [
-      {t:"<b>The question</b><br>A team member asks your assistant: <i>“What's our current volume discount for orders over 10,000 units?”</i>"},
-      {t:"<b>Without RAG</b> — the model answers from frozen memory and <span style='color:var(--bad)'>invents a plausible number</span>: <i>“Around 12%.”</i> It sounds confident. It has no idea what your real policy says."},
-      {t:"<b>With RAG · step 1 — retrieve</b><br>The system searches <i>your</i> documents and pulls the relevant chunks:" +
-         "<div class='chunk hit'>pricing_policy_2026.pdf — “Orders ≥ 10,000 units: <b>9% volume discount</b>, approval by regional head.”</div>" +
-         "<div class='chunk'>terms.pdf — payment terms, net 45… (not relevant)</div>"},
-      {t:"<b>With RAG · step 2 — grounded answer</b> <span style='color:var(--good)'>with a citation</span>:<br><i>“9% for orders of 10,000+ units, with regional-head approval.”</i> <span class='small'>(source: pricing_policy_2026.pdf)</span><br><br>And if the policy weren't in the documents, a well-built RAG system would say <i>“I don't have that in our documents,”</i> rather than guess."}
+    var SCENARIOS=[
+      {name:"Summarise an RFP",
+       vague:{prompt:"Summarise this RFP.",
+         out:"A tidy three-paragraph write-up — including “a volume discount of around 12%.” That figure is nowhere in the RFP; the model filled the gap with a plausible guess. Confident, well-written, and unusable — and it silently invented a number.",
+         hint:"You left almost everything unspecified, so the model decided for you — including a figure it made up."},
+       structured:{prompt:"You are a senior sales operations analyst.\nSummarise this RFP into a one-page brief for the deal team.\nContext: we sell industrial cutting tools; the buyer is a mid-size automotive supplier.\nUse only facts in the RFP. Flag anything missing rather than guessing.\nOutput: 5 bullet points, then a 'Risks' line.",
+         out:"Five tight bullets grounded only in the RFP, then — “Risks: annual volume not stated; confirm before quoting.” It refused to invent the figure and flagged the gap instead. Usable as it stands.",
+         hint:"Each part you added closed off a way it could guess wrong — the same parts you toggled in the builder above."}},
+      {name:"Reply to a complaint",
+       vague:{prompt:"Write a reply to this complaint.",
+         out:"A warm, apologetic email — that also promises “a full refund and priority shipping on your next order.” Nobody authorised either. It reads beautifully and quietly commits your company to things you never agreed to.",
+         hint:"With no constraints, the model invents goodwill gestures — and commitments — just to sound helpful."},
+       structured:{prompt:"You are a senior customer-support lead.\nReply to this complaint from a long-standing B2B account.\nContext: the delayed order was our fault; the account is valued, but the contract sets out the remedies.\nConstraints: acknowledge the specific issue; do NOT promise refunds, credits or timelines that aren't in the contract; offer to escalate instead.\nOutput: a short greeting, two short paragraphs, and one clear next step.",
+         out:"A reply that names the exact problem, apologises, and offers to escalate to the account manager — without committing to a single unapproved refund or date. Safe to send as-is.",
+         hint:"The constraint “don't promise what isn't approved” is what stops a friendly draft from becoming a liability."}},
+      {name:"Draft a job description",
+       vague:{prompt:"Write a job description for a sales engineer.",
+         out:"Generic boilerplate — “fast-paced, rockstar, work-hard-play-hard,” a wish-list of twelve must-haves, and a line about a “young, energetic team.” Off-brand, over-inflated, and that age reference is a real bias risk.",
+         hint:"Nothing told it your role, your bar, or your standards — so it reached for clichés, including a phrase you'd never sign off."},
+       structured:{prompt:"You are an experienced technical recruiter.\nWrite a job description for a field sales engineer (industrial cutting tools, Pune).\nContext: 3–5 years' experience; must-haves are CNC familiarity and B2B sales; everything else is nice-to-have.\nConstraints: reflect ONLY the requirements above; neutral, inclusive language; no age, gender or “rockstar” wording.\nOutput: Role summary, Responsibilities (5 bullets), Must-haves, Nice-to-haves.",
+         out:"A clean JD with exactly the stated requirements, neutral language, and the must-have / nice-to-have split honoured. On-brand and defensible.",
+         hint:"Constraints did double duty here — factual accuracy AND keeping you clear of biased phrasing."}},
+      {name:"Extract data from a contract",
+       vague:{prompt:"Pull the key numbers from this contract.",
+         out:"A list of figures — payment terms, volumes, a penalty rate — but two are subtly wrong and one (“liability cap: $2M”) isn't in the contract at all. Nothing tells you which to trust.",
+         hint:"“Key numbers” is your judgement, not its — and with no rule against guessing, it cheerfully fills the gaps."},
+       structured:{prompt:"Extract the specified fields from this contract.\nConstraints: use ONLY values present in the text; never infer or estimate; if a field isn't stated, write “not stated”.\nOutput: a table with three columns — Field | Value | Source clause — for: payment terms, minimum volume, penalty rate, liability cap.",
+         out:"A four-row table. Three fields filled with their source clause cited; liability cap marked “not stated.” Every value is traceable — and the gap is visible instead of invented.",
+         hint:"“Only what's present, cite the clause, say when it's missing” turns a guess-machine into a reliable extractor."}}
     ];
-    var dots=document.getElementById("ragDots"), stage=document.getElementById("ragStage");
-    var i=0;
-    STEPS.forEach(function(_, k){ var d=document.createElement("div"); d.className="dot"; d.textContent=k+1; dots.appendChild(d); });
+    var scWrap=document.getElementById("cmpScenarios"), tg=document.getElementById("cmpToggles"),
+        pre=document.getElementById("cmpPrompt"), out=document.getElementById("cmpOut"), hint=document.getElementById("cmpHint");
+    if(!scWrap||!tg||!pre) return;
+    var si=0, mode=0; /* mode 0 = vague, 1 = structured */
+    SCENARIOS.forEach(function(s,i){
+      var b=document.createElement("button"); b.className="tg"; b.textContent=s.name;
+      b.onclick=function(){ si=i; render(); };
+      scWrap.appendChild(b);
+    });
+    Array.prototype.forEach.call(tg.children, function(b,i){ b.onclick=function(){ mode=i; render(); }; });
     function render(){
-      stage.innerHTML=STEPS[i].t;
-      Array.prototype.forEach.call(dots.children, function(d, k){ d.classList.toggle("on", k<=i); });
-      document.getElementById("ragPrev").disabled = i===0;
-      document.getElementById("ragNext").disabled = i===STEPS.length-1;
+      var c = mode===0 ? SCENARIOS[si].vague : SCENARIOS[si].structured;
+      pre.textContent=c.prompt;
+      out.innerHTML=c.out;
+      out.style.borderColor = mode===0 ? "#e3b7b7" : "#bfe3cd";
+      hint.textContent=c.hint;
+      Array.prototype.forEach.call(scWrap.children, function(b,i){ b.classList.toggle("on", i===si); });
+      Array.prototype.forEach.call(tg.children, function(b,i){ b.classList.toggle("on", i===mode); });
     }
-    document.getElementById("ragNext").onclick=function(){ if(i<STEPS.length-1){ i++; render(); } };
-    document.getElementById("ragPrev").onclick=function(){ if(i>0){ i--; render(); } };
     render();
+  })();
+
+  /* ---------- S5: the RAG machine ---------- */
+  (function(){
+    var libEl=document.getElementById("ragLib"); if(!libEl) return;
+    var DOCS=[
+      {name:"pricing_policy_2026.pdf", text:"Orders of 10,000+ units receive a 9% volume discount, subject to regional-head approval."},
+      {name:"terms_conditions.pdf", text:"Tier-1 automotive suppliers: payment net 45 days from invoice date."},
+      {name:"returns_policy.pdf", text:"Standard items: 30-day returns. Custom-tooling orders are non-returnable once production begins."},
+      {name:"shipping_schedule.pdf", text:"Dispatch within 5 business days; freight via approved carriers only."},
+      {name:"company_history.pdf", text:"Founded in 1972; the cutting-tools division was established in 1986."}
+    ];
+    var QS=[
+      {label:"Volume discount", q:"What's our volume discount for orders over 10,000 units?",
+       off:"Around <b>12%</b> for large orders.",
+       on:"<b>9%</b> for orders of 10,000+ units, with regional-head approval.", src:"pricing_policy_2026.pdf",
+       scores:[0.94,0.12,0.08,0.05,0.04]},
+      {label:"Payment terms", q:"What are the standard payment terms for tier-1 automotive suppliers?",
+       off:"Usually <b>net 30 days</b>.",
+       on:"<b>Net 45 days</b> from invoice date, for tier-1 automotive suppliers.", src:"terms_conditions.pdf",
+       scores:[0.10,0.91,0.14,0.07,0.05]},
+      {label:"Returns on custom tooling", q:"Can custom-tooling orders be returned?",
+       off:"Yes — within the usual <b>30-day return window</b>.",
+       on:"<b>No</b> — custom-tooling orders are non-returnable once production begins. (Standard items: 30 days.)", src:"returns_policy.pdf",
+       scores:[0.08,0.13,0.93,0.06,0.04]},
+      {label:"Government-contract discount", q:"What discount do we give on government contracts?",
+       off:"Typically around <b>15%</b> for public-sector contracts.",
+       on:null, src:null,
+       scores:[0.19,0.16,0.13,0.10,0.07]}
+    ];
+    var THRESH=0.6;
+    var qsWrap=document.getElementById("ragQs"), qShow=document.getElementById("ragQshow"),
+        swWrap=document.getElementById("ragSwitch"), runBtn=document.getElementById("ragRun"),
+        ctx=document.getElementById("ragCtx"), ans=document.getElementById("ragAns"), hint=document.getElementById("ragHint");
+    function strip(s){ return s.replace(/<[^>]+>/g,""); }
+
+    var docEls=DOCS.map(function(d){
+      var el=document.createElement("div"); el.className="chunk";
+      el.innerHTML='<span class="doc">'+d.name+'</span>'+d.text+
+        '<div class="relrow"><div class="relbar"><div class="relfill"></div></div><span class="relpct"></span></div>';
+      libEl.appendChild(el);
+      return {el:el, fill:el.querySelector(".relfill"), pct:el.querySelector(".relpct")};
+    });
+
+    var qi=0, busy=false, timers=[];
+    function clearTimers(){ timers.forEach(clearTimeout); timers=[]; }
+    function at(ms,fn){ timers.push(setTimeout(fn,ms)); }
+    function ragIsOn(){ return swWrap.querySelector('[data-rag="on"]').classList.contains("on"); }
+
+    QS.forEach(function(Q,i){
+      var b=document.createElement("button"); b.className="qpill"+(i===0?" on":""); b.textContent=Q.label;
+      b.onclick=function(){ if(busy) return; qi=i; selectQ(); };
+      qsWrap.appendChild(b);
+    });
+    Array.prototype.forEach.call(swWrap.children, function(b){
+      b.onclick=function(){ if(busy) return;
+        Array.prototype.forEach.call(swWrap.children, function(x){ x.classList.toggle("on", x===b); });
+        run();   /* flip = instant before/after */
+      };
+    });
+    runBtn.onclick=function(){ if(!busy) run(); };
+
+    function resetVisuals(){
+      clearTimers();
+      docEls.forEach(function(d){ d.el.classList.remove("hit","dim"); d.fill.style.width="0%"; d.pct.textContent=""; });
+    }
+    function selectQ(){
+      Array.prototype.forEach.call(qsWrap.children, function(b,i){ b.classList.toggle("on", i===qi); });
+      qShow.textContent="“"+QS[qi].q+"”";
+      resetVisuals();
+      ctx.innerHTML='<span class="empty">— nothing retrieved yet —</span>';
+      ans.className="ans"; ans.innerHTML="Choose RAG off or on, then press <b>Answer</b>.";
+      hint.textContent="Tip: try RAG off first, then flip it on and watch what changes.";
+    }
+    function run(){
+      var Q=QS[qi], ragOn=ragIsOn(); resetVisuals();
+      if(!ragOn){
+        docEls.forEach(function(d){ d.el.classList.add("dim"); });
+        ctx.innerHTML='<span class="empty">RAG is off — the model gets none of your documents.</span>';
+        ans.className="ans bad";
+        ans.innerHTML='<span class="flag">⚠ From memory:</span> '+Q.off+'<span class="src">No source. Generated from training data — confident, and quite possibly wrong.</span>';
+        hint.textContent="Fluent and authoritative — but it never saw your policy. This is the hallucination risk from Section 1.";
+        return;
+      }
+      busy=true; runBtn.disabled=true;
+      ctx.innerHTML='<span class="empty">Searching your documents…</span>';
+      ans.className="ans"; ans.innerHTML="Retrieving…";
+      at(250, function(){
+        docEls.forEach(function(d,i){ var p=Math.round(Q.scores[i]*100); d.fill.style.width=p+"%"; d.pct.textContent=p+"%"; });
+      });
+      at(950, function(){
+        docEls.forEach(function(d,i){ if(Q.scores[i]>=THRESH) d.el.classList.add("hit"); else d.el.classList.add("dim"); });
+      });
+      at(1450, function(){
+        var hits=DOCS.filter(function(_,i){ return Q.scores[i]>=THRESH; });
+        ctx.innerHTML = hits.length
+          ? hits.map(function(h){ return '<div><b>'+h.name+'</b> — “'+h.text+'”</div>'; }).join("")
+          : '<span class="empty">Nothing matched — none of your documents cover this question.</span>';
+      });
+      at(2000, function(){
+        if(Q.on){
+          ans.className="ans good";
+          ans.innerHTML='<span class="flag">Grounded:</span> '+Q.on+'<span class="src">source: '+Q.src+'</span>';
+          hint.textContent="Answered only from the retrieved passage — and it tells you where that came from.";
+        } else {
+          ans.className="ans good";
+          ans.innerHTML='<span class="flag">“I don\'t have that in our documents.”</span><span class="src">Nothing to cite — and that\'s the right answer. With RAG off it guessed “'+strip(Q.off)+'”; the grounded system refuses to invent.</span>';
+          hint.textContent="The most underrated RAG behaviour: knowing when to say it doesn't know.";
+        }
+        busy=false; runBtn.disabled=false;
+      });
+    }
+    selectQ();
   })();
 
   /* ---------- S6: agent loop ---------- */
@@ -769,7 +1582,13 @@
      why:"It generates by predicting likely text, not by retrieving verified facts. Fluent and wrong can look identical."},
     {stem:"You run the same prompt twice and get two differently-worded answers. What's happening?",
      opts:["The tool is broken","Generation is probabilistic — variation is normal","Someone edited your prompt"], answer:1,
-     why:"It's probabilistic by design — great for drafting, something to manage when you need one exact answer."}
+     why:"It's probabilistic by design — great for drafting, something to manage when you need one exact answer."},
+    {stem:"You want the model's answers to be as consistent and repeatable as possible. What do you turn down?",
+     opts:["The number of tokens","The temperature","The context window"], answer:1,
+     why:"Lower temperature makes it favour the top prediction almost every time — consistent output. Higher temperature trades that for variety."},
+    {stem:"Your assistant gives confidently outdated information about your own industry. The root cause?",
+     opts:["Its knowledge is frozen at training time — recent and internal facts simply aren't in its training data","Its temperature is set too low","It ran out of tokens mid-answer"], answer:0,
+     why:"It only learned the patterns in its training data. Anything newer — or private to your business — was never in there. That's the gap RAG closes later."}
   ]);
   makeQuiz("q2",[
     {stem:"Your assistant answers confidently — and wrongly — about a policy you changed last week. Why?",
@@ -777,15 +1596,27 @@
      why:"It only knows its training data. Recent/internal facts aren't there — exactly the gap RAG closes."},
     {stem:"What is the 'context window'?",
      opts:["Its permanent memory of every chat","The working memory of the current conversation","A time limit before the session expires"], answer:1,
-     why:"It's live working memory for this conversation; nothing persists once it's full or closed."}
+     why:"It's live working memory for this conversation; nothing persists once it's full or closed."},
+    {stem:"A team proposes “fine-tune the model on our policy PDFs so it knows them.” The honest pushback?",
+     opts:["Perfect — fine-tuning is the cheap way to teach it new facts","Fine-tuning shapes behaviour, not fresh facts — to ground it in current policies you usually want RAG","Fine-tuning would delete its existing knowledge"], answer:1,
+     why:"Fine-tuning changes tone/format/behaviour. For current, factual grounding in your own documents, RAG is the right tool — the two get confused constantly."},
+    {stem:"You need to tag thousands of short messages — a simple, high-volume job. Best default model?",
+     opts:["The largest, newest model — always safest","A smaller, faster, cheaper model that's clearly good enough","Whichever costs the most"], answer:1,
+     why:"Match the model to the job. At volume, a cheap model that's good enough beats an expensive one used out of habit."}
   ]);
   makeQuiz("q3",[
-    {stem:"A bot must answer strictly from this quarter's price & policy PDFs, with the source shown. Lowest layer?",
-     opts:["LLM","RAG","Agent","Multi-Agent"], answer:1,
-     why:"Grounded in your own documents and cited = RAG. No actions taken, so an agent would be overkill."},
-    {stem:"True or false: when in doubt, reach for multi-agent because it's the most capable.",
+    {stem:"A bot must answer strictly from this quarter's price & policy PDFs, with the source shown. What does it need?",
+     opts:["Just the LLM","LLM + retrieval (RAG)","LLM + tools & a loop (Agent)","Several coordinated agents"], answer:1,
+     why:"It draws on your documents and cites them — retrieval. It takes no actions, so no agent loop is needed."},
+    {stem:"“Look up an order in our system and issue the refund.” Does this need RAG?",
+     opts:["Yes — every agent needs RAG","No — it acts on a live system; there are no documents to retrieve","Only if the refund is large"], answer:1,
+     why:"Retrieval and actions are independent. This is an agent with no RAG at all — it acts, it doesn't look things up in your docs."},
+    {stem:"True or false: an “agent” always includes RAG.",
      opts:["True","False"], answer:1,
-     why:"False. The cheapest layer that works wins. Multi-agent carries the most cost and governance burden."}
+     why:"False. An agent is an LLM + tools + a loop. It may use retrieval as one tool — or none. The capabilities compose freely."},
+    {stem:"Two designs both work; the cheaper one uses fewer capabilities. Which do you pick, and why?",
+     opts:["The more capable one — headroom is good","The one with fewer capabilities — every extra one adds cost, latency and governance burden","Whichever the vendor recommends"], answer:1,
+     why:"Add the fewest capabilities that solve the problem. Over-building is the most common and most expensive mistake."}
   ]);
   makeQuiz("q4",[
     {stem:"Which single part is the one a prompt can't do without?",
@@ -793,7 +1624,13 @@
      why:"Task is the irreducible core. The others raise reliability, but with no task there's nothing to do."},
     {stem:"What does adding 'Constraints' (e.g. 'use only facts in the document; flag gaps') buy you?",
      opts:["A friendlier tone","Fewer confident wrong guesses","A longer answer"], answer:1,
-     why:"Constraints close off ways the model could guess wrong — directly attacking the fluency-≠-accuracy risk."}
+     why:"Constraints close off ways the model could guess wrong — directly attacking the fluency-≠-accuracy risk."},
+    {stem:"The answer comes back as a wall of prose when you needed a table. Which part was missing?",
+     opts:["Role","Output format","Examples"], answer:1,
+     why:"Output format dictates the shape you can use directly — bullets, a table, a fixed set of fields."},
+    {stem:"What's the highest-leverage prompting habit to model for your teams?",
+     opts:["Memorising one perfect template","Draft → run → critique against the parts → improve","Always using the longest possible prompt"], answer:1,
+     why:"A strong prompt is rarely right first try. The iteration loop beats both cleverness and any fixed template."}
   ]);
   makeQuiz("q5",[
     {stem:"What does RAG actually change about how the model answers?",
@@ -801,7 +1638,13 @@
      why:"Retrieval grounds the answer in your current content — and lets it cite the source."},
     {stem:"A question's answer isn't in your documents. What should a well-built RAG system do?",
      opts:["Invent a plausible answer","Say it doesn't have that in the documents","Return the whole document"], answer:1,
-     why:"Grounding includes knowing when it doesn't know — refusing beats inventing."}
+     why:"Grounding includes knowing when it doesn't know — refusing beats inventing."},
+    {stem:"A RAG assistant keeps giving confidently grounded — but wrong — answers. Most likely cause?",
+     opts:["The model is too small","The source documents are out-of-date or contradictory","RAG can't cite sources"], answer:1,
+     why:"RAG is only as good as the content behind it. “Set up RAG” is mostly about clean, current, well-organised documents."},
+    {stem:"You want the assistant to write in your house style and fixed format — not learn new facts. Best tool?",
+     opts:["RAG","Fine-tuning","A bigger context window"], answer:1,
+     why:"Behaviour (tone, format) is what fine-tuning shapes. RAG is for grounding in facts/content, not style."}
   ]);
   makeQuiz("q6",[
     {stem:"Which is genuinely agent-shaped, not a job a chatbot already does?",
@@ -809,7 +1652,13 @@
      why:"Multiple steps, takes actions, loops to a goal = agent. The others are single answers."},
     {stem:"An AI helps decide something that affects a customer. The strongest guardrail is…",
      opts:["Telling staff to be careful","A human reviews the output before it's acted on","Trusting it because it sounded sure"], answer:1,
-     why:"Human-in-the-loop on consequential output is the standard control. Confidence isn't correctness."}
+     why:"Human-in-the-loop on consequential output is the standard control. Confidence isn't correctness."},
+    {stem:"A teammate wants to paste next quarter's unreleased price list into a public AI tool. Your call?",
+     opts:["Fine — it's just a spreadsheet","No — it's confidential and market-sensitive; keep it out of public tools","Fine if they delete the chat after"], answer:1,
+     why:"If it isn't already public, treat it as off-limits to public tools. Deleting the chat doesn't undo what the tool may have stored."},
+    {stem:"Beyond being multi-step and acting in tools, what else must a task have to be worth an agent?",
+     opts:["A very large context window","Clear rules for what 'done' and 'escalate' mean","The newest model available"], answer:1,
+     why:"Without clear stopping and escalation rules you get an unreliable agent. Clear rules are what make autonomy safe."}
   ]);
 
   /* ---------- boot ---------- */
