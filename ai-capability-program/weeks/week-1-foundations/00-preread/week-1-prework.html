@@ -167,11 +167,29 @@
   .ragm .qpill:hover{border-color:var(--accent)}
   .ragm .qpill.on{background:var(--accent-soft); border-color:var(--accent); color:var(--accent)}
   .ragm .controls{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:6px}
-  .ragm .seg{display:inline-flex; gap:2px; border:1px solid var(--line); border-radius:99px; background:var(--wash); padding:3px}
-  .ragm .seg button{border:0; background:transparent; cursor:pointer; color:var(--muted);
+  /* segmented control (reusable) */
+  .seg{display:inline-flex; gap:2px; border:1px solid var(--line); border-radius:99px; background:var(--wash); padding:3px}
+  .seg button{border:0; background:transparent; cursor:pointer; color:var(--muted);
     font:700 12.5px ui-sans-serif,system-ui,sans-serif; padding:7px 15px; border-radius:99px; transition:background .18s, color .18s, box-shadow .18s}
-  .ragm .seg button[data-rag="off"].on{background:#e7ebee; color:var(--ink); box-shadow:0 1px 2px rgba(16,32,43,.10)}
-  .ragm .seg button[data-rag="on"].on{background:var(--accent); color:#fff; box-shadow:0 1px 3px rgba(11,110,110,.32)}
+  .seg button.on{background:var(--accent); color:#fff; box-shadow:0 1px 3px rgba(11,110,110,.32)}
+  .seg button[data-rag="off"].on,.seg button[data-mode="chatbot"].on{background:#e7ebee; color:var(--ink); box-shadow:0 1px 2px rgba(16,32,43,.10)}
+
+  /* agent loop graph (S6) */
+  .agent2 svg{width:100%; height:auto; display:block; max-height:340px}
+  .agent2 .edge{stroke:#cdd5db; stroke-width:1.7; fill:none; transition:stroke .25s, stroke-width .25s}
+  .agent2 .edge.hot{stroke:var(--accent); stroke-width:2.6}
+  .agent2 .nrect{fill:#fff; stroke:var(--line); stroke-width:1.5; transition:fill .25s, stroke .25s}
+  .agent2 .nlab{font:700 12px ui-sans-serif,system-ui,sans-serif; fill:var(--ink)}
+  .agent2 .nsub{font:600 10px ui-sans-serif,system-ui,sans-serif; fill:var(--muted)}
+  .agent2 .gnode.on .nrect{fill:var(--accent); stroke:var(--accent)}
+  .agent2 .gnode.on .nlab,.agent2 .gnode.on .nsub{fill:#fff}
+  .agent2 .gnode.goal .nrect{fill:var(--accent-soft); stroke:#cfe6e4}
+  .agent2 .gnode.goal .nlab{fill:var(--accent)} .agent2 .gnode.goal .nsub{fill:var(--accent)}
+  .agent2 .gnode.done.on .nrect{fill:var(--good); stroke:var(--good)}
+  .agent2 .gnode.tool.on .nrect{fill:var(--accent-soft); stroke:var(--accent)}
+  .agent2 .gnode.tool.on .nlab{fill:var(--accent)}
+  .agent2 .gnarr{background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-top:12px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:62px}
+  .agent2 .gnarr .ph{font:700 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:3px}
   .ragm .lib{display:grid; gap:7px}
   .ragm .chunk{position:relative; transition:opacity .3s, background .3s, border-color .3s}
   .ragm .chunk.dim{opacity:.36}
@@ -681,34 +699,30 @@
       <p style="margin:.2em 0">An <b>agent</b> is the thing you'll build and deploy in this program. And because you'll build it on <i>real</i> data, responsible use isn't a compliance box — it's how you avoid leaking, misleading, or embarrassing your team. Both live here.</p></div>
 
     <h3>A chatbot answers. An agent does the work.</h3>
-    <p>Give an agent a <b>goal</b> (not a question); it uses <b>tools</b>, takes <b>steps in a loop</b>, and tracks where it is until the goal is met. Step the agent and watch the loop:</p>
-    <div class="lab">
-      <div class="out" style="margin-top:0"><b>Chatbot</b>, asked the same thing: <i>“Here's a draft reply to one complaint.”</i> — one turn, then it stops.</div>
-      <div id="agentLines" style="margin-top:12px"></div>
-      <div style="margin-top:8px">
-        <button class="btn" id="agentStep">Step the agent →</button>
-        <button class="btn ghost" id="agentReset">Reset</button>
+    <p>A chatbot takes a <b>question</b> and gives one answer. An agent takes a <b>goal</b>, then <b>loops</b>: think → use a tool → see the result → decide what's next — over and over, until the goal is met. Flip between the two and <b>step it</b> to watch the difference:</p>
+    <div class="lab agent2">
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px">
+        <div class="seg" id="agMode">
+          <button data-mode="chatbot" class="on">Chatbot</button>
+          <button data-mode="agent">Agent</button>
+        </div>
+        <button class="btn" id="agStep">Step →</button>
+        <button class="btn ghost" id="agRun">Run all</button>
+        <button class="btn ghost" id="agReset">Reset</button>
       </div>
-      <div class="hint">Goal handed to the agent: <i>“Clear the overnight complaint queue: triage each, draft replies, escalate the severe ones to me.”</i></div>
+      <div id="agGraph"></div>
+      <div class="gnarr" id="agNarr"></div>
     </div>
+    <p>See the difference? The chatbot is a <b>straight line</b> — one in, one out, then it waits. The agent is a <b>loop with tools</b>. That cycle — and knowing when to stop or hand off to a human — is the entire distinction.</p>
 
-    <table class="lens" style="margin-top:14px">
-      <tr><th></th><th>Chatbot</th><th>Agent</th></tr>
-      <tr><td><b>You give it</b></td><td>A question</td><td>A goal</td></tr>
-      <tr><td><b>It</b></td><td>Produces one answer</td><td>Plans, uses tools, loops, tracks where it is</td></tr>
-      <tr><td><b>Stops</b></td><td>After one turn</td><td>When the goal is met — or it hits a guardrail</td></tr>
-      <tr><td><b>Good for</b></td><td>Drafting, Q&amp;A, explaining</td><td>Multi-step jobs that take actions</td></tr>
-      <tr><td><b>Main risk</b></td><td>Wrong <i>text</i></td><td>Wrong <i>actions</i> — so guardrails matter far more</td></tr>
-    </table>
-
-    <h3>What makes the loop work</h3>
-    <p>Four parts are what turn a chatbot into an agent — the same four you just stepped through:</p>
+    <h3>The four parts you just watched</h3>
     <ul>
-      <li><b>Goal</b> — an outcome to reach, not a single question to answer.</li>
-      <li><b>Tools</b> — ways to act and look things up: read a system, query a database, send a draft.</li>
-      <li><b>Loop</b> — act → observe the result → decide the next step, repeated.</li>
-      <li><b>Stopping condition</b> — how it knows it's done, and when to hand back to a human.</li>
+      <li><b>Goal</b> — the outcome it drives at ("clear the queue"), not a single question.</li>
+      <li><b>Tools</b> — inbox, order system, draft, escalate: how it acts and looks things up.</li>
+      <li><b>Loop</b> — Think → Act → Observe → Decide, repeated until the goal is met.</li>
+      <li><b>Stopping rule</b> — how it knows it's done, and when to hand the severe ones to a human.</li>
     </ul>
+    <p class="small muted"><b>The leader's lens:</b> a chatbot's worst case is wrong <i>text</i>; an agent's worst case is wrong <i>actions</i>. That's why, the moment AI starts <i>doing</i> rather than answering, your guardrails matter far more — which is the rest of this section.</p>
 
     <h3>Is it actually worth an agent?</h3>
     <p>An agent earns its extra cost and risk only when the task is <b>all four</b> of these:</p>
@@ -1513,28 +1527,130 @@
     selectQ();
   })();
 
-  /* ---------- S6: agent loop ---------- */
+  /* ---------- S6: agent loop graph ---------- */
   (function(){
-    var LINES = [
-      "<b>Plan</b> — “Fetch overnight complaints, handle each, escalate the severe ones.”",
-      "<b>Tool</b> — read inbox → finds 7 complaints.",
-      "<b>Observe</b> — 5 routine, 2 mention safety.",
-      "<b>Act</b> — draft replies for the 5 routine complaints.",
-      "<b>Decide</b> — the 2 safety ones exceed the threshold → escalate.",
-      "<b>Tool</b> — flag the 2 safety complaints to you with a summary.",
-      "<b>Done</b> — queue cleared; you only handle the 2 that needed a human. ✅"
+    var host=document.getElementById("agGraph"); if(!host) return;
+    var NS="http://www.w3.org/2000/svg";
+    function el(tag,a){ var e=document.createElementNS(NS,tag); for(var k in a) e.setAttribute(k,a[k]); return e; }
+    function buildGraph(vw,vh,mid,nodes,edges){
+      var svg=el("svg",{viewBox:"0 0 "+vw+" "+vh});
+      var defs=el("defs",{});
+      var m=el("marker",{id:mid,markerWidth:9,markerHeight:9,refX:7,refY:4,orient:"auto"});
+      m.appendChild(el("path",{d:"M0,0 L8,4 L0,8 z",fill:"context-stroke"}));
+      defs.appendChild(m); svg.appendChild(defs);
+      var edgeEls={};
+      edges.forEach(function(e){
+        var ln=el("line",{x1:e.x1,y1:e.y1,x2:e.x2,y2:e.y2,"class":"edge","marker-end":"url(#"+mid+")"});
+        svg.appendChild(ln); edgeEls[e.id]=ln;
+      });
+      var nodeEls={};
+      Object.keys(nodes).forEach(function(id){
+        var n=nodes[id], g=el("g",{"class":"gnode "+(n.kind||"")}), cx=n.x+n.w/2;
+        g.appendChild(el("rect",{x:n.x,y:n.y,width:n.w,height:n.h,rx:9,"class":"nrect"}));
+        if(n.sub){
+          var t1=el("text",{x:cx,y:n.y+n.h/2-2,"text-anchor":"middle","class":"nlab"}); t1.textContent=n.lab;
+          var t2=el("text",{x:cx,y:n.y+n.h/2+13,"text-anchor":"middle","class":"nsub"}); t2.textContent=n.sub;
+          g.appendChild(t1); g.appendChild(t2);
+        } else {
+          var t=el("text",{x:cx,y:n.y+n.h/2+4,"text-anchor":"middle","class":"nlab"}); t.textContent=n.lab; g.appendChild(t);
+        }
+        svg.appendChild(g); nodeEls[id]=g;
+      });
+      return {svg:svg, nodeEls:nodeEls, edgeEls:edgeEls};
+    }
+
+    /* chatbot — a straight line */
+    var chatN={
+      q:{x:24,y:50,w:170,h:52,lab:"You ask",sub:"a question"},
+      bot:{x:255,y:50,w:170,h:52,lab:"Chatbot",sub:"an LLM"},
+      ans:{x:486,y:50,w:170,h:52,lab:"One reply",sub:"then it waits"}
+    };
+    var chatE=[{id:"q-bot",x1:194,y1:76,x2:255,y2:76},{id:"bot-ans",x1:425,y1:76,x2:486,y2:76}];
+    var chatS=[
+      {node:"q",text:"You send one message: “Draft a reply to this complaint.”"},
+      {node:"bot",edges:["q-bot"],text:"The model generates a single response."},
+      {node:"ans",edges:["bot-ans"],text:"“Here's a draft reply.” One turn — no tools, no goal it's chasing."},
+      {node:null,text:"⊘ Then it stops and waits for your next message. A chatbot reacts; it doesn't pursue a goal."}
     ];
-    var box=document.getElementById("agentLines");
-    LINES.forEach(function(t){ var d=document.createElement("div"); d.className="agentline"; d.innerHTML=t; box.appendChild(d); });
-    var shown=0;
-    document.getElementById("agentStep").onclick=function(){
-      if(shown<LINES.length){ box.children[shown].classList.add("show"); shown++; }
-      if(shown===LINES.length){ this.disabled=true; }
+    var chat=buildGraph(680,150,"arrowC",chatN,chatE);
+
+    /* agent — a loop with tools */
+    var A={
+      goal:{x:18,y:8,w:250,h:46,lab:"GOAL",sub:"clear the complaint queue",kind:"goal"},
+      think:{x:186,y:92,w:108,h:44,lab:"1 · Think",kind:"phase"},
+      act:{x:300,y:166,w:108,h:44,lab:"2 · Act",kind:"phase"},
+      observe:{x:186,y:240,w:108,h:44,lab:"3 · Observe",kind:"phase"},
+      decide:{x:72,y:166,w:108,h:44,lab:"4 · Decide",kind:"phase"},
+      done:{x:40,y:248,w:120,h:44,lab:"✓ Done",kind:"done"},
+      t_inbox:{x:470,y:34,w:190,h:40,lab:"📥 Read inbox",kind:"tool"},
+      t_order:{x:470,y:86,w:190,h:40,lab:"🗃 Order system",kind:"tool"},
+      t_draft:{x:470,y:166,w:190,h:40,lab:"✍ Draft reply",kind:"tool"},
+      t_esc:{x:470,y:228,w:190,h:40,lab:"⚠ Escalate to human",kind:"tool"}
     };
-    document.getElementById("agentReset").onclick=function(){
-      shown=0; Array.prototype.forEach.call(box.children, function(c){ c.classList.remove("show"); });
-      document.getElementById("agentStep").disabled=false;
+    var AE=[
+      {id:"goal-think",x1:160,y1:54,x2:222,y2:92},
+      {id:"think-act",x1:294,y1:126,x2:312,y2:166},
+      {id:"act-observe",x1:318,y1:210,x2:294,y2:248},
+      {id:"observe-decide",x1:186,y1:254,x2:162,y2:204},
+      {id:"decide-think",x1:138,y1:166,x2:206,y2:136},
+      {id:"decide-done",x1:110,y1:210,x2:104,y2:248},
+      {id:"act-t_inbox",x1:408,y1:182,x2:470,y2:54},
+      {id:"act-t_order",x1:408,y1:186,x2:470,y2:106},
+      {id:"act-t_draft",x1:408,y1:188,x2:470,y2:186},
+      {id:"act-t_esc",x1:408,y1:192,x2:470,y2:248}
+    ];
+    var AS=[
+      {node:"goal",text:"GOAL — “Clear the overnight complaint queue: triage each, draft replies, escalate the severe ones.” You hand over an outcome, not a question."},
+      {node:"think",edges:["goal-think"],text:"THINK — Plan: read the inbox, handle each complaint, escalate anything about safety."},
+      {node:"act",edges:["think-act"],tool:"t_inbox",toolEdge:"act-t_inbox",text:"ACT — Calls a tool: read the inbox."},
+      {node:"observe",edges:["act-observe"],text:"OBSERVE — 7 complaints found: 5 routine, 2 mention safety."},
+      {node:"decide",edges:["observe-decide"],text:"DECIDE — Not finished. Handle the 5 routine ones first."},
+      {node:"think",edges:["decide-think"],text:"THINK · loop 2 — Draft replies for the 5 routine complaints. ← it just looped back."},
+      {node:"act",edges:["think-act"],tool:"t_draft",toolEdge:"act-t_draft",text:"ACT — Calls a tool: draft 5 replies, grounded in policy."},
+      {node:"observe",edges:["act-observe"],text:"OBSERVE — 5 drafts ready for your review."},
+      {node:"decide",edges:["observe-decide"],text:"DECIDE — Still 2 safety complaints; those exceed its authority."},
+      {node:"think",edges:["decide-think"],text:"THINK · loop 3 — Escalate the 2 safety complaints to a human."},
+      {node:"act",edges:["think-act"],tool:"t_esc",toolEdge:"act-t_esc",text:"ACT — Calls a tool: flag the 2 safety complaints to you with a summary."},
+      {node:"observe",edges:["act-observe"],text:"OBSERVE — Human notified."},
+      {node:"decide",edges:["observe-decide"],text:"DECIDE — All complaints handled → the stopping rule says finish."},
+      {node:"done",edges:["decide-done"],text:"DONE ✅ — Queue cleared. You only touch the 2 that genuinely needed a human."}
+    ];
+    var agent=buildGraph(680,308,"arrowA",A,AE);
+
+    host.appendChild(chat.svg); host.appendChild(agent.svg);
+    var seg=document.getElementById("agMode"), narr=document.getElementById("agNarr"),
+        bStep=document.getElementById("agStep"), bRun=document.getElementById("agRun"), bReset=document.getElementById("agReset");
+    var mode="chatbot", step=-1, timer=null;
+    function cur(){ return mode==="agent" ? {g:agent,s:AS} : {g:chat,s:chatS}; }
+    function clearHi(g){ Object.keys(g.nodeEls).forEach(function(k){ g.nodeEls[k].classList.remove("on"); }); Object.keys(g.edgeEls).forEach(function(k){ g.edgeEls[k].classList.remove("hot"); }); }
+    function showMode(){
+      chat.svg.style.display = mode==="chatbot"?"block":"none";
+      agent.svg.style.display = mode==="agent"?"block":"none";
+      Array.prototype.forEach.call(seg.children, function(b){ b.classList.toggle("on", b.dataset.mode===mode); });
+    }
+    function render(){
+      var c=cur(); clearHi(c.g);
+      if(step<0){
+        narr.innerHTML='<span class="ph">'+(mode==="agent"?"Agent · a loop with tools":"Chatbot · a straight line")+'</span>Press <b>Step →</b> to begin'+(mode==="agent"?". Watch it loop through its tools until the goal is met.":". One question in, one answer out.");
+        return;
+      }
+      var s=c.s[step];
+      if(s.node) c.g.nodeEls[s.node].classList.add("on");
+      (s.edges||[]).forEach(function(id){ if(c.g.edgeEls[id]) c.g.edgeEls[id].classList.add("hot"); });
+      if(s.tool){ c.g.nodeEls[s.tool].classList.add("on"); if(s.toolEdge && c.g.edgeEls[s.toolEdge]) c.g.edgeEls[s.toolEdge].classList.add("hot"); }
+      narr.innerHTML = s.text;
+    }
+    function stop(){ if(timer){ clearInterval(timer); timer=null; bRun.textContent="Run all"; } }
+    bStep.onclick=function(){ stop(); var c=cur(); if(step<c.s.length-1){ step++; render(); } };
+    bRun.onclick=function(){
+      if(timer){ stop(); return; }
+      var c=cur(); if(step>=c.s.length-1){ step=-1; render(); }
+      bRun.textContent="Pause";
+      timer=setInterval(function(){ var cc=cur(); if(step<cc.s.length-1){ step++; render(); } else stop(); }, 1150);
     };
+    bReset.onclick=function(){ stop(); step=-1; render(); };
+    Array.prototype.forEach.call(seg.children, function(b){ b.onclick=function(){ stop(); mode=b.dataset.mode; step=-1; showMode(); render(); }; });
+    showMode(); render();
   })();
 
   /* ---------- S6: data sorter ---------- */
