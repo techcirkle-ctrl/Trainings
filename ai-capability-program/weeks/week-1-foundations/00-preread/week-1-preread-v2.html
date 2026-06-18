@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!--
-  AI Capability Program — Week 1 Prework (single-file, tabbed, self-teaching).
+  AI Capability Program — Week 1 Prework v2 (single-file, tabbed, self-teaching).
   Self-contained: inline CSS + vanilla JS, no network, no build. Open with:
-      open "week-1-prework.html"
-  Six sections mirror the Week-1 run-of-show. Progress is saved locally (this device only) — nothing is sent anywhere.
+      open "week-1-preread-v2.html"
+  Trimmed to four sections: Prompting · The Stack · RAG · Agents. Progress is saved locally (this device only) — nothing is sent anywhere.
 -->
 <html lang="en">
 <head>
@@ -330,7 +330,7 @@
 <header class="masthead">
   <div class="kicker">AI Capability Program · Week 1 — Foundations</div>
   <h1>Week 1 Prework</h1>
-  <div class="meta">Work at your own pace · ~2–3 hrs total · 6 short, interactive sections. <b>Your progress is saved on this device only — nothing is sent anywhere.</b></div>
+  <div class="meta">Work at your own pace · ~1 hr total · 4 short, interactive sections. <b>Your progress is saved on this device only — nothing is sent anywhere.</b></div>
 </header>
 
 <div class="navbar">
@@ -345,190 +345,9 @@
 
 <div class="wrap">
 
-  <!-- ============================ SECTION 1 ============================ -->
-  <section class="panel" id="s1">
-    <span class="tag">Section 1 of 6</span><span class="tag">~20 min</span>
-    <h2>How generative AI predicts</h2>
-    <div class="why"><div class="kicker">Why this matters to you</div>
-      <p style="margin:.2em 0">Before you sponsor a tool built on this, you need a gut feel for what it's actually doing — because that explains both its magic and its one dangerous failure mode.</p></div>
-
-    <p class="lead">Traditional software follows rules a person wrote. Generative AI doesn't follow rules — <b>it predicts</b>. It learned the patterns in a vast amount of text, and it writes by repeatedly guessing the most plausible next chunk of words. That's the whole trick. Try it:</p>
-
-    <div class="lab pred">
-      <div class="kicker" style="margin-bottom:8px">Watch it write — one prediction at a time</div>
-      <div class="stream" id="predStream">Our customer was very</div>
-      <div class="cands" id="predCands"></div>
-      <div style="margin-top:6px">
-        <button class="btn" id="predPlay">▶ Watch it write</button>
-        <button class="btn ghost" id="predManual" style="display:none">Let me pick the words</button>
-        <button class="btn ghost" id="predReset" style="display:none">Start over</button>
-      </div>
-      <div class="hint" id="predHint">Press play. It predicts one word, adds it, then predicts the next word from everything so far. That loop is the whole trick.</div>
-    </div>
-
-    <h3>The dial behind that: <i>temperature</i></h3>
-    <p>When it wrote that sentence just now, it didn't always grab the #1 word — it <b>sampled</b> from the likely ones. <i>How widely</i> it samples is a real control called <b>temperature</b>, the creativity dial. <b>Low</b> → it almost always takes the top word: consistent, repeatable. <b>High</b> → it samples wider: more varied and creative, less predictable. Drag the dial, then have it <b>write the same sentence a few times over</b> — watch how much it changes:</p>
-    <div class="lab pred temp">
-      <div class="kicker" style="margin-bottom:8px">The creativity dial — drag it, then watch it write</div>
-      <div class="prompt-line">Our customer was very <span class="muted">→ …</span></div>
-      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:12px">
-        <span class="small muted">Reliable</span>
-        <input id="tempSlider" type="range" min="0" max="100" value="12" style="flex:1; min-width:160px">
-        <span class="small muted">Creative</span>
-      </div>
-      <div class="hint" id="tempLbl" style="margin-top:6px"></div>
-      <div class="tempruns" id="tempOut"></div>
-      <div style="margin-top:8px">
-        <button class="btn ghost" id="tempGen">Write it 5 times</button>
-      </div>
-      <div class="hint" id="tempHint"></div>
-    </div>
-    <p class="small muted"><b>Leader's read:</b> turn temperature <i>down</i> for anything that must be consistent and factual; <i>up</i> for brainstorming and first drafts. It's a knob your teams will set on the tools they build.</p>
-
-    <h3>So where do those percentages come from?</h3>
-    <p>Nobody programmed "after <i>very</i>, the word <i>happy</i> is 34% likely." The model <b>learned it</b> — by reading an enormous amount of text (books, articles, code, the public web) and noticing, billions of times over, which words tend to follow which. That body of text is its <b>training data</b>, and those learned tendencies <i>are</i> the percentages you just clicked. Three things fall straight out of that — each one changes how you should use it:</p>
-    <ul>
-      <li><b>It's only as current as its training.</b> Anything that happened — or changed in your business — after training simply isn't in there. (That gap is Section 2's first limit.)</li>
-      <li><b>It inherits its sources.</b> Whatever patterns, blind spots and biases live in the text it learned from, it absorbs. Good reason to check, not assume.</li>
-      <li><b>It generates, it never retrieves.</b> It isn't looking anything up in a database — it's predicting plausible text. That single fact explains the failure mode below.</li>
-    </ul>
-
-    <h3>It predicts in chunks called <i>tokens</i></h3>
-    <p>One more piece of plumbing worth knowing, because it's the unit everything is priced and measured in. The model doesn't read whole words — it reads <b>tokens</b>: common chunks of text. Short words are one token; longer ones split into several. It's literally guessing the next <i>chunk</i>, over and over:</p>
-    <div class="lab">
-      <div class="kicker" style="margin-bottom:8px">One word ≠ one token</div>
-      <div class="toks">
-        <span class="tk">Our</span><span class="br"></span>
-        <span class="tk">cust</span><span class="tk">omer</span><span class="br"></span>
-        <span class="tk">was</span><span class="br"></span>
-        <span class="tk">very</span><span class="br"></span>
-        <span class="tk">frus</span><span class="tk">trated</span>
-      </div>
-      <div class="hint">Roughly ¾ of a word per token. When you hear "context window" or "cost per million tokens" later, this is the unit they mean.</div>
-    </div>
-
-    <h3>The one failure mode that actually bites</h3>
-    <p>Because it generates plausible text rather than checking facts, it can be <b>completely confident and completely wrong</b> — a <b>hallucination</b>. The trap: it writes <i>just as fluently</i> when it's wrong as when it's right. Test your own instinct — which of these would you trust as-is?</p>
-    <div class="lab">
-      <div class="kicker" style="margin-bottom:8px">Which would you trust?</div>
-      <div class="sorter" id="spotWrap"></div>
-      <div class="out" id="spotOut" style="margin-top:12px">Make a call on each — then see the catch.</div>
-    </div>
-
-    <h3>The three things to take from that</h3>
-    <table class="lens">
-      <tr><th>What you saw</th><th>What it means for you</th></tr>
-      <tr><td>It chose from <b>probabilities</b>, and higher temperature gives a different sentence each run</td><td>It's <b>probabilistic</b> — great for drafting and ideas, something to control (turn temperature down) when you need one exact, repeatable answer</td></tr>
-      <tr><td>The percentages were <b>learned from training data</b>, frozen at training time</td><td>It's <b>blind to anything recent or internal</b> to your business — the gap Section 2 names and RAG later closes</td></tr>
-      <tr><td>It <b>generates, never looks up</b> — fluent whether right or wrong</td><td><b>Fluency ≠ accuracy.</b> A confident, well-written answer can still be invented. This is the failure mode to manage with review</td></tr>
-    </table>
-
-    <div class="card quiz" id="q1"></div>
-
-    <div class="deeper">📚 <b>Go deeper (optional):</b> Google Cloud — <a href="https://www.cloudskillsboost.google/course_templates/536" target="_blank" rel="noopener">Introduction to Generative AI</a> (~1 hr). Tracked as R1 in <code>RESOURCES.md</code>.</div>
-
-    <div class="secfoot">
-      <button class="done" data-sec="s1">Mark this section complete</button>
-      <button class="btn ghost" data-next="s2">Next: Inside an LLM →</button>
-    </div>
-  </section>
-
-  <!-- ============================ SECTION 2 ============================ -->
-  <section class="panel" id="s2">
-    <span class="tag">Section 2 of 6</span><span class="tag">~25 min</span>
-    <h2>Inside an LLM</h2>
-    <div class="why"><div class="kicker">Why this matters to you</div>
-      <p style="margin:.2em 0">Knowing the engine's two hard limits is what lets you tell a realistic AI proposal from a fantasy one when your team brings you ideas. Everything else this week exists to work around these two limits.</p></div>
-
-    <p class="lead">An LLM learns by reading enormous amounts of text and predicting the next <b>token</b> (a word-chunk). Underneath the chat box it's a single machine — a vast <b>network of numbers</b>. We'll open it up, then walk through what makes it so capable — and exactly where it falls short.</p>
-
-    <h3>First — what the engine actually is</h3>
-    <p>Strip away the chat box and an LLM is one machine: a huge <b>network</b> of simple units (loosely, "neurons") wired together in layers. Your words enter on the left; each layer passes numbers to the next; a prediction comes out on the right. The wires carry <b>weights</b> — numbers saying how much one unit's signal counts toward the next. A real model has <b>billions</b> of them. <b>Press Run</b> to send a prompt through — and <b>click any neuron</b> to see what it actually does:</p>
-    <div class="lab net">
-      <div class="kicker" style="margin-bottom:8px">A tiny network, predicting the next word</div>
-      <div id="netHost"></div>
-      <div style="margin-top:6px">
-        <button class="btn" id="netRun">Run a prediction →</button>
-        <button class="btn ghost" id="netReset">Clear</button>
-      </div>
-      <div class="hint" id="netHint">Press Run to watch the signal flow, or click a neuron to inspect its connections.</div>
-    </div>
-    <p class="small muted"><b>Leader's read:</b> nothing is stored in here like a database — there are only these weights. "Training" means setting them, and the model's entire knowledge <i>is</i> that pattern of numbers. Hold that picture: it explains both why it's so fluent and why it can be confidently wrong.</p>
-
-    <h3>1. Attention — how it "knows what you mean"</h3>
-    <p>When the model reads a word, it weighs which earlier words matter most for understanding it. That's <b>attention</b>. Click any word below to see what it leans on:</p>
-    <div class="lab att">
-      <div class="sent" id="attSent"></div>
-      <div class="out" id="attOut">Click a word — especially <b>“it”</b> — to see which earlier words the model attends to.</div>
-    </div>
-    <p class="small muted"><b>Leader's read:</b> attention is why the model handles pronouns, long sentences and cross-references so fluently — and why a <i>clearer</i> prompt genuinely helps. The less ambiguous the words you give it, the less it has to guess what refers to what. Vague input doesn't break it; it just makes it guess.</p>
-
-    <h3>2. The context window — its working memory</h3>
-    <p>The model can only "hold in mind" what's in the current conversation — the <b>context window</b>. Fill it past its limit and the earliest content drops off. Watch it happen:</p>
-    <div class="lab ctx">
-      <div class="frame" id="ctxFrame"></div>
-      <div style="margin-top:10px">
-        <button class="btn" id="ctxAdd">Add a message</button>
-        <button class="btn ghost" id="ctxReset">Reset</button>
-      </div>
-      <div class="hint" id="ctxHint">Window holds 8 chunks. Keep adding — see what falls out.</div>
-    </div>
-    <p>This toy window holds 8 chunks. A real one holds far more — today's larger models hold the equivalent of several hundred pages at once. But three consequences follow, and each one costs you money or accuracy if ignored:</p>
-    <ul>
-      <li><b>Everything shares the one window.</b> Your instructions, every document you paste, the whole back-and-forth, <i>and</i> the answer all compete for the same space.</li>
-      <li><b>Long chats quietly forget.</b> In a marathon conversation the earliest turns fall out of the window — which is exactly why an assistant can "lose the thread" halfway through.</li>
-      <li><b>You pay per token, every turn.</b> The context is re-sent with each message, so a giant window is powerful but never free.</li>
-    </ul>
-    <p class="small muted"><b>Leader's read:</b> for big or numerous documents, <i>retrieving</i> the relevant pieces (Section 5's RAG) usually beats stuffing everything into the window — cheaper, and the model stays focused on what actually matters.</p>
-
-    <h3>3. How it learned — and how it gets tuned</h3>
-    <p>Two stages, worth separating because teams constantly confuse them — and the confusion drives bad proposals:</p>
-    <ul>
-      <li><b>Pre-training</b> — the model reads a vast, general body of text and learns language, facts and reasoning patterns. Expensive, done once, by the model maker. This is the knowledge that's "frozen at training time."</li>
-      <li><b>Fine-tuning</b> — a much smaller, targeted pass that shapes <i>behaviour</i> (tone, format, instruction-following, staying safe) — <b>not</b> fresh facts. When someone says "let's fine-tune it on our data," the honest question is: do you need new <i>facts</i> (that's RAG) or new <i>behaviour</i> (that's fine-tuning)? They get mixed up constantly, and picking wrong wastes months.</li>
-    </ul>
-    <p>So what <i>is</i> "learning"? Just nudging those billions of weights to make better predictions. Feed the network examples and watch the error fall:</p>
-    <div class="lab learn">
-      <div class="kicker" style="margin-bottom:8px">Watch it "learn" — every example nudges the numbers</div>
-      <div class="errwrap"><span class="epoch">Prediction error</span><div class="errbar"><div class="errfill" id="errFill"></div></div></div>
-      <div class="epoch" id="epochLbl">Examples read: 0</div>
-      <div class="out" id="learnPred" style="margin-top:10px"></div>
-      <div style="margin-top:8px">
-        <button class="btn" id="learnStep">Read 250,000 examples →</button>
-        <button class="btn ghost" id="learnReset">Reset</button>
-      </div>
-      <div class="hint" id="learnHint"></div>
-    </div>
-
-    <h3>So here are the two limits</h3>
-    <table class="lens">
-      <tr><th>Limit</th><th>Why</th><th>What fixes it this week</th></tr>
-      <tr><td><b>It only knows its training data</b> — blind to your business & to anything recent</td><td>Knowledge is frozen at training time</td><td><b>RAG</b> (Section 5)</td></tr>
-      <tr><td><b>It only produces text</b> — it can't take actions</td><td>It outputs words, nothing else</td><td><b>Agents + tools</b> (Section 6)</td></tr>
-    </table>
-    <h3>One more lever: which model</h3>
-    <p>Not every job needs the biggest model. You're trading three things against each other, and defaulting to "the largest, newest one" for everything is one of the most common and most expensive habits:</p>
-    <table class="lens">
-      <tr><th></th><th>Bigger / newer model</th><th>Smaller / faster model</th></tr>
-      <tr><td><b>Hard reasoning</b></td><td>Stronger on ambiguous, multi-step problems</td><td>Can stumble on the genuinely tricky ones</td></tr>
-      <tr><td><b>Speed &amp; cost</b></td><td>Slower, more expensive per token</td><td>Faster and far cheaper at volume</td></tr>
-      <tr><td><b>Reach for it when…</b></td><td>Complex analysis, nuanced drafting, ambiguous tasks</td><td>High-volume, simple, well-defined tasks</td></tr>
-    </table>
-    <p class="small muted"><b>Leader's read:</b> match the model to the job, not to its reputation. A cheap model that's clearly good enough, run thousands of times, beats an expensive one used out of habit. You'll meet the Claude family (Haiku / Sonnet / Opus tiers) and when to reach for each in the session.</p>
-
-    <div class="card quiz" id="q2"></div>
-
-    <div class="deeper">📚 <b>Go deeper (optional):</b> Google Cloud — <a href="https://www.cloudskillsboost.google/course_templates/539" target="_blank" rel="noopener">Introduction to Large Language Models</a> (~1 hr). Tracked as R2.</div>
-
-    <div class="secfoot">
-      <button class="done" data-sec="s2">Mark this section complete</button>
-      <button class="btn ghost" data-next="s3">Next: The AI Evolution Stack →</button>
-    </div>
-  </section>
-
   <!-- ============================ SECTION 3 ============================ -->
   <section class="panel" id="s3">
-    <span class="tag">Section 3 of 6</span><span class="tag">~25 min</span>
+    <span class="tag">Section 4 of 4</span><span class="tag">~15 min</span>
     <h2>The AI Evolution Stack</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
       <p style="margin:.2em 0">Almost every AI initiative you'll sponsor is some <b>combination of a few capabilities</b> bolted onto a language engine. Knowing which ones a problem actually needs — and which it doesn't — is the single most useful judgement an AI-capable leader has. It decides cost, risk, and whether the thing works.</p></div>
@@ -558,7 +377,6 @@
       </div>
     </div>
 
-    <p>Two things to take from that. <b>One:</b> the capabilities <i>compose</i> — there's no fixed order, and "agent" does not imply "RAG." <b>Two:</b> the cost bar climbs with every capability you switch on, so the leader's discipline is simple — <b>add the fewest capabilities that actually solve the problem.</b> Over-building is the most common and most expensive mistake.</p>
 
     <h3>Now make it concrete: what does each task need?</h3>
     <p>Run through the tasks below. Each one lights up <i>only</i> the capabilities it actually needs — notice how often the answer is "nothing extra," and how retrieval and actions switch on independently:</p>
@@ -576,72 +394,29 @@
       </div>
     </div>
 
-    <div class="card">
-      <h3 style="margin-top:0">Keep this: the composition lens</h3>
-      <table class="lens">
-        <tr><th>If the problem needs to…</th><th>Add…</th><th>You've built…</th></tr>
-        <tr><td>Transform / answer text I give it</td><td>nothing</td><td><b>Plain LLM</b></td></tr>
-        <tr><td>Answer from our own documents, with sources</td><td><b>Retrieval</b></td><td><b>RAG</b></td></tr>
-        <tr><td>Take actions / multi-step work</td><td><b>Tools &amp; a loop</b></td><td><b>Agent</b></td></tr>
-        <tr><td>…act <i>and</i> draw on our data</td><td><b>Both</b></td><td><b>Agent with retrieval</b></td></tr>
-        <tr><td>Coordinate work too big for one agent</td><td><b>Several agents</b></td><td><b>Multi-agent</b></td></tr>
-      </table>
-      <p class="small muted" style="margin-bottom:0">Retrieval and agents are <b>independent</b> — mix them as the problem demands. Rule of thumb: <b>the fewest capabilities that work, win.</b></p>
-    </div>
-
     <div class="card quiz" id="q3"></div>
 
     <div class="deeper">📚 <b>Go deeper (optional):</b> Anthropic — <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building Effective Agents</a> (the “simplest thing that works” principle). Tracked as R5.</div>
 
     <div class="secfoot">
       <button class="done" data-sec="s3">Mark this section complete</button>
-      <button class="btn ghost" data-next="s4">Next: Prompting that works →</button>
+      <span class="small muted">That's the set — see you in the session.</span>
     </div>
   </section>
 
   <!-- ============================ SECTION 4 ============================ -->
   <section class="panel" id="s4">
-    <span class="tag">Section 4 of 6</span><span class="tag">~25 min</span>
+    <span class="tag">Section 1 of 4</span><span class="tag">~15 min</span>
     <h2>Prompting that works</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
       <p style="margin:.2em 0">This is the highest-leverage skill you'll use daily. Because the model just continues from what you give it, <b>the structure of your instruction is your control</b>. In the session you'll write three of these for your own problem — here's the anatomy.</p></div>
 
-    <p class="lead">A vague ask gets a vague answer. A production prompt has up to six parts. Toggle them on and watch the prompt — and its reliability — come together:</p>
+    <div class="deeper">▶️ <b>Watch this first (optional, ~10 min):</b> <a href="https://www.youtube.com/watch?v=o3qfL2fcSx4" target="_blank" rel="noopener">Google's 6-Hour Prompt Engineering Course in 10 Minutes</a> — a fast, friendly primer. If you learn better by watching before reading, start here to get hooked, then work through the section below.</div>
 
-    <div class="lab pb">
-      <div class="kicker" style="margin-bottom:8px">Assemble a production prompt</div>
-      <div class="toggles" id="pbToggles"></div>
-      <div class="meter"><div class="fill" id="pbMeter"></div></div>
-      <div class="hint" id="pbMeterLbl">Reliability: bare minimum</div>
-      <pre id="pbPreview"></pre>
-      <div class="hint"><b>Task</b> is the only must-have. Each other part removes a way the model could guess wrong.</div>
-    </div>
-
-    <h3>The six parts, one line each</h3>
-    <p>A quick reference — what each part is actually <i>for</i>:</p>
-    <table class="lens">
-      <tr><th>Part</th><th>What it does</th><th>Example</th></tr>
-      <tr><td><b>Role</b></td><td>Sets the expertise and voice to answer in</td><td>"You are a senior sales-ops analyst."</td></tr>
-      <tr><td><b>Task</b> <span class="small muted">(must-have)</span></td><td>The one thing to actually do</td><td>"Summarise this RFP into a one-page brief."</td></tr>
-      <tr><td><b>Context</b></td><td>Facts it can't infer on its own</td><td>"We sell cutting tools; buyer is automotive."</td></tr>
-      <tr><td><b>Constraints</b></td><td>Closes off ways it could guess wrong</td><td>"Use only facts in the RFP; flag gaps."</td></tr>
-      <tr><td><b>Output format</b></td><td>The shape you can use directly</td><td>"5 bullets, then a 'Risks' line."</td></tr>
-      <tr><td><b>Examples</b></td><td>Shows — not tells — what "good" looks like</td><td>"• Volume: 12k units/yr, ramping from Q3."</td></tr>
-    </table>
-
-    <h3>When it goes wrong, the part that fixes it</h3>
-    <p>Most disappointing answers trace to a missing part. Diagnose, don't just re-ask:</p>
-    <table class="lens">
-      <tr><th>What went wrong</th><th>The part to add</th></tr>
-      <tr><td>It invented a number or fact</td><td><b>Constraints</b> — "use only what's here; flag gaps"</td></tr>
-      <tr><td>Wall of prose you can't use</td><td><b>Output format</b></td></tr>
-      <tr><td>Too generic / off your domain</td><td><b>Context</b> + <b>Role</b></td></tr>
-      <tr><td>Misjudged what "good" means</td><td><b>Examples</b></td></tr>
-      <tr><td>Did the wrong thing entirely</td><td><b>Task</b> — sharpen the actual ask</td></tr>
-    </table>
+    <p class="lead">A vague ask gets a vague answer. A production prompt is built from a few deliberate parts — role, task, context, constraints, output format — each one closing off a way the model could guess wrong. The fastest way to feel the difference is to see the same task asked both ways:</p>
 
     <h3>Same ask, two results</h3>
-    <p>The builder shows the <b>parts</b>; this shows what they buy you. Pick a real task, then flip between a <b>vague ask</b> and a <b>structured prompt</b> — same model, same input, very different output. Each one shows a <i>different</i> way a vague ask goes wrong:</p>
+    <p>Pick a real task, then flip between a <b>vague ask</b> and a <b>structured prompt</b> — same model, same input, very different output. Each one shows a <i>different</i> way a vague ask goes wrong:</p>
     <div class="lab pb">
       <div class="kicker" style="margin-bottom:6px">Pick a task</div>
       <div class="toggles" id="cmpScenarios"></div>
@@ -657,7 +432,7 @@
     </div>
 
     <div class="why"><div class="kicker">The real skill is the loop</div>
-      <p style="margin:.2em 0">A strong prompt is rarely right first try. The work is: <b>draft → run → critique against the six parts → improve.</b> That's exactly what you'll do in the session — three prompts for your own problem — and again in the homework. Structure beats cleverness; iteration beats both.</p></div>
+      <p style="margin:.2em 0">A strong prompt is rarely right first try. The work is: <b>draft → run → critique against those parts → improve.</b> That's exactly what you'll do in the session — three prompts for your own problem — and again in the homework. Structure beats cleverness; iteration beats both.</p></div>
 
     <div class="card quiz" id="q4"></div>
 
@@ -671,10 +446,12 @@
 
   <!-- ============================ SECTION 5 ============================ -->
   <section class="panel" id="s5">
-    <span class="tag">Section 5 of 6</span><span class="tag">~25 min</span>
+    <span class="tag">Section 2 of 4</span><span class="tag">~15 min</span>
     <h2>RAG — grounding in your documents</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
-      <p style="margin:.2em 0">"It doesn't know our business" was Limit 1 from Section 2. RAG is the fix — and the most common, lowest-risk way to get real value from AI on your own content. You'll see one built live in the session.</p></div>
+      <p style="margin:.2em 0">"It doesn't know our business" is the most common complaint about AI at work. RAG is the fix — the most common, lowest-risk way to get real value from AI on your own content. You'll see one built live in the session.</p></div>
+
+    <div class="deeper">▶️ <b>Watch this first (optional):</b> <a href="https://www.youtube.com/watch?v=T-D1OfcDW1M" target="_blank" rel="noopener">What is Retrieval-Augmented Generation (RAG)?</a> — a quick visual explainer. If you learn better by watching before reading, start here, then work through the section below.</div>
 
     <p class="lead">RAG = <b>Retrieval-Augmented Generation</b> — the fix for "it doesn't know our business." Instead of trusting the model's frozen memory, you <i>retrieve</i> the relevant pieces of your own documents at question time and hand them over. Grounded answers that <b>cite their source</b> — and admit when they don't know. Here's the whole flow, end to end:</p>
 
@@ -775,41 +552,22 @@
       <div class="hint" id="ragHint">Tip: try a question with RAG <b>off</b> first, then flip it <b>on</b> and watch what changes.</div>
     </div>
 
-    <h3>What you just watched — the three steps, every time</h3>
-    <ul>
-      <li><b>Chunk</b> — your documents are pre-split into bite-size passages.</li>
-      <li><b>Match by meaning</b> — the question finds the passages closest in <i>meaning</i>, not just matching keywords (those relevance bars). "Bulk-order discount" still finds a passage headed "volume pricing."</li>
-      <li><b>Ground</b> — the top passages are pasted into the prompt; the model answers from them and cites them. Nothing clears the bar → it says so, instead of inventing.</li>
-    </ul>
-    <p class="small muted"><b>Leader's read:</b> a RAG system lives or dies on the documents behind it. Out-of-date or contradictory sources produce confidently grounded — but wrong — answers. "Set up RAG" is maybe 20% model and 80% getting your content clean, current and well-organised.</p>
-
-    <div class="card">
-      <h3 style="margin-top:0">Keep this</h3>
-      <table class="lens">
-        <tr><th>RAG is great at…</th><th>RAG won't fix on its own…</th></tr>
-        <tr><td>Answering from your own, current documents — with sources</td><td>Taking actions in other systems (that's an <b>agent</b>)</td></tr>
-        <tr><td>Cutting hallucination on factual lookups</td><td>Bad or out-of-date source documents</td></tr>
-        <tr><td>Staying current without retraining the model</td><td>Reasoning the documents don't support</td></tr>
-      </table>
-      <p class="small muted" style="margin:12px 0 0"><b>And it's not the only way to feed in your content:</b> for a one-off, just <b>paste</b> a document into the window; for a large, changing body you query often and want cited, use <b>RAG</b>; to change <i>behaviour</i> (tone, format) rather than facts, <b>fine-tune</b> — rarely the answer to "it doesn't know our data."</p>
-    </div>
-
     <div class="card quiz" id="q5"></div>
 
     <div class="deeper">📚 <b>Go deeper (optional):</b> Google Cloud — <a href="https://cloud.google.com/use-cases/retrieval-augmented-generation" target="_blank" rel="noopener">What is Retrieval-Augmented Generation (RAG)?</a> (R9). Also covered hands-on in the Week-1 session (live Claude Project demo).</div>
 
     <div class="secfoot">
       <button class="done" data-sec="s5">Mark this section complete</button>
-      <button class="btn ghost" data-next="s6">Next: Agents & responsible use →</button>
+      <button class="btn ghost" data-next="s6">Next: Agents →</button>
     </div>
   </section>
 
   <!-- ============================ SECTION 6 ============================ -->
   <section class="panel" id="s6">
-    <span class="tag">Section 6 of 6</span><span class="tag">~25 min</span>
-    <h2>Agents vs. chatbots — and using them responsibly</h2>
+    <span class="tag">Section 3 of 4</span><span class="tag">~15 min</span>
+    <h2>Agents vs. chatbots</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
-      <p style="margin:.2em 0">An <b>agent</b> is the thing you'll build and deploy in this program. And because you'll build it on <i>real</i> data, responsible use isn't a compliance box — it's how you avoid leaking, misleading, or embarrassing your team. Both live here.</p></div>
+      <p style="margin:.2em 0">An <b>agent</b> is the thing you'll build and deploy in this program. Understanding how it differs from a chatbot — and what the loop actually looks like — is what turns it from a buzzword into something you can design and sponsor.</p></div>
 
     <h3>A chatbot answers. An agent does the work.</h3>
     <p>A chatbot takes a <b>question</b> and gives one answer. An agent takes a <b>goal</b>, then <b>loops</b>: think → use a tool → see the result → decide what's next — over and over, until the goal is met. Flip between the two and <b>step it</b> to watch the difference:</p>
@@ -835,50 +593,19 @@
       <li><b>Loop</b> — Think → Act → Observe → Decide, repeated until the goal is met.</li>
       <li><b>Stopping rule</b> — how it knows it's done, and when to hand the severe ones to a human.</li>
     </ul>
-    <p class="small muted"><b>The leader's lens:</b> a chatbot's worst case is wrong <i>text</i>; an agent's worst case is wrong <i>actions</i>. That's why, the moment AI starts <i>doing</i> rather than answering, your guardrails matter far more — which is the rest of this section.</p>
-
-    <h3>Is it actually worth an agent?</h3>
-    <p>An agent earns its extra cost and risk only when the task is <b>all four</b> of these:</p>
-    <ul>
-      <li><b>Multi-step</b> — not a single answer a chatbot already gives you.</li>
-      <li><b>Acts in tools</b> — it has to <i>do</i> things, not just write.</li>
-      <li><b>Repeats often</b> — frequent enough to be worth building and maintaining.</li>
-      <li><b>Has clear rules</b> for what "done" and "escalate" mean.</li>
-    </ul>
-    <p class="small muted"><b>Leader's read:</b> more autonomy isn't automatically better. The real design question is <i>where the human sits</i> — reviewing every action, or only the consequential ones? That single choice is most of your risk management. Miss the clear rules and you get an unreliable agent; build one for a rare task and you've over-engineered.</p>
-
-    <h3>Responsible use — the three risks that actually bite</h3>
-    <p>You'll build with real data, so sort these honestly: <b>which can safely go into a public AI tool, and which never can?</b> Click a choice on each.</p>
-    <div class="lab">
-      <div class="sorter" id="sorter"></div>
-      <div class="out" id="sorterOut" style="margin-top:12px">Make a call on each item — you'll get instant feedback. This is your first input to Sandvik's data-sensitivity rule.</div>
-    </div>
-    <table class="lens" style="margin-top:14px">
-      <tr><th>Risk</th><th>Your guardrail</th></tr>
-      <tr><td><b>Data leakage</b> — confidential info into a tool that may store it</td><td>A clear rule on what data can/can't go in (set in Week 0)</td></tr>
-      <tr><td><b>Bias</b> — output that quietly disadvantages a group</td><td>Test varied cases; never auto-decide on people without review</td></tr>
-      <tr><td><b>Unchecked output</b> — a confident, wrong answer acted on</td><td><b>Human-in-the-loop</b> on anything consequential</td></tr>
-    </table>
-
     <div class="card quiz" id="q6"></div>
-
-    <h3>One thing to mull before the session (for you, not to submit)</h3>
-    <p class="small muted">Jot a note if it helps — it saves on this device only. In the session you'll turn the best of these into the one problem you carry through all four weeks.</p>
-    <textarea id="reflect" placeholder="An agent-shaped task in my function (multi-step, takes actions, worth automating): …"></textarea>
 
     <div class="ask">💬 <b>Your trainer is your teacher.</b> Anything here unclear — bring it to the mid-week clinic or the Teams doubt channel (answered within 1 business day). The prework builds intuition; the session is where you ask.</div>
 
-    <div class="deeper">📚 <b>Go deeper (optional):</b> Google — <a href="https://www.cloudskillsboost.google/" target="_blank" rel="noopener">Introduction to AI Agents</a> (R4) and Google — <a href="https://www.cloudskillsboost.google/course_templates/554" target="_blank" rel="noopener">Introduction to Responsible AI</a> (R3).</div>
-
     <div class="secfoot">
       <button class="done" data-sec="s6">Mark this section complete</button>
-      <span class="small muted">That's the set — see you in the session.</span>
+      <button class="btn ghost" data-next="s3">Next: The AI Evolution Stack →</button>
     </div>
   </section>
 
   <div class="finale" id="finale">
-    <div class="kicker">All six done 🎉</div>
-    <p style="margin:.3em 0 0">You've got the foundations: how it predicts, its two limits, how to compose capabilities into the right system, prompting, RAG, and agents. Come to the session with one thing on your mind — a real, agent-shaped problem from your function worth four weeks of your time.</p>
+    <div class="kicker">All four done 🎉</div>
+    <p style="margin:.3em 0 0">You've got the foundations: prompting that works, RAG, agents, and how to compose them into the right system. Come to the session with one thing on your mind — a real, agent-shaped problem from your function worth four weeks of your time.</p>
   </div>
 
 </div>
@@ -890,9 +617,9 @@
 <script>
 (function(){
   "use strict";
-  var SECTIONS = ["s1","s2","s3","s4","s5","s6"];
-  var TITLES = {s1:"GenAI predicts", s2:"Inside an LLM", s3:"The Stack", s4:"Prompting", s5:"RAG", s6:"Agents & ethics"};
-  var KEY = "acp-w1-prework-v1";
+  var SECTIONS = ["s4","s5","s6","s3"];  /* display order: Prompting · RAG · Agents · The Stack (physical ids kept) */
+  var TITLES = {s3:"The Stack", s4:"Prompting", s5:"RAG", s6:"Agents"};
+  var KEY = "acp-w1-preread-v2";
 
   /* ---------- progress / tabs ---------- */
   var state = load();
@@ -966,361 +693,6 @@
       wrapEl.appendChild(ul); wrapEl.appendChild(fb); el.appendChild(wrapEl);
     });
   }
-
-  /* ---------- S1: token predictor ---------- */
-  (function(){
-    var TABLE = {
-      "very": [["happy",34],["frustrated",26],["pleased",18],["upset",13],["specific",9]],
-      "happy": [["with",40],["about",28],["that",20],["and",12]],
-      "frustrated": [["with",44],["by",30],["that",16],["because",10]],
-      "pleased": [["with",46],["to",30],["that",24]],
-      "upset": [["about",42],["that",30],["with",28]],
-      "with": [["the",38],["our",30],["how",20],["us",12]],
-      "the": [["service",36],["delay",30],["result",20],["team",14]],
-      "our": [["response",40],["product",34],["team",26]]
-    };
-    var stream = document.getElementById("predStream");
-    var cands = document.getElementById("predCands");
-    var hint = document.getElementById("predHint");
-    var play = document.getElementById("predPlay");
-    var manual = document.getElementById("predManual");
-    var reset = document.getElementById("predReset");
-    if(!stream) return;
-    var base = "Our customer was very";
-    var last = "very", steps = 0, mode = "idle", timers = [];
-    var IDLE = "Press play. It predicts one word, adds it, then predicts the next word from everything so far. That loop is the whole trick.";
-    var MANUAL = "Your turn — click any bar to choose that word. Watch the next set of odds change based on what you just picked.";
-
-    function clearTimers(){ timers.forEach(clearTimeout); timers = []; }
-    function curList(){ return TABLE[last] || null; }
-    function sample(list){
-      var total=list.reduce(function(a,b){return a+b[1];},0), r=Math.random()*total, acc=0;
-      for(var k=0;k<list.length;k++){ acc+=list[k][1]; if(r<=acc) return list[k][0]; }
-      return list[0][0];
-    }
-    function bars(highlight){
-      cands.innerHTML = "";
-      var list = curList();
-      if(!list || steps>=5){
-        cands.innerHTML = '<div class="hint">…and it keeps going like this. Notice: it never looked anything up — it just kept predicting plausible next words.</div>';
-        return;
-      }
-      list.forEach(function(p){
-        var row=document.createElement("button"); row.className = "cand" + (highlight===p[0] ? " win" : "");
-        row.innerHTML='<span class="word">'+p[0]+'</span><span class="track"><span class="pct" style="width:'+p[1]+'%"></span></span><span class="val">'+p[1]+'%</span>';
-        if(mode==="manual") row.onclick=function(){ add(p[0]); bars(null); if(curList()&&steps<5) hint.textContent="Predicted from “"+last+"”. Pick again."; };
-        cands.appendChild(row);
-      });
-    }
-    function add(w){ stream.innerHTML += ' <span class="new">'+w+'</span>'; last=w; steps++; }
-
-    function autoStep(){
-      var list = curList();
-      if(!list || steps>=5){ finishAuto(); return; }
-      bars(null);
-      hint.textContent = "Predicting the word after “"+last+"”…";
-      timers.push(setTimeout(function(){
-        var w = sample(list);
-        bars(w);
-        hint.textContent = "It picked “"+w+"” — that now becomes part of the input for the next guess.";
-        timers.push(setTimeout(function(){ add(w); autoStep(); }, 850));
-      }, 700));
-    }
-    function finishAuto(){
-      bars(null);
-      hint.textContent = "That's the whole trick — predict a word, feed it back, predict again. Run it again and you may get a different sentence.";
-      play.textContent = "▶ Run again"; play.disabled = false;
-      manual.style.display = "inline-block"; reset.style.display = "none";
-    }
-    function startAuto(){
-      clearTimers(); stream.innerHTML=base; last="very"; steps=0; mode="auto";
-      play.disabled=true; manual.style.display="none"; reset.style.display="none";
-      autoStep();
-    }
-    play.onclick = startAuto;
-    manual.onclick = function(){
-      clearTimers(); mode="manual"; stream.innerHTML=base; last="very"; steps=0;
-      hint.textContent = MANUAL;
-      play.disabled=false; play.textContent="▶ Watch it write";
-      manual.style.display="none"; reset.style.display="inline-block";
-      bars(null);
-    };
-    reset.onclick = function(){
-      clearTimers(); stream.innerHTML=base; last="very"; steps=0; bars(null);
-      hint.textContent = mode==="manual" ? MANUAL : IDLE;
-    };
-    bars(null);
-  })();
-
-  /* ---------- S1: temperature dial — write the whole sentence at this setting ---------- */
-  (function(){
-    var TABLE = {
-      "very": [["happy",34],["frustrated",26],["pleased",18],["upset",13],["specific",9]],
-      "happy": [["with",40],["about",28],["that",20],["and",12]],
-      "frustrated": [["with",44],["by",30],["that",16],["because",10]],
-      "pleased": [["with",46],["to",30],["that",24]],
-      "upset": [["about",42],["that",30],["with",28]],
-      "with": [["the",38],["our",30],["how",20],["us",12]],
-      "the": [["service",36],["delay",30],["result",20],["team",14]],
-      "our": [["response",40],["product",34],["team",26]]
-    };
-    var slider=document.getElementById("tempSlider"), out=document.getElementById("tempOut"),
-        lbl=document.getElementById("tempLbl"), gen=document.getElementById("tempGen"),
-        hint=document.getElementById("tempHint");
-    if(!slider||!out) return;
-    var RUNS=5;
-    function temp(){ return Math.max(0.05, slider.value/50); } /* 0→.05, 50→1.0, 100→2.0 */
-    function sampleAt(list,T){     /* temperature→0 is greedy (always the top word); above that, sample */
-      if(T<=0.3) return list[0][0];
-      var total=list.reduce(function(a,b){return a+b[1];},0);
-      var scaled=list.map(function(p){ return Math.pow(p[1]/total, 1/T); });
-      var Z=scaled.reduce(function(a,b){return a+b;},0), r=Math.random(), acc=0;
-      for(var i=0;i<list.length;i++){ acc+=scaled[i]/Z; if(r<=acc) return list[i][0]; }
-      return list[list.length-1][0];
-    }
-    function write(T){             /* walk the same chain Section 1 used, sampling at this dial */
-      var last="very", words=[];
-      for(var s=0; s<5; s++){
-        var list=TABLE[last]; if(!list) break;
-        var w=sampleAt(list,T); words.push(w); last=w;
-      }
-      return words.join(" ");
-    }
-    function describe(T){
-      if(T<=0.3) return "Near-deterministic — it takes the safe, top word almost every time.";
-      if(T<=1.05) return "Balanced — likely words usually win, but it surprises you sometimes.";
-      return "Wild — even unlikely words get a real chance. Creative, less predictable.";
-    }
-    function roll(){
-      var T=temp(), runs=[];
-      out.innerHTML = "";
-      for(var i=0;i<RUNS;i++){
-        var cont=write(T); runs.push(cont);
-        var row=document.createElement("div"); row.className="trun";
-        row.innerHTML='<span class="muted">Our customer was very</span> <span class="hot">'+cont+'</span>';
-        out.appendChild(row);
-      }
-      var distinct = runs.filter(function(s,i){ return runs.indexOf(s)===i; }).length;
-      hint.textContent = distinct===1
-        ? RUNS+" runs → the exact same sentence every time. That's the reliable end of the dial."
-        : RUNS+" runs → "+distinct+" different sentences. Same engine you watched above — just a looser dial.";
-    }
-    slider.oninput = function(){ lbl.textContent = describe(temp()); roll(); };
-    gen.onclick = roll;
-    lbl.textContent = describe(temp()); roll();
-  })();
-
-  /* ---------- S1: spot the confident-but-maybe-wrong ---------- */
-  (function(){
-    var ITEMS = [
-      "“Sandvik reported exactly 41,387 employees in its 2019 annual report.”",
-      "“The standard payment term for tier-1 automotive suppliers is net 45 days.”",
-      "“Tungsten-carbide cutting tools keep their hardness up to about 1,000 °C.”"
-    ];
-    var wrap=document.getElementById("spotWrap"), out=document.getElementById("spotOut");
-    if(!wrap) return;
-    var decided=0;
-    ITEMS.forEach(function(claim){
-      var row=document.createElement("div"); row.className="item";
-      var lab=document.createElement("span"); lab.className="label"; lab.textContent=claim;
-      var t=document.createElement("button"); t.className="pick"; t.textContent="Trust it";
-      var v=document.createElement("button"); v.className="pick"; v.textContent="Verify first";
-      var verd=document.createElement("span"); verd.className="verdict";
-      var answered=false;
-      function choose(trust){
-        t.classList.toggle("sel", trust); v.classList.toggle("sel", !trust);
-        if(!answered){ answered=true; decided++; }
-        verd.className="verdict "+(trust?"no":"ok");
-        verd.textContent = trust ? "✗ It reads just as confidently whether it's true or not." : "✓ Right instinct.";
-        if(decided===ITEMS.length) out.innerHTML="The catch: <b>all three are equally fluent</b>, and a model states each with the same confidence whether it's accurate or invented. <b>Fluency tells you nothing about accuracy</b> — which is exactly why anything consequential gets checked by a human.";
-      }
-      t.onclick=function(){ choose(true); }; v.onclick=function(){ choose(false); };
-      row.appendChild(lab); row.appendChild(t); row.appendChild(v); row.appendChild(verd); wrap.appendChild(row);
-    });
-  })();
-
-  /* ---------- S2: attention ---------- */
-  (function(){
-    var words = ["The","trophy","didn't","fit","in","the","suitcase","because","it","was","too","big","."];
-    // weights[i] = array over words (0..1); higher = attends more
-    var notes = {};
-    var W = words.map(function(_, i){
-      return words.map(function(__, j){ return j===i?1 : (j===i-1?0.45:0.06); });
-    });
-    // hand-tuned interesting ones
-    W[8] = [0.05,0.92,0.04,0.06,0.03,0.04,0.30,0.05,1,0.04,0.03,0.05,0.02]; notes[8]="“it” attends most to “trophy” — that's how the model figures out what “it” refers to. (Change one word and that can flip.)";
-    W[3] = [0.05,0.85,0.10,1,0.06,0.04,0.55,0.04,0.05,0.04,0.03,0.05,0.02]; notes[3]="“fit” leans on “trophy” and “suitcase” — the two things whose sizes decide whether it fits.";
-    W[11]= [0.04,0.80,0.05,0.20,0.03,0.04,0.20,0.05,0.45,0.06,0.30,1,0.02]; notes[11]="“big” connects back to “trophy” and “too” — it's describing the trophy's size.";
-    W[6] = [0.06,0.30,0.05,0.40,0.10,0.30,1,0.04,0.05,0.04,0.03,0.05,0.02]; notes[6]="“suitcase” pairs with “fit” — the container in the fitting relationship.";
-
-    var sent = document.getElementById("attSent");
-    var out = document.getElementById("attOut");
-    words.forEach(function(w, i){
-      var s=document.createElement("span"); s.className="w"; s.textContent=w; s.dataset.i=i;
-      s.onclick=function(){
-        Array.prototype.forEach.call(sent.children, function(c, j){
-          c.classList.toggle("focus", j===i);
-          var a = W[i][j];
-          c.style.background = j===i ? "var(--accent)" : "rgba(11,110,110,"+(a*0.85)+")";
-          c.style.color = (j===i || a>0.5) ? "#fff" : "var(--ink)";
-        });
-        out.innerHTML = notes[i] || ("“"+words[i]+"” mostly attends to the word just before it. Click <b>“it”</b>, <b>“fit”</b> or <b>“big”</b> for the interesting cases.");
-      };
-      sent.appendChild(s);
-      sent.appendChild(document.createTextNode(" "));
-    });
-  })();
-
-  /* ---------- S2: context window ---------- */
-  (function(){
-    var CAP = 8;
-    var frame = document.getElementById("ctxFrame");
-    var hint = document.getElementById("ctxHint");
-    var toks = [];
-    var pool = ["greeting","your question","my answer","follow-up","a long doc you pasted","clarification","another reply","new request","more detail","correction"];
-    var n = 0;
-    function render(){
-      frame.innerHTML="";
-      toks.forEach(function(t, i){
-        var d=document.createElement("span"); d.className="tok"+(i<toks.length-CAP?" dropped":""); d.textContent=t;
-        frame.appendChild(d);
-      });
-      var dropped = Math.max(0, toks.length-CAP);
-      hint.textContent = dropped ? (dropped+" earliest chunk"+(dropped>1?"s have":" has")+" fallen out of the window — the model can no longer “see” "+(dropped>1?"them":"it")+".") : "Window holds "+CAP+" chunks. Keep adding — see what falls out.";
-    }
-    document.getElementById("ctxAdd").onclick=function(){ toks.push(pool[n%pool.length]); n++; render(); };
-    document.getElementById("ctxReset").onclick=function(){ toks=[]; n=0; render(); };
-    render();
-  })();
-
-  /* ---------- S2: neural network forward pass ---------- */
-  (function(){
-    var host=document.getElementById("netHost");
-    if(!host) return;
-    var NS="http://www.w3.org/2000/svg";
-    var W=640, H=300;
-    var layers=[
-      {x:100, n:3, cap:"Input", labels:["Our","customer","very"]},
-      {x:245, n:5, cap:"Hidden"},
-      {x:385, n:5, cap:"Hidden"},
-      {x:510, n:4, cap:"Output"}
-    ];
-    var OUT=[["happy",34],["frustrated",26],["pleased",18],["upset",13]];
-    function ys(n){ var gap=44, mid=150, arr=[], start=mid-(n-1)*gap/2; for(var i=0;i<n;i++) arr.push(start+i*gap); return arr; }
-    layers.forEach(function(L){ L.ys=ys(L.n); });
-
-    var svg=document.createElementNS(NS,"svg");
-    svg.setAttribute("viewBox","0 0 "+W+" "+H);
-
-    var edges=[];
-    for(var li=0; li<layers.length-1; li++){
-      (function(li){
-        var A=layers[li], B=layers[li+1];
-        A.ys.forEach(function(ay,ai){
-          B.ys.forEach(function(by,bi){
-            var e=document.createElementNS(NS,"line");
-            e.setAttribute("x1",A.x); e.setAttribute("y1",ay);
-            e.setAttribute("x2",B.x); e.setAttribute("y2",by);
-            e.setAttribute("class","edge");
-            e.dataset.from=li+"-"+ai; e.dataset.to=(li+1)+"-"+bi;
-            svg.appendChild(e); edges.push({el:e, into:li+1});
-          });
-        });
-      })(li);
-    }
-    layers.forEach(function(L){
-      var t=document.createElementNS(NS,"text"); t.setAttribute("x",L.x); t.setAttribute("y",22);
-      t.setAttribute("text-anchor","middle"); t.setAttribute("class","layercap"); t.textContent=L.cap; svg.appendChild(t);
-    });
-    var nodes={};
-    layers.forEach(function(L, li){
-      L.ys.forEach(function(y, ni){
-        var c=document.createElementNS(NS,"circle");
-        c.setAttribute("cx",L.x); c.setAttribute("cy",y); c.setAttribute("r",12);
-        c.setAttribute("class","node"); c.dataset.key=li+"-"+ni;
-        svg.appendChild(c); nodes[li+"-"+ni]=c;
-        if(L.labels){
-          var t=document.createElementNS(NS,"text"); t.setAttribute("x",L.x-18); t.setAttribute("y",y+4);
-          t.setAttribute("text-anchor","end"); t.setAttribute("class","nlabel"); t.textContent=L.labels[ni]; svg.appendChild(t);
-        }
-      });
-    });
-    var bx=layers[3].x+22, bw=90;
-    OUT.forEach(function(o,i){
-      var y=layers[3].ys[i];
-      var bg=document.createElementNS(NS,"rect"); bg.setAttribute("x",bx); bg.setAttribute("y",y-6); bg.setAttribute("width",bw); bg.setAttribute("height",12); bg.setAttribute("rx",6); bg.setAttribute("fill","#eef2f4"); svg.appendChild(bg);
-      var fill=document.createElementNS(NS,"rect"); fill.setAttribute("x",bx); fill.setAttribute("y",y-6); fill.setAttribute("width",0); fill.setAttribute("height",12); fill.setAttribute("rx",6); fill.setAttribute("class","obar"); fill.dataset.w=Math.round(o[1]/100*bw*2.4); svg.appendChild(fill); o.fillEl=fill;
-      var t=document.createElementNS(NS,"text"); t.setAttribute("x",bx); t.setAttribute("y",y-10); t.setAttribute("class","olabel"); t.textContent=o[0]+" "+o[1]+"%"; svg.appendChild(t);
-    });
-    host.appendChild(svg);
-
-    var hint=document.getElementById("netHint");
-    var DEFAULT="Press Run to watch the signal flow, or click a neuron to inspect its connections.";
-    var running=false;
-    function clearAll(){
-      edges.forEach(function(e){ e.el.classList.remove("hot","dim"); });
-      Object.keys(nodes).forEach(function(k){ nodes[k].classList.remove("fired","sel"); });
-      OUT.forEach(function(o){ o.fillEl.setAttribute("width",0); });
-    }
-    function run(){
-      if(running) return; running=true; clearAll();
-      hint.textContent="Signal flowing left → right: each layer transforms the numbers and passes them on.";
-      var t=0;
-      for(var li=0; li<layers.length; li++){
-        (function(li){ setTimeout(function(){
-          layers[li].ys.forEach(function(_,ni){ nodes[li+"-"+ni].classList.add("fired"); });
-          edges.forEach(function(e){ if(e.into===li) e.el.classList.add("hot"); });
-        }, t); })(li);
-        t+=520;
-      }
-      setTimeout(function(){
-        OUT.forEach(function(o){ o.fillEl.setAttribute("width", o.fillEl.dataset.w); });
-        hint.innerHTML="Out comes a probability for each next word — the same percentages you met in Section 1. <b>They're produced entirely by the connection weights the model learned.</b>";
-        running=false;
-      }, t+120);
-    }
-    var sel=null;
-    svg.addEventListener("click", function(ev){
-      var c=ev.target; if(c.tagName!=="circle" || running) return;
-      var key=c.dataset.key;
-      if(sel===key){ sel=null; clearAll(); hint.textContent=DEFAULT; return; }
-      sel=key;
-      Object.keys(nodes).forEach(function(k){ nodes[k].classList.remove("fired"); nodes[k].classList.toggle("sel", k===key); });
-      OUT.forEach(function(o){ o.fillEl.setAttribute("width",0); });
-      edges.forEach(function(e){
-        var touch=(e.el.dataset.from===key || e.el.dataset.to===key);
-        e.el.classList.toggle("hot", touch);
-        e.el.classList.toggle("dim", !touch);
-      });
-      hint.innerHTML="This neuron adds up every number flowing into it — each one multiplied by the <b>weight</b> on its wire — and passes the result on. That's the whole operation, repeated across <b>billions</b> of connections.";
-    });
-    document.getElementById("netRun").onclick=run;
-    document.getElementById("netReset").onclick=function(){ sel=null; clearAll(); hint.textContent=DEFAULT; };
-  })();
-
-  /* ---------- S2: learning meter ---------- */
-  (function(){
-    var bar=document.getElementById("errFill");
-    if(!bar) return;
-    var ep=document.getElementById("epochLbl"), pred=document.getElementById("learnPred"),
-        btn=document.getElementById("learnStep"), rst=document.getElementById("learnReset"), hint=document.getElementById("learnHint");
-    var STEPS=[ {err:90,conf:17}, {err:62,conf:33}, {err:40,conf:49}, {err:24,conf:64}, {err:12,conf:80}, {err:5,conf:92} ];
-    var i=0, read=0;
-    function render(){
-      var s=STEPS[i];
-      bar.style.width=s.err+"%";
-      bar.style.background = s.err>50 ? "var(--bad)" : (s.err>20 ? "var(--warn)" : "var(--good)");
-      ep.textContent="Examples read: "+read.toLocaleString();
-      pred.innerHTML="After “Our customer was very …” → predicts <b>“happy”</b> with <b>"+s.conf+"%</b> confidence";
-      if(i===0) hint.textContent="Untrained, the weights are random — it barely beats guessing.";
-      else if(i<STEPS.length-1) hint.textContent="Each batch nudged millions of weights to cut the error. That nudging is all “learning” is.";
-      else { hint.innerHTML="<b>Trained.</b> Those millions of tiny adjustments <i>are</i> the model's knowledge — and they <b>freeze</b> the moment training stops. That's exactly why it's blind to anything newer."; }
-      btn.disabled = (i===STEPS.length-1);
-    }
-    btn.onclick=function(){ if(i<STEPS.length-1){ i++; read+=250000; render(); } };
-    rst.onclick=function(){ i=0; read=0; render(); };
-    render();
-  })();
 
   /* ---------- S3: assemble a system (compose capabilities) ---------- */
   (function(){
@@ -1468,36 +840,6 @@
     }
     next.onclick=function(){ if(i<TASKS.length-1){ i++; loadTask(); } };
     loadTask();
-  })();
-
-  /* ---------- S4: prompt builder ---------- */
-  (function(){
-    var PARTS = [
-      {key:"role", label:"Role", text:"You are a senior sales operations analyst."},
-      {key:"task", label:"Task", text:"Summarise this RFP into a one-page brief for the deal team."},
-      {key:"context", label:"Context", text:"Context: we sell industrial cutting tools; the buyer is a mid-size automotive supplier."},
-      {key:"constraints", label:"Constraints", text:"Use only facts in the RFP. Flag anything missing rather than guessing."},
-      {key:"format", label:"Output format", text:"Output: 5 bullet points, then a 'Risks' line."},
-      {key:"examples", label:"Examples", text:"Example of a good bullet: '• Volume: 12k units/yr, ramping from Q3.'"}
-    ];
-    var on = {task:true};
-    var togWrap = document.getElementById("pbToggles");
-    PARTS.forEach(function(p){
-      var t=document.createElement("button"); t.className="tg"+(on[p.key]?" on":""); t.textContent=p.label;
-      t.onclick=function(){ on[p.key]=!on[p.key]; t.classList.toggle("on", on[p.key]); render(); };
-      togWrap.appendChild(t);
-    });
-    var pre=document.getElementById("pbPreview"), meter=document.getElementById("pbMeter"), lbl=document.getElementById("pbMeterLbl");
-    var LEVELS=["bare minimum","getting there","solid","strong","production-grade","production-grade"];
-    function render(){
-      var lines=PARTS.filter(function(p){return on[p.key];}).map(function(p){return p.text;});
-      pre.textContent = lines.length? lines.join("\n") : "(empty — at minimum you need a Task)";
-      var c = PARTS.filter(function(p){return on[p.key];}).length;
-      meter.style.width=(c/6*100)+"%";
-      lbl.textContent = "Reliability: " + (on.task ? LEVELS[c-1] : "won't work without a Task");
-      meter.style.background = on.task ? "var(--accent)" : "var(--bad)";
-    }
-    render();
   })();
 
   /* ---------- S4: vague vs structured comparison (multi-scenario) ---------- */
@@ -1845,73 +1187,7 @@
     showMode(); render();
   })();
 
-  /* ---------- S6: data sorter ---------- */
-  (function(){
-    var ITEMS = [
-      {label:"A published product brochure", ok:true,  why:"Already public — no leakage risk."},
-      {label:"Next quarter's unreleased price list", ok:false, why:"Confidential & market-sensitive — never into a public tool."},
-      {label:"A customer's personal contact details", ok:false, why:"Personal data (PII) — protected; keep it out."},
-      {label:"Your company's published annual report", ok:true,  why:"Public by definition — fine."},
-      {label:"An internal memo about a possible acquisition", ok:false, why:"Highly confidential — a leak here is serious."},
-      {label:"A draft of a public marketing blog post", ok:true,  why:"Intended for the public anyway — low risk."}
-    ];
-    var wrap=document.getElementById("sorter"), out=document.getElementById("sorterOut");
-    var decided=0;
-    ITEMS.forEach(function(it){
-      var row=document.createElement("div"); row.className="item";
-      var lab=document.createElement("span"); lab.className="label"; lab.textContent=it.label;
-      var okB=document.createElement("button"); okB.className="pick"; okB.textContent="OK in public tool";
-      var noB=document.createElement("button"); noB.className="pick"; noB.textContent="Never";
-      var v=document.createElement("span"); v.className="verdict";
-      function choose(saidOk){
-        okB.classList.toggle("sel", saidOk); noB.classList.toggle("sel", !saidOk);
-        var right = (saidOk===it.ok);
-        if(v.textContent==="") decided++;
-        v.className="verdict "+(right?"ok":"no");
-        v.textContent=(right?"✓ ":"✗ ")+it.why;
-        if(decided===ITEMS.length) out.innerHTML="You've sorted all six. <b>The rule of thumb:</b> if it isn't already public, treat it as off-limits to public AI tools until Sandvik's data rule says otherwise.";
-      }
-      okB.onclick=function(){ choose(true); }; noB.onclick=function(){ choose(false); };
-      row.appendChild(lab); row.appendChild(okB); row.appendChild(noB); row.appendChild(v); wrap.appendChild(row);
-    });
-  })();
-
-  /* ---------- S6: local reflection ---------- */
-  (function(){
-    var ta=document.getElementById("reflect");
-    ta.value = state.reflect || "";
-    ta.addEventListener("input", function(){ state.reflect=ta.value; save(); });
-  })();
-
   /* ---------- quizzes ---------- */
-  makeQuiz("q1",[
-    {stem:"Why can a generative model state something false with full confidence?",
-     opts:["It predicts what's plausible next, with no built-in check on what's true","It lost its internet connection","It was asked the question twice"], answer:0,
-     why:"It generates by predicting likely text, not by retrieving verified facts. Fluent and wrong can look identical."},
-    {stem:"You run the same prompt twice and get two differently-worded answers. What's happening?",
-     opts:["The tool is broken","Generation is probabilistic — variation is normal","Someone edited your prompt"], answer:1,
-     why:"It's probabilistic by design — great for drafting, something to manage when you need one exact answer."},
-    {stem:"You want the model's answers to be as consistent and repeatable as possible. What do you turn down?",
-     opts:["The number of tokens","The temperature","The context window"], answer:1,
-     why:"Lower temperature makes it favour the top prediction almost every time — consistent output. Higher temperature trades that for variety."},
-    {stem:"Your assistant gives confidently outdated information about your own industry. The root cause?",
-     opts:["Its knowledge is frozen at training time — recent and internal facts simply aren't in its training data","Its temperature is set too low","It ran out of tokens mid-answer"], answer:0,
-     why:"It only learned the patterns in its training data. Anything newer — or private to your business — was never in there. That's the gap RAG closes later."}
-  ]);
-  makeQuiz("q2",[
-    {stem:"Your assistant answers confidently — and wrongly — about a policy you changed last week. Why?",
-     opts:["Its knowledge is frozen at training time; it never saw the change","The context window is too small for policies","LLMs can't read policies at all"], answer:0,
-     why:"It only knows its training data. Recent/internal facts aren't there — exactly the gap RAG closes."},
-    {stem:"What is the 'context window'?",
-     opts:["Its permanent memory of every chat","The working memory of the current conversation","A time limit before the session expires"], answer:1,
-     why:"It's live working memory for this conversation; nothing persists once it's full or closed."},
-    {stem:"A team proposes “fine-tune the model on our policy PDFs so it knows them.” The honest pushback?",
-     opts:["Perfect — fine-tuning is the cheap way to teach it new facts","Fine-tuning shapes behaviour, not fresh facts — to ground it in current policies you usually want RAG","Fine-tuning would delete its existing knowledge"], answer:1,
-     why:"Fine-tuning changes tone/format/behaviour. For current, factual grounding in your own documents, RAG is the right tool — the two get confused constantly."},
-    {stem:"You need to tag thousands of short messages — a simple, high-volume job. Best default model?",
-     opts:["The largest, newest model — always safest","A smaller, faster, cheaper model that's clearly good enough","Whichever costs the most"], answer:1,
-     why:"Match the model to the job. At volume, a cheap model that's good enough beats an expensive one used out of habit."}
-  ]);
   makeQuiz("q3",[
     {stem:"A bot must answer strictly from this quarter's price & policy PDFs, with the source shown. What does it need?",
      opts:["Just the LLM","LLM + retrieval (RAG)","LLM + tools & a loop (Agent)","Several coordinated agents"], answer:1,
@@ -1971,7 +1247,7 @@
 
   /* ---------- boot ---------- */
   renderProgress();
-  show("s1");
+  show("s4");  /* Prompting — first in display order */
 })();
 </script>
 </body>

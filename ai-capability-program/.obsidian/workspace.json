@@ -1,0 +1,181 @@
+{
+  "main": {
+    "id": "bf3713f30d10086b",
+    "type": "split",
+    "children": [
+      {
+        "id": "140e6015583681c1",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "07b2462d7d3dd51b",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "37a06e43b916e834",
+    "type": "split",
+    "children": [
+      {
+        "id": "af48220cc2e2cfa5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "8217d50153cf67d6",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "8ff7d7010162f6e7",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "c2bfd19d50da66ad",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "e7dbe2d55fd844fb",
+    "type": "split",
+    "children": [
+      {
+        "id": "ea83ddcc12e7e5c3",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9edd54f621b281a8",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "weeks/week-1-foundations/01-workshop/deck-1-handson-claude-desktop.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for deck-1-handson-claude-desktop"
+            }
+          },
+          {
+            "id": "4122fb3718ca5a0e",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "weeks/week-1-foundations/01-workshop/deck-1-handson-claude-desktop.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from deck-1-handson-claude-desktop"
+            }
+          },
+          {
+            "id": "25d77c918b005244",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "f062072377103e4a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "weeks/week-1-foundations/01-workshop/deck-1-handson-claude-desktop.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of deck-1-handson-claude-desktop"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "07b2462d7d3dd51b",
+  "lastOpenFiles": [
+    "overview.md",
+    "weeks/week-1-foundations/01-workshop/hands-on-movements.md",
+    "weeks/week-1-foundations/01-workshop/deck-week1-foundations.html",
+    "weeks/week-1-foundations/00-preread/week-1-preread-v2.html",
+    "weeks/week-1-foundations/01-workshop/deck-3-rag-agents.html",
+    "weeks/week-1-foundations/01-workshop/deck-2-prompting.html",
+    "weeks/week-1-foundations/01-workshop/deck-1-fundamentals.html",
+    "weeks/week-1-foundations/01-workshop/deck-1-handson-claude-desktop.md",
+    "weeks/week-1-foundations/01-workshop/week-1-session.html",
+    "weeks/week-1-foundations/01-workshop/facilitator-room-kit.md"
+  ]
+}

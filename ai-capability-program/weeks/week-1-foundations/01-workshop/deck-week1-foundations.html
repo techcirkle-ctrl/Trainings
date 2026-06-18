@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<!--
+  AI Capability Program — Week 1 · THE SESSION DECK (projectable + circulated).
+  One deck guides the whole 5-hr session: all 13 movements (M1–M13), concept AND hands-on, in one file.
+  Concept movements drive widgets live; hands-on movements carry their starter prompts inline with COPY buttons —
+  leaders open this same file on their laptop and copy the prompts straight off the slide.
+  Self-contained: inline CSS + vanilla JS, no network, no build. Open with: open "deck-week1-foundations.html"
+  Nav: → / Space / click = next · ← = prev · Home = agenda · N = notes · F = full-screen.
+
+  Revised flow (after expert review):
+    Act 1 · Prompting          — M1–M4  : prompt anatomy · controlled experiment (H-O) · build & bank 3 (H-O) · patterns & failure modes
+    Act 2 · The engine         — M5–M7  : how it predicts (2-min concept) · two leader decisions · the stack: compose, don't climb
+    Act 3 · RAG, Agents & Capstone — M8–M13 : RAG · data rule (H-O) · agent vs chatbot · AI interviews you (H-O) · architect & out-judge (H-O) · write your spec (H-O)
+
+  Format: .claude/skills/teach/DECK-FORMAT.md · Canon: reference/DESIGN.md
+-->
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Week 1 · The Session Deck — Foundations</title>
+<style>
+  :root{--ink:#16202b;--muted:#5c6b7a;--line:#e4e8ec;--paper:#fff;--wash:#f6f8fa;--accent:#0b6e6e;--accent-soft:#e2f0ef;--warn:#b06a00;--good:#1c7a4a;--bad:#b23b3b;--scriptw:min(460px,42vw)}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:#0c1419;color:var(--ink);font:18px/1.6 ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .kicker{font:700 clamp(12px,1.1vw,15px)/1.3 ui-sans-serif,system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin:0 0 .8rem}
+  .muted{color:var(--muted)}
+  .deck{position:fixed;inset:0;overflow:hidden}
+  .slide{position:absolute;inset:0;display:none;padding:clamp(22px,3.6vw,56px);background:var(--paper);flex-direction:column;justify-content:safe center;overflow:auto;animation:fade .3s ease}
+  .slide.active{display:flex}.note,.script{display:none}
+  @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .stage{width:100%;max-width:1180px;margin:0 auto}
+  h1.big{font:800 clamp(2rem,4.6vw,3.7rem)/1.06 ui-sans-serif,system-ui,sans-serif;letter-spacing:-.02em;margin:.1em 0 .35em}
+  h2.head{font:800 clamp(1.5rem,3.2vw,2.6rem)/1.1 ui-sans-serif,system-ui,sans-serif;letter-spacing:-.015em;margin:.1em 0 .3em}
+  .lead{font:clamp(1.1rem,1.7vw,1.5rem)/1.5 ui-serif,Georgia,serif;color:#26323d;max-width:32em}
+  .sub{font:clamp(1rem,1.4vw,1.25rem)/1.55 ui-sans-serif,system-ui,sans-serif;color:var(--muted);max-width:38em}
+  .xl{font:800 clamp(2.2rem,6vw,5rem)/1.02 ui-sans-serif,system-ui,sans-serif;letter-spacing:-.025em}
+  .accent{color:var(--accent)}
+  .read{display:inline-block;margin-top:.8rem;padding:11px 16px;border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:0 10px 10px 0;font:600 clamp(.92rem,1.25vw,1.1rem)/1.45 ui-sans-serif,system-ui,sans-serif;color:#1d3b39;max-width:42em}
+  .read b{color:var(--accent)}
+  .slide.isnow{background:var(--wash)}.slide.isnow .kicker{color:var(--muted)}.slide.isnow h2.head{color:#33414e}
+  .slide.dark{background:#0d2b2b;color:#eaf3f2}.slide.dark .kicker{color:#7fd1cb}.slide.dark h1.big,.slide.dark h2.head{color:#fff}.slide.dark .sub,.slide.dark .lead{color:#bfe0dd}
+  .slide.act{background:#0c1419;color:#eaf3f2}.slide.act .kicker{color:#7fd1cb}.slide.act h1.big,.slide.act h2.head{color:#fff}.slide.act .lead,.slide.act .sub{color:#bcd2cf}
+  .goalrow{display:flex;gap:36px;flex-wrap:wrap;margin-top:1.6rem}.goalrow .gb{max-width:24em}
+  .goalrow .gb .t{font:700 12px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#7fd1cb;margin-bottom:.4em}
+  .goalrow .gb p{margin:0;color:#dcebe9;font-size:clamp(1rem,1.4vw,1.2rem);line-height:1.45}
+  .chrome{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;justify-content:space-between;align-items:center;padding:10px 18px;font:600 12.5px ui-sans-serif,system-ui,sans-serif;pointer-events:none}
+  .chrome .mv{color:var(--muted)}.chrome .mv b{color:var(--accent)}.chrome .count{color:var(--muted);font-variant-numeric:tabular-nums}
+  .progress{position:fixed;left:0;top:0;height:3px;background:var(--accent);z-index:31;transition:width .3s ease}
+  .helpbar{position:fixed;left:18px;bottom:34px;z-index:30;font:600 11.5px ui-sans-serif,system-ui,sans-serif;color:#9fb1ad}
+  /* mini-agenda */
+  .agcols{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:1.3rem;align-items:start}
+  @media (max-width:880px){.agcols{grid-template-columns:1fr}}
+  .agtitle{font:700 12px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 .55rem}
+  .agcols .agtitle+.agtitle,.agcols .mvlist+.agtitle{margin-top:0}
+  .mvlist{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+  .mvlist li{display:flex;gap:12px;align-items:baseline;background:var(--paper);border:1px solid var(--line);border-radius:11px;padding:9px 14px}
+  .mvlist li.ho{border-color:#cfe6e4;background:#fbfdfd}
+  .mvlist li .m{font:800 12px ui-sans-serif,system-ui,sans-serif;color:#fff;background:var(--accent);border-radius:6px;padding:3px 8px;flex:0 0 auto}
+  .mvlist li .tag{font:600 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-left:auto}
+  .mvlist li.sub3{display:block;background:none;border:0;padding:7px 2px 1px;font:700 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--accent)}
+  .mvlist li.sub3:first-child{padding-top:0}
+  .cards{display:grid;gap:14px;margin-top:1.3rem}.cards.c2{grid-template-columns:repeat(2,1fr)}
+  .ucard{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:0 1px 2px rgba(16,32,43,.04)}
+  .ucard .n{font:800 13px ui-sans-serif,system-ui,sans-serif;color:var(--accent);letter-spacing:.06em;text-transform:uppercase}
+  .ucard h3{font:700 1.12rem ui-sans-serif,system-ui,sans-serif;margin:.3em 0 .25em}.ucard p{margin:.2em 0;color:var(--muted);font-size:.96rem;line-height:1.5}
+  /* hands-on slides + copyable prompts */
+  .hobadge{display:inline-block;font:800 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--accent);border-radius:6px;padding:4px 9px;margin-bottom:.7rem}
+  .hostep{font:700 13px ui-sans-serif,system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;color:var(--accent);margin:1.1rem 0 .2rem}
+  .hodo{font:clamp(1rem,1.4vw,1.18rem)/1.5 ui-sans-serif,system-ui,sans-serif;color:#26323d;max-width:44em;margin:.2em 0}
+  .promptblock{position:relative;margin:12px 0 0;max-width:52em}
+  .promptblock pre{white-space:pre-wrap;font:clamp(12.5px,1.05vw,14.5px)/1.6 ui-monospace,Menlo,Consolas,monospace;background:#fff;border:1px solid var(--line);border-radius:10px;padding:46px 16px 14px;margin:0;color:#24323c}
+  .promptblock .copy{position:absolute;top:9px;right:9px;cursor:pointer;font:700 11.5px ui-sans-serif,system-ui,sans-serif;background:var(--accent);color:#fff;border:0;border-radius:8px;padding:6px 12px}
+  .promptblock .copy:hover{background:#0a5f5f}.promptblock .copy.done{background:var(--good)}
+  .checks{margin:.7rem 0 0;padding-left:1.1em;max-width:42em}.checks li{margin:.3em 0;color:#26323d;font-size:clamp(.98rem,1.3vw,1.12rem);line-height:1.5}
+  /* widgets */
+  .lab{background:#fbfdfd;border:1px solid #cfe6e4;border-radius:16px;padding:15px 18px;margin:.7rem 0 0}
+  .lab .hint{font:15px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:12px;min-height:1.5em}
+  .lab .out{font:clamp(14px,1.4vw,16.5px)/1.55 ui-sans-serif,system-ui,sans-serif;color:#26323d;margin-top:12px}
+  .btn{display:inline-block;cursor:pointer;font:700 15px ui-sans-serif,system-ui,sans-serif;background:var(--accent);color:#fff;border:0;border-radius:10px;padding:11px 17px;margin:10px 8px 0 0}
+  .btn.ghost{background:transparent;color:var(--accent);border:1px solid var(--accent)}.btn:disabled{opacity:.45;cursor:default}
+  .pred .stream{font:700 clamp(20px,2.4vw,30px)/1.6 ui-sans-serif,system-ui,sans-serif;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 20px;min-height:64px}
+  .pred .stream .new{color:var(--accent)}
+  .cands{display:grid;gap:9px;margin-top:14px;max-width:560px}
+  .cand{display:flex;align-items:center;gap:12px;cursor:default;border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;font:16px ui-sans-serif,system-ui,sans-serif;text-align:left;transition:background .2s,border-color .2s,box-shadow .2s}
+  .cand .word{width:120px;font-weight:700}.cand .track{flex:1;height:12px;background:#eef2f4;border-radius:99px;overflow:hidden}
+  .cand .pct{display:block;height:100%;background:var(--accent-soft);border-right:2px solid var(--accent)}.cand .val{width:48px;text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+  .pred .cand.win{border-color:var(--accent);background:var(--accent-soft);box-shadow:inset 0 0 0 1px var(--accent)}.pred .cand.win .pct{background:var(--accent)}
+  .pred .cand.pick{cursor:pointer}.pred .cand.pick:hover{border-color:var(--accent)}
+  .temp .prompt-line{font:700 clamp(18px,2vw,24px)/1.5 ui-sans-serif,system-ui,sans-serif;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+  .temp .dialrow{display:flex;align-items:center;gap:16px;margin-top:16px;flex-wrap:wrap}
+  .temp input[type=range]{accent-color:var(--accent);height:26px;flex:1;min-width:240px}.temp .tlbl{font:700 15px ui-sans-serif,system-ui,sans-serif;color:var(--accent);min-width:14em}
+  .temp .runs{display:flex;flex-direction:column;gap:8px;margin-top:16px;min-height:44px}
+  .temp .trun{font:clamp(15px,1.5vw,18px)/1.5 ui-sans-serif,system-ui,sans-serif;background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 14px}.temp .trun .hot{color:var(--accent);font-weight:700}
+  .att .sent{font:700 clamp(20px,2.6vw,34px)/2 ui-sans-serif,system-ui,sans-serif}
+  .att .w{cursor:pointer;padding:4px 7px;border-radius:8px;transition:background .15s,color .15s;border:1px solid transparent}.att .w:hover{border-color:#cfe6e4}.att .w.focus{outline:2px solid var(--accent);outline-offset:1px}
+  .att .out{font:clamp(15px,1.5vw,19px)/1.5 ui-sans-serif,system-ui,sans-serif;color:#26323d;margin-top:16px;min-height:2.6em;max-width:40em}
+  .build .engine-row{display:flex;align-items:stretch;gap:14px;flex-wrap:wrap}
+  .build .ecore{flex:0 0 170px;background:var(--accent);color:#fff;border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;justify-content:center;font:800 18px ui-sans-serif,system-ui,sans-serif}
+  .build .ecore small{display:block;font:500 13px ui-sans-serif,system-ui,sans-serif;opacity:.85;margin-top:4px}
+  .build .plus{display:flex;align-items:center;font:800 26px ui-sans-serif,system-ui,sans-serif;color:var(--muted)}
+  .build .caps{display:flex;gap:10px;flex:1;flex-wrap:wrap}
+  .build .cap{flex:1;min-width:170px;cursor:pointer;text-align:left;border:1px solid var(--line);background:#fff;border-radius:12px;padding:13px 15px;font:800 15px ui-sans-serif,system-ui,sans-serif;color:var(--ink);transition:background .18s,border-color .18s,box-shadow .18s}
+  .build .cap small{display:block;font:500 12.5px/1.35 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:4px}
+  .build .cap:hover{border-color:var(--accent)}.build .cap.on{background:var(--accent-soft);border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}.build .cap.on small{color:var(--accent)}
+  .build .result{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 20px}
+  .build .brow{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .build .bname{font:800 clamp(1.2rem,2vw,1.7rem) ui-sans-serif,system-ui,sans-serif;color:var(--accent)}
+  .build .meter{height:12px;background:#f3f6f8;border-radius:99px;overflow:hidden;margin-top:12px}.build .meter .fill{height:100%;background:var(--warn);border-radius:99px;transition:width .4s ease}
+  .build .cando{font:clamp(15px,1.5vw,18px)/1.55 ui-sans-serif,system-ui,sans-serif;margin-top:12px}.build .cant{color:var(--warn);display:block;margin-top:.5em;font-size:.95em}
+  /* prompt builder */
+  .pb .toggles{display:flex;flex-wrap:wrap;gap:9px}
+  .pb .tg{cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:9px;padding:10px 14px;font:700 14px ui-sans-serif,system-ui,sans-serif}
+  .pb .tg.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+  .pb pre{white-space:pre-wrap;font:clamp(14px,1.3vw,16px)/1.65 ui-monospace,Menlo,Consolas,monospace;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin-top:14px;color:#24323c;min-height:120px}
+  .meter{height:12px;background:#eef2f4;border-radius:99px;overflow:hidden;margin-top:14px}.meter .fill{height:100%;width:0;background:var(--accent);transition:width .3s}
+  .pb .lbl{font:700 14px ui-sans-serif,system-ui,sans-serif;color:var(--accent);margin-top:9px}
+  /* vague vs structured comparison */
+  .cmp .row{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+  .cmp .tg{cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:9px;padding:9px 13px;font:700 13.5px ui-sans-serif,system-ui,sans-serif;color:var(--ink)}
+  .cmp .tg.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .cmp .seg{display:inline-flex;gap:2px;border:1px solid var(--line);border-radius:99px;background:var(--wash);padding:3px;margin-left:auto}
+  .cmp .seg .tg{border:0;border-radius:99px;background:transparent;color:var(--muted);padding:8px 16px}
+  .cmp .seg .tg.on{background:var(--accent);color:#fff}
+  .cmp pre{white-space:pre-wrap;font:clamp(13px,1.15vw,15px)/1.55 ui-monospace,Menlo,Consolas,monospace;background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin-top:12px;color:#24323c}
+  .cmp .out{font:clamp(14px,1.4vw,17px)/1.55 ui-sans-serif,system-ui,sans-serif;background:#fff;border:1px solid var(--line);border-radius:10px;padding:13px 15px;margin-top:10px}
+  .cmp .hint{font:14px/1.5 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:10px;min-height:1.4em}
+  /* segmented control (shared) */
+  .seg{display:inline-flex;gap:2px;border:1px solid var(--line);border-radius:99px;background:var(--wash);padding:3px}
+  .seg button{border:0;background:transparent;cursor:pointer;color:var(--muted);font:700 13px ui-sans-serif,system-ui,sans-serif;padding:8px 18px;border-radius:99px;transition:background .18s,color .18s}
+  .seg button.on{background:var(--accent);color:#fff;box-shadow:0 1px 3px rgba(11,110,110,.32)}
+  .seg button[data-rag="off"].on,.seg button[data-mode="chatbot"].on{background:#e7ebee;color:var(--ink)}
+  /* RAG machine */
+  .ragm .qpills{display:flex;flex-wrap:wrap;gap:8px}
+  .ragm .qpill{cursor:pointer;border:1px solid var(--line);background:var(--paper);color:var(--ink);font:700 13px ui-sans-serif,system-ui,sans-serif;padding:8px 14px;border-radius:99px}
+  .ragm .qpill:hover{border-color:var(--accent)}.ragm .qpill.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+  .ragm .qshow{font:700 clamp(14px,1.4vw,17px)/1.4 ui-sans-serif,system-ui,sans-serif;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 13px;margin:8px 0 9px}
+  .ragm .controls{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .ragm .lib{display:grid;gap:5px}
+  .ragm .chunk{position:relative;background:#fff;border:1px solid var(--line);border-radius:9px;padding:7px 11px;font:12.5px/1.4 ui-sans-serif,system-ui,sans-serif;transition:opacity .3s,background .3s,border-color .3s}
+  .ragm .chunk.dim{opacity:.36}.ragm .chunk.hit{background:#f4fbf6;border-color:var(--good)}
+  .ragm .doc{font:700 11px ui-sans-serif,system-ui,sans-serif;color:var(--accent);display:block;margin-bottom:2px}.ragm .chunk.hit .doc{color:var(--good)}
+  .ragm .relrow{display:flex;align-items:center;gap:8px;margin-top:7px}
+  .ragm .relbar{flex:1;height:7px;background:#eef2f4;border-radius:99px;overflow:hidden}
+  .ragm .relfill{height:100%;width:0;background:var(--muted);border-radius:99px;transition:width .5s ease}.ragm .chunk.hit .relfill{background:var(--good)}
+  .ragm .relpct{font:600 11px ui-sans-serif,system-ui,sans-serif;color:var(--muted);width:36px;text-align:right;font-variant-numeric:tabular-nums}
+  .ragm .ctxbox{background:#fff;border:1px dashed #cfe6e4;border-radius:10px;padding:10px 12px;margin-top:10px;min-height:40px;font:14px/1.5 ui-sans-serif,system-ui,sans-serif}.ragm .ctxbox .empty{color:var(--muted)}
+  .ragm .ans{margin-top:10px;border:1px solid var(--line);border-radius:10px;padding:12px 15px;font:clamp(14px,1.4vw,16.5px)/1.55 ui-sans-serif,system-ui,sans-serif;background:#fff}
+  .ragm .ans.bad{border-color:#e3b7b7;background:#fdf5f5}.ragm .ans.good{border-color:#bfe3cd;background:#f4fbf6}
+  .ragm .ans .src{display:block;margin-top:7px;font-size:.82rem;color:var(--muted)}.ragm .ans .flag{font-weight:700}.ragm .ans.bad .flag{color:var(--bad)}.ragm .ans.good .flag{color:var(--good)}
+  /* agent loop */
+  .agent2 svg{width:100%;height:auto;display:block;max-height:340px}
+  .agent2 .edge{stroke:#cdd5db;stroke-width:1.7;fill:none;transition:stroke .25s,stroke-width .25s}.agent2 .edge.hot{stroke:var(--accent);stroke-width:2.6}
+  .agent2 .nrect{fill:#fff;stroke:var(--line);stroke-width:1.5;transition:fill .25s,stroke .25s}
+  .agent2 .nlab{font:700 12px ui-sans-serif,system-ui,sans-serif;fill:var(--ink)}.agent2 .nsub{font:600 10px ui-sans-serif,system-ui,sans-serif;fill:var(--muted)}
+  .agent2 .gnode.on .nrect{fill:var(--accent);stroke:var(--accent)}.agent2 .gnode.on .nlab,.agent2 .gnode.on .nsub{fill:#fff}
+  .agent2 .gnode.goal .nrect{fill:var(--accent-soft);stroke:#cfe6e4}.agent2 .gnode.goal .nlab,.agent2 .gnode.goal .nsub{fill:var(--accent)}
+  .agent2 .gnode.done.on .nrect{fill:var(--good);stroke:var(--good)}
+  .agent2 .gnode.tool.on .nrect{fill:var(--accent-soft);stroke:var(--accent)}.agent2 .gnode.tool.on .nlab{fill:var(--accent)}
+  .agent2 .gnarr{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-top:12px;font:clamp(14px,1.4vw,16.5px)/1.55 ui-sans-serif,system-ui,sans-serif;min-height:62px}
+  .agent2 .gnarr .ph{font:700 11px ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:3px}
+  /* sorter */
+  .sorter{display:grid;gap:8px}
+  .item{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:9px;padding:10px 12px}
+  .item .label{flex:1;font:15px ui-sans-serif,system-ui,sans-serif;min-width:170px}
+  .item .pick{cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:7px;padding:7px 12px;font:700 13px ui-sans-serif,system-ui,sans-serif}
+  .item .pick.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+  .item .verdict{font:600 13px ui-sans-serif,system-ui,sans-serif;min-width:130px}.item .verdict.ok{color:var(--good)}.item .verdict.no{color:var(--bad)}
+  /* speaker notes */
+  .notes{position:fixed;right:0;top:0;bottom:0;width:min(420px,92vw);z-index:40;background:#0d1b1b;color:#dcebe9;transform:translateX(100%);transition:transform .25s ease;box-shadow:-8px 0 30px rgba(0,0,0,.3);display:flex;flex-direction:column}
+  .notes.open{transform:none}
+  .notes header{padding:16px 20px;border-bottom:1px solid #1d3a39;display:flex;justify-content:space-between;align-items:center}
+  .notes header .b{font:700 12px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#7fd1cb}
+  .notes header .x{cursor:pointer;color:#7fd1cb;font-size:18px;background:none;border:0}
+  .notes .body{padding:18px 22px;overflow:auto;font:15px/1.6 ui-sans-serif,system-ui,sans-serif}
+  .notes .body ul{margin:.2em 0 .9em;padding-left:1.1em}.notes .body li{margin:.35em 0}.notes .body em{color:#7fd1cb;font-style:normal;font-weight:700}.notes .body .t{font:700 11px ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#5f8f8b;margin:.4em 0 .2em}.notes .body p{margin:.4em 0}
+  /* presenter script — docked side-by-side (S), not an overlay */
+  .deck,.chrome{transition:right .25s ease}
+  body.script-open .deck{right:var(--scriptw)}
+  body.script-open .chrome{right:var(--scriptw)}
+  .scriptpanel{position:fixed;right:0;top:0;bottom:0;width:var(--scriptw);z-index:38;background:#10211f;color:#dcebe9;transform:translateX(100%);transition:transform .25s ease;box-shadow:-8px 0 30px rgba(0,0,0,.35);display:flex;flex-direction:column;border-left:3px solid var(--accent)}
+  body.script-open .scriptpanel{transform:none}
+  .scriptpanel header{padding:14px 20px;border-bottom:1px solid #1d3a39;display:flex;justify-content:space-between;align-items:center}
+  .scriptpanel header .b{font:700 12px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#7fd1cb}
+  .scriptpanel header .x{cursor:pointer;color:#7fd1cb;font-size:18px;background:none;border:0;line-height:1}
+  .scriptpanel .body{padding:16px 20px;overflow:auto;font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif}
+  .scriptpanel .body p{margin:.4em 0}.scriptpanel .body ul{margin:.2em 0 .8em;padding-left:1.1em}.scriptpanel .body li{margin:.3em 0}
+  .scriptpanel .body em{color:#7fd1cb;font-style:normal;font-weight:700}
+  .scriptpanel .body .t{font:700 11px ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8aa6a2;margin:.8em 0 .15em}
+  @media print{
+    *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+    @page{margin:14mm}
+    html,body{height:auto!important;overflow:visible!important;background:#fff}
+    .deck{position:static!important;inset:auto!important;overflow:visible!important;height:auto!important}
+    .slide{position:relative!important;inset:auto!important;display:flex!important;height:auto!important;min-height:auto!important;overflow:visible!important;animation:none!important;page-break-after:always;break-after:page;page-break-inside:avoid;border-bottom:1px solid var(--line)}
+    .slide:last-child{page-break-after:auto;break-after:auto}
+    .chrome,.helpbar,.progress,.notes,.scriptpanel,.promptblock .copy{display:none!important}
+    .note,.script{display:block;margin-top:18px;padding-top:14px;border-top:2px solid var(--accent);font-size:13px;color:var(--muted)}
+    .script{border-top-color:var(--warn)}
+    .note::before{content:"NOTES — room";display:block;font:700 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;color:var(--accent);margin-bottom:5px}
+    .script::before{content:"SCRIPT — presenter only";display:block;font:700 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;color:var(--warn);margin-bottom:5px}
+    .note .t,.script .t{font-weight:700;text-transform:uppercase;color:var(--accent);font-size:11px}
+    .script .t{color:var(--warn)}
+    .note p,.script p{margin:.3em 0}.note em,.script em{color:var(--ink);font-style:normal;font-weight:700}
+  }
+</style></head><body>
+<div class="progress" id="progress"></div>
+<div class="deck" id="deck">
+
+  <!-- ============ TITLE ============ -->
+  <section class="slide active" data-deck="Week 1 · Foundations" data-mv="The Session Deck">
+    <div class="stage"><p class="kicker">AI Capability Program · Week 1</p>
+      <h1 class="big">Foundations<br>&amp; First Tool</h1>
+      <p class="lead">Start with the most-used skill. Understand the engine. Then find and own the real problem you'll build over four weeks.</p>
+    </div>
+    <div class="note"><div class="t">Takeaway</div><p>A working session, not a lecture. Over four weeks you build a working AI agent for your own function plus a 90-day plan to lead it. Today lays the foundation.</p></div>
+    <div class="script"><div class="t">Move</div><p>Set the contract in one breath — a working session, not a lecture. ~30 sec, energy up.</p>
+      <div class="t">Say</div><p>“Welcome. This is a working session, not a lecture — your hands are on the tool within the first half hour. Over four weeks you each walk out with a working AI agent for your own function and a 90-day plan to lead it.”</p>
+      <p>“Today we lay the foundation: start with the skill you'll use every day, understand the engine underneath, then find and own the one real problem you'll build across all four weeks.”</p>
+      <div class="t">Do</div><ul><li>Don't read the agenda yet. Keep the keys handy: <em>Home</em> agenda · <em>N</em> notes · <em>F</em> full-screen.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Here's how the day flows.”</p></div>
+  </section>
+
+  <!-- ============ MINI-AGENDA ============ -->
+  <section class="slide isnow" data-deck="Week 1 · Foundations" data-mv="How the day flows">
+    <div class="stage"><p class="kicker">The day, end to end</p><h2 class="head">We teach it, then you do it</h2>
+      <p class="sub" style="margin-top:.1rem">Three acts. In each we work through the ideas together — then you put them straight onto a real problem of your own.</p>
+      <div class="agcols">
+        <div>
+          <div class="agtitle">Act 1 · Prompting</div>
+          <ul class="mvlist">
+            <li>Anatomy of a production prompt</li>
+            <li class="ho">The controlled experiment <span class="tag">hands-on</span></li>
+            <li class="ho">Build &amp; bank 3 prompts <span class="tag">hands-on</span></li>
+            <li>Patterns &amp; failure modes</li>
+          </ul>
+        </div>
+        <div>
+          <div class="agtitle">Act 2 · The engine</div>
+          <ul class="mvlist">
+            <li>How it predicts — the one trick</li>
+            <li>Two things a leader decides</li>
+            <li>The stack: compose, don't climb</li>
+          </ul>
+        </div>
+        <div>
+          <div class="agtitle">Act 3 · RAG, Agents &amp; Capstone</div>
+          <ul class="mvlist">
+            <li class="sub3">3a · RAG &amp; Agents</li>
+            <li>RAG — ground it in your documents</li>
+            <li class="ho">The data rule — what can &amp; can't go in <span class="tag">hands-on</span></li>
+            <li>Agent vs chatbot — the loop</li>
+            <li class="ho">AI interviews you — find your capstone <span class="tag">hands-on</span></li>
+            <li class="sub3">3b · Architect your problem</li>
+            <li class="ho">Architect &amp; out-judge your problem <span class="tag">hands-on</span></li>
+            <li class="sub3">3c · Write &amp; pressure-test the spec</li>
+            <li class="ho">Write your agent spec <span class="tag">hands-on</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="note"><div class="t">Takeaway</div><p>Three acts — prompting, the engine, then RAG + agents + your capstone. Each act pairs a concept with hands-on work on a real problem you own.</p></div>
+    <div class="script"><div class="t">Move</div><p>Give them the map — three acts — and flag the hands-on beats. ~45 sec.</p>
+      <div class="t">Say</div><p>“Three acts. Act 1, prompting — the everyday skill. Act 2, the engine — what's actually happening under the hood, and the two decisions you make every time. Act 3, RAG, agents, and your capstone — where you find the problem you carry for four weeks.”</p>
+      <p>“The tagged items are hands-on: in each act we work the idea together, then you put it straight onto a real problem of your own.”</p>
+      <div class="t">Do</div><ul><li>Point at the three <em>hands-on</em> tags. Tell them: press <em>Home</em> any time to come back to this map.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Two minutes on how today actually works.”</p></div>
+  </section>
+
+  <!-- ============ HOW TODAY WORKS ============ -->
+  <section class="slide isnow" data-deck="Week 1 · Foundations" data-mv="Your working surface">
+    <div class="stage"><p class="kicker">Before we start · two minutes</p><h2 class="head">How today works</h2>
+      <div class="cards c2">
+        <div class="ucard"><div class="n">The posture</div><h3>Out-judge the machine</h3><p>You're not here to be impressed by a chatbot. Take a genuinely messy problem you own, make the machine architect a solution — then <b>out-judge it</b>. It sounds authoritative and it over-builds; your judgement is the scarce skill.</p></div>
+        <div class="ucard"><div class="n">The tool</div><h3>Claude Desktop · workspace account</h3><p>Sign into <b>Claude Desktop</b> with the <b>program workspace account</b> (not personal). When a slide says <em>hands-on</em>, copy the prompt off it and paste it in. The terminal / Claude Code is the trainer's instrument — stay in Desktop.</p></div>
+      </div>
+      <span class="read"><b>By the end of today</b> you have three tested prompts, a defensible <b>stack map</b>, and an <b>agent spec</b> for one real problem — the spine of all four weeks.</span></div>
+    <div class="note"><div class="t">Takeaway</div><p>Posture: don't be impressed by the machine — <em>out-judge it.</em> Your judgement is the scarce skill. Tool: Claude Desktop on the program workspace account.</p></div>
+    <div class="script"><div class="t">Move</div><p>The most important framing of the day — the posture and the tool. Slow down here.</p>
+      <div class="t">Say</div><p>“Two things to set. First, your posture. You're not here to be impressed by a chatbot. Take a genuinely messy problem you own, make the machine architect a solution — then <em>out-judge it.</em> It sounds authoritative and it over-builds; your judgement is the scarce skill in this room.”</p>
+      <p>“Second, the tool. We're all in Claude Desktop, signed into the program <em>workspace</em> account — not your personal one. When a slide says hands-on, copy the prompt straight off it and paste it in.”</p>
+      <div class="t">Do</div><ul><li>Hold here until every laptop is open and signed into the workspace account.</li><li>Remind them this deck is theirs too — they copy every hands-on prompt off the slide.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Let me name exactly where you're sitting right now.”</p></div>
+  </section>
+
+  <!-- ============ COLD OPEN ============ -->
+  <section class="slide isnow" data-deck="Week 1 · Foundations" data-mv="Cold open">
+    <div class="stage"><p class="kicker">It's Friday morning</p>
+      <h2 class="head">Right now, AI is a black box<br>you're told to just… trust.</h2>
+      <p class="lead muted">You're AI-aware. Every report says move. But you can't lead what you can't see inside — and "trust the magic" is not something a senior leader can sign off on.</p>
+    </div>
+    <div class="note"><div class="t">Takeaway</div><p>Being AI-aware isn't enough. You can't lead what you can't see inside — and "trust the magic" is not something a senior leader can sign off on.</p></div>
+    <div class="script"><div class="t">Move</div><p>Name the tension honestly — the “what is.” Keep it muted; don't rescue it on this slide.</p>
+      <div class="t">Say</div><p>“Right now, for most of you, AI is a black box you're told to just… trust. You're AI-aware — every report says move. But you can't lead what you can't see inside, and ‘trust the magic’ is not something a senior leader can sign off on.”</p>
+      <div class="t">Do</div><ul><li>Pause. Let it land. Make eye contact. Resist fixing it here — the next slide turns it.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>(beat) “So here's what today does about that.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Week 1 · Foundations" data-mv="Cold open">
+    <div class="stage"><p class="kicker">Today we open the box</p>
+      <h2 class="head">By the end of today you won't trust it.<br>You'll <span class="accent">understand</span> it — and you'll have <span class="accent">found and owned</span> a real problem to build on.</h2>
+      <p class="lead" style="margin-top:1rem">Start with the skill you'll use every day. Learn what's under the hood. Ground it, see how agents work — then find the one problem you'll scope, build, harden, and deploy over four weeks.</p>
+    </div>
+    <div class="note"><div class="t">Takeaway</div><p>By the end of today you won't just trust AI — you'll understand it, and you'll have found the one real problem you'll scope, build, harden and deploy across four weeks.</p></div>
+    <div class="script"><div class="t">Move</div><p>The flip — the promise of the day. Lift the energy; this is your launch line into Act 1.</p>
+      <div class="t">Say</div><p>“By the end of today you won't trust it — you'll <em>understand</em> it. And you'll have found and owned a real problem to build on.”</p>
+      <p>“We start with the skill you'll use every day, learn what's under the hood, ground it, see how agents work — then you find the one problem you'll scope, build, harden, and deploy over four weeks.”</p>
+      <div class="t">Do</div><ul><li>Deliver with energy. This is the turn — don't throw it away.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Let's start by <em>using</em> the tool — Act 1 is prompting.”</p></div>
+  </section>
+
+  <!-- ============ ACT 1 ============ -->
+  <section class="slide act" data-deck="Act 1 · Prompting" data-mv="Act 1 · Prompting">
+    <div class="stage"><p class="kicker">Act 1 of 3</p><h1 class="big">Prompting</h1>
+      <p class="lead">The skill you'll use every single day — and the highest-leverage one in the program. <span class="accent">Specificity is control.</span></p>
+      <p class="sub" style="margin-top:1.2rem">Prompt anatomy · two hands-on rounds · the failure modes structure prevents. By the end you have three tested production prompts.</p></div>
+    <div class="note"><div class="t">Takeaway</div><p>Prompting is the everyday, highest-leverage skill. It isn't asking nicely — it's removing every way the model could guess wrong. <em>Specificity is control.</em></p></div>
+    <div class="script"><div class="t">Move</div><p>Reframe what prompting actually is before they touch it.</p>
+      <div class="t">Say</div><p>“We're not going to start with how the model works — we'll open that box in Act 2. We start with the one skill you'll use every single day, on any tool: prompting.”</p>
+      <p>“And let me reframe it. Prompting isn't asking the AI nicely — it's removing every way it could guess wrong. One idea runs this whole act: <em>specificity is control.</em> The more precisely you specify, the more reliably it performs.”</p>
+      <div class="t">Do</div><ul><li>Laptops open, Claude Desktop on the workspace account. You use it before you explain it.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Every reliable prompt has the same skeleton — let me show you the six parts.”</p></div>
+  </section>
+
+  <!-- ============ M1 ============ -->
+  <section class="slide dark" data-deck="Act 1 · Prompting" data-mv="M1 · Anatomy of a production prompt">
+    <div class="stage"><p class="kicker">Act 1 · Prompting</p><h1 class="big">Anatomy of a production prompt</h1>
+      <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See the six parts of a reliable prompt — and watch reliability climb as you add them.</p></div>
+      <div class="gb"><div class="t">You'll decide</div><p>Which parts a given task actually needs.</p></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>Reliable prompts have six parts: role, task, context, constraints, output format, examples. Only the task is mandatory — each part you add removes a way the model can guess wrong.</p></div>
+    <div class="script"><div class="t">Move</div><p>Plant the six-part anatomy — a breath before the live demo.</p>
+      <div class="t">Say</div><p>“Every reliable prompt has the same skeleton: role, task, context, constraints, output format, examples. Only one is mandatory — the task. The other five are optional, but each one you add shuts down a way the model could go wrong.”</p>
+      <div class="t">Do</div><ul><li>Pose the watching question: “As I build one live, ask yourself — which of these six does <em>my</em> kind of work actually need?”</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Let me build one up, part by part.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 1 · Prompting" data-mv="M1 · Anatomy of a production prompt">
+    <div class="stage"><p class="kicker">Build one up, part by part</p><h2 class="head">Switch on what the task needs — watch reliability climb</h2>
+      <div class="lab pb">
+        <div class="toggles" id="pbToggles"></div>
+        <pre id="pbPreview"></pre>
+        <div class="meter"><div class="fill" id="pbMeter"></div></div>
+        <div class="lbl" id="pbMeterLbl"></div>
+      </div>
+      <span class="read"><b>Leader's read:</b> only <b>Task</b> is mandatory — but every part you add closes off a way the model could guess wrong. The model continues from what you give it; specificity is control.</span></div>
+    <div class="note"><div class="t">Takeaway</div><p>Reliability climbs as you add each part. Constraints and examples do the most work — and are the two leaders use least.</p></div>
+    <div class="script"><div class="t">Move</div><p>You drive the builder; narrate the reliability meter climbing as you switch each part on.</p>
+      <div class="t">Say</div><p>“Watch the meter. I start with task only — ‘summarise this.’ It'll do something, but it's guessing at everything I didn't say. Now a Role. Context — the background only I hold. Constraints — and this is the big one for us: ‘use only what's in the text, flag anything missing rather than guessing.’ Output format. Examples.”</p>
+      <p>“See the jump on Constraints and Examples? Those two do the most work — and leaders use them the least. That's specificity buying you control.”</p>
+      <div class="t">Do</div><ul><li>Toggle in order: Task &rarr; Role &rarr; Context &rarr; Constraints &rarr; Format &rarr; Examples. Pause on the Constraints and Examples jumps and point at them.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Now you drive — but like a scientist, not a tourist.”</p></div>
+  </section>
+
+  <!-- ============ M2 (hands-on) ============ -->
+  <section class="slide dark" data-deck="Act 1 · Prompting" data-mv="M2 · The controlled experiment">
+    <div class="stage"><span class="hobadge">Hands-on</span><p class="kicker">Act 1 · Prompting</p><h1 class="big">The controlled experiment</h1>
+      <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Change exactly one part at a time on a real task; isolate the marginal lift of each.</p></div>
+      <div class="gb"><div class="t">You'll decide</div><p>Which prompt elements are worth standardising for your team.</p></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>Test prompts like a scientist: change one element at a time, hold the rest constant, and read what only that element changed.</p></div>
+    <div class="script"><div class="t">Move</div><p>Set the method — change exactly one variable at a time.</p>
+      <div class="t">Say</div><p>“Now you drive, but like scientists, not tourists. The usual mistake is to pile in five things, watch it get better, and have no idea which one helped.”</p>
+      <p>“So we change exactly one variable at a time — same task, held constant, one element added per round — and read what only that element changed. By the end you'll know which parts earn their place, and which are worth making a team standard.”</p>
+      <div class="t">Bridge &rarr;</div><p>“Pick one real task and let's run it.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 1 · Prompting" data-mv="M2 · The controlled experiment">
+    <div class="stage"><span class="hobadge">Hands-on</span><h2 class="head">Add one element per round — read what only that element changed</h2>
+      <p class="hodo">Take one real task — a draft, a summary, an extraction. Start bare; add <b>one</b> element each round.</p>
+      <div class="hostep">Round 1 · bare task</div>
+      <div class="promptblock"><button class="copy">Copy</button><pre>[your task in one plain line, e.g. "Summarise the email thread below."]
+
+[paste your content]</pre></div>
+      <div class="hostep">Then layer these on, one at a time</div>
+      <div class="promptblock"><button class="copy">Copy</button><pre>Round 2 — add a Role:        You are my [function] assistant who values precision over fluff.
+Round 3 — add Context:       Context: [the background only you hold].
+Round 4 — add Constraints:   Use only what's in the text. Flag anything missing rather than guessing.
+Round 5 — add Output format:  Return exactly: [the shape you want].</pre></div>
+      <span class="read">After each round, note in one phrase what moved. <b>The judgment:</b> which element gave you the biggest jump? That's the one worth making a team standard.</span></div>
+    <div class="note"><div class="t">Takeaway</div><p>On a real task, start bare then add one element per round. The element that gives the biggest lift is a candidate team standard.</p></div>
+    <div class="script"><div class="t">Move</div><p>They work; you circulate and harvest. Hands-on, ~8 min.</p>
+      <div class="t">Say</div><p>“Pick one real task — a draft, a summary, an extraction. Copy the Round 1 block: just the bare task. Run it, read it. Now layer on one element per round from the second block — Role, then Context, then Constraints, then Output — and after each, note in one phrase what changed.”</p>
+      <p>“One question to answer by the end: which single element gave you the biggest jump?”</p>
+      <div class="t">Do</div><ul><li>~8 min. Circulate while they work.</li><li>Then pull 2–3 leaders to read out which element moved the needle most.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“That was the lab. Now production.”</p></div>
+  </section>
+
+  <!-- ============ M3 (hands-on) ============ -->
+  <section class="slide dark" data-deck="Act 1 · Prompting" data-mv="M3 · Build &amp; bank 3 prompts">
+    <div class="stage"><span class="hobadge">Hands-on</span><p class="kicker">Act 1 · Prompting</p><h1 class="big">Build &amp; bank 3 prompts</h1>
+      <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Write three production prompts for real tasks you own — tested, not just written.</p></div>
+      <div class="gb"><div class="t">You'll decide</div><p>What "good enough to reuse" looks like for your function.</p></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>Write three production prompts for real tasks you own — tested, not just written. The bar: reusable next week without a rewrite.</p></div>
+    <div class="script"><div class="t">Move</div><p>Raise the stakes — these prompts are keepers, not throwaways.</p>
+      <div class="t">Say</div><p>“That was the lab; this is production. You're now going to write three real prompts for three real tasks you own — and test them, not just write them.”</p>
+      <p>“These aren't throwaway: they go straight into your homework as your three production prompts — the first concrete thing you walk out with today. The bar: good enough that you'd reuse it next week without a rewrite.”</p>
+      <div class="t">Bridge &rarr;</div><p>“Here's the loop you'll run for each one.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 1 · Prompting" data-mv="M3 · Build &amp; bank 3 prompts">
+    <div class="stage"><span class="hobadge">Hands-on</span><h2 class="head">Draft → run → critique → improve</h2>
+      <p class="hodo">For each of three tasks, build the prompt with the full anatomy:</p>
+      <div class="promptblock"><button class="copy">Copy</button><pre>Role:        You are a [role] who [what they're good at].
+Task:        [the single thing to do].
+Context:     [what the model needs to know that it can't infer].
+Constraints: [what it must / must not do — especially: don't invent, flag gaps].
+Output:      [exact format].
+Examples:    [one short example of a good output, if it helps].
+
+[the input to act on]</pre></div>
+      <p class="hodo" style="margin-top:1rem">Run it. Then critique against the anatomy:</p>
+      <div class="promptblock"><button class="copy">Copy</button><pre>Critique the output you just produced against my instructions. Where did it follow them,
+where did it drift, and what one change to my prompt would most improve the next result?</pre></div>
+      <span class="read">Apply the fix and rerun. <b>Bank the final version + one line on what you changed</b> — these three go straight into your homework's "three production prompts."</span></div>
+    <div class="note"><div class="t">Takeaway</div><p>The loop: build with the full anatomy → run → have the model critique itself → apply one change → rerun. Bank three final prompts for your homework.</p></div>
+    <div class="script"><div class="t">Move</div><p>Build three with the self-critique move most people skip. Hands-on, ~12 min.</p>
+      <div class="t">Say</div><p>“Build the prompt with the full anatomy from the first block — every slot filled — and run it on your first task. Then the move most people skip: make the model critique itself. Copy the second block — ‘where did it follow my instructions, where did it drift, and what one change would most improve the next result?’ Apply that one change and rerun.”</p>
+      <p>“Do that for three tasks, and bank each final version with one line on what you changed.”</p>
+      <div class="t">Do</div><ul><li>~12 min. Pair leaders to critique each other's against the six parts.</li><li>Confirm everyone has three banked before you move to Act 2.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Last thing in Act 1 — and this one should make you a little nervous.”</p></div>
+  </section>
+
+  <!-- ============ M4 ============ -->
+  <section class="slide dark" data-deck="Act 1 · Prompting" data-mv="M4 · What structure prevents">
+    <div class="stage"><p class="kicker">Act 1 · Prompting</p><h1 class="big">What structure prevents</h1>
+      <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See how a <em>vague</em> ask fails — differently each time — and how structure closes each gap.</p></div>
+      <div class="gb"><div class="t">You'll decide</div><p>Where an unstructured prompt is a real business risk.</p></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>A vague prompt doesn't just answer worse — it fails dangerously and differently each time: invented numbers, unauthorised promises, biased wording. Structure is risk control.</p></div>
+    <div class="script"><div class="t">Move</div><p>Shift the frame from “better” to “safer” — structure as risk control.</p>
+      <div class="t">Say</div><p>“We've seen structure makes prompts better. Now I want to show you what structure <em>prevents.</em> A vague prompt doesn't just give a worse answer — it fails in a different, specific, dangerous way every single time: an invented number, a promise you never authorised, biased wording, a fabricated field.”</p>
+      <div class="t">Do</div><ul><li>Pose it to the room: “As I show each one, ask — where in <em>my</em> function would that failure actually cost us?”</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Let me show you, side by side.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 1 · Prompting" data-mv="M4 · What structure prevents">
+    <div class="stage"><p class="kicker">Same task · vague vs structured</p><h2 class="head">Flip between the two and watch the output change</h2>
+      <div class="lab cmp">
+        <div class="row" id="cmpScenarios"></div>
+        <div class="row"><span class="muted" style="font-weight:700;font-size:.9rem">Prompt</span>
+          <div class="seg" id="cmpToggles"><button class="tg on">Vague ask</button><button class="tg">Structured prompt</button></div></div>
+        <pre id="cmpPrompt"></pre>
+        <div class="out" id="cmpOut"></div>
+        <div class="hint" id="cmpHint"></div>
+      </div></div>
+    <div class="note"><div class="t">Takeaway</div><p>Same task, vague vs structured. Vague invents figures and makes commitments you never authorised; structure names the issue, cites sources, and refuses to guess.</p></div>
+    <div class="script"><div class="t">Move</div><p>You drive — show the failure first, name it, then flip to the fix. Run two scenarios.</p>
+      <div class="t">Say</div><p>“Take the complaint reply. Here's the vague version — it apologised and promised a full refund and priority shipping. Nobody authorised either; that's not a clumsy sentence, it's a commitment your company never made. Now the structured version — same task, but it names the issue, offers to escalate, and promises nothing outside the contract. Safe to send.”</p>
+      <p>“Same pattern on the RFP: vague invents a 12% number, structured flags the gap instead. That space between the two columns is your business risk — and it closes the moment you add structure.”</p>
+      <div class="t">Do</div><ul><li>Show <em>Vague</em> first, name the exact failure, then flip to <em>Structured</em>.</li><li>Run two: the complaint (unauthorised promise), then the RFP (invented number).</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“You now know how to drive it reliably. Time to see what's under the hood.”</p></div>
+  </section>
+
+  <!-- ============ ACT 2 ============ -->
+  <section class="slide act" data-deck="Act 2 · The engine" data-mv="Act 2 · The engine">
+    <div class="stage"><p class="kicker">Act 2 of 3</p><h1 class="big">The engine</h1>
+      <p class="lead">You've been using it. Now let's see <span class="accent">why it works</span> — and the decision map you'll use every time you scope a problem.</p>
+      <p class="sub" style="margin-top:1.2rem">How it predicts · two decisions leaders make · the stack: compose, don't climb.</p></div>
+    <div class="note"><div class="t">Takeaway</div><p>Act 2 opens the hood — briefly. Not to make you an engineer, but to see the two things you control and the one map — the stack — that the rest of the program builds on.</p></div>
+    <div class="script"><div class="t">Move</div><p>Bridge from Act 1 (you can drive it) into “now see why it works” + the decision map.</p>
+      <div class="t">Say</div><p>“You've spent the last hour driving this thing and getting reliable output. Now — briefly — let's open the hood. Not to make you engineers, but because two of the things under there are yours to decide, and the rest of the program builds on one map you're about to see.”</p>
+      <p>“This act is short: how it actually works, the two dials you control, and the stack — the decision map you'll use every time you scope a problem.”</p>
+      <div class="t">Do</div><ul><li>This is the shortest act — keep it tight. Resist rabbit-holes on internals.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Start with the one trick the whole machine runs on.”</p></div>
+  </section>
+
+  <!-- ============ M5 ============ -->
+  <section class="slide dark" data-deck="Act 2 · The engine" data-mv="M5 · How it predicts">
+    <div class="stage"><p class="kicker">Act 2 · The engine</p><h1 class="big">How it predicts</h1>
+      <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>The one trick the whole machine runs on — and the one dial that matters.</p></div>
+      <div class="gb"><div class="t">You'll decide</div><p>When to make it repeatable, and when to let it roam.</p></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>The whole engine in two minutes: one trick it runs on, and one dial you control.</p></div>
+    <div class="script"><div class="t">Move</div><p>Set up the 2-minute engine explanation — one trick, one dial. No widget.</p>
+      <div class="t">Say</div><p>“Here's the whole engine in two minutes. There's one trick it runs on, and one dial that matters to you. That's it — you don't need the math.”</p>
+      <div class="t">Do</div><ul><li>~2 minutes total for M5. Talk it fast and keep moving.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“The trick is simpler than you'd think.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 2 · The engine" data-mv="M5 · How it predicts">
+    <div class="stage"><p class="kicker">The whole trick — two minutes</p><h2 class="head">It predicts the <span class="accent">next word</span>. Then it does it again.</h2>
+      <div class="cards c2">
+        <div class="ucard"><div class="n">What it does</div><h3>Very good autocomplete</h3><p>Trained on vast text, it learned which words follow which in context. Give it the start of a sentence → it predicts the next word → feeds that back → predicts again — until done. No database. No lookup. Pure sophisticated prediction.</p></div>
+        <div class="ucard"><div class="n">The dial</div><h3>Temperature — how surprising</h3><p>Low (precise): takes the safest word almost every time — same answer 5 times in a row. High (creative): surprising words get a real shot — 5 different results. Your team can tune this per task.</p></div>
+      </div>
+      <span class="read"><b>The implication:</b> it generates — it doesn't retrieve. Nothing "stays" between responses. That's exactly why <b>constraining what it says</b> (Act 1 prompting) and <b>grounding it in your documents</b> (Act 3 RAG) are non-optional.</span></div>
+    <div class="note"><div class="t">Takeaway</div><p>An LLM predicts the next word, feeds it back, and repeats — sophisticated autocomplete. It generates, it doesn't look things up. Temperature is the one dial: low = repeatable, high = creative.</p></div>
+    <div class="script"><div class="t">Move</div><p>Demystify: it's autocomplete; name temperature as the one dial. ~2 min, no widget.</p>
+      <div class="t">Say</div><p>“It predicts the next word. That's it. Trained on a vast amount of text, it learned which words tend to follow which, in context. You give it a start, it predicts the next word, feeds that back, predicts again — and loops until done. A poem, code, a strategy memo — all the same loop. No database, no lookup; it's generating, not retrieving.”</p>
+      <p>“The one dial is <em>temperature.</em> Low, and it takes the safe word every time — the same answer five times over. High, and surprising words get a shot — five different results. And the implication matters: because it generates rather than looks things up, nothing ‘stays’ between answers — which is exactly why constraining it in Act 1, and grounding it in your documents in Act 3, are not optional.”</p>
+      <div class="t">Do</div><ul><li>2 min max. Don't over-explain temperature — name it and move.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“So what's actually yours to decide? Two things.”</p></div>
+  </section>
+
+  <!-- ============ M6 ============ -->
+  <section class="slide dark" data-deck="Act 2 · The engine" data-mv="M6 · Two things a leader decides">
+    <div class="stage"><p class="kicker">Act 2 · The engine</p><h1 class="big">Two things a leader decides</h1>
+      <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See the two variables that are actually yours to govern — not the internals.</p></div>
+      <div class="gb"><div class="t">You'll decide</div><p>How clearly to brief it, and which model to reach for.</p></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>You don't tune the model's internals. Two things at your altitude are yours to decide — and they drive cost, speed and quality.</p></div>
+    <div class="script"><div class="t">Move</div><p>Pull up to leader altitude — what you govern, not the internals.</p>
+      <div class="t">Say</div><p>“You're never going to tune this model's internals — and you shouldn't. But there are exactly two things at your altitude that you <em>do</em> decide, and they affect cost, speed and quality every day.”</p>
+      <div class="t">Do</div><ul><li>No architecture jargon. Keep it at the decision level.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Here they are.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 2 · The engine" data-mv="M6 · Two things a leader decides">
+    <div class="stage"><p class="kicker">Two things a leader actually decides</p>
+      <div class="cards c2"><div class="ucard"><div class="n">Context window</div><h3>The model's working memory</h3><p>Everything it can "see" at once — prompt, pasted docs, the conversation so far. Overflow it and the earliest things fall out of view. Bigger = holds more, costs more.</p></div>
+      <div class="ucard"><div class="n">Model selection</div><h3>Faster &amp; cheaper vs. most capable</h3><p>Cheap fast model for high-volume simple work; the capable one for hard reasoning. A <b>leadership trade-off</b> — cost vs speed vs capability.</p></div></div>
+      <span class="read"><b>Leader's read:</b> you don't tune the model — you <b>choose</b> it. Match it to the job's difficulty and volume, and you control the bill.</span></div>
+    <div class="note"><div class="t">Takeaway</div><p>Context window = the model's working memory (overflow it and early details fall away). Model selection = choosing faster/cheaper vs most capable for the job. You choose the model; you don't tune it.</p></div>
+    <div class="script"><div class="t">Move</div><p>The two leader-controlled variables: context window and model choice.</p>
+      <div class="t">Say</div><p>“First, the context window — the model's working memory. Everything it can see at once: your prompt, the docs you paste, the conversation so far. Picture a desk: pile on too much and the earliest papers slide off the edge — it forgets them. Bigger window holds more, costs more.”</p>
+      <p>“Second, model selection. You don't tune the model — you <em>choose</em> it. A cheap, fast model for high-volume simple work; the most capable one for hard reasoning. That's a leadership trade-off — cost versus speed versus capability — and it's how you control the bill.”</p>
+      <div class="t">Do</div><ul><li>The desk analogy lands — use it. Good spot for a short break before M7 (the heaviest concept).</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Now the one map that carries the whole program — the stack.”</p></div>
+  </section>
+
+  <!-- ============ M7 ============ -->
+  <section class="slide dark" data-deck="Act 2 · The engine" data-mv="M7 · The stack">
+    <div class="stage"><p class="kicker">Act 2 · The engine</p><h1 class="big">The stack: compose, don't climb</h1>
+      <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Replace the "AI ladder" myth with the real model — capabilities you bolt on by need.</p></div>
+      <div class="gb"><div class="t">You'll decide</div><p>The lowest layer a problem needs — the core judgement of the program.</p></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>AI isn't a ladder where each rung contains the last. LLM, RAG, agents, multi-agent are composable capabilities on one engine — switch on only what a problem needs. An agent need not use RAG.</p></div>
+    <div class="script"><div class="t">Move</div><p>Kill the “AI ladder” myth before revealing the real model.</p>
+      <div class="t">Say</div><p>“You've probably seen AI drawn as a ladder — LLM at the bottom, then RAG, then agents, then multi-agent at the top, as if each one contains the last. Forget that. It's wrong, and it makes you overbuild. These are composable capabilities bolted onto one engine — you switch on only what a problem needs. An agent doesn't have to use RAG; RAG doesn't need an agent.”</p>
+      <div class="t">Do</div><ul><li>This is the conceptual spine of the program — slow down. Kill the ladder explicitly.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Let me show you how they compose.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 2 · The engine" data-mv="M7 · The stack">
+    <div class="stage"><p class="kicker">Compose it, don't climb it</p><h2 class="head">One engine + the capabilities you switch on</h2>
+      <div class="lab build"><div class="engine-row"><div class="ecore">LLM<small>the engine: predicts text</small></div><div class="plus">+</div>
+        <div class="caps" id="buildCaps"><button class="cap" data-cap="retrieval">Retrieval<small>answer from your own documents, with sources</small></button>
+        <button class="cap" data-cap="tools">Tools<small>take actions &amp; loop to a goal</small></button>
+        <button class="cap" data-cap="multi">Many agents<small>several specialists, coordinated</small></button></div></div>
+        <div class="result"><div class="brow"><span class="bname" id="buildName">Plain LLM</span><span class="muted" id="buildCostLbl">Cost &amp; complexity: low</span></div>
+        <div class="meter"><div class="fill" id="buildCost" style="width:18%"></div></div><div class="cando" id="buildDetail"></div></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>One engine + capabilities you switch on: +retrieval = RAG, +tools = agent, +both = grounded agent, +many = multi-agent. Cost and complexity climb as you add.</p></div>
+    <div class="script"><div class="t">Move</div><p>You drive — start at plain LLM, switch capabilities on, watch cost/complexity climb.</p>
+      <div class="t">Say</div><p>“One engine — the LLM. Nothing switched on, it's a plain LLM: it drafts and reasons, but it's blind to your documents and takes no actions. Switch on Retrieval — now it answers from your own documents, with sources: that's RAG. Turn retrieval off, switch on Tools — now it acts and loops toward a goal: that's an agent. Switch on both and you get an agent grounded in your documents — the shape of most real assistants. Many agents on top is multi-agent — rare, and expensive.”</p>
+      <p>“Watch the cost bar as you climb.”</p>
+      <div class="t">Do</div><ul><li>Toggle: Retrieval (RAG) &rarr; off &rarr; Tools (Agent) &rarr; both (grounded agent) &rarr; Many agents. Narrate cost rising; land that most problems sit low.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Which sets up the single most important rule in this program.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 2 · The engine" data-mv="M7 · The stack">
+    <div class="stage"><p class="kicker">The rule that governs every build, weeks 2–4</p>
+      <h1 class="xl">The cheapest layer<br>that works, <span class="accent">wins.</span></h1>
+      <p class="lead" style="margin-top:1.3rem">Climbing higher than the problem needs is the most common — and most expensive — mistake. Add the <b>fewest</b> capabilities that solve it.</p>
+      <span class="read"><b>Carry this into Act 3:</b> for any problem — what's the <b>lowest</b> capability that solves it, and <b>why not</b> the one above?</span></div>
+    <div class="note"><div class="t">Takeaway</div><p>The rule for every build: the cheapest layer that works wins. Overbuilding is the most common, most expensive AI mistake. Always ask — the lowest capability that solves this, and why not the one above?</p></div>
+    <div class="script"><div class="t">Move</div><p>The governing rule for every build, weeks 2–4. Land it hard.</p>
+      <div class="t">Say</div><p>“Here's the rule I want you repeating in Week 4: <em>the cheapest layer that works, wins.</em> Climbing higher than the problem needs is the most common — and most expensive — mistake people make with AI. Add the fewest capabilities that solve it, and no more.”</p>
+      <p>“So for any problem you bring me, the question is always: what's the lowest capability that solves this — and why not the one above it?”</p>
+      <div class="t">Do</div><ul><li>Say the line slowly; let it sit. This sets up M12 (architect &amp; out-judge).</li><li><em>Backup bank:</em> Procurement&rarr;RAG · AP invoice triage&rarr;Agent · RFQ drafts&rarr;LLM+RAG · HR policy Q&amp;A&rarr;RAG · IT ticket triage&rarr;Agent.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Now we put it to work — grounding, agents, and the problem you'll own.”</p></div>
+  </section>
+
+  <!-- ============ ACT 3 ============ -->
+  <section class="slide act" data-deck="Act 3 · RAG, Agents &amp; Capstone" data-mv="Act 3 · RAG, Agents &amp; Capstone">
+    <div class="stage"><p class="kicker">Act 3 of 3</p><h1 class="big">RAG, Agents<br>&amp; Your Capstone</h1>
+      <p class="lead">The stack told you <em>when</em> to add each layer. Act 3 shows you <span class="accent">what each layer actually does</span> — then you find the problem you carry through all four weeks.</p>
+      <p class="sub" style="margin-top:1.2rem"><b class="accent">3a</b> RAG, the data rule &amp; agents · AI interviews you &nbsp;&middot;&nbsp; <b class="accent">3b</b> architect &amp; out-judge &nbsp;&middot;&nbsp; <b class="accent">3c</b> write &amp; pressure-test the spec.</p></div>
+    <div class="note"><div class="t">Takeaway</div><p>The stack told you <em>when</em> to add each layer; Act 3 shows what each layer does — then you find, architect, and spec the one problem you carry through all four weeks.</p></div>
+    <div class="script"><div class="t">Move</div><p>Bridge from the stack map into traversing it — and signal the personal pivot coming.</p>
+      <div class="t">Say</div><p>“You've got the map — you know <em>when</em> to add each layer. Act 3 is where you traverse it: what RAG actually does, what an agent actually does, and then the turn — you stop learning about AI in the abstract and find the one problem you'll carry through all four weeks.”</p>
+      <p>“By the end of this act you'll have found that problem, architected it, and written the spec you build next week.”</p>
+      <div class="t">Do</div><ul><li>The longest, most hands-on act — pace it. Protect time for M11–M13 (the capstone work).</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Start with the layer that fixes ‘it doesn't know our business’ — RAG.”</p></div>
+  </section>
+
+  <!-- ============ M8 ============ -->
+  <section class="slide dark" data-deck="Act 3a · RAG &amp; Agents" data-mv="M8 · RAG — ground it">
+    <div class="stage"><p class="kicker">Act 3a · RAG &amp; Agents</p><h1 class="big">RAG — ground it in your documents</h1>
+      <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See the fix for "it doesn't know our business" — retrieve your content at question time, answer with a citation.</p></div>
+      <div class="gb"><div class="t">You'll decide</div><p>Which of your problems genuinely need grounding — and which don't.</p></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>RAG = Retrieval-Augmented Generation: pull your own content at question time and answer from it, with a citation. The most common, lowest-risk way to get real value on your material.</p></div>
+    <div class="script"><div class="t">Move</div><p>Frame RAG as the fix for “it doesn't know our business.”</p>
+      <div class="t">Say</div><p>“Everything we've used so far runs on the model's general training — it knows the world, but it doesn't know Sandvik. RAG is the fix: Retrieval-Augmented Generation. At question time it retrieves your own content and answers from that, with a citation. It's the most common, lowest-risk way to get real value on your own material.”</p>
+      <div class="t">Do</div><ul><li>Say the acronym once, then show it — don't dwell on the letters.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Watch what changes when it can see your documents.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 3a · RAG &amp; Agents" data-mv="M8 · RAG — ground it">
+    <div class="stage"><p class="kicker">Pick a question · flip RAG off and on · press Answer</p><h2 class="head">Watch the answer change when it can see your documents</h2>
+      <div class="lab ragm">
+        <div class="qpills" id="ragQs"></div>
+        <div class="qshow" id="ragQshow"></div>
+        <div class="controls"><span class="muted" style="font-weight:700">RAG</span>
+          <div class="seg" id="ragSwitch"><button data-rag="off" class="on">Off</button><button data-rag="on">On</button></div>
+          <button class="btn" id="ragRun">Answer</button></div>
+        <div class="muted" style="font:700 11px ui-sans-serif;letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px">Your document library — relevance shows when RAG is on</div>
+        <div class="lib" id="ragLib"></div>
+        <div class="ctxbox" id="ragCtx"></div>
+        <div class="ans" id="ragAns"></div>
+        <div class="hint" id="ragHint"></div>
+      </div>
+      <span class="read"><b>Leader's read:</b> a RAG system lives or dies on the documents behind it. "Set up RAG" is maybe 20% model and 80% getting your content clean, current and well-organised.</span></div>
+    <div class="note"><div class="t">Takeaway</div><p>Same model, RAG off vs on: off, it confidently invents a number; on, it answers from your document with a source — and refuses when the answer isn't in your docs. A RAG system is ~80% the quality of your documents, 20% the model.</p></div>
+    <div class="script"><div class="t">Move</div><p>You drive — show the hallucination with RAG off, then grounding + the refusal with RAG on.</p>
+      <div class="t">Say</div><p>“Pick ‘Volume discount.’ RAG off first — it answers confidently, ‘around 12%,’ straight from memory. Sounds authoritative. It's wrong. Now flip RAG on and answer again: it retrieves the pricing policy and says ‘9%, source: pricing_policy_2026.pdf.’ Same model, completely different trustworthiness.”</p>
+      <p>“Now the underrated part — ask ‘Government-contract discount’ with RAG on: it <em>refuses</em> — ‘not in our documents.’ A grounded system knows when it doesn't know. That refusal is worth more than a hundred confident guesses.”</p>
+      <div class="t">Do</div><ul><li>Volume discount: off (wrong 12%) &rarr; on (9% + source). Then Government-contract, RAG on &rarr; refusal.</li><li>Land it: a RAG system is ~80% your documents, 20% the model.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Which makes one question urgent — what are you allowed to feed it?”</p></div>
+  </section>
+
+  <!-- ============ M9 (hands-on) ============ -->
+  <section class="slide dark" data-deck="Act 3a · RAG &amp; Agents" data-mv="M9 · The data rule">
+    <div class="stage"><span class="hobadge">Hands-on</span><p class="kicker">Act 3a · RAG &amp; Agents</p><h1 class="big">The data rule</h1>
+      <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Build the instinct — and the cohort's first draft of what can and can't go into an AI tool.</p></div>
+      <div class="gb"><div class="t">You'll decide</div><p>The line for your own function's data.</p></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>Pointing AI at real content makes data sensitivity urgent. Build the instinct — and the cohort's first draft of what can and can't go into an AI tool.</p></div>
+    <div class="script"><div class="t">Move</div><p>RAG makes the data question urgent — set up building the cohort's first data rule.</p>
+      <div class="t">Say</div><p>“The second you point AI at your real content, a question gets urgent: what's actually allowed to go in? We're going to build the instinct now — and the cohort's first draft of Sandvik's data rule. We'll sort a warm-up set together, then each of you does your own function's data.”</p>
+      <div class="t">Do</div><ul><li>This produces a real artifact — the data-rule input. Collect the lists.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Let's sort a few live.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 3a · RAG &amp; Agents" data-mv="M9 · The data rule">
+    <div class="stage"><p class="kicker">Sort it live · OK in a public tool, or never?</p><h2 class="head">What can &amp; can't go in</h2>
+      <div class="lab"><div class="sorter" id="sorter"></div><div class="out" id="sorterOut">Make a call on each — instant feedback. This is the cohort's first input to Sandvik's data rule.</div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>Rule of thumb: if it isn't already public, treat it as off-limits until the data rule says otherwise.</p></div>
+    <div class="script"><div class="t">Move</div><p>Run the sort as a room sport — call each item before revealing.</p>
+      <div class="t">Say</div><p>“I'll put items up one at a time. Before I reveal the answer, call it: OK in a public tool, or never? Here's the rule of thumb to hold — if it isn't already public, treat it as off-limits until the data rule says otherwise.”</p>
+      <div class="t">Do</div><ul><li>Take each item to the room before revealing. Make it a table sport — get verbal calls.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Now your own function's data.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 3a · RAG &amp; Agents" data-mv="M9 · The data rule">
+    <div class="stage"><span class="hobadge">Hands-on</span><h2 class="head">Now your function's data</h2>
+      <p class="hodo">List the <b>5–8 data types your team actually touches</b> (supplier contracts, customer PII, draft pricing, published specs…). Sort each: <b>OK in a tool / Never</b>. Rule of thumb: <i>if it isn't already public, treat it as off-limits until Sandvik's data rule says otherwise.</i></p>
+      <p class="hodo" style="margin-top:.8rem">Then test one borderline case — does the tool itself help you reason about sensitivity?</p>
+      <div class="promptblock"><button class="copy">Copy</button><pre>I work in [function]. Here is a type of document my team handles: [describe it WITHOUT
+pasting anything sensitive]. Walk me through the questions I should ask to decide whether
+it's safe to put into an AI tool — confidentiality, personal data, contractual limits,
+and what a safer alternative (anonymise, summarise, keep out) would be.</pre></div>
+      <span class="read"><b>Output:</b> your function's first can/can't list — your contribution to the Week-0 data rule and the <b>DATA SENSITIVITY</b> line in your homework.</span></div>
+    <div class="note"><div class="t">Takeaway</div><p>List the 5–8 data types your team touches and sort each OK / Never. Test one borderline case with the tool (describe, don't paste). This becomes your input to the data rule and your homework's data-sensitivity line.</p></div>
+    <div class="script"><div class="t">Move</div><p>Each leader lists their own data types and sorts them; tests a borderline case with the tool.</p>
+      <div class="t">Say</div><p>“List the five to eight data types your team actually touches — supplier contracts, customer PII, draft pricing, published specs. Sort each one: OK in a tool, or never. Same rule of thumb.”</p>
+      <p>“Then take one genuinely borderline case and use the prompt on the slide — describe it <em>without</em> pasting anything sensitive — and let the tool help you reason about confidentiality, personal data, and contractual limits.”</p>
+      <div class="t">Do</div><ul><li>~6–8 min. Each does their own function. Collect the lists — they seed the cohort data rule and the DATA SENSITIVITY line in their homework.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Now — what is an agent, really?”</p></div>
+  </section>
+
+  <!-- ============ M10 ============ -->
+  <section class="slide dark" data-deck="Act 3a · RAG &amp; Agents" data-mv="M10 · Agent vs chatbot">
+    <div class="stage"><p class="kicker">Act 3a · RAG &amp; Agents</p><h1 class="big">Agent vs chatbot — the loop</h1>
+      <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See the real difference — a chatbot answers once; an agent loops through tools until a goal is met.</p></div>
+      <div class="gb"><div class="t">You'll decide</div><p>Whether your problem is actually agent-shaped — or a chatbot question in disguise.</p></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>A chatbot answers once and stops; an agent is given a goal, has tools, and loops (think&rarr;act&rarr;observe&rarr;decide) until done. Three marks: a goal not a question, tools to act, a loop to completion — with a human on the consequential steps.</p></div>
+    <div class="script"><div class="t">Move</div><p>Define the real difference — and the three marks of an agent.</p>
+      <div class="t">Say</div><p>“The word ‘agent’ is everywhere and means almost nothing now. Here's the real test. A chatbot answers a question once and stops. An agent is given a <em>goal</em>, has tools to take action, and loops — think, act, observe, decide — until the goal is met.”</p>
+      <p>“Three marks: a goal not a question, tools to act, a loop to completion. And on the consequential steps, a human stays in the loop.”</p>
+      <div class="t">Do</div><ul><li>Keep it crisp — the widget does the showing.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Same task, two shapes — watch.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 3a · RAG &amp; Agents" data-mv="M10 · Agent vs chatbot">
+    <div class="stage"><p class="kicker">Step through both · same task, two shapes</p><h2 class="head">A straight line vs. a loop with tools</h2>
+      <div class="lab agent2">
+        <div class="seg" id="agMode"><button data-mode="chatbot" class="on">Chatbot</button><button data-mode="agent">Agent</button></div>
+        <div id="agGraph"></div>
+        <div class="gnarr" id="agNarr"></div>
+        <button class="btn" id="agStep">Step →</button><button class="btn ghost" id="agRun">Run all</button><button class="btn ghost" id="agReset">Reset</button>
+      </div>
+      <span class="read"><b>Leader's read:</b> the agent only touches <i>you</i> for the two safety complaints — the human-in-the-loop sits exactly where authority runs out. That's the governance question you own.</span></div>
+    <div class="note"><div class="t">Takeaway</div><p>Step through both: the chatbot is a straight line that stops; the agent loops through tools toward a goal and only escalates to a human where its authority runs out. That human-in-the-loop point is the governance call you own.</p></div>
+    <div class="script"><div class="t">Move</div><p>You drive — chatbot straight line first, then the agent loop with tools and human-in-the-loop.</p>
+      <div class="t">Say</div><p>“Chatbot first — Step through: one message in, one reply out, then it stops and waits for you. Now switch to Agent and Run all. Same complaint queue, but watch it loop — think, call a tool, observe, decide — handling the routine complaints itself and looping back.”</p>
+      <p>“And notice the one place it touches you: the two safety complaints, where its authority runs out. That's the governance question you own — where does the human stay in the loop?”</p>
+      <div class="t">Do</div><ul><li>Chatbot: Step through (line, then stops). Agent: Run all (loops Think&rarr;Act&rarr;Observe&rarr;Decide, escalates the 2 safety cases).</li><li>Land it: reacts vs pursues a goal; human-in-loop where authority ends.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Now the turn — we make this personal.”</p></div>
+  </section>
+
+  <!-- ============ M11 (hands-on) — NEW ============ -->
+  <section class="slide dark" data-deck="Act 3a · RAG &amp; Agents" data-mv="M11 · AI interviews you">
+    <div class="stage"><span class="hobadge">Hands-on</span><p class="kicker">Act 3a · RAG &amp; Agents</p><h1 class="big">AI interviews you</h1>
+      <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Surface the one workflow that becomes your capstone — not a guess, but a problem you've talked yourself into clearly.</p></div>
+      <div class="gb"><div class="t">You'll carry forward</div><p>A one-sentence problem statement, the impact if solved, and the AI layer it most likely needs.</p></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>The program turns personal: Claude interviews you to surface the one high-leverage workflow in your role — your capstone problem. (And note: you're being interviewed by an agent before we've built one.)</p></div>
+    <div class="script"><div class="t">Move</div><p>The gear shift — the program becomes personal. And quietly, they're being interviewed by an agent.</p>
+      <div class="t">Say</div><p>“This is the turn. Everything so far has been about AI in general. Now it gets personal. You're going to let Claude interview you — one question at a time — to surface the single workflow in your role where AI would create the most leverage. Not a guess; a problem you've talked yourself into seeing clearly.”</p>
+      <p>“And notice what's happening: an agent is interviewing <em>you</em>, looping through questions to a structured result — before we've formally built one.”</p>
+      <div class="t">Do</div><ul><li>Push anyone too narrow (“write my emails”) or too vague (“improve efficiency”) — the interview exposes it. Let the meta-moment land.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Paste it in and answer honestly.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 3a · RAG &amp; Agents" data-mv="M11 · AI interviews you">
+    <div class="stage"><span class="hobadge">Hands-on</span><h2 class="head">Paste this into Claude — then just answer honestly</h2>
+      <p class="hodo">Claude will ask one question at a time. Answer each one. At the end it names your best AI opportunity and tells you the layer it needs.</p>
+      <div class="promptblock"><button class="copy">Copy</button><pre>You are an AI capability advisor. I am a senior leader at a global industrial
+manufacturing capability centre.
+
+Your job: find the one workflow in my role where AI would create the most leverage.
+
+Interview me — one question at a time, no more than 8 questions total. Probe for:
+• where my team's time disappears to repetitive or manual work
+• decisions I make on incomplete or slow-arriving information
+• reports, approvals, or documents that pile up
+• knowledge that lives only in specific people's heads
+
+After my last answer, output exactly this and nothing else:
+
+MY PROBLEM:  [one sentence — the workflow or friction point]
+IMPACT:      [one sentence — what changes for the business if this is solved]
+AI LAYER:    [LLM / RAG / Agent] — one phrase explaining why
+
+This becomes my capstone. I will scope → build → harden → deploy it across four weeks.
+
+Ask your first question now.</pre></div>
+      <span class="read"><b>Hold onto this output</b> — you'll paste the MY PROBLEM line into the next exercise and carry it through Week 4.</span></div>
+    <div class="note"><div class="t">Takeaway</div><p>Run the interview and answer honestly. It outputs your problem in one sentence, the business impact, and the likely AI layer. Keep that output — it carries through Week 4.</p></div>
+    <div class="script"><div class="t">Move</div><p>They run the interview; it outputs MY PROBLEM / IMPACT / AI LAYER.</p>
+      <div class="t">Say</div><p>“Copy the prompt, paste it into Claude, and just answer honestly — one question at a time, up to eight. At the end it gives you three lines: your problem in one sentence, the impact if it's solved, and the AI layer it most likely needs. Hold onto that output — you'll feed it straight into the next exercise and carry it all the way to Week 4.”</p>
+      <div class="t">Do</div><ul><li>8–10 min. Walk the room, push the vague.</li><li>After: everyone reads their MY PROBLEM line aloud — one sentence each. Call out anything too narrow.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Now make the machine architect it — then out-judge it.”</p></div>
+  </section>
+
+  <!-- ============ M12 (hands-on) ============ -->
+  <section class="slide dark" data-deck="Act 3b · Architect your problem" data-mv="M12 · Architect &amp; out-judge">
+    <div class="stage"><span class="hobadge">Hands-on</span><p class="kicker">Act 3b · Architect your problem</p><h1 class="big">Architect &amp; out-judge the machine</h1>
+      <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Take your problem through the stack — make the machine architect it, then push every layer down until it can't go further.</p></div>
+      <div class="gb"><div class="t">You'll decide</div><p>The layer call. You, not the model. The core skill the program is built on.</p></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>The core skill: make the machine architect your problem across the stack, then out-judge it. It will over-build (Agent where RAG suffices) — pushing it back down a layer is the call you're paid to make.</p></div>
+    <div class="script"><div class="t">Move</div><p>The core skill of the program — make the machine architect, then push every layer down. You decide.</p>
+      <div class="t">Say</div><p>“Here's the skill this entire program is built on. You'll take your problem, make the machine architect a solution across the stack — and then <em>out-judge it.</em> Because it will over-build. It'll put an Agent where RAG would do. That moment — where you push it back down a layer — is exactly the judgement an AI-capable leader is paid for.”</p>
+      <div class="t">Do</div><ul><li>Everyone has their MY PROBLEM line from M11. Set them up to expect the over-build — it's the learning moment.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Step one — make it architect your problem.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 3b · Architect your problem" data-mv="M12 · Architect &amp; out-judge">
+    <div class="stage"><span class="hobadge">Hands-on</span><h2 class="head">Step 1 — make the machine architect your problem</h2>
+      <p class="hodo">Take the MY PROBLEM line from the interview and run this:</p>
+      <div class="promptblock"><button class="copy">Copy</button><pre>You are an AI solution architect advising a deliberately cost-conscious senior leader.
+
+Here is a real workflow from my function:
+[paste your MY PROBLEM line from the interview]
+
+Decompose it into its distinct parts. For each part, assign the LOWEST capability that
+solves it, chosen from:
+  • LLM         — generate / rewrite / summarise text I supply.
+  • RAG         — answer from my OWN documents, with sources.
+  • Agent       — multi-step work that takes ACTIONS in tools and loops to a goal.
+  • Multi-agent — several coordinated specialist agents (rare).
+
+The rule is absolute: the cheapest layer that works wins. Never assign a higher layer than
+a part needs. Return a table: Part | Layer | Why this layer (and why not the one below).
+At the end, list any part you were genuinely unsure about.</pre></div>
+      <span class="read">You now have a confident, structured architecture in seconds. <b>That confidence is exactly what you're about to interrogate.</b></span></div>
+    <div class="note"><div class="t">Takeaway</div><p>Run the architect prompt on your problem: it decomposes the workflow and assigns the lowest capability to each part, under the cheapest-layer-wins rule. You get a confident architecture in seconds — which you then interrogate.</p></div>
+    <div class="script"><div class="t">Move</div><p>They run the decompose prompt on their problem; get a confident structured architecture.</p>
+      <div class="t">Say</div><p>“Take your MY PROBLEM line and run the architect prompt on the slide. It decomposes your workflow into parts and assigns the lowest capability that solves each — LLM, RAG, Agent, or multi-agent — under one absolute rule: the cheapest layer that works wins. You'll get a clean, confident table in seconds.”</p>
+      <p>“And that confidence is exactly what you're about to interrogate.”</p>
+      <div class="t">Do</div><ul><li>Everyone runs decompose on their MY PROBLEM. 5–6 min.</li><li><em>Backup bank:</em> Procurement&rarr;RAG · AP invoice triage&rarr;Agent · RFQ drafts&rarr;LLM+RAG · HR policy Q&amp;A&rarr;RAG · IT ticket triage&rarr;Agent.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Now make it attack its own answer.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 3b · Architect your problem" data-mv="M12 · Architect &amp; out-judge">
+    <div class="stage"><span class="hobadge">Hands-on</span><h2 class="head">Step 2 — push every layer down</h2>
+      <p class="hodo">Make it attack its own answer:</p>
+      <div class="promptblock"><button class="copy">Copy</button><pre>Now be your own harshest critic, and apply the cheapest-layer-that-works rule ruthlessly.
+For EVERY part you placed on Agent or Multi-agent, argue the case for solving it ONE LAYER
+DOWN. State precisely what capability genuinely forces the higher layer — and if nothing
+does, admit you over-reached and rewrite that row. Be concrete, not diplomatic.</pre></div>
+      <p class="hodo" style="margin-top:1rem">Then <b>you</b> drive. Run each row against the three-part test:</p>
+      <ul class="checks">
+        <li><b>Text only?</b> → it's not an Agent.</li>
+        <li><b>Needs <i>your</i> documents?</b> → only then is it RAG.</li>
+        <li><b>Genuinely several specialists?</b> → almost never multi-agent.</li>
+      </ul>
+      <p class="hodo" style="margin-top:.6rem">Stress-test one row: if RAG-shaped, ask the same question with <b>no documents attached</b> — the confident wrong answer proves you need grounding. If LLM-only, run it <b>three times</b> — variation flags where you need a guardrail.</p></div>
+    <div class="note"><div class="t">Takeaway</div><p>Make the model attack its own architecture and push every Agent/multi-agent part down a layer. Then you drive the three-part test, and stress-test a row (RAG-shaped? ask with no docs — a confident wrong answer proves you need grounding).</p></div>
+    <div class="script"><div class="t">Move</div><p>Make it critique itself, then YOU drive the three-part test and stress-test a row.</p>
+      <div class="t">Say</div><p>“Now turn it on itself: ‘be your own harshest critic — for every part on Agent or multi-agent, argue the case one layer down, and if nothing forces the higher layer, admit you over-reached and rewrite the row.’ Then <em>you</em> drive. Run each row through the test: text only? — not an agent. Needs your documents? — only then is it RAG. Genuinely several specialists? — almost never multi-agent.”</p>
+      <p>“And stress-test one row: if it's RAG-shaped, ask it with no documents attached — the confident wrong answer proves you need grounding.”</p>
+      <div class="t">Do</div><ul><li>Run one leader's table on the TV — the model conceding a layer live is the learning moment.</li><li>Keep pushing: “justify Agent over RAG in one sentence, or move it.”</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Lock the map.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 3b · Architect your problem" data-mv="M12 · Architect &amp; out-judge">
+    <div class="stage"><span class="hobadge">Hands-on</span><h2 class="head">Step 3 — lock the map</h2>
+      <div class="promptblock"><button class="copy">Copy</button><pre>MY PROBLEM:  [one line]
+
+STACK MAP
+  Part of the problem    | Layer     | Why this layer, not higher
+  -----------------------|-----------|----------------------------
+  …                      | LLM/RAG/… | …  (every "higher" defensible)
+
+THE AGENT-SHAPED PART
+  • Goal · the actions it takes · the data it needs
+HUMAN STAYS IN THE LOOP AT:  [the step a human must approve]
+DATA THAT MUST NOT GO IN:    [too sensitive for an AI tool]</pre></div>
+      <span class="read">If you can answer <i>"why not the layer above?"</i> for every row, you've made the call an AI-capable leader is paid to make. <b>This map is your Week-1 homework, started live.</b></span></div>
+    <div class="note"><div class="t">Takeaway</div><p>Lock the map: problem in one line, stack map with every “why not higher” defensible, the agent-shaped part (goal, actions, data, human-in-the-loop), and the data that must not go in. This is your Week-1 homework, started live.</p></div>
+    <div class="script"><div class="t">Move</div><p>Capture the locked stack map — the artifact they leave with.</p>
+      <div class="t">Say</div><p>“Now lock it. Fill the template: your problem in one line, the stack map with every ‘why not the layer above’ defensible, the one agent-shaped part — its goal, actions, and data — where a human must stay in the loop, and the data that must never go in.”</p>
+      <p>“If you can answer ‘why not the layer above?’ for every row, you've made the call an AI-capable leader is paid to make. This map is your Week-1 homework — started live, right now.”</p>
+      <div class="t">Do</div><ul><li>This locked map is the artifact they carry out of today. The DATA line ties back to their M9 list.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“One last step — turn the agent-shaped part into a spec.”</p></div>
+  </section>
+
+  <!-- ============ M13 (hands-on) ============ -->
+  <section class="slide dark" data-deck="Act 3c · Write &amp; pressure-test the spec" data-mv="M13 · Write your agent spec">
+    <div class="stage"><span class="hobadge">Hands-on</span><p class="kicker">Act 3c · Write &amp; pressure-test the spec</p><h1 class="big">Write &amp; pressure-test your agent spec</h1>
+      <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>One paragraph: the agent-shaped part of your map — goal, actions, data, where a human stays in the loop.</p></div>
+      <div class="gb"><div class="t">You'll decide</div><p>The single problem you carry through all four weeks.</p></div></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>The hand-off: distil the agent-shaped part of your map into a one-paragraph spec — the single thing you carry through all four weeks.</p></div>
+    <div class="script"><div class="t">Move</div><p>The day's hand-off — distil to one agent spec they carry four weeks.</p>
+      <div class="t">Say</div><p>“Last move of the day. We take the agent-shaped part of your map and write it as a one-paragraph spec — the single thing you carry through all four weeks. And we hold every spec to a hard line: if it's really a chatbot question, we find the agent-shaped version before anyone commits four weeks to it.”</p>
+      <div class="t">Do</div><ul><li>Pressure-test every spec at this size. Kill chatbot-questions: “that's a chatbot question — what's the agent-shaped version?”</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“First the test, then write it.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 3c · Write &amp; pressure-test the spec" data-mv="M13 · Write your agent spec">
+    <div class="stage"><span class="hobadge">Hands-on</span><h2 class="head">First, the three-part test — then write it</h2>
+      <p class="hodo">Check it's genuinely agent-shaped: <b>1.</b> chasing a <b>goal</b>, not answering a question? <b>2.</b> does it <b>take actions</b> in tools? <b>3.</b> does it <b>loop</b> until done? If it fails, it's a chatbot question — find the agent-shaped version.</p>
+      <div class="promptblock"><button class="copy">Copy</button><pre>THE AGENT I'LL CARRY
+  • Who it's for:        …
+  • Goal (the outcome):  …
+  • Steps / actions:     1) …  2) …  3) …
+  • Data it needs:       …
+  • Human stays in the loop at:  [the step that exceeds its authority]</pre></div></div>
+    <div class="note"><div class="t">Takeaway</div><p>Apply the three-part test (goal not question? takes actions? loops until done?), then fill the spec template: who it's for, the goal, the steps, the data, and where a human stays in the loop.</p></div>
+    <div class="script"><div class="t">Move</div><p>Confirm it's agent-shaped, then fill the spec template.</p>
+      <div class="t">Say</div><p>“First confirm it's genuinely agent-shaped with the three-part test: is it chasing a goal, not answering a question? Does it take actions in tools? Does it loop until done? If it fails any one, it's a chatbot question — find the agent-shaped version.”</p>
+      <p>“Then fill the template: who it's for, the goal, the steps, the data it needs, and the step where a human stays in the loop.”</p>
+      <div class="t">Do</div><ul><li>Everyone fills the template for their M12 agent-shaped part. Choose for organisational impact.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Now pressure-test it — with Claude, then the room.”</p></div>
+  </section>
+
+  <section class="slide" data-deck="Act 3c · Write &amp; pressure-test the spec" data-mv="M13 · Write your agent spec">
+    <div class="stage"><span class="hobadge">Hands-on</span><h2 class="head">Pressure-test it — with Claude, then the room</h2>
+      <div class="promptblock"><button class="copy">Copy</button><pre>Here is a one-paragraph spec for an AI agent: [paste]. Challenge it as a sceptical
+reviewer: is this genuinely a multi-step, action-taking, looping agent — or a chatbot
+question dressed up? Where would it most likely go wrong, and where MUST a human stay in
+the loop? Be blunt.</pre></div>
+      <span class="read"><b>This spec is the seed of your homework and of Week 2.</b> Choose for organisational impact — you build it next week, harden it in Week 3, deploy it in Week 4.</span></div>
+    <div class="note"><div class="t">Takeaway</div><p>Pressure-test the spec — Claude as sceptic, then the room: real looping agent or chatbot in disguise? Where does a human stay in? This spec seeds your homework and Week 2; you build, harden and deploy it across the four weeks.</p></div>
+    <div class="script"><div class="t">Move</div><p>Claude plays sceptic, then the room. This spec seeds homework + Week 2.</p>
+      <div class="t">Say</div><p>“Now stress it. Paste your spec into Claude as a sceptical reviewer: is this a real multi-step, action-taking, looping agent — or a chatbot question dressed up? Where would it go wrong, and where must a human stay in the loop? Then the room does the same.”</p>
+      <p>“This spec is the seed of your homework and of Week 2 — so choose for organisational impact. You build it next week, harden it in Week 3, deploy it in Week 4.”</p>
+      <div class="t">Do</div><ul><li>Pressure-test every spec at this size before anyone commits four weeks to it.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“That's the work — let's close.”</p></div>
+  </section>
+
+  <!-- ============ STUCK / CURIOUS ============ -->
+  <section class="slide isnow" data-deck="Week 1 · Foundations" data-mv="Stuck or curious?">
+    <div class="stage"><p class="kicker">Support after today</p><h2 class="head">Stuck or curious?</h2>
+      <ul class="checks">
+        <li><b>During the session</b> → flag the trainer; we work it on the TV.</li>
+        <li><b>After</b> → the <b>mid-week clinic</b> (~3 days out) or the <b>Teams doubt channel</b> (within 1 business day).</li>
+        <li><b>A term you didn't catch</b> → <code>reference/glossary.html</code>.</li>
+      </ul></div>
+    <div class="note"><div class="t">Takeaway</div><p>Getting unstuck: flag the trainer in-session; after, use the mid-week clinic (~3 days out) or the Teams doubt channel (reply within 1 business day). Terms you missed &rarr; the glossary.</p></div>
+    <div class="script"><div class="t">Move</div><p>Make the support system concrete before they leave.</p>
+      <div class="t">Say</div><p>“Before we close — how to get unstuck. During a session, flag me and we'll work it on the screen. After, you've got two routes: the mid-week clinic about three days out, and the Teams doubt channel — I respond within one business day. And if a term went past you today, the glossary's in the reference folder.”</p>
+      <div class="t">Do</div><ul><li>Make the clinic + Teams channel concrete — names and times if you have them.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>“Let's land the day.”</p></div>
+  </section>
+
+  <!-- ============ CLOSE ============ -->
+  <section class="slide isnow" data-deck="Week 1 · Foundations" data-mv="Close">
+    <div class="stage"><p class="kicker">End of Week 1</p><h2 class="head">You opened the box — and <span class="accent">owned</span> a real problem.</h2>
+      <p class="lead">Prompting, the engine, the stack, RAG, agents — and a spec for a problem you found, architected, and own from today. The homework sharpens it; Week 2 builds it.</p>
+      <p class="sub" style="margin-top:1.2rem">Hand out the Week-1 homework brief · point to the mid-week clinic + Teams channel.</p></div>
+    <div class="note"><div class="t">Takeaway</div><p>You opened the box and own a real problem — found, architected and spec'd today. Prompting, the engine, the stack, RAG, agents all fed this one spec. Homework sharpens it; Week 2 builds it.</p></div>
+    <div class="script"><div class="t">Move</div><p>Land the payoff — they opened the box AND own a real problem.</p>
+      <div class="t">Say</div><p>“Look at what you did today. You started seeing AI as a black box you were told to trust. You leave understanding it — prompting, the engine, the stack, RAG, agents — and, more importantly, owning a real problem: one you found, architected, and spec'd yourself.”</p>
+      <p>“None of it was busywork; every piece fed the spec in your hand. The homework sharpens it. Next week, you build it.”</p>
+      <div class="t">Do</div><ul><li>Hand out the Week-1 homework brief. Point to the mid-week clinic + Teams channel. End on the spec in their hand.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>(End of Week 1.)</p></div>
+  </section>
+
+</div>
+<div class="chrome"><span class="mv" id="mvlbl"></span><span class="count"><span id="cur">1</span> / <span id="tot">1</span></span></div>
+<div class="helpbar">→ next · ← back · <b>Home</b> agenda · <b>N</b> notes · <b>S</b> script · <b>F</b> full-screen</div>
+<aside class="notes" id="notes"><header><span class="b" id="notesBeat">Notes</span><button class="x" id="notesClose">✕</button></header><div class="body" id="notesBody"></div></aside>
+<aside class="scriptpanel" id="script"><header><span class="b" id="scriptBeat">Script</span><button class="x" id="scriptClose">✕</button></header><div class="body" id="scriptBody"></div></aside>
+
+<script>
+(function(){"use strict";
+  var slides=Array.prototype.slice.call(document.querySelectorAll(".slide")),i=0,N=slides.length;
+  var curEl=document.getElementById("cur"),totEl=document.getElementById("tot"),mvEl=document.getElementById("mvlbl"),progEl=document.getElementById("progress");
+  var notes=document.getElementById("notes"),notesBody=document.getElementById("notesBody"),notesBeat=document.getElementById("notesBeat");
+  var scriptBody=document.getElementById("scriptBody"),scriptBeat=document.getElementById("scriptBeat"),body=document.body;
+  totEl.textContent=N;
+  function lbl(s){return (s.dataset.mv||"Notes").replace(/^M\d+ · /,"");}
+  function syncNotes(){var s=slides[i];var n=s.querySelector(".note");notesBody.innerHTML=n?n.innerHTML:"<p class='muted'>No notes yet.</p>";notesBeat.textContent=lbl(s);var sc=s.querySelector(".script");scriptBody.innerHTML=sc?sc.innerHTML:"<p class='muted'>No script for this slide yet.</p>";scriptBeat.textContent=lbl(s);}
+  function go(n){i=Math.max(0,Math.min(N-1,n));slides.forEach(function(s,k){s.classList.toggle("active",k===i);});curEl.textContent=i+1;var s=slides[i];mvEl.innerHTML="<b>"+(s.dataset.deck||"")+"</b> · "+lbl(s);progEl.style.width=((i+1)/N*100)+"%";if(slides[i])slides[i].scrollTop=0;syncNotes();}
+  function next(){go(i+1);}function prev(){go(i-1);}
+  document.addEventListener("keydown",function(e){
+    if(e.key==="ArrowRight"||e.key==="ArrowDown"||e.key===" "||e.key==="PageDown"){e.preventDefault();next();}
+    else if(e.key==="ArrowLeft"||e.key==="ArrowUp"||e.key==="PageUp"){e.preventDefault();prev();}
+    else if(e.key==="Home"){e.preventDefault();go(1);}else if(e.key==="End"){e.preventDefault();go(N-1);}
+    else if(e.key==="n"||e.key==="N"){notes.classList.toggle("open");body.classList.remove("script-open");}
+    else if(e.key==="s"||e.key==="S"){body.classList.toggle("script-open");notes.classList.remove("open");}
+    else if(e.key==="Escape"){notes.classList.remove("open");body.classList.remove("script-open");}
+    else if(e.key==="f"||e.key==="F"){if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}else{document.exitFullscreen&&document.exitFullscreen();}}});
+  document.getElementById("deck").addEventListener("click",function(e){if(e.target.closest(".lab,button,a,input,.note,.helperref,.promptblock"))return;var mid=window.innerWidth/2;if(e.clientX<mid*0.35)prev();else next();});
+  document.getElementById("notesClose").onclick=function(){notes.classList.remove("open");};
+  document.getElementById("scriptClose").onclick=function(){body.classList.remove("script-open");};
+
+  /* copy-to-clipboard for hands-on prompts */
+  function fallbackCopy(t,ok){var ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand("copy");ok();}catch(e){}document.body.removeChild(ta);}
+  Array.prototype.forEach.call(document.querySelectorAll(".promptblock .copy"),function(b){
+    b.addEventListener("click",function(){var pre=b.parentNode.querySelector("pre");if(!pre)return;var t=pre.textContent;
+      function ok(){var o=b.dataset.lbl||(b.dataset.lbl=b.textContent);b.classList.add("done");b.textContent="Copied ✓";setTimeout(function(){b.classList.remove("done");b.textContent=o;},1400);}
+      if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(ok,function(){fallbackCopy(t,ok);});}else fallbackCopy(t,ok);});});
+
+  /* ===== M3 · stack composer ===== */
+  (function(){var cw=document.getElementById("buildCaps");if(!cw)return;var nE=document.getElementById("buildName"),cL=document.getElementById("buildCostLbl"),cB=document.getElementById("buildCost"),dE=document.getElementById("buildDetail");
+    var D={llm:{name:"Plain LLM",cost:18,lbl:"low",cando:"Drafts, rewrites, summarises and reasons over whatever you give it.",cant:"Blind to your private data, and takes no actions."},
+      rag:{name:"RAG system",cost:40,lbl:"low–moderate",cando:"Answers grounded in <i>your</i> documents, with citations — and says \"not in our docs\" instead of guessing.",cant:"Still only answers; it takes no actions."},
+      agent:{name:"Agent",cost:52,lbl:"moderate",cando:"Uses tools and loops over steps to reach a goal — it <i>acts</i>, not just talks.",cant:"Knows only its general training — not your private documents (until you add retrieval)."},
+      gagent:{name:"Agent with retrieval",cost:70,lbl:"moderate–high",cando:"Acts in your systems <i>and</i> grounds itself in your documents — the shape of most real assistants.",cant:"More moving parts to build, test and govern."},
+      ma:{name:"Multi-agent system",cost:84,lbl:"high",cando:"Several specialist agents coordinated by an orchestrator — for work too big or varied for one.",cant:"Highest cost, latency and governance burden. Most problems never need it."},
+      gma:{name:"Grounded multi-agent system",cost:98,lbl:"highest",cando:"Coordinated specialists, each grounded in the relevant documents — the most powerful, and most expensive, thing here.",cant:"Reach for it only when a single agent provably can't cope."}};
+    var st={retrieval:false,tools:false,multi:false};
+    function key(){if(st.multi)return st.retrieval?"gma":"ma";if(st.tools)return st.retrieval?"gagent":"agent";if(st.retrieval)return "rag";return "llm";}
+    function rn(){var d=D[key()];nE.textContent=d.name;cL.textContent="Cost & complexity: "+d.lbl;cB.style.width=d.cost+"%";dE.innerHTML=d.cando+'<span class="cant">⤒ '+d.cant+'</span>';}
+    Array.prototype.forEach.call(cw.querySelectorAll(".cap"),function(b){b.onclick=function(){var c=b.dataset.cap;st[c]=!st[c];b.classList.toggle("on",st[c]);rn();};});rn();})();
+
+  /* ===== M1 · prompt builder ===== */
+  (function(){var PARTS=[
+      {key:"role",label:"Role",text:"You are a senior sales operations analyst."},
+      {key:"task",label:"Task",text:"Summarise this RFP into a one-page brief for the deal team."},
+      {key:"context",label:"Context",text:"Context: we sell industrial cutting tools; the buyer is a mid-size automotive supplier."},
+      {key:"constraints",label:"Constraints",text:"Use only facts in the RFP. Flag anything missing rather than guessing."},
+      {key:"format",label:"Output format",text:"Output: 5 bullet points, then a 'Risks' line."},
+      {key:"examples",label:"Examples",text:"Example of a good bullet: '• Volume: 12k units/yr, ramping from Q3.'"}];
+    var on={task:true},tw=document.getElementById("pbToggles");if(!tw)return;
+    PARTS.forEach(function(p){var t=document.createElement("button");t.className="tg"+(on[p.key]?" on":"");t.textContent=p.label;t.onclick=function(){on[p.key]=!on[p.key];t.classList.toggle("on",on[p.key]);render();};tw.appendChild(t);});
+    var pre=document.getElementById("pbPreview"),meter=document.getElementById("pbMeter"),lbl=document.getElementById("pbMeterLbl");
+    var LEVELS=["bare minimum","getting there","solid","strong","production-grade","production-grade"];
+    function render(){var lines=PARTS.filter(function(p){return on[p.key];}).map(function(p){return p.text;});
+      pre.textContent=lines.length?lines.join("\n"):"(empty — at minimum you need a Task)";
+      var c=PARTS.filter(function(p){return on[p.key];}).length;meter.style.width=(c/6*100)+"%";
+      lbl.textContent="Reliability: "+(on.task?LEVELS[c-1]:"won't work without a Task");meter.style.background=on.task?"var(--accent)":"var(--bad)";}
+    render();})();
+
+  /* ===== M4 · vague vs structured ===== */
+  (function(){var SCENARIOS=[
+      {name:"Summarise an RFP",
+       vague:{prompt:"Summarise this RFP.",out:"A tidy three-paragraph write-up — including \"a volume discount of around 12%.\" That figure is nowhere in the RFP; the model filled the gap with a plausible guess. Confident, well-written, and unusable.",hint:"You left almost everything unspecified, so the model decided for you — including a figure it made up."},
+       structured:{prompt:"You are a senior sales operations analyst.\nSummarise this RFP into a one-page brief for the deal team.\nContext: we sell industrial cutting tools; the buyer is a mid-size automotive supplier.\nUse only facts in the RFP. Flag anything missing rather than guessing.\nOutput: 5 bullet points, then a 'Risks' line.",out:"Five tight bullets grounded only in the RFP, then — \"Risks: annual volume not stated; confirm before quoting.\" It refused to invent the figure and flagged the gap. Usable as it stands.",hint:"Each part you added closed off a way it could guess wrong."}},
+      {name:"Reply to a complaint",
+       vague:{prompt:"Write a reply to this complaint.",out:"A warm, apologetic email — that also promises \"a full refund and priority shipping on your next order.\" Nobody authorised either. It quietly commits your company to things you never agreed to.",hint:"With no constraints, the model invents goodwill gestures — and commitments — to sound helpful."},
+       structured:{prompt:"You are a senior customer-support lead.\nReply to this complaint from a long-standing B2B account.\nContext: the delayed order was our fault; the account is valued, but the contract sets out the remedies.\nConstraints: acknowledge the specific issue; do NOT promise refunds, credits or timelines that aren't in the contract; offer to escalate instead.\nOutput: a short greeting, two short paragraphs, and one clear next step.",out:"A reply that names the exact problem, apologises, and offers to escalate to the account manager — without committing to a single unapproved refund or date. Safe to send as-is.",hint:"\"Don't promise what isn't approved\" is what stops a friendly draft from becoming a liability."}},
+      {name:"Draft a job description",
+       vague:{prompt:"Write a job description for a sales engineer.",out:"Generic boilerplate — \"fast-paced, rockstar,\" a wish-list of twelve must-haves, and a line about a \"young, energetic team.\" Off-brand, over-inflated, and that age reference is a real bias risk.",hint:"Nothing told it your role or your bar — so it reached for clichés, including a phrase you'd never sign off."},
+       structured:{prompt:"You are an experienced technical recruiter.\nWrite a job description for a field sales engineer (industrial cutting tools, Pune).\nContext: 3–5 years' experience; must-haves are CNC familiarity and B2B sales; everything else is nice-to-have.\nConstraints: reflect ONLY the requirements above; neutral, inclusive language; no age, gender or \"rockstar\" wording.\nOutput: Role summary, Responsibilities (5 bullets), Must-haves, Nice-to-haves.",out:"A clean JD with exactly the stated requirements, neutral language, and the must-have / nice-to-have split honoured. On-brand and defensible.",hint:"Constraints did double duty — factual accuracy AND keeping you clear of biased phrasing."}},
+      {name:"Extract data from a contract",
+       vague:{prompt:"Pull the key numbers from this contract.",out:"A list of figures — but two are subtly wrong and one (\"liability cap: $2M\") isn\'t in the contract at all. Nothing tells you which to trust.",hint:"\"Key numbers\" is your judgement, not its — and with no rule against guessing, it fills the gaps."},
+       structured:{prompt:"Extract the specified fields from this contract.\nConstraints: use ONLY values present in the text; never infer or estimate; if a field isn't stated, write \"not stated\".\nOutput: a table with three columns — Field | Value | Source clause — for: payment terms, minimum volume, penalty rate, liability cap.",out:"A four-row table. Three fields filled with their source clause cited; liability cap marked \"not stated.\" Every value traceable — and the gap is visible instead of invented.",hint:"\"Only what's present, cite the clause, say when it's missing\" turns a guess-machine into a reliable extractor."}}];
+    var scWrap=document.getElementById("cmpScenarios"),tg=document.getElementById("cmpToggles"),pre=document.getElementById("cmpPrompt"),out=document.getElementById("cmpOut"),hint=document.getElementById("cmpHint");
+    if(!scWrap||!tg||!pre)return;var si=0,mode=0;
+    SCENARIOS.forEach(function(s,idx){var b=document.createElement("button");b.className="tg"+(idx===0?" on":"");b.textContent=s.name;b.onclick=function(){si=idx;render();};scWrap.appendChild(b);});
+    Array.prototype.forEach.call(tg.children,function(b,idx){b.onclick=function(){mode=idx;render();};});
+    function render(){var c=mode===0?SCENARIOS[si].vague:SCENARIOS[si].structured;pre.textContent=c.prompt;out.innerHTML=c.out;out.style.borderColor=mode===0?"#e3b7b7":"#bfe3cd";hint.textContent=c.hint;
+      Array.prototype.forEach.call(scWrap.children,function(b,idx){b.classList.toggle("on",idx===si);});
+      Array.prototype.forEach.call(tg.children,function(b,idx){b.classList.toggle("on",idx===mode);});}
+    render();})();
+
+  /* ===== M8 · RAG machine ===== */
+  (function(){var libEl=document.getElementById("ragLib");if(!libEl)return;
+    var DOCS=[{name:"pricing_policy_2026.pdf",text:"Orders of 10,000+ units receive a 9% volume discount, subject to regional-head approval."},
+      {name:"terms_conditions.pdf",text:"Tier-1 automotive suppliers: payment net 45 days from invoice date."},
+      {name:"returns_policy.pdf",text:"Standard items: 30-day returns. Custom-tooling orders are non-returnable once production begins."},
+      {name:"shipping_schedule.pdf",text:"Dispatch within 5 business days; freight via approved carriers only."},
+      {name:"company_history.pdf",text:"Founded in 1972; the cutting-tools division was established in 1986."}];
+    var QS=[{label:"Volume discount",q:"What's our volume discount for orders over 10,000 units?",off:"Around <b>12%</b> for large orders.",on:"<b>9%</b> for orders of 10,000+ units, with regional-head approval.",src:"pricing_policy_2026.pdf",scores:[0.94,0.12,0.08,0.05,0.04]},
+      {label:"Payment terms",q:"What are the standard payment terms for tier-1 automotive suppliers?",off:"Usually <b>net 30 days</b>.",on:"<b>Net 45 days</b> from invoice date, for tier-1 automotive suppliers.",src:"terms_conditions.pdf",scores:[0.10,0.91,0.14,0.07,0.05]},
+      {label:"Returns on custom tooling",q:"Can custom-tooling orders be returned?",off:"Yes — within the usual <b>30-day return window</b>.",on:"<b>No</b> — custom-tooling orders are non-returnable once production begins. (Standard items: 30 days.)",src:"returns_policy.pdf",scores:[0.08,0.13,0.93,0.06,0.04]},
+      {label:"Government-contract discount",q:"What discount do we give on government contracts?",off:"Typically around <b>15%</b> for public-sector contracts.",on:null,src:null,scores:[0.19,0.16,0.13,0.10,0.07]}];
+    var THRESH=0.6;
+    var qsWrap=document.getElementById("ragQs"),qShow=document.getElementById("ragQshow"),swWrap=document.getElementById("ragSwitch"),runBtn=document.getElementById("ragRun"),ctx=document.getElementById("ragCtx"),ans=document.getElementById("ragAns"),hint=document.getElementById("ragHint");
+    function strip(s){return s.replace(/<[^>]+>/g,"");}
+    var docEls=DOCS.map(function(d){var el=document.createElement("div");el.className="chunk";el.innerHTML='<span class="doc">'+d.name+'</span>'+d.text+'<div class="relrow"><div class="relbar"><div class="relfill"></div></div><span class="relpct"></span></div>';libEl.appendChild(el);return {el:el,fill:el.querySelector(".relfill"),pct:el.querySelector(".relpct")};});
+    var qi=0,busy=false,timers=[];function ct(){timers.forEach(clearTimeout);timers=[];}function at(ms,fn){timers.push(setTimeout(fn,ms));}
+    function ragIsOn(){return swWrap.querySelector('[data-rag="on"]').classList.contains("on");}
+    QS.forEach(function(Q,idx){var b=document.createElement("button");b.className="qpill"+(idx===0?" on":"");b.textContent=Q.label;b.onclick=function(){if(busy)return;qi=idx;selectQ();};qsWrap.appendChild(b);});
+    Array.prototype.forEach.call(swWrap.children,function(b){b.onclick=function(){if(busy)return;Array.prototype.forEach.call(swWrap.children,function(x){x.classList.toggle("on",x===b);});run();};});
+    runBtn.onclick=function(){if(!busy)run();};
+    function resetV(){ct();docEls.forEach(function(d){d.el.classList.remove("hit","dim");d.fill.style.width="0%";d.pct.textContent="";});}
+    function selectQ(){Array.prototype.forEach.call(qsWrap.children,function(b,idx){b.classList.toggle("on",idx===qi);});qShow.textContent="“"+QS[qi].q+"”";resetV();ctx.innerHTML='<span class="empty">— nothing retrieved yet —</span>';ans.className="ans";ans.innerHTML="Choose RAG off or on, then press <b>Answer</b>.";hint.textContent="Tip: try RAG off first, then flip it on and watch what changes.";}
+    function run(){var Q=QS[qi],on=ragIsOn();resetV();
+      if(!on){docEls.forEach(function(d){d.el.classList.add("dim");});ctx.innerHTML='<span class="empty">RAG is off — the model gets none of your documents.</span>';ans.className="ans bad";ans.innerHTML='<span class="flag">⚠ From memory:</span> '+Q.off+'<span class="src">No source. Generated from training data — confident, and quite possibly wrong.</span>';hint.textContent="Fluent and authoritative — but it never saw your policy. This is the hallucination risk.";return;}
+      busy=true;runBtn.disabled=true;ctx.innerHTML='<span class="empty">Searching your documents…</span>';ans.className="ans";ans.innerHTML="Retrieving…";
+      at(250,function(){docEls.forEach(function(d,idx){var p=Math.round(Q.scores[idx]*100);d.fill.style.width=p+"%";d.pct.textContent=p+"%";});});
+      at(950,function(){docEls.forEach(function(d,idx){if(Q.scores[idx]>=THRESH)d.el.classList.add("hit");else d.el.classList.add("dim");});});
+      at(1450,function(){var hits=DOCS.filter(function(_,idx){return Q.scores[idx]>=THRESH;});ctx.innerHTML=hits.length?hits.map(function(h){return '<div><b>'+h.name+'</b> — “'+h.text+'”</div>';}).join(""):'<span class="empty">Nothing matched — none of your documents cover this question.</span>';});
+      at(2000,function(){if(Q.on){ans.className="ans good";ans.innerHTML='<span class="flag">Grounded:</span> '+Q.on+'<span class="src">source: '+Q.src+'</span>';hint.textContent="Answered only from the retrieved passage — and it tells you where that came from.";}else{ans.className="ans good";ans.innerHTML='<span class="flag">“I don\'t have that in our documents.”</span><span class="src">Nothing to cite — and that\'s the right answer. With RAG off it guessed “'+strip(Q.off)+'”; the grounded system refuses to invent.</span>';hint.textContent="The most underrated RAG behaviour: knowing when to say it doesn’t know.";}busy=false;runBtn.disabled=false;});}
+    selectQ();})();
+
+  /* ===== M9 · data sorter ===== */
+  (function(){var ITEMS=[{label:"A published product brochure",ok:true,why:"Already public — no leakage risk."},
+      {label:"Next quarter's unreleased price list",ok:false,why:"Confidential & market-sensitive — never into a public tool."},
+      {label:"A customer's personal contact details",ok:false,why:"Personal data (PII) — protected; keep it out."},
+      {label:"Your company's published annual report",ok:true,why:"Public by definition — fine."},
+      {label:"An internal memo about a possible acquisition",ok:false,why:"Highly confidential — a leak here is serious."},
+      {label:"A draft of a public marketing blog post",ok:true,why:"Intended for the public anyway — low risk."}];
+    var wrap=document.getElementById("sorter"),out=document.getElementById("sorterOut");if(!wrap)return;var decided=0;
+    ITEMS.forEach(function(it){var row=document.createElement("div");row.className="item";var lab=document.createElement("span");lab.className="label";lab.textContent=it.label;
+      var okB=document.createElement("button");okB.className="pick";okB.textContent="OK in public tool";var noB=document.createElement("button");noB.className="pick";noB.textContent="Never";var v=document.createElement("span");v.className="verdict";
+      function choose(saidOk){okB.classList.toggle("sel",saidOk);noB.classList.toggle("sel",!saidOk);var right=(saidOk===it.ok);if(v.textContent==="")decided++;v.className="verdict "+(right?"ok":"no");v.textContent=(right?"✓ ":"✗ ")+it.why;if(decided===ITEMS.length)out.innerHTML="All six sorted. <b>Rule of thumb:</b> if it isn’t already public, treat it as off-limits to public AI tools until Sandvik’s data rule says otherwise.";}
+      okB.onclick=function(){choose(true);};noB.onclick=function(){choose(false);};row.appendChild(lab);row.appendChild(okB);row.appendChild(noB);row.appendChild(v);wrap.appendChild(row);});})();
+
+  /* ===== M10 · agent loop graph ===== */
+  (function(){var host=document.getElementById("agGraph");if(!host)return;var NS="http://www.w3.org/2000/svg";
+    function el(tag,a){var e=document.createElementNS(NS,tag);for(var k in a)e.setAttribute(k,a[k]);return e;}
+    function buildGraph(vw,vh,mid,nodes,edges){var svg=el("svg",{viewBox:"0 0 "+vw+" "+vh});var defs=el("defs",{});var m=el("marker",{id:mid,markerWidth:9,markerHeight:9,refX:7,refY:4,orient:"auto"});m.appendChild(el("path",{d:"M0,0 L8,4 L0,8 z",fill:"context-stroke"}));defs.appendChild(m);svg.appendChild(defs);
+      var edgeEls={};edges.forEach(function(e){var ln=el("line",{x1:e.x1,y1:e.y1,x2:e.x2,y2:e.y2,"class":"edge","marker-end":"url(#"+mid+")"});svg.appendChild(ln);edgeEls[e.id]=ln;});
+      var nodeEls={};Object.keys(nodes).forEach(function(id){var n=nodes[id],g=el("g",{"class":"gnode "+(n.kind||"")}),cx=n.x+n.w/2;g.appendChild(el("rect",{x:n.x,y:n.y,width:n.w,height:n.h,rx:9,"class":"nrect"}));
+        if(n.sub){var t1=el("text",{x:cx,y:n.y+n.h/2-2,"text-anchor":"middle","class":"nlab"});t1.textContent=n.lab;var t2=el("text",{x:cx,y:n.y+n.h/2+13,"text-anchor":"middle","class":"nsub"});t2.textContent=n.sub;g.appendChild(t1);g.appendChild(t2);}
+        else{var t=el("text",{x:cx,y:n.y+n.h/2+4,"text-anchor":"middle","class":"nlab"});t.textContent=n.lab;g.appendChild(t);}
+        svg.appendChild(g);nodeEls[id]=g;});return {svg:svg,nodeEls:nodeEls,edgeEls:edgeEls};}
+    var chatN={q:{x:24,y:50,w:170,h:52,lab:"You ask",sub:"a question"},bot:{x:255,y:50,w:170,h:52,lab:"Chatbot",sub:"an LLM"},ans:{x:486,y:50,w:170,h:52,lab:"One reply",sub:"then it waits"}};
+    var chatE=[{id:"q-bot",x1:194,y1:76,x2:255,y2:76},{id:"bot-ans",x1:425,y1:76,x2:486,y2:76}];
+    var chatS=[{node:"q",text:"You send one message: “Draft a reply to this complaint.”"},{node:"bot",edges:["q-bot"],text:"The model generates a single response."},{node:"ans",edges:["bot-ans"],text:"“Here’s a draft reply.” One turn — no tools, no goal it’s chasing."},{node:null,text:"⊘ Then it stops and waits for your next message. A chatbot reacts; it doesn’t pursue a goal."}];
+    var chat=buildGraph(680,150,"arrowC",chatN,chatE);
+    var A={goal:{x:18,y:8,w:250,h:46,lab:"GOAL",sub:"clear the complaint queue",kind:"goal"},think:{x:186,y:92,w:108,h:44,lab:"1 · Think",kind:"phase"},act:{x:300,y:166,w:108,h:44,lab:"2 · Act",kind:"phase"},observe:{x:186,y:240,w:108,h:44,lab:"3 · Observe",kind:"phase"},decide:{x:72,y:166,w:108,h:44,lab:"4 · Decide",kind:"phase"},done:{x:40,y:248,w:120,h:44,lab:"✓ Done",kind:"done"},t_inbox:{x:470,y:34,w:190,h:40,lab:"📥 Read inbox",kind:"tool"},t_order:{x:470,y:86,w:190,h:40,lab:"🗃 Order system",kind:"tool"},t_draft:{x:470,y:166,w:190,h:40,lab:"✍ Draft reply",kind:"tool"},t_esc:{x:470,y:228,w:190,h:40,lab:"⚠ Escalate to human",kind:"tool"}};
+    var AE=[{id:"goal-think",x1:160,y1:54,x2:222,y2:92},{id:"think-act",x1:294,y1:126,x2:312,y2:166},{id:"act-observe",x1:318,y1:210,x2:294,y2:248},{id:"observe-decide",x1:186,y1:254,x2:162,y2:204},{id:"decide-think",x1:138,y1:166,x2:206,y2:136},{id:"decide-done",x1:110,y1:210,x2:104,y2:248},{id:"act-t_inbox",x1:408,y1:182,x2:470,y2:54},{id:"act-t_order",x1:408,y1:186,x2:470,y2:106},{id:"act-t_draft",x1:408,y1:188,x2:470,y2:186},{id:"act-t_esc",x1:408,y1:192,x2:470,y2:248}];
+    var AS=[{node:"goal",text:"GOAL — “Clear the overnight complaint queue: triage each, draft replies, escalate the severe ones.” You hand over an outcome, not a question."},{node:"think",edges:["goal-think"],text:"THINK — Plan: read the inbox, handle each complaint, escalate anything about safety."},{node:"act",edges:["think-act"],tool:"t_inbox",toolEdge:"act-t_inbox",text:"ACT — Calls a tool: read the inbox."},{node:"observe",edges:["act-observe"],text:"OBSERVE — 7 complaints found: 5 routine, 2 mention safety."},{node:"decide",edges:["observe-decide"],text:"DECIDE — Not finished. Handle the 5 routine ones first."},{node:"think",edges:["decide-think"],text:"THINK · loop 2 — Draft replies for the 5 routine complaints. ← it just looped back."},{node:"act",edges:["think-act"],tool:"t_draft",toolEdge:"act-t_draft",text:"ACT — Calls a tool: draft 5 replies, grounded in policy."},{node:"observe",edges:["act-observe"],text:"OBSERVE — 5 drafts ready for your review."},{node:"decide",edges:["observe-decide"],text:"DECIDE — Still 2 safety complaints; those exceed its authority."},{node:"think",edges:["decide-think"],text:"THINK · loop 3 — Escalate the 2 safety complaints to a human."},{node:"act",edges:["think-act"],tool:"t_esc",toolEdge:"act-t_esc",text:"ACT — Calls a tool: flag the 2 safety complaints to you with a summary."},{node:"observe",edges:["act-observe"],text:"OBSERVE — Human notified."},{node:"decide",edges:["observe-decide"],text:"DECIDE — All complaints handled → the stopping rule says finish."},{node:"done",edges:["decide-done"],text:"DONE ✅ — Queue cleared. You only touch the 2 that genuinely needed a human."}];
+    var agent=buildGraph(680,308,"arrowA",A,AE);
+    host.appendChild(chat.svg);host.appendChild(agent.svg);
+    var seg=document.getElementById("agMode"),narr=document.getElementById("agNarr"),bStep=document.getElementById("agStep"),bRun=document.getElementById("agRun"),bReset=document.getElementById("agReset");
+    var mode="chatbot",step=-1,timer=null;
+    function cur(){return mode==="agent"?{g:agent,s:AS}:{g:chat,s:chatS};}
+    function clearHi(g){Object.keys(g.nodeEls).forEach(function(k){g.nodeEls[k].classList.remove("on");});Object.keys(g.edgeEls).forEach(function(k){g.edgeEls[k].classList.remove("hot");});}
+    function showMode(){chat.svg.style.display=mode==="chatbot"?"block":"none";agent.svg.style.display=mode==="agent"?"block":"none";Array.prototype.forEach.call(seg.children,function(b){b.classList.toggle("on",b.dataset.mode===mode);});}
+    function render(){var c=cur();clearHi(c.g);if(step<0){narr.innerHTML='<span class="ph">'+(mode==="agent"?"Agent · a loop with tools":"Chatbot · a straight line")+'</span>Press <b>Step →</b> to begin'+(mode==="agent"?". Watch it loop through its tools until the goal is met.":". One question in, one answer out.");return;}
+      var s=c.s[step];if(s.node)c.g.nodeEls[s.node].classList.add("on");(s.edges||[]).forEach(function(id){if(c.g.edgeEls[id])c.g.edgeEls[id].classList.add("hot");});if(s.tool){c.g.nodeEls[s.tool].classList.add("on");if(s.toolEdge&&c.g.edgeEls[s.toolEdge])c.g.edgeEls[s.toolEdge].classList.add("hot");}narr.innerHTML=s.text;}
+    function stop(){if(timer){clearInterval(timer);timer=null;bRun.textContent="Run all";}}
+    bStep.onclick=function(){stop();var c=cur();if(step<c.s.length-1){step++;render();}};
+    bRun.onclick=function(){if(timer){stop();return;}var c=cur();if(step>=c.s.length-1){step=-1;render();}bRun.textContent="Pause";timer=setInterval(function(){var cc=cur();if(step<cc.s.length-1){step++;render();}else stop();},1150);};
+    bReset.onclick=function(){stop();step=-1;render();};
+    Array.prototype.forEach.call(seg.children,function(b){b.onclick=function(){stop();mode=b.dataset.mode;step=-1;showMode();render();};});
+    showMode();render();})();
+
+  go(0);
+})();
+</script></body></html>

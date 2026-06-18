@@ -47,12 +47,12 @@ Pre-work (self-paced)  →  Session (5 hrs, trainer-led)  →  Homework (build/a
 
 ## The 4-week arc
 
-| Week | Theme | Verb | Artifact produced |
-|---|---|---|---|
-| **1** | AI Foundations | Understand | 2-page architecture doc — **one real problem from their function**, mapped across the AI stack |
-| **2** | Agentic Deep Dive | Decode | **That problem, built as a working agent** (no-code Gem) + 1-page design doc |
-| **3** | Hands-On Building | Practice | **The same agent hardened into a capstone v1** + spec + colleague feedback |
-| **4** | Build & Lead | Deploy | **The capstone, productionised** + 30-day deployment + 90-day project plan |
+| Week  | Theme             | Verb       | Artifact produced                                                                              |
+| ----- | ----------------- | ---------- | ---------------------------------------------------------------------------------------------- |
+| **1** | AI Foundations    | Understand | 2-page architecture doc — **one real problem from their function**, mapped across the AI stack |
+| **2** | Agentic Deep Dive | Decode     | **That problem, built as a working agent** (no-code Gem) + 1-page design doc                   |
+| **3** | Hands-On Building | Practice   | **The same agent hardened into a capstone v1** + spec + colleague feedback                     |
+| **4** | Build & Lead      | Deploy     | **The capstone, productionised** + 30-day deployment + 90-day project plan                     |
 
 **One escalating artifact, not four.** The problem each leader picks in Week 1 is the *same* problem they scope → build → harden → deploy across all four weeks. Each week's homework advances that single artifact; no week reseeds a new use case. This is the spine that carries the outcome contract — week-level material (spec sheets, sprints) feeds this one thread, never forks it.
 
@@ -85,13 +85,13 @@ The client-requested support layer. Same shape every week, described once here:
 
 Environment: **Google Workspace**. The stack, as a capability ladder:
 
-| Rung | Tool | Who builds | Week |
-|---|---|---|---|
-| 1. Prompt / chat | Claude Code · Claude chat | Leader | W1 |
-| 2. Connected knowledge project | Claude Projects + connectors | Leader | W1–2 |
-| 3. No-code agent | **Gems** (Workspace-connected) | Leader | W2–3 |
-| 4. Tooled agent | Claude Code + MCPs | Leader *with* trainer (stretch) | W3 |
-| 5. Multi-agent | **Google ADK** | Trainer demo → govern (stretch build) | W4 |
+| Rung                           | Tool                           | Who builds                            | Week |
+| ------------------------------ | ------------------------------ | ------------------------------------- | ---- |
+| 1. Prompt / chat               | Claude Code · Claude chat      | Leader                                | W1   |
+| 2. Connected knowledge project | Claude Projects + connectors   | Leader                                | W1–2 |
+| 3. No-code agent               | **Gems** (Workspace-connected) | Leader                                | W2–3 |
+| 4. Tooled agent                | Claude Code + MCPs             | Leader *with* trainer (stretch)       | W3   |
+| 5. Multi-agent                 | **Google ADK**                 | Trainer demo → govern (stretch build) | W4   |
 
 **Claude Code sits at the center** — the universal builder behind every rung. Gems and ADK are what gets produced around it.
 
