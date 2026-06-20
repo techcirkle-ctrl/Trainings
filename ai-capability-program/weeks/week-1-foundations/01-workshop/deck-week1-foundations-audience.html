@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <!--
-  AI Capability Program — Week 1 · THE SESSION DECK (projectable + circulated).
-  One deck guides the whole 5-hr session: all 13 movements (M1–M13), concept AND hands-on, in one file.
-  Concept movements drive widgets live; hands-on movements carry their starter prompts inline with COPY buttons —
-  leaders open this same file on their laptop and copy the prompts straight off the slide.
-  Self-contained: inline CSS + vanilla JS, no network, no build. Open with: open "deck-week1-foundations.html"
+  AI Capability Program — Week 1 · AUDIENCE COPY (presenter script removed).
+  Generated from deck-week1-foundations.html — same slides, widgets, hands-on prompts, and Takeaway notes,
+  with the presenter speaker-script (Say / Do / Bridge) and its side panel stripped out. Safe to circulate to the team.
+  All 13 movements (M1–M13), concept AND hands-on, in one self-contained file.
+  Self-contained: inline CSS + vanilla JS, no network, no build. Open with: open "deck-week1-foundations-audience.html"
   Nav: → / Space / click = next · ← = prev · Home = agenda · N = notes · F = full-screen.
 
   Revised flow (after expert review):
@@ -220,6 +220,11 @@
   .scriptpanel .body p{margin:.4em 0}.scriptpanel .body ul{margin:.2em 0 .8em;padding-left:1.1em}.scriptpanel .body li{margin:.3em 0}
   .scriptpanel .body em{color:#7fd1cb;font-style:normal;font-weight:700}
   .scriptpanel .body .t{font:700 11px ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8aa6a2;margin:.8em 0 .15em}
+  .lead1{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:9px 13px;margin:0 0 .8em;font:700 13.5px/1.45 ui-sans-serif,system-ui,sans-serif;color:#0d3b39}
+  .lead1 b{color:var(--accent)}
+  .scriptpanel .body .lead1{background:rgba(127,209,203,.14);color:#eafaf8;font-size:15px}
+  .scriptpanel .body .lead1 .k{display:block;font:800 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#7fd1cb;margin-bottom:3px}
+  .lead1 .k{display:block;font:800 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
   /* DRIVES — interactive AI Goals Canvas */
   .canvas{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-top:14px;align-items:start}
   @media(max-width:900px){.canvas{grid-template-columns:1fr}}
@@ -248,21 +253,54 @@
   .promptfold>summary{cursor:pointer;font:700 12.5px ui-sans-serif,system-ui,sans-serif;color:var(--accent);padding:9px 0;list-style:none}
   .promptfold>summary::-webkit-details-marker{display:none}
   .promptfold[open]>summary{border-bottom:1px solid var(--line);margin-bottom:6px}
+  /* timed day-plan (Slide 2) — inspired by the facilitator run-sheet */
+  .dayplan{display:grid;gap:6px;margin-top:.6rem;max-width:1010px}
+  .drow{display:grid;grid-template-columns:94px 1fr;gap:13px;align-items:stretch}
+  .drow .dtime{background:#16202b;color:#fff;border-radius:11px;padding:6px 12px;display:flex;flex-direction:column;justify-content:center}
+  .drow .dtime .hh{font:800 clamp(15px,1.55vw,19px)/1 ui-sans-serif,system-ui,sans-serif;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+  .drow .dtime .mm{font:600 10.5px ui-sans-serif,system-ui,sans-serif;color:#93a4ad;margin-top:3px;letter-spacing:.02em}
+  .drow .dcardx{background:#fff;border:1px solid var(--line);border-radius:11px;padding:7px 16px;display:flex;flex-direction:column;justify-content:center;min-width:0;box-shadow:0 1px 2px rgba(16,32,43,.04)}
+  .drow .dcardx .ttl{font:800 clamp(.98rem,1.5vw,1.16rem)/1.25 ui-sans-serif,system-ui,sans-serif;color:var(--ink);display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .drow .dcardx .det{font:500 clamp(.8rem,1.1vw,.94rem)/1.4 ui-sans-serif,system-ui,sans-serif;color:var(--muted);margin-top:2px}
+  .drow .hopill{font:800 9px ui-sans-serif,system-ui,sans-serif;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border:1px solid #cfe6e4;border-radius:999px;padding:3px 9px}
+  .drow.ho2 .dtime{background:#0d2b2b}
+  .drow.ho2 .dcardx{border-color:#cfe6e4}
+  .drow.brk .dtime{background:#e7ebee;color:#5c6b7a}
+  .drow.brk .dtime .hh{color:#5c6b7a;font-size:14px}
+  .drow.brk .dtime .mm{color:#90a0a8}
+  .drow.brk .dcardx{background:var(--wash);border-style:dashed;border-color:#dbe2e7;padding-top:4px;padding-bottom:4px}
+  .drow.brk .ttl{font-weight:700;color:var(--muted);font-size:.98rem}
   @media print{
     *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
-    @page{margin:14mm}
-    html,body{height:auto!important;overflow:visible!important;background:#fff}
+    @page{margin:9mm}
+    html,body{height:auto!important;overflow:visible!important;background:#fff;font-size:11px!important;line-height:1.35!important}
     .deck{position:static!important;inset:auto!important;overflow:visible!important;height:auto!important}
-    .slide{position:relative!important;inset:auto!important;display:flex!important;height:auto!important;min-height:auto!important;overflow:visible!important;animation:none!important;page-break-after:always;break-after:page;page-break-inside:avoid;border-bottom:1px solid var(--line)}
+    .slide{position:relative!important;inset:auto!important;display:block!important;height:auto!important;min-height:auto!important;max-height:none!important;overflow:hidden!important;animation:none!important;page-break-after:always;break-after:page;page-break-inside:avoid;padding:0 0 3mm!important}
     .slide:last-child{page-break-after:auto;break-after:auto}
-    .chrome,.helpbar,.progress,.notes,.scriptpanel,.promptblock .copy{display:none!important}
-    .note,.script{display:block;margin-top:18px;padding-top:14px;border-top:2px solid var(--accent);font-size:13px;color:var(--muted)}
-    .script{border-top-color:var(--warn)}
-    .note::before{content:"NOTES — room";display:block;font:700 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;color:var(--accent);margin-bottom:5px}
-    .script::before{content:"SCRIPT — presenter only";display:block;font:700 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;color:var(--warn);margin-bottom:5px}
-    .note .t,.script .t{font-weight:700;text-transform:uppercase;color:var(--accent);font-size:11px}
-    .script .t{color:var(--warn)}
-    .note p,.script p{margin:.3em 0}.note em,.script em{color:var(--ink);font-style:normal;font-weight:700}
+    /* drop everything that isn't slide content or the presenter script */
+    .chrome,.helpbar,.progress,.notes,.scriptpanel,.promptblock .copy,.note,.stepcue{display:none!important}
+    .stage{max-width:none!important;margin:0!important}
+    /* typography compression */
+    h1.big{font-size:1.55rem!important;line-height:1.08!important;margin:.05em 0 .2em!important}
+    h2.head{font-size:1.25rem!important;line-height:1.12!important;margin:.05em 0 .15em!important}
+    .lead{font-size:.92rem!important;line-height:1.32!important;max-width:none!important}
+    .sub{font-size:.78rem!important;line-height:1.3!important;max-width:none!important;margin-top:.4rem!important}
+    .kicker{font-size:9.5px!important;margin-bottom:.25rem!important}
+    .read{font-size:.76rem!important;padding:5px 9px!important;margin-top:.4rem!important}
+    .hodo{font-size:.78rem!important;margin:.2em 0!important}
+    .hostep{font-size:10.5px!important;margin:.45em 0 .12em!important}
+    .checks{margin-top:.3rem!important}.checks li{font-size:.76rem!important;margin:.12em 0!important;line-height:1.3!important}
+    .goalrow{gap:14px!important;margin-top:.45rem!important}.goalrow .gb p{font-size:.78rem!important;line-height:1.3!important}.goalrow .gb{max-width:none!important}
+    .cards{gap:7px!important;margin-top:.45rem!important}
+    .ucard{padding:7px 10px!important}.ucard .n{font-size:10.5px!important}.ucard h3{font-size:.9rem!important;margin:.2em 0 .12em!important}.ucard p{font-size:.74rem!important;line-height:1.32!important}
+    .modtbl td,.modtbl th{padding:3px 7px!important;font-size:.72rem!important}
+    /* widgets: show all steps statically, shrink fills */
+    .steppanel{display:block!important;border-top:1px dotted var(--line);margin-top:5px;padding-top:4px}
+    .stepper{margin:.45rem 0!important}.stepper .sdot{width:26px!important;height:26px!important;font-size:12px!important}.stepper .slabel{font-size:9px!important}
+    .canvas{gap:6px!important;margin:.4rem 0!important}.dcard{padding:6px 9px!important}.dfield{margin:.25em 0!important}.dfield label{font-size:.72rem!important}.dfield .fh{font-size:.66rem!important}
+    textarea{min-height:1.6em!important;height:1.6em!important}
+    .promptblock{margin-top:6px!important}.promptblock pre,pre{font-size:9px!important;line-height:1.28!important;padding:8px 10px!important}
+    .promptfold{padding:0 10px!important}.promptfold>summary{padding:5px 0!important;font-size:10px!important}
   }
 </style></head><body>
 <div class="progress" id="progress"></div>
@@ -275,11 +313,26 @@
       <p class="lead">Start with the most-used skill. Understand the engine. Then find and own the real problem you'll build over four weeks.</p>
     </div>
     <div class="note"><div class="t">Takeaway</div><p>A working session, not a lecture. Over four weeks you build a working AI agent for your own function plus a 90-day plan to lead it. Today lays the foundation.</p></div>
-    <div class="script"><div class="t">Move</div><p>Set the contract in one breath — a working session, not a lecture. ~30 sec, energy up.</p>
-      <div class="t">Say</div><p>"Welcome. This is a working session, not a lecture — your hands are on the tool within the first half hour. Over four weeks you each walk out with a working AI agent for your own function and a 90-day plan to lead it."</p>
-      <p>"Today we lay the foundation: start with the skill you'll use every day, understand the engine underneath, then find and own the one real problem you'll build across all four weeks."</p>
-      <div class="t">Do</div><ul><li>Don't read the agenda yet. Keep the keys handy: <em>Home</em> agenda · <em>N</em> notes · <em>F</em> full-screen.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Here's how the day flows."</p></div>
+      </section>
+
+  <!-- ============ TIMED AGENDA ============ -->
+  <section class="slide isnow" data-deck="Week 1 · Foundations" data-mv="The full day · 10:30–16:30">
+    <div class="stage"><p class="kicker">The full day · 10:30–16:30</p><h2 class="head">The shape of today</h2>
+      <p class="sub" style="margin-top:.1rem">Three real breaks and a full lunch. <b>Hands-on</b> blocks run longer than teach blocks — on purpose: teach a little, do a lot.</p>
+      <div class="dayplan">
+        <div class="drow"><div class="dtime"><span class="hh">10:30</span><span class="mm">15 min</span></div><div class="dcardx"><div class="ttl">Open</div><div class="det">Bridge · confidence read · black-box demo · the map</div></div></div>
+        <div class="drow ho2"><div class="dtime"><span class="hh">10:45</span><span class="mm">60 min</span></div><div class="dcardx"><div class="ttl">Act 1 · Prompting <span class="hopill">Hands-on</span></div><div class="det">Anatomy · the controlled experiment · build &amp; bank 3 · share</div></div></div>
+        <div class="drow brk"><div class="dtime"><span class="hh">11:45</span><span class="mm">15 min</span></div><div class="dcardx"><div class="ttl">☕&nbsp; Tea</div></div></div>
+        <div class="drow"><div class="dtime"><span class="hh">12:00</span><span class="mm">55 min</span></div><div class="dcardx"><div class="ttl">Act 2 · The Engine</div><div class="det">How it predicts · temperature · context window · the stack</div></div></div>
+        <div class="drow brk"><div class="dtime"><span class="hh">12:55</span><span class="mm">60 min</span></div><div class="dcardx"><div class="ttl">🍽&nbsp; Lunch</div></div></div>
+        <div class="drow ho2"><div class="dtime"><span class="hh">13:55</span><span class="mm">50 min</span></div><div class="dcardx"><div class="ttl">Act 3 · RAG &amp; Agents <span class="hopill">Hands-on</span></div><div class="det">Flip retrieval · the data rule · the agent loop · AI interviews you</div></div></div>
+        <div class="drow ho2"><div class="dtime"><span class="hh">14:45</span><span class="mm">45 min</span></div><div class="dcardx"><div class="ttl">Capstone Decider · part 1 <span class="hopill">Hands-on</span></div><div class="det">Architect across the stack · out-judge the machine</div></div></div>
+        <div class="drow brk"><div class="dtime"><span class="hh">15:30</span><span class="mm">15 min</span></div><div class="dcardx"><div class="ttl">☕&nbsp; Tea</div></div></div>
+        <div class="drow ho2"><div class="dtime"><span class="hh">15:45</span><span class="mm">30 min</span></div><div class="dcardx"><div class="ttl">Capstone Decider · part 2 <span class="hopill">Hands-on</span></div><div class="det">Write the agent spec · pressure-test with Claude, then a peer</div></div></div>
+        <div class="drow"><div class="dtime"><span class="hh">16:15</span><span class="mm">15 min</span></div><div class="dcardx"><div class="ttl">Close — prove the shift</div><div class="det">Re-read the confidence number · commit your capstone in one sentence</div></div></div>
+      </div>
+    </div>
+    <div class="note"><div class="t">Takeaway</div><p>Teach a little, do a lot. The hands-on blocks are deliberately longer than the teach blocks — that ratio is the whole point for this room. Three breaks plus a full lunch carry the energy through a six-hour day.</p></div>
   </section>
 
   <!-- ============ MINI-AGENDA ============ -->
@@ -319,12 +372,7 @@
       </div>
     </div>
     <div class="note"><div class="t">Takeaway</div><p>Three teaching acts — prompting, the engine, then RAG + agents (ending in your Claude Project). Then the <b>Capstone Decider</b>: six hands-on steps run in order — set up, interview, qualify, architect, spec, decide — that refine one real problem into your capstone.</p></div>
-    <div class="script"><div class="t">Move</div><p>Give them the map — three acts — and flag the hands-on beats. ~45 sec.</p>
-      <div class="t">Say</div><p>"Three acts. Act 1, prompting — the everyday skill. Act 2, the engine — what's actually happening under the hood, and the two decisions you make every time. Act 3, RAG, agents, and your capstone — where you find the problem you carry for four weeks."</p>
-      <p>"The tagged items are hands-on: in each act we work the idea together, then you put it straight onto a real problem of your own."</p>
-      <div class="t">Do</div><ul><li>Point at the three <em>hands-on</em> tags. Tell them: press <em>Home</em> any time to come back to this map.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Two minutes on how today actually works."</p></div>
-  </section>
+      </section>
 
   <!-- ============ HOW TODAY WORKS ============ -->
   <section class="slide isnow" data-deck="Week 1 · Foundations" data-mv="Your working surface">
@@ -335,12 +383,7 @@
       </div>
       <span class="read"><b>By the end of today</b> you have three tested prompts, a defensible <b>stack map</b>, and an <b>agent spec</b> for one real problem — the spine of all four weeks.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Posture: don't be impressed by the machine — <em>out-judge it.</em> Your judgement is the scarce skill. Tool: Claude Desktop on the program workspace account.</p></div>
-    <div class="script"><div class="t">Move</div><p>The most important framing of the day — the posture and the tool. Slow down here.</p>
-      <div class="t">Say</div><p>"Two things to set. First, your posture. You're not here to be impressed by a chatbot. Take a genuinely messy problem you own, make the machine architect a solution — then <em>out-judge it.</em> It sounds authoritative and it over-builds; your judgement is the scarce skill in this room."</p>
-      <p>"Second, the tool. We're all in Claude Desktop, signed into the program <em>workspace</em> account — not your personal one. When a slide says hands-on, copy the prompt straight off it and paste it in."</p>
-      <div class="t">Do</div><ul><li>Hold here until every laptop is open and signed into the workspace account.</li><li>Remind them this deck is theirs too — they copy every hands-on prompt off the slide.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Let me name exactly where you're sitting right now."</p></div>
-  </section>
+      </section>
 
   <!-- ============ COLD OPEN ============ -->
   <section class="slide isnow" data-deck="Week 1 · Foundations" data-mv="Cold open">
@@ -350,12 +393,7 @@
       <p class="sub" style="margin-top:.9rem">You delegate every day — but to people you trust and can hold <b>accountable</b>. AI is not a person, and it carries no accountability. That's exactly why you can't just trust it — you have to understand it.</p>
     </div>
     <div class="note"><div class="t">Takeaway</div><p>Being AI-aware isn't enough. You can't lead what you can't see inside — and "trust the magic" is not something you can sign off on. You delegate to people you can hold accountable; AI carries no accountability — so understanding it is the job.</p></div>
-    <div class="script"><div class="t">Move</div><p>Name the tension honestly — the "what is." Keep it muted; don't rescue it on this slide.</p>
-      <div class="t">Say</div><p>"Right now, for most of you, AI is a black box you're told to just… trust. You're AI-aware — every report says move. But you can't lead what you can't see inside, and ‘trust the magic’ is not something a senior leader can sign off on."</p>
-      <p>"And notice — this isn't how you normally operate. You delegate constantly, but to people you trust and can hold <em>accountable.</em> AI is not a person; it carries no accountability. That's why ‘just trust it’ doesn't work here — and why understanding it is the job."</p>
-      <div class="t">Do</div><ul><li>Pause. Let it land. Make eye contact. Resist <em>rescuing</em> it here — the next slide turns it. The delegation line sharpens the tension; it doesn't resolve it.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>(beat) "So here's what today does about that."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Week 1 · Foundations" data-mv="Cold open">
     <div class="stage"><p class="kicker">Today we open the box</p>
@@ -363,12 +401,7 @@
       <p class="lead" style="margin-top:1rem">Start with the skill you'll use every day. Learn what's under the hood. Ground it, see how agents work — then find the one problem you'll scope, build, harden, and deploy over four weeks.</p>
     </div>
     <div class="note"><div class="t">Takeaway</div><p>By the end of today you won't just trust AI — you'll understand it, and you'll have found the one real problem you'll scope, build, harden and deploy across four weeks.</p></div>
-    <div class="script"><div class="t">Move</div><p>The flip — the promise of the day. Lift the energy; this is your launch line into Act 1.</p>
-      <div class="t">Say</div><p>"By the end of today you won't trust it — you'll <em>understand</em> it. And you'll have found and owned a real problem to build on."</p>
-      <p>"We start with the skill you'll use every day, learn what's under the hood, ground it, see how agents work — then you find the one problem you'll scope, build, harden, and deploy over four weeks."</p>
-      <div class="t">Do</div><ul><li>Deliver with energy. This is the turn — don't throw it away.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Let's start by <em>using</em> the tool — Act 1 is prompting."</p></div>
-  </section>
+      </section>
 
   <!-- ============ ACT 1 ============ -->
   <section class="slide act" data-deck="Act 1 · Prompting" data-mv="Act 1 · Prompting">
@@ -376,12 +409,7 @@
       <p class="lead">The skill you'll use every single day — and the highest-leverage one in the program. <span class="accent">Specificity is control.</span></p>
       <p class="sub" style="margin-top:1.2rem">Prompt anatomy · two hands-on rounds · the failure modes structure prevents. By the end you have three tested production prompts.</p></div>
     <div class="note"><div class="t">Takeaway</div><p>Prompting is the everyday, highest-leverage skill. It isn't asking nicely — it's removing every way the model could guess wrong. <em>Specificity is control.</em></p></div>
-    <div class="script"><div class="t">Move</div><p>Reframe what prompting actually is before they touch it.</p>
-      <div class="t">Say</div><p>"We're not going to start with how the model works — we'll open that box in Act 2. We start with the one skill you'll use every single day, on any tool: prompting."</p>
-      <p>"And let me reframe it. Prompting isn't asking the AI nicely — it's removing every way it could guess wrong. One idea runs this whole act: <em>specificity is control.</em> The more precisely you specify, the more reliably it performs."</p>
-      <div class="t">Do</div><ul><li>Laptops open, Claude Desktop on the workspace account. You use it before you explain it.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Every reliable prompt has the same skeleton — let me show you the six parts."</p></div>
-  </section>
+      </section>
 
   <!-- ============ M1 ============ -->
   <section class="slide dark" data-deck="Act 1 · Prompting" data-mv="M1 · Anatomy of a production prompt">
@@ -389,11 +417,7 @@
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See the six parts of a reliable prompt — and watch reliability climb as you add them.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>Which parts a given task actually needs.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>Reliable prompts have six parts: role, task, context, constraints, output format, examples. Only the task is mandatory — each part you add removes a way the model can guess wrong.</p></div>
-    <div class="script"><div class="t">Move</div><p>Plant the six-part anatomy — a breath before the live demo.</p>
-      <div class="t">Say</div><p>"Every reliable prompt has the same skeleton: role, task, context, constraints, output format, examples. Only one is mandatory — the task. The other five are optional, but each one you add shuts down a way the model could go wrong."</p>
-      <div class="t">Do</div><ul><li>Pose the watching question: "As I build one live, ask yourself — which of these six does <em>my</em> kind of work actually need?"</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Let me build one up, part by part."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Act 1 · Prompting" data-mv="M1 · Anatomy of a production prompt">
     <div class="stage"><p class="kicker">Build one up, part by part</p><h2 class="head">Switch on what the task needs — watch reliability climb</h2>
@@ -407,12 +431,7 @@
       <span class="read"><b>What you decide:</b> only <b>Task</b> is mandatory — but every part you add closes off a way the model could guess wrong. The model continues from what you give it; specificity is control.</span>
       <p class="sub" style="margin-top:.9rem"><b>Remember it — Task is the spine; the other five are ribs you add by need:</b><br><b class="accent">T</b>ask · <b class="accent">R</b>ole · <b class="accent">C</b>ontext · <b class="accent">C</b>onstraints · <b class="accent">O</b>utput · <b class="accent">E</b>xamples &nbsp;—&nbsp; <i>"The Right Context Cuts Obvious Errors."</i></p></div>
     <div class="note"><div class="t">Takeaway</div><p>Reliability climbs as you add each part. Constraints and examples do the most work — and are the two you use least.</p></div>
-    <div class="script"><div class="t">Move</div><p>You drive the builder; narrate the reliability meter climbing as you switch each part on.</p>
-      <div class="t">Say</div><p>"Watch the meter. I start with task only — ‘summarise this.’ It'll do something, but it's guessing at everything I didn't say. Now a Role. Context — the background only I hold. Constraints — and this is the big one for us: ‘use only what's in the text, flag anything missing rather than guessing.’ Output format. Examples."</p>
-      <p>"See the jump on Constraints and Examples? Those two do the most work — and leaders use them the least. That's specificity buying you control."</p>
-      <div class="t">Do</div><ul><li>Toggle in order: Task &rarr; Role &rarr; Context &rarr; Constraints &rarr; Format &rarr; Examples. Pause on the Constraints and Examples jumps and point at them.</li><li>Leave them the memory aid: <em>Task is the spine, the rest are ribs</em> — "The Right Context Cuts Obvious Errors" (T-R-C-C-O-E).</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Now you drive — but like a scientist, not a tourist."</p></div>
-  </section>
+      </section>
 
   <!-- ============ M2 (hands-on) ============ -->
   <section class="slide dark" data-deck="Act 1 · Prompting" data-mv="M2 · The controlled experiment">
@@ -420,11 +439,7 @@
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Change exactly one part at a time on a real task; isolate the marginal lift of each.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>Which prompt elements are worth standardising for your team.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>Test prompts like a scientist: change one element at a time, hold the rest constant, and read what only that element changed.</p></div>
-    <div class="script"><div class="t">Move</div><p>Set the method — change exactly one variable at a time.</p>
-      <div class="t">Say</div><p>"Now you drive, but like scientists, not tourists. The usual mistake is to pile in five things, watch it get better, and have no idea which one helped."</p>
-      <p>"So we change exactly one variable at a time — same task, held constant, one element added per round — and read what only that element changed. By the end you'll know which parts earn their place, and which are worth making a team standard."</p>
-      <div class="t">Bridge &rarr;</div><p>"Pick one real task and let's run it."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Act 1 · Prompting" data-mv="M2 · The controlled experiment">
     <div class="stage"><span class="hobadge">Hands-on &nbsp;·&nbsp; 01</span><h2 class="head">Add one element per round — read what only that element changed</h2>
@@ -441,12 +456,7 @@ Round 4 — add Constraints:   Use only what's in the text. Flag anything missin
 Round 5 — add Output format:  Return exactly: [the shape you want].</pre></div>
       <span class="read">After each round, note in one phrase what moved. <b>The judgment:</b> which element gave you the biggest jump? That's the one worth making a team standard.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>On a real task, start bare then add one element per round. The element that gives the biggest lift is a candidate team standard.</p></div>
-    <div class="script"><div class="t">Move</div><p>They work; you circulate and harvest. Hands-on, ~8 min.</p>
-      <div class="t">Say</div><p>"Pick one real task — a draft, a summary, an extraction. Copy the Round 1 block: just the bare task. Run it, read it. Now layer on one element per round from the second block — Role, then Context, then Constraints, then Output — and after each, note in one phrase what changed."</p>
-      <p>"One question to answer by the end: which single element gave you the biggest jump?"</p>
-      <div class="t">Do</div><ul><li>~8 min. Circulate while they work.</li><li>Then pull 2–3 leaders to read out which element moved the needle most.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"That was the lab. Now production."</p></div>
-  </section>
+      </section>
 
   <!-- ============ M3 (hands-on) ============ -->
   <section class="slide dark" data-deck="Act 1 · Prompting" data-mv="M3 · Build &amp; bank 3 prompts">
@@ -454,11 +464,7 @@ Round 5 — add Output format:  Return exactly: [the shape you want].</pre></div
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Write three production prompts for real tasks you own — tested, not just written.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>What "good enough to reuse" looks like for your function.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>Write three production prompts for real tasks you own — tested, not just written. The bar: reusable next week without a rewrite.</p></div>
-    <div class="script"><div class="t">Move</div><p>Raise the stakes — these prompts are keepers, not throwaways.</p>
-      <div class="t">Say</div><p>"That was the lab; this is production. You're now going to write three real prompts for three real tasks you own — and test them, not just write them."</p>
-      <p>"These aren't throwaway: they go straight into your homework as your three production prompts — the first concrete thing you walk out with today. The bar: good enough that you'd reuse it next week without a rewrite."</p>
-      <div class="t">Bridge &rarr;</div><p>"Here's the loop you'll run for each one."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Act 1 · Prompting" data-mv="M3 · Build &amp; bank 3 prompts">
     <div class="stage"><span class="hobadge">Hands-on &nbsp;·&nbsp; 02</span><h2 class="head">Draft → run → critique → improve</h2>
@@ -476,12 +482,7 @@ Examples:    [one short example of a good output, if it helps].
 where did it drift, and what one change to my prompt would most improve the next result?</pre></div>
       <span class="read">Apply the fix and rerun. <b>Bank the final version + one line on what you changed</b> — these three go straight into your homework's "three production prompts."</span></div>
     <div class="note"><div class="t">Takeaway</div><p>The loop: build with the full anatomy → run → have the model critique itself → apply one change → rerun. Bank three final prompts for your homework.</p></div>
-    <div class="script"><div class="t">Move</div><p>Build three with the self-critique move most people skip. Hands-on, ~12 min.</p>
-      <div class="t">Say</div><p>"Build the prompt with the full anatomy from the first block — every slot filled — and run it on your first task. Then the move most people skip: make the model critique itself. Copy the second block — ‘where did it follow my instructions, where did it drift, and what one change would most improve the next result?’ Apply that one change and rerun."</p>
-      <p>"Do that for three tasks, and bank each final version with one line on what you changed."</p>
-      <div class="t">Do</div><ul><li>~12 min. Pair leaders to critique each other's against the six parts.</li><li>Confirm everyone has three banked before you move to Act 2.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Last thing in Act 1 — and this one should make you a little nervous."</p></div>
-  </section>
+      </section>
 
   <!-- ============ M4 ============ -->
   <section class="slide dark" data-deck="Act 1 · Prompting" data-mv="M4 · What structure prevents">
@@ -489,11 +490,7 @@ where did it drift, and what one change to my prompt would most improve the next
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See how a <em>vague</em> ask fails — differently each time — and how structure closes each gap.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>Where an unstructured prompt is a real business risk.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>A vague prompt doesn't just answer worse — it fails dangerously and differently each time: invented numbers, unauthorised promises, biased wording. Structure is risk control.</p></div>
-    <div class="script"><div class="t">Move</div><p>Shift the frame from "better" to "safer" — structure as risk control.</p>
-      <div class="t">Say</div><p>"We've seen structure makes prompts better. Now I want to show you what structure <em>prevents.</em> A vague prompt doesn't just give a worse answer — it fails in a different, specific, dangerous way every single time: an invented number, a promise you never authorised, biased wording, a fabricated field."</p>
-      <div class="t">Do</div><ul><li>Pose it to the room: "As I show each one, ask — where in <em>my</em> function would that failure actually cost us?"</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Let me show you, side by side."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Act 1 · Prompting" data-mv="M4 · What structure prevents">
     <div class="stage"><p class="kicker">Same task · vague vs structured</p><h2 class="head">Flip between the two and watch the output change</h2>
@@ -506,12 +503,7 @@ where did it drift, and what one change to my prompt would most improve the next
         <div class="hint" id="cmpHint"></div>
       </div></div>
     <div class="note"><div class="t">Takeaway</div><p>Same task, vague vs structured. Vague invents figures and makes commitments you never authorised; structure names the issue, cites sources, and refuses to guess.</p></div>
-    <div class="script"><div class="t">Move</div><p>You drive — show the failure first, name it, then flip to the fix. Run two scenarios.</p>
-      <div class="t">Say</div><p>"Take the complaint reply. Here's the vague version — it apologised and promised a full refund and priority shipping. Nobody authorised either; that's not a clumsy sentence, it's a commitment your company never made. Now the structured version — same task, but it names the issue, offers to escalate, and promises nothing outside the contract. Safe to send."</p>
-      <p>"Same pattern on the RFP: vague invents a 12% number, structured flags the gap instead. That space between the two columns is your business risk — and it closes the moment you add structure."</p>
-      <div class="t">Do</div><ul><li>Show <em>Vague</em> first, name the exact failure, then flip to <em>Structured</em>.</li><li>Run two: the complaint (unauthorised promise), then the RFP (invented number).</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"You now know how to drive it reliably. Time to see what's under the hood."</p></div>
-  </section>
+      </section>
 
   <!-- ============ ACT 2 ============ -->
   <section class="slide act" data-deck="Act 2 · The engine" data-mv="Act 2 · The engine">
@@ -519,12 +511,7 @@ where did it drift, and what one change to my prompt would most improve the next
       <p class="lead">You've been using it. Now let's see <span class="accent">why it works</span> — and the decision map you'll use every time you scope a problem.</p>
       <p class="sub" style="margin-top:1.2rem">How it predicts · two decisions you make · the stack: compose, don't climb.</p></div>
     <div class="note"><div class="t">Takeaway</div><p>Act 2 opens the hood — briefly. Not to make you an engineer, but to see the two things you control and the one map — the stack — that the rest of the program builds on.</p></div>
-    <div class="script"><div class="t">Move</div><p>Bridge from Act 1 (you can drive it) into "now see why it works" + the decision map.</p>
-      <div class="t">Say</div><p>"You've spent the last hour driving this thing and getting reliable output. Now — briefly — let's open the hood. Not to make you engineers, but because two of the things under there are yours to decide, and the rest of the program builds on one map you're about to see."</p>
-      <p>"This act is short: how it actually works, the two dials you control, and the stack — the decision map you'll use every time you scope a problem."</p>
-      <div class="t">Do</div><ul><li>This is the shortest act — keep it tight. Resist rabbit-holes on internals.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Start with the one trick the whole machine runs on."</p></div>
-  </section>
+      </section>
 
   <!-- ============ M5 ============ -->
   <section class="slide dark" data-deck="Act 2 · The engine" data-mv="M5 · How it predicts">
@@ -532,11 +519,7 @@ where did it drift, and what one change to my prompt would most improve the next
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>The one trick the whole machine runs on — and the one dial that matters.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>When to make it repeatable, and when to let it roam.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>The whole engine in two minutes: one trick it runs on, and one dial you control.</p></div>
-    <div class="script"><div class="t">Move</div><p>Set up the 2-minute engine explanation — one trick, one dial. No widget.</p>
-      <div class="t">Say</div><p>"Here's the whole engine in two minutes. There's one trick it runs on, and one dial that matters to you. That's it — you don't need the math."</p>
-      <div class="t">Do</div><ul><li>~2 minutes total for M5. Talk it fast and keep moving.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"The trick is simpler than you'd think."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Act 2 · The engine" data-mv="M5 · How it predicts">
     <div class="stage"><p class="kicker">The whole trick — two minutes</p><h2 class="head">It predicts the <span class="accent">next word</span>. Then it does it again.</h2>
@@ -547,13 +530,7 @@ where did it drift, and what one change to my prompt would most improve the next
       <p class="lead" style="font-size:clamp(1rem,1.45vw,1.25rem);margin:1.1rem 0 0"><b>"If it just predicts the next word, how can it out-judge a vendor proposal?"</b> Two reasons: at the scale it's trained on — trillions of words, hundreds of billions of internal settings — prediction <i>becomes</i> reasoning; and it was <b>deliberately tuned to reason</b> and to check its own work. That self-check is the critique move you'll lean on all afternoon.</p>
       <span class="read"><b>The implication:</b> it generates — it doesn't retrieve. Nothing "stays" between responses. That's exactly why <b>constraining what it says</b> (Act 1 prompting) and <b>grounding it in your documents</b> (Act 3 RAG) are non-optional.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>An LLM predicts the next word, feeds it back, and repeats — sophisticated autocomplete. It generates, it doesn't look things up. Temperature is the one dial: low = repeatable, high = creative.</p></div>
-    <div class="script"><div class="t">Move</div><p>Demystify: it's autocomplete; name temperature as the one dial. ~2 min, no widget.</p>
-      <div class="t">Say</div><p>"It predicts the next word. That's it. Trained on a vast amount of text, it learned which words tend to follow which, in context. You give it a start, it predicts the next word, feeds that back, predicts again — and loops until done. A poem, code, a strategy memo — all the same loop. No database, no lookup; it's generating, not retrieving."</p>
-      <p>"The one dial is <em>temperature.</em> Low, and it takes the safe word every time — the same answer five times over. High, and surprising words get a shot — five different results. And the implication matters: because it generates rather than looks things up, nothing ‘stays’ between answers — which is exactly why constraining it in Act 1, and grounding it in your documents in Act 3, are not optional."</p>
-      <p>"One objection you'll feel: ‘if it's just autocomplete, how does it out-judge a vendor proposal?’ Two reasons — at the scale it's trained on, trillions of words, prediction <em>becomes</em> reasoning; and it was deliberately built to reason and to check its own work. It's not autocomplete that got lucky — the reasoning was added on top, on purpose. That self-check is the very move you'll use in the critique steps this afternoon."</p>
-      <div class="t">Do</div><ul><li>2 min max. Don't over-explain temperature — name it and move.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"So what's actually yours to decide? Two things."</p></div>
-  </section>
+      </section>
 
   <!-- ============ M5b · temperature dial ============ -->
   <section class="slide" data-deck="Act 2 · The engine" data-mv="M5 · Play with prediction">
@@ -572,11 +549,7 @@ where did it drift, and what one change to my prompt would most improve the next
       </div>
       <span class="read"><b>Low temperature:</b> same sentence every time — safe for reports and extractions. <b>High temperature:</b> five different sentences — useful for first drafts and brainstorming.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Temperature is the one dial: low = repeatable (same answer every run), high = creative (different results each time). Same engine, same starting words — only the dial changes.</p></div>
-    <div class="script"><div class="t">Move</div><p>Drag the dial — show reliable end first, then creative end. Let them see the difference in 60 seconds.</p>
-      <div class="t">Say</div><p>"Same prompt, same model — only the dial changes. Low: every run gives you the same sentence. High: five different completions from the same start. That's the one setting you control that trades predictability for creativity."</p>
-      <div class="t">Do</div><ul><li>Drag to the low end → click Write. All same. Drag to high → click Write. All different.</li><li>2 minutes max. Don't over-explain — the widget shows it.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"So that's the dial. Now — two decisions only you make."</p></div>
-  </section>
+      </section>
 
   <!-- ============ M6 ============ -->
   <section class="slide dark" data-deck="Act 2 · The engine" data-mv="M6 · Two decisions only you make">
@@ -584,11 +557,7 @@ where did it drift, and what one change to my prompt would most improve the next
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See the two variables that are actually yours to govern — not the internals.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>How clearly to brief it, and which model to reach for.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>You don't tune the model's internals. Two things at your altitude are yours to decide — and they drive cost, speed and quality.</p></div>
-    <div class="script"><div class="t">Move</div><p>Pull up to leader altitude — what you govern, not the internals.</p>
-      <div class="t">Say</div><p>"You're never going to tune this model's internals — and you shouldn't. But there are exactly two things at your altitude that you <em>do</em> decide, and they affect cost, speed and quality every day."</p>
-      <div class="t">Do</div><ul><li>No architecture jargon. Keep it at the decision level.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Here they are."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Act 2 · The engine" data-mv="M6 · Two decisions only you make">
     <div class="stage"><p class="kicker">Two decisions only you make</p>
@@ -613,12 +582,7 @@ where did it drift, and what one change to my prompt would most improve the next
       </div>
       <span class="read"><b>What you decide:</b> you don't tune the model — you <b>choose</b> it. Match it to the job's difficulty and volume, and you control the bill.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Context window = the model's working memory (overflow it and early details fall away). Model selection = choosing faster/cheaper vs most capable for the job. You choose the model; you don't tune it.</p></div>
-    <div class="script"><div class="t">Move</div><p>The two leader-controlled variables: context window and model choice.</p>
-      <div class="t">Say</div><p>"First, the context window — the model's working memory. Everything it can see at once: your prompt, the docs you paste, the conversation so far. Picture a desk: pile on too much and the earliest papers slide off the edge — it forgets them. And you get <em>no error</em> — it just quietly forgets, which is exactly why long chats start to drift. Bigger window holds more, costs more."</p>
-      <p>"Second, model selection. You don't tune the model — you <em>choose</em> it. A cheap, fast model for high-volume simple work; the most capable one for hard reasoning. That's a leadership trade-off — cost versus speed versus capability — and it's how you control the bill."</p>
-      <div class="t">Do</div><ul><li>The desk analogy lands — use it. Good spot for a short break before M7 (the heaviest concept).</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Now the one map that carries the whole program — the stack."</p></div>
-  </section>
+      </section>
 
   <!-- ============ M7 ============ -->
   <section class="slide dark" data-deck="Act 2 · The engine" data-mv="M7 · The stack">
@@ -626,11 +590,7 @@ where did it drift, and what one change to my prompt would most improve the next
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Replace the "AI ladder" myth with the real model — capabilities you bolt on by need.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>The lowest layer a problem needs — the core judgement of the program.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>AI isn't a ladder where each rung contains the last. LLM, RAG, agents, multi-agent are composable capabilities on one engine — switch on only what a problem needs. An agent need not use RAG.</p></div>
-    <div class="script"><div class="t">Move</div><p>Kill the "AI ladder" myth before revealing the real model.</p>
-      <div class="t">Say</div><p>"You've probably seen AI drawn as a ladder — LLM at the bottom, then RAG, then agents, then multi-agent at the top, as if each one contains the last. Forget that. It's wrong, and it makes you overbuild. These are composable capabilities bolted onto one engine — you switch on only what a problem needs. An agent doesn't have to use RAG; RAG doesn't need an agent."</p>
-      <div class="t">Do</div><ul><li>This is the conceptual spine of the program — slow down. Kill the ladder explicitly.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Let me show you how they compose."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Act 2 · The engine" data-mv="M7 · The stack">
     <div class="stage"><p class="kicker">Compose it, don't climb it</p><h2 class="head">One engine + the capabilities you switch on</h2>
@@ -641,12 +601,7 @@ where did it drift, and what one change to my prompt would most improve the next
         <div class="result"><div class="brow"><span class="bname" id="buildName">Plain LLM</span><span class="muted" id="buildCostLbl">Cost &amp; complexity: low</span></div>
         <div class="meter"><div class="fill" id="buildCost" style="width:18%"></div></div><div class="cando" id="buildDetail"></div></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>One engine + capabilities you switch on: +retrieval = RAG, +tools = agent, +both = grounded agent, +many = multi-agent. Cost and complexity climb as you add.</p></div>
-    <div class="script"><div class="t">Move</div><p>You drive — start at plain LLM, switch capabilities on, watch cost/complexity climb.</p>
-      <div class="t">Say</div><p>"One engine — the LLM. Nothing switched on, it's a plain LLM: it drafts and reasons, but it's blind to your documents and takes no actions. Switch on Retrieval — now it answers from your own documents, with sources: that's RAG. Turn retrieval off, switch on Tools — now it acts and loops toward a goal: that's an agent. Switch on both and you get an agent grounded in your documents — the shape of most real assistants. Many agents on top is multi-agent — rare, and expensive."</p>
-      <p>"Watch the cost bar as you climb."</p>
-      <div class="t">Do</div><ul><li>Toggle: Retrieval (RAG) &rarr; off &rarr; Tools (Agent) &rarr; both (grounded agent) &rarr; Many agents. Narrate cost rising; land that most problems sit low.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Which sets up the single most important rule in this program."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Act 2 · The engine" data-mv="M7 · The stack">
     <div class="stage"><p class="kicker">The rule that governs every build, weeks 2–4</p>
@@ -654,12 +609,7 @@ where did it drift, and what one change to my prompt would most improve the next
       <p class="lead" style="margin-top:1.3rem">Climbing higher than the problem needs is the most common — and most expensive — mistake. Add the <b>fewest</b> capabilities that solve it.</p>
       <span class="read"><b>Carry this into Act 3:</b> for any problem — what's the <b>lowest</b> capability that solves it, and <b>why not</b> the one above?</span></div>
     <div class="note"><div class="t">Takeaway</div><p>The rule for every build: the cheapest layer that works wins. Overbuilding is the most common, most expensive AI mistake. Always ask — the lowest capability that solves this, and why not the one above?</p></div>
-    <div class="script"><div class="t">Move</div><p>The governing rule for every build, weeks 2–4. Land it hard.</p>
-      <div class="t">Say</div><p>"Here's the rule I want you repeating in Week 4: <em>the cheapest layer that works, wins.</em> Climbing higher than the problem needs is the most common — and most expensive — mistake people make with AI. Add the fewest capabilities that solve it, and no more."</p>
-      <p>"So for any problem you bring me, the question is always: what's the lowest capability that solves this — and why not the one above it?"</p>
-      <div class="t">Do</div><ul><li>Say the line slowly; let it sit. This sets up M12 (architect &amp; out-judge).</li><li><em>Backup bank:</em> Procurement&rarr;RAG · AP invoice triage&rarr;Agent · RFQ drafts&rarr;LLM+RAG · HR policy Q&amp;A&rarr;RAG · IT ticket triage&rarr;Agent.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Now we put it to work — grounding, agents, and the problem you'll own."</p></div>
-  </section>
+      </section>
 
   <!-- ============ ACT 3 ============ -->
   <section class="slide act" data-deck="Act 3 · RAG, Agents &amp; Capstone" data-mv="Act 3 · RAG, Agents &amp; Capstone">
@@ -667,12 +617,7 @@ where did it drift, and what one change to my prompt would most improve the next
       <p class="lead">The stack told you <em>when</em> to add each layer. Act 3 shows you <span class="accent">what each layer actually does</span> — then you find the problem you carry through all four weeks.</p>
       <p class="sub" style="margin-top:1.2rem"><b class="accent">Learn it</b> RAG · the data rule · agent vs chatbot · set up your cloud Project &nbsp;&middot;&nbsp; <b class="accent">Then the Capstone Decider</b> — six steps in order: set up · interview · qualify · architect · spec · decide.</p></div>
     <div class="note"><div class="t">Takeaway</div><p>The stack told you <em>when</em> to add each layer; Act 3 shows what each layer does — then you find, architect, and spec the one problem you carry through all four weeks.</p></div>
-    <div class="script"><div class="t">Move</div><p>Bridge from the stack map into traversing it — and signal the personal pivot coming.</p>
-      <div class="t">Say</div><p>"You've got the map — you know <em>when</em> to add each layer. Act 3 is where you traverse it: what RAG actually does, what an agent actually does, and then the turn — you stop learning about AI in the abstract and find the one problem you'll carry through all four weeks."</p>
-      <p>"By the end of this act you'll have found that problem, architected it, and written the spec you build next week."</p>
-      <div class="t">Do</div><ul><li>The longest, most hands-on act — pace it. Protect time for M11–M13 (the capstone work).</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Start with the layer that fixes ‘it doesn't know our business’ — RAG."</p></div>
-  </section>
+      </section>
 
   <!-- ============ M8 ============ -->
   <section class="slide dark" data-deck="Act 3 · RAG &amp; Agents" data-mv="M8 · RAG — ground it">
@@ -680,11 +625,7 @@ where did it drift, and what one change to my prompt would most improve the next
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See the fix for "it doesn't know our business" — retrieve your content at question time, answer with a citation.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>Which of your problems genuinely need grounding — and which don't.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>RAG = Retrieval-Augmented Generation: pull your own content at question time and answer from it, with a citation. The most common, lowest-risk way to get real value on your material.</p></div>
-    <div class="script"><div class="t">Move</div><p>Frame RAG as the fix for "it doesn't know our business."</p>
-      <div class="t">Say</div><p>"Everything we've used so far runs on the model's general training — it knows the world, but it doesn't know Sandvik. RAG is the fix: Retrieval-Augmented Generation. At question time it retrieves your own content and answers from that, with a citation. It's the most common, lowest-risk way to get real value on your own material."</p>
-      <div class="t">Do</div><ul><li>Say the acronym once, then show it — don't dwell on the letters.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Watch what changes when it can see your documents."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Act 3 · RAG &amp; Agents" data-mv="M8 · RAG — ground it">
     <div class="stage"><p class="kicker">Pick a question · flip RAG off and on · press Answer</p><h2 class="head">Watch the answer change when it can see your documents</h2>
@@ -702,12 +643,7 @@ where did it drift, and what one change to my prompt would most improve the next
       </div>
       <span class="read"><b>What you decide:</b> a RAG system lives or dies on the documents behind it. "Set up RAG" is maybe 20% model and 80% getting your content clean, current and well-organised.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Same model, RAG off vs on: off, it confidently invents a number; on, it answers from your document with a source — and refuses when the answer isn't in your docs. A RAG system is ~80% the quality of your documents, 20% the model.</p></div>
-    <div class="script"><div class="t">Move</div><p>You drive — show the hallucination with RAG off, then grounding + the refusal with RAG on.</p>
-      <div class="t">Say</div><p>"Pick ‘Volume discount.’ RAG off first — it answers confidently, ‘around 12%,’ straight from memory. Sounds authoritative. It's wrong. Now flip RAG on and answer again: it retrieves the pricing policy and says ‘9%, source: pricing_policy_2026.pdf.’ Same model, completely different trustworthiness."</p>
-      <p>"Now the underrated part — ask ‘Government-contract discount’ with RAG on: it <em>refuses</em> — ‘not in our documents.’ A grounded system knows when it doesn't know. That refusal is worth more than a hundred confident guesses."</p>
-      <div class="t">Do</div><ul><li>Volume discount: off (wrong 12%) &rarr; on (9% + source). Then Government-contract, RAG on &rarr; refusal.</li><li>Land it: a RAG system is ~80% your documents, 20% the model.</li><li><em>If asked "whose job is the document cleanup — us or IT?":</em> it's a business-ownership job — your team curates what's true and current, IT just enables the tool. ~80% documents means it's mostly your people, not IT.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Which makes one question urgent — what are you allowed to feed it?"</p></div>
-  </section>
+      </section>
 
   <!-- ============ M9 (hands-on) ============ -->
   <section class="slide dark" data-deck="Act 3 · RAG &amp; Agents" data-mv="M9 · The data rule">
@@ -715,23 +651,14 @@ where did it drift, and what one change to my prompt would most improve the next
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Build the instinct — and the cohort's first draft of what can and can't go into an AI tool.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>The line for your own function's data.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>Pointing AI at real content makes data sensitivity urgent. Build the instinct — and the cohort's first draft of what can and can't go into an AI tool.</p></div>
-    <div class="script"><div class="t">Move</div><p>RAG makes the data question urgent — set up building the cohort's first data rule.</p>
-      <div class="t">Say</div><p>"The second you point AI at your real content, a question gets urgent: what's actually allowed to go in? We're going to build the instinct now — and the cohort's first draft of Sandvik's data rule. We'll sort a warm-up set together, then each of you does your own function's data."</p>
-      <div class="t">Do</div><ul><li>This produces a real artifact — the data-rule input. Collect the lists.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Let's sort a few live."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Act 3 · RAG &amp; Agents" data-mv="M9 · The data rule">
     <div class="stage"><span class="hobadge">Hands-on &nbsp;·&nbsp; 03</span><p class="kicker">Sort it live · OK in a public tool, or never?</p><h2 class="head">What can &amp; can't go in</h2>
       <div class="lab"><div class="sorter" id="sorter"></div><div class="out" id="sorterOut">Make a call on each — instant feedback. This is the cohort's first input to Sandvik's data rule.</div></div>
       <span class="read"><b>The rule isn't "don't use internal data" — it's "use it in the right place."</b> Internal content belongs in the sanctioned tool or the program workspace account, never a public chatbot. This sort is about <i>public</i> tools.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Rule of thumb: if it isn't already public, treat it as off-limits until the data rule says otherwise.</p></div>
-    <div class="script"><div class="t">Move</div><p>Run the sort as a room sport — call each item before revealing.</p>
-      <div class="t">Say</div><p>"I'll put items up one at a time. Before I reveal the answer, call it: OK in a public tool, or never? Here's the rule of thumb to hold — if it isn't already public, treat it as off-limits until the data rule says otherwise."</p>
-      <p>"And be clear on the framing so nobody walks away gun-shy: the rule isn't ‘don't use internal data’ — it's ‘use it in the <em>right place.</em>’ This sort is about <em>public</em> tools. Internal content is exactly what we'll ground the capstone in — it just lives in the sanctioned workspace tool, never a public chatbot."</p>
-      <div class="t">Do</div><ul><li>Take each item to the room before revealing. Make it a table sport — get verbal calls.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Now your own function's data."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Act 3 · RAG &amp; Agents" data-mv="M9 · The data rule">
     <div class="stage"><span class="hobadge">Hands-on &nbsp;·&nbsp; 04</span><h2 class="head">Now your function's data</h2>
@@ -743,12 +670,7 @@ it's safe to put into an AI tool — confidentiality, personal data, contractual
 and what a safer alternative (anonymise, summarise, keep out) would be.</pre></div>
       <span class="read"><b>Output:</b> your function's first can/can't list — your contribution to the Week-0 data rule and the <b>DATA SENSITIVITY</b> line in your homework.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>List the 5–8 data types your team touches and sort each OK / Never. Test one borderline case with the tool (describe, don't paste). This becomes your input to the data rule and your homework's data-sensitivity line.</p></div>
-    <div class="script"><div class="t">Move</div><p>Each leader lists their own data types and sorts them; tests a borderline case with the tool.</p>
-      <div class="t">Say</div><p>"List the five to eight data types your team actually touches — supplier contracts, customer PII, draft pricing, published specs. Sort each one: OK in a tool, or never. Same rule of thumb."</p>
-      <p>"Then take one genuinely borderline case and use the prompt on the slide — describe it <em>without</em> pasting anything sensitive — and let the tool help you reason about confidentiality, personal data, and contractual limits."</p>
-      <div class="t">Do</div><ul><li>~6–8 min. Each does their own function. Collect the lists — they seed the cohort data rule and the DATA SENSITIVITY line in their homework.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Now — what is an agent, really?"</p></div>
-  </section>
+      </section>
 
   <!-- ============ M10 ============ -->
   <section class="slide dark" data-deck="Act 3 · RAG &amp; Agents" data-mv="M10 · Agent vs chatbot">
@@ -757,12 +679,7 @@ and what a safer alternative (anonymise, summarise, keep out) would be.</pre></d
       <div class="gb"><div class="t">You'll decide</div><p>Whether your problem is actually agent-shaped — or a chatbot question in disguise.</p></div></div>
       <p class="sub" style="margin-top:1.3rem;color:#bfe0dd"><b style="color:#fff">A chatbot can only talk. An agent can act — "tools" are the hands you give it:</b> search the web or an internal knowledge base · read &amp; send email · query or update a system or database · read &amp; write files · call another system's API (raise a ticket, update a CRM) · run a calculation or script.</p></div>
     <div class="note"><div class="t">Takeaway</div><p>A chatbot answers once and stops; an agent is given a goal, has tools, and loops (think&rarr;act&rarr;observe&rarr;decide) until done. Three marks: a goal not a question, tools to act, a loop to completion — with a human on the consequential steps.</p></div>
-    <div class="script"><div class="t">Move</div><p>One crisp distinction — three marks. Under 90 seconds, then straight to the widget.</p>
-      <div class="t">Say</div><p>"Chatbot: one question in, one answer out, then it waits. Agent: given a goal, has tools to act, loops — think, act, observe, decide — until the goal is met."</p>
-      <p>"Three things make it an agent: a goal not a question, tools to act, and a loop. Give it tools — email, a database, a ticket system — and it can actually do things. A chatbot can only talk."</p>
-      <div class="t">Do</div><ul><li>Keep it to two short sentences. The widget on the next slide does the real work.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Let me show you — same task, two shapes."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Act 3 · RAG &amp; Agents" data-mv="M10 · Agent vs chatbot">
     <div class="stage"><p class="kicker">Step through both · same task, two shapes</p><h2 class="head">A straight line vs. a loop with tools</h2>
@@ -774,12 +691,7 @@ and what a safer alternative (anonymise, summarise, keep out) would be.</pre></d
       </div>
       <span class="read"><b>What you decide:</b> the agent only touches you for the two safety complaints — the human-in-the-loop sits exactly where authority runs out. That's the governance question you own.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Step through both: the chatbot is a straight line that stops; the agent loops through tools toward a goal and only escalates to a human where its authority runs out. That human-in-the-loop point is the governance call you own.</p></div>
-    <div class="script"><div class="t">Move</div><p>You drive — chatbot straight line first, then the agent loop with tools and human-in-the-loop.</p>
-      <div class="t">Say</div><p>"Chatbot first — Step through: one message in, one reply out, then it stops and waits for you. Now switch to Agent and Run all. Same complaint queue, but watch it loop — think, call a tool, observe, decide — handling the routine complaints itself and looping back."</p>
-      <p>"And notice the one place it touches you: the two safety complaints, where its authority runs out. That's the governance question you own — where does the human stay in the loop?"</p>
-      <div class="t">Do</div><ul><li>Chatbot: Step through (line, then stops). Agent: Run all (loops Think&rarr;Act&rarr;Observe&rarr;Decide, escalates the 2 safety cases).</li><li>Land it: reacts vs pursues a goal; human-in-loop where authority ends.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Now the turn — we make this personal."</p></div>
-  </section>
+      </section>
 
   <!-- ============ CAPSTONE DECIDER · the exercise (section opener) ============ -->
   <section class="slide act" data-deck="Capstone Decider" data-mv="The Capstone Decider">
@@ -787,12 +699,7 @@ and what a safer alternative (anonymise, summarise, keep out) would be.</pre></d
       <p class="lead">Everything so far was AI in the abstract. Now you turn it on <span class="accent">your own work</span> — six steps, run back-to-back, that take one real problem from a hunch to a spec you own and carry for four weeks.</p>
       <p class="sub" style="margin-top:1.2rem"><b class="accent">Six steps</b> &nbsp;1 Set up your Project &middot; 2 AI interviews you &middot; 3 Qualify it (DRIVES) &middot; 4 Architect &amp; out-judge &middot; 5 Write the spec &middot; 6 Validate &amp; decide. &nbsp;Each one: a quick frame, then you do it.</p></div>
     <div class="note"><div class="t">Takeaway</div><p>The Capstone Decider is the heart of the day: six hands-on steps, run in order, that turn one real problem from your role into a spec you own. It runs inside a Claude Project you build up layer by layer — set up, interview, qualify, architect, spec, decide.</p></div>
-    <div class="script"><div class="t">Move</div><p>Mark the pivot — from learning about AI to applying it to their own work. Frame the six-step arc before Step 1.</p>
-      <div class="t">Say</div><p>"This is the turn the whole day has been building to. Up to now we've been learning how AI works. From here, you put it to work on a real problem of your own — the one you'll carry through all four weeks."</p>
-      <p>"We do it in six steps, run back-to-back: set up your workspace, let AI interview you to find the problem, qualify it, architect it, write the spec, and decide. Every step is the same rhythm — I frame it in a sentence, then you do it. By the end you'll have a spec you own."</p>
-      <div class="t">Do</div><ul><li>Keep this short — it's a signpost, not a lecture. ~60 sec, then straight into Step 1.</li><li>Protect the clock: six steps is the bulk of the remaining session.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Step 1 — set up the workspace everything else runs in."</p></div>
-  </section>
+      </section>
 
   <!-- ============ CAPSTONE DECIDER · Step 1 ============ -->
   <section class="slide dark" data-deck="Capstone Decider" data-mv="Step 1 · Setup your Project">
@@ -800,11 +707,7 @@ and what a safer alternative (anonymise, summarise, keep out) would be.</pre></d
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Create the reusable workspace you'll enrich at every step — a Claude Project with a router and base knowledge pre-loaded.</p></div>
       <div class="gb"><div class="t">You'll carry forward</div><p>A standing workspace that gets richer with each step — no long prompts to paste, just one-line triggers.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>The Capstone Decider runs inside a Claude Project — a workspace you build in layers. Step 1 sets the base: router instructions + the AI fundamentals as grounding. Every subsequent step adds one role file and fires a one-line trigger.</p></div>
-    <div class="script"><div class="t">Move</div><p>Introduce the Capstone Decider rhythm: enrich → run, five more times. Step 1 sets the base.</p>
-      <div class="t">Say</div><p>"We're going to run five steps to turn the problem you just learned about into a capstone you own. All five run inside one Claude Project — a workspace you build in layers. Step 1 sets the base: a router and the AI fundamentals. From there, every step adds one role file and fires with one line."</p>
-      <div class="t">Do</div><ul><li>3 minutes. Everyone needs the base workspace before moving on.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Three quick steps — create the project, set the router, add the knowledge base."</p></div>
-  </section>
+      </section>
 
   <!-- ============ CAPSTONE DECIDER · Step 1 (Hands-on) ============ -->
   <section class="slide" data-deck="Capstone Decider" data-mv="Step 1 · Setup your Project">
@@ -960,12 +863,7 @@ For any workflow that could take an action with consequences (sending an externa
         <span class="read">Base workspace ready — a router plus the fundamentals, nothing role-specific yet. <b>Next:</b> every Capstone Decider step adds one role file, then you run it.</span>
       </div></div>
     <div class="note"><div class="t">Takeaway</div><p>A Project = standing instructions + knowledge, live in every chat. Today you set only the <b>base</b>: a router that knows how to run each step, and the AI fundamentals + capstone criteria as grounding. Each of the five steps that follow enriches it with one role file — so the workspace ends rich, and the prompts stay tiny.</p></div>
-    <div class="script"><div class="t">Move</div><p>They build the base of their first Project in ~3 min. Teach the enrich-as-you-go idea in 30 seconds before they start.</p>
-      <div class="t">Say</div><p>"Quick pause. You're configuring your first Claude Project — but here's the twist: we don't load it all up front. Today you set just the base — a short router that knows how to run each step, plus the AI fundamentals as grounding. Then at every Capstone Decider step you'll drop in one more role file and run it. The Project gets richer as you go, and your prompts stay one line long."</p>
-      <p>"Three steps, all off this slide: create the project, paste the router into instructions, then add the base knowledge — Project knowledge, plus, Add text content, title it, paste, save. No files to download. Three minutes."</p>
-      <div class="t">Do</div><ul><li>Both Step 2 and Step 3 have a copy block on the slide — nothing to pre-distribute, nothing to download.</li><li>Walk the room. Show the <b>+ &rarr; Add text content</b> path once on the TV — that's the step people miss.</li><li>Land the mental model: <em>router in instructions; knowledge files accumulate one per step.</em></li><li>Hold until everyone has the base workspace before moving on.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Now Step 2 — enrich it with the interviewer, then let it interview you."</p></div>
-  </section>
+      </section>
 
   <!-- ============ M11 (hands-on) — NEW ============ -->
   <section class="slide dark" data-deck="Capstone Decider" data-mv="Step 2 · AI interviews you">
@@ -973,13 +871,7 @@ For any workflow that could take an action with consequences (sending an externa
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Surface the one workflow that becomes your capstone — not a guess, but a problem you've talked yourself into clearly.</p></div>
       <div class="gb"><div class="t">You'll carry forward</div><p>A one-sentence problem statement, the impact if solved, and the AI layer it most likely needs.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>The program turns personal: Claude interviews you to surface the one high-leverage workflow in your role — your capstone problem. You run it inside the <b>Project</b> you just set up — by enriching it with the interviewer role, then triggering it. Grounding the behaviour in a role file (not a pasted wall of prompt) is RAG, live. (And note: you're being interviewed by an agent before we've formally built one.)</p></div>
-    <div class="script"><div class="t">Move</div><p>The gear shift — the program becomes personal. Introduce Projects. And quietly, they're being interviewed by an agent.</p>
-      <div class="t">Say</div><p>"This is the turn. Everything so far has been about AI in general. Now it gets personal. You're going to let Claude interview you — one question at a time — to surface the single workflow in your role where AI would create the most leverage. Not a guess; a problem you've talked yourself into seeing clearly."</p>
-      <p>"And we won't leave it to a prompt you paste and hope. You'll run it inside the <em>Project you just set up</em> — by dropping in the interviewer role and triggering it. A Project is a reusable workspace: the role lives in it as grounding, so every one of you gets the same sharp interview, not whatever a cold chat decides to do."</p>
-      <p>"And notice what's happening: an agent is interviewing <em>you</em>, looping through questions to a structured result — before we've formally built one."</p>
-      <div class="t">Do</div><ul><li>Push anyone too narrow ("write my emails") or too vague ("improve efficiency") — the interview exposes it. Let the meta-moment land.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Enrich it with the interviewer role, then trigger it."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Capstone Decider" data-mv="Step 2 · AI interviews you">
     <div class="stage"><span class="hobadge">Hands-on &nbsp;·&nbsp; 06</span><h2 class="head">Enrich the project, then let it interview you</h2>
@@ -1037,12 +929,7 @@ Tone: short messages, one question per turn, no bullet lists during the intervie
         <span class="read"><b>Hold onto the output</b> — you'll feed the <b>MY PROBLEM</b> line into Step 3, and it carries through Week 4.</span>
       </div></div>
     <div class="note"><div class="t">Takeaway</div><p>This step establishes the rhythm for every step that follows: <b>enrich</b> the Project with a role file (here, the Interviewer), then <b>run</b> it with a one-line trigger. The interview outputs MY PROBLEM / IMPACT / AI LAYER (plus agent-shaped part, data, human-in-loop). Adding the role as knowledge — not pasting a wall of prompt — is the same RAG/grounding idea, working live. Keep the output; it carries through Week 4.</p></div>
-    <div class="script"><div class="t">Move</div><p>Establish the enrich→run rhythm. Add the role file, fire a one-line trigger, let it interview them.</p>
-      <div class="t">Say</div><p>"Here's the pattern you'll repeat five times. First you <em>enrich</em> the workspace — open the project's knowledge, Add text content, title it ‘Role 1 · Interviewer,’ paste the block, save. Notice what you just did: you grounded the Project in a role — the RAG idea, live. Now you don't paste a wall of prompt; you just <em>trigger</em> it."</p>
-      <p>"Start a new chat and send one line — ‘Run Capstone Step 2.’ The router reads the role file and interviews you, one question at a time, up to eight. Answer honestly. At the end you get your problem in one sentence, the impact, and the AI layer. Hold onto it — it feeds Step 3 and runs to Week 4."</p>
-      <div class="t">Do</div><ul><li>Show the <b>+ &rarr; Add text content</b> path once on the TV, then the one-line trigger. That two-move rhythm repeats every step.</li><li>8–10 min. Walk the room, push the vague.</li><li>After: everyone reads their MY PROBLEM line aloud — one sentence each. Call out anything too narrow.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Same rhythm for Step 3 — enrich with the DRIVES role, then qualify it."</p></div>
-  </section>
+      </section>
 
   <!-- ============ DRIVES Step 1 (hands-on) ============ -->
   <section class="slide dark" data-deck="Capstone Decider" data-mv="Step 3 · Qualify it">
@@ -1052,12 +939,7 @@ Tone: short messages, one question per turn, no bullet lists during the intervie
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Pressure-test the problem the interview surfaced — if you can't fill Step 1 crisply, you don't have an initiative yet.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>Whether it's real enough to spend four weeks on — Decision, Result, Owner.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>DRIVES — the framework you used in March to judge AI proposals — now defines your own capstone. Step 1 (Decision · Result · Single Owner) qualifies the problem: if you can't fill it crisply, it isn't an initiative yet.</p></div>
-    <div class="script"><div class="t">Move</div><p>Tie back to March (evaluator &rarr; builder); set DRIVES as the qualifier.</p>
-      <div class="t">Say</div><p>"Some of you will remember DRIVES from our March session — the framework for looking at an AI proposal and deciding whether it's worth backing. Back then you were the evaluator, judging other people's ideas. Today you turn it on your own problem, as the builder."</p>
-      <p>"We start with Step 1 — the strategic filter, What and Why: Decision, Result, Single Owner. And the rule is blunt — if you can't fill these three crisply, you don't yet have an initiative; you have a wish."</p>
-      <div class="t">Do</div><ul><li>Reconnect to March explicitly — most of the room sat through DRIVES. Hold the ‘evaluator &rarr; builder’ line.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Let Claude run you through it."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Capstone Decider" data-mv="Step 3 · Qualify it">
     <div class="stage"><span class="hobadge">Hands-on &nbsp;·&nbsp; 07</span><h2 class="head">DRIVES Step 1 — make Claude qualify your problem</h2>
@@ -1121,12 +1003,7 @@ them plainly that they do not yet have an initiative — and exactly what is mis
         <span class="read"><b>Output:</b> a crisp <b>D · R · S</b> — Decision (what AI will &amp; won't do), Result (the pain + a 90-day number), Single Owner — or an honest verdict that it's not an initiative yet. <b>Carry the D/R/S into Step 4 — architect it.</b></span>
       </div></div>
     <div class="note"><div class="t">Takeaway</div><p>Run DRIVES Step 1 in Claude on your interview output: name the initiative and what AI will / won't do (Decision), the pain + a quantified 90-day impact (Result), and one accountable owner (Single Owner). You get a crisp D/R/S — or the honest verdict it's not ready.</p></div>
-    <div class="script"><div class="t">Move</div><p>They run Step 1 on their MY PROBLEM; Claude pushes back on vagueness.</p>
-      <div class="t">Say</div><p>"Same two moves. Enrich first — Add text content, ‘Role 2 · DRIVES Strategist,’ paste, save. Then trigger: ‘Run Capstone Step 3,’ and paste your MY PROBLEM line. Claude takes you through Decision, Result, and Single Owner one question at a time — and it's told to push back when you're vague."</p>
-      <p>"Two things people fudge: ‘what AI will NOT do’ — that's what keeps a human in control — and the Result number. If you can't say who feels the pain, how often, and what it costs, the initiative isn't real yet."</p>
-      <div class="t">Do</div><ul><li>~8 min. Walk the room. Push hardest on ‘what AI will NOT do’ and the quantified Result.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Hold your D/R/S — you'll architect it next."</p></div>
-  </section>
+      </section>
 
   <!-- ============ M12 (hands-on) ============ -->
   <section class="slide dark" data-deck="Capstone Decider" data-mv="Step 4 · Architect &amp; out-judge">
@@ -1134,11 +1011,7 @@ them plainly that they do not yet have an initiative — and exactly what is mis
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Take your problem through the stack — make the machine architect it, then push every layer down until it can't go further.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>The layer call. You, not the model. The core skill the program is built on.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>The core skill: make the machine architect your problem across the stack, then out-judge it. It will over-build (Agent where RAG suffices) — pushing it back down a layer is the call you're paid to make.</p></div>
-    <div class="script"><div class="t">Move</div><p>The core skill of the program — make the machine architect, then push every layer down. You decide.</p>
-      <div class="t">Say</div><p>"Here's the skill this entire program is built on. You'll take your problem, make the machine architect a solution across the stack — and then <em>out-judge it.</em> Because it will over-build. It'll put an Agent where RAG would do. That moment — where you push it back down a layer — is exactly the judgement you're paid for."</p>
-      <div class="t">Do</div><ul><li>Everyone has their qualified problem (D/R/S) from the DRIVES check. Set them up to expect the over-build — it's the learning moment.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Step one — make it architect your problem."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Capstone Decider" data-mv="Step 4 · Architect &amp; out-judge">
     <div class="stage"><span class="hobadge">Hands-on &nbsp;·&nbsp; 08</span><h2 class="head">Architect &amp; out-judge the machine</h2>
@@ -1206,13 +1079,7 @@ DATA THAT MUST NOT GO IN:    [too sensitive for an AI tool]</pre></div></details
         <span class="read">If you can answer <i>"why not the layer above?"</i> for every row, you’ve made the call you’re paid to make. <b>This map is your Week-1 homework, started live.</b></span>
       </div></div>
     <div class="note"><div class="t">Takeaway</div><p>Three steps: architect → push down → lock. Run the decompose prompt, make it critique itself, then YOU drive the three-part test. Lock the map (problem · stack · agent-shaped part · human-in-loop · data). This is your Week-1 homework, started live.</p></div>
-    <div class="script"><div class="t">Move</div><p>Three-step flow: architect → critique → lock. The core skill of the program.</p>
-      <div class="t">Say</div><p>"Enrich first — ‘Role 3 · Solution Architect.’ That one file holds all three moves, so now each move is a one-liner. Move 1: ‘Run Capstone Step 4, Move 1,’ paste your MY PROBLEM. You get a confident table — LLM, RAG, or Agent per part, cheapest-layer-wins enforced."</p>
-      <p>"Move 2: ‘push every layer down.’ It turns critic on itself — for every Agent row, argues one layer down. Then you drive: text only → not an agent; needs your documents → only then RAG. The model conceding a layer live is the learning moment."</p>
-      <p>"Move 3: ‘lock the map.’ It fills the template. If you can answer ‘why not the layer above?’ for every row, you’ve made the call you’re paid to make."</p>
-      <div class="t">Do</div><ul><li>~12–15 min total. Run one leader’s table on the TV for Step 2 — the layer concession is the whole point.</li><li>DATA line ties back to their 03 data rule list.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Turn the agent-shaped part into a spec."</p></div>
-  </section>
+      </section>
 
   <!-- ============ M13 (hands-on) ============ -->
   <section class="slide dark" data-deck="Capstone Decider" data-mv="Step 5 · Write your agent spec">
@@ -1220,11 +1087,7 @@ DATA THAT MUST NOT GO IN:    [too sensitive for an AI tool]</pre></div></details
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>One paragraph: the agent-shaped part of your map — goal, actions, data, where a human stays in the loop.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>The single problem you carry through all four weeks.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>The hand-off: distil the agent-shaped part of your map into a one-paragraph spec — the single thing you carry through all four weeks.</p></div>
-    <div class="script"><div class="t">Move</div><p>The day's hand-off — distil to one agent spec they carry four weeks.</p>
-      <div class="t">Say</div><p>"Last move of the day. We take the agent-shaped part of your map and write it as a one-paragraph spec — the single thing you carry through all four weeks. And we hold every spec to a hard line: if it's really a chatbot question, we find the agent-shaped version before anyone commits four weeks to it."</p>
-      <div class="t">Do</div><ul><li>Pressure-test every spec at this size. Kill chatbot-questions: "that's a chatbot question — what's the agent-shaped version?"</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"First the test, then write it."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Capstone Decider" data-mv="Step 5 · Write your agent spec">
     <div class="stage"><span class="hobadge">Hands-on &nbsp;·&nbsp; 09</span><h2 class="head">Write &amp; pressure-test your agent spec</h2>
@@ -1274,13 +1137,7 @@ go wrong, and where MUST a human stay in the loop? Be blunt, not diplomatic.</pr
         <span class="read"><b>This spec is the seed of your homework and of Week 2.</b> Choose for organisational impact — you build it next week, harden it in Week 3, deploy it in Week 4.</span>
       </div></div>
     <div class="note"><div class="t">Takeaway</div><p>Three-part test first (goal not question? takes actions? loops?), then fill the spec template, then pressure-test with Claude as sceptic. This spec seeds your homework and Weeks 2–4.</p></div>
-    <div class="script"><div class="t">Move</div><p>Test → write → pressure-test. Seeds homework + Week 2.</p>
-      <div class="t">Say</div><p>"Enrich — ‘Role 4 · Spec Writer &amp; Pressure-Tester.’ Then Move 1: it runs the three-part test — goal? actions in tools? loops? Fail any one, it's a chatbot question and it helps you find the agent-shaped version. Pass all three, it fills the template with you."</p>
-      <p>"Move 2: ‘pressure-test my spec as a blunt sceptic.’ Real looping agent or chatbot in disguise? Where does it go wrong, where must a human stay in? Then the room does the same to each other."</p>
-      <p>"This spec is the seed of your homework and of Week 2 — choose for organisational impact."</p>
-      <div class="t">Do</div><ul><li>~10 min. Pressure-test every spec before anyone commits four weeks to it.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"One last move — close the DRIVES canvas and make the call."</p></div>
-  </section>
+      </section>
 
   <!-- ============ DRIVES Step 2 (hands-on) ============ -->
   <section class="slide dark" data-deck="Capstone Decider" data-mv="Step 6 · Validate &amp; decide">
@@ -1289,12 +1146,7 @@ go wrong, and where MUST a human stay in the loop? Be blunt, not diplomatic.</pr
       <div class="gb"><div class="t">You'll decide</div><p><b>GO · NOT YET · NO GO</b> — justified in three statements.</p></div></div>
       <p class="sub" style="margin-top:1.1rem">Step 2 locks <b style="color:#7fd1cb">I</b> Information · <b style="color:#7fd1cb">V</b> Vulnerability · <b style="color:#7fd1cb">E</b> Expansion — much of it already done today in the data rule, the human-in-the-loop, and the pressure-test.</p></div>
     <div class="note"><div class="t">Takeaway</div><p>DRIVES Step 2 (Information · Vulnerability · Expansion) completes the canvas — most of it already done in the data rule, the human-in-the-loop, and the pressure-test — then you make the GO / NOT-YET / NO-GO call and justify it in three statements.</p></div>
-    <div class="script"><div class="t">Move</div><p>Close the canvas and lift to the leadership decision (the March move, now on their own).</p>
-      <div class="t">Say</div><p>"You've found it, architected it, and spec'd it. Now we close the DRIVES canvas with Step 2 — the execution filter: Information, Vulnerability, Expansion. The good news is you've already done most of it today — the data rule is your Information answer, the human-in-the-loop is in your spec, and the pressure-test surfaced your Vulnerabilities."</p>
-      <p>"What's left is to make it explicit, add how it scales, and then make the call you made for other people's proposals in March — GO, NOT YET, or NO GO — on your own initiative, justified in three statements."</p>
-      <div class="t">Do</div><ul><li>The leadership-altitude finish. Make each leader commit to a verdict out loud.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Run it, then commit."</p></div>
-  </section>
+      </section>
 
   <section class="slide" data-deck="Capstone Decider" data-mv="Step 6 · Validate &amp; decide">
     <div class="stage"><span class="hobadge">Hands-on &nbsp;·&nbsp; 10</span><h2 class="head">DRIVES Step 2 — complete the canvas, then commit</h2>
@@ -1367,12 +1219,7 @@ statements.</pre></div></details>
         <span class="read"><b>The completed AI Goals Canvas — D·R·I·V·E·S plus your GO call — is your capstone definition.</b> It's what you sponsor, build, harden and deploy over the next four weeks. And your <b>Capstone Finder</b> Project now holds five role files on top of the base — a reusable workspace you carry forward.</span>
       </div></div>
     <div class="note"><div class="t">Takeaway</div><p>Paste your D/R/S, stack map and spec; Claude runs Information, Vulnerability, Expansion and forces a GO / NOT-YET / NO-GO. The completed D·R·I·V·E·S canvas plus your verdict is your capstone definition for the next four weeks.</p></div>
-    <div class="script"><div class="t">Move</div><p>Complete the canvas and force the verdict; this is the capstone artifact.</p>
-      <div class="t">Say</div><p>"Last enrich, last run. Add ‘Role 5 · DRIVES Validator,’ then trigger Step 6 and paste your D/R/S, stack map, and spec. Claude completes the canvas — data and human-in-the-loop, the top risks each with a guardrail, and how this scales — then forces one recommendation: GO, NOT YET, or NO GO, justified in three statements."</p>
-      <p>"Don't let it hedge, and don't hedge yourself. The completed canvas plus your verdict is your capstone definition. And notice what you've built: a Project that started near-empty now holds five role files — you enriched it step by step, and that's the workspace you carry into Week 2."</p>
-      <div class="t">Do</div><ul><li>~8–10 min. Then each leader states their verdict and one-line justification aloud — public commitment.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"That's your capstone, defined and decided. Let's close."</p></div>
-  </section>
+      </section>
 
   <!-- ============ STUCK / CURIOUS ============ -->
   <section class="slide isnow" data-deck="Week 1 · Foundations" data-mv="Stuck or curious?">
@@ -1383,39 +1230,28 @@ statements.</pre></div></details>
         <li><b>A term you didn't catch</b> → bring it to the next clinic or post in the Teams doubt channel.</li>
       </ul></div>
     <div class="note"><div class="t">Takeaway</div><p>Getting unstuck: flag the trainer in-session; after, use the mid-week clinic (~3 days out) or the Teams doubt channel (reply within 1 business day). Terms you missed &rarr; the glossary.</p></div>
-    <div class="script"><div class="t">Move</div><p>Make the support system concrete before they leave.</p>
-      <div class="t">Say</div><p>"Before we close — how to get unstuck. During a session, flag me and we'll work it on the screen. After, you've got two routes: the mid-week clinic about three days out, and the Teams doubt channel — I respond within one business day. And if a term went past you today, the glossary's in the reference folder."</p>
-      <div class="t">Do</div><ul><li>Make the clinic + Teams channel concrete — names and times if you have them.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>"Let's land the day."</p></div>
-  </section>
+      </section>
 
   <!-- ============ CLOSE ============ -->
   <section class="slide isnow" data-deck="Week 1 · Foundations" data-mv="Close">
     <div class="stage"><p class="kicker">End of Week 1</p><h2 class="head">You opened the box — and <span class="accent">owned</span> a real problem.</h2>
       <p class="lead">Prompting, the engine, the stack, RAG, agents — and a spec for a problem you found, architected, and own from today. The homework sharpens it; Week 2 builds it.</p></div>
     <div class="note"><div class="t">Takeaway</div><p>You opened the box and own a real problem — found, architected and spec'd today. Prompting, the engine, the stack, RAG, agents all fed this one spec. Homework sharpens it; Week 2 builds it.</p></div>
-    <div class="script"><div class="t">Move</div><p>Land the payoff — they opened the box AND own a real problem.</p>
-      <div class="t">Say</div><p>"Look at what you did today. You started seeing AI as a black box you were told to trust. You leave understanding it — prompting, the engine, the stack, RAG, agents — and, more importantly, owning a real problem: one you found, architected, and spec'd yourself."</p>
-      <p>"None of it was busywork; every piece fed the spec in your hand. The homework sharpens it. Next week, you build it."</p>
-      <div class="t">Do</div><ul><li>Hand out the Week-1 homework brief. Point to the mid-week clinic + Teams channel. End on the spec in their hand.</li></ul>
-      <div class="t">Bridge &rarr;</div><p>(End of Week 1.)</p></div>
-  </section>
+      </section>
 
 </div>
 <div class="chrome"><span class="mv" id="mvlbl"></span><span class="count"><span id="cur">1</span> / <span id="tot">1</span></span></div>
-<div class="helpbar">→ next · ← back · <b>Home</b> agenda · <b>N</b> notes · <b>S</b> script · <b>F</b> full-screen</div>
+<div class="helpbar">→ next · ← back · <b>Home</b> agenda · <b>N</b> notes · <b>F</b> full-screen</div>
 <aside class="notes" id="notes"><header><span class="b" id="notesBeat">Notes</span><button class="x" id="notesClose">✕</button></header><div class="body" id="notesBody"></div></aside>
-<aside class="scriptpanel" id="script"><header><span class="b" id="scriptBeat">Script</span><button class="x" id="scriptClose">✕</button></header><div class="body" id="scriptBody"></div></aside>
-
 <script>
 (function(){"use strict";
   var slides=Array.prototype.slice.call(document.querySelectorAll(".slide")),i=0,N=slides.length;
   var curEl=document.getElementById("cur"),totEl=document.getElementById("tot"),mvEl=document.getElementById("mvlbl"),progEl=document.getElementById("progress");
   var notes=document.getElementById("notes"),notesBody=document.getElementById("notesBody"),notesBeat=document.getElementById("notesBeat");
-  var scriptBody=document.getElementById("scriptBody"),scriptBeat=document.getElementById("scriptBeat"),body=document.body;
+  var body=document.body;
   totEl.textContent=N;
   function lbl(s){return (s.dataset.mv||"Notes").replace(/^M\d+ · /,"");}
-  function syncNotes(){var s=slides[i];var n=s.querySelector(".note");notesBody.innerHTML=n?n.innerHTML:"<p class='muted'>No notes yet.</p>";notesBeat.textContent=lbl(s);var sc=s.querySelector(".script");scriptBody.innerHTML=sc?sc.innerHTML:"<p class='muted'>No script for this slide yet.</p>";scriptBeat.textContent=lbl(s);}
+  function syncNotes(){var s=slides[i];var n=s.querySelector(".note");notesBody.innerHTML=n?n.innerHTML:"<p class='muted'>No notes yet.</p>";notesBeat.textContent=lbl(s);}
   function stepTotal(s){return s.querySelectorAll(".steppanel").length;}
   function showStep(s,k){var ps=s.querySelectorAll(".steppanel"),T=ps.length;if(!T)return;k=Math.max(1,Math.min(T,k));s.dataset.step=k;
     ps.forEach(function(p){p.classList.toggle("on",+p.dataset.s===k);});
@@ -1429,14 +1265,12 @@ statements.</pre></div></details>
     if(e.key==="ArrowRight"||e.key==="ArrowDown"||e.key===" "||e.key==="PageDown"){e.preventDefault();next();}
     else if(e.key==="ArrowLeft"||e.key==="ArrowUp"||e.key==="PageUp"){e.preventDefault();prev();}
     else if(e.key==="Home"){e.preventDefault();go(1);}else if(e.key==="End"){e.preventDefault();go(N-1);}
-    else if(e.key==="n"||e.key==="N"){notes.classList.toggle("open");body.classList.remove("script-open");}
-    else if(e.key==="s"||e.key==="S"){body.classList.toggle("script-open");notes.classList.remove("open");}
-    else if(e.key==="Escape"){notes.classList.remove("open");body.classList.remove("script-open");}
+    else if(e.key==="n"||e.key==="N"){notes.classList.toggle("open");}
+    else if(e.key==="Escape"){notes.classList.remove("open");}
     else if(e.key==="f"||e.key==="F"){if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}else{document.exitFullscreen&&document.exitFullscreen();}}});
   document.getElementById("deck").addEventListener("click",function(e){if(e.target.closest(".lab,button,a,input,.note,.helperref,.promptblock,.stepper,.promptfold,details,textarea"))return;var mid=window.innerWidth/2;if(e.clientX<mid*0.35)prev();else next();});
   Array.prototype.forEach.call(document.querySelectorAll(".snode"),function(nd){nd.addEventListener("click",function(ev){ev.stopPropagation();var s=nd.closest(".slide");if(s)showStep(s,+nd.dataset.s);});});
   document.getElementById("notesClose").onclick=function(){notes.classList.remove("open");};
-  document.getElementById("scriptClose").onclick=function(){body.classList.remove("script-open");};
 
   /* copy-to-clipboard for hands-on prompts */
   function fallbackCopy(t,ok){var ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand("copy");ok();}catch(e){}document.body.removeChild(ta);}
