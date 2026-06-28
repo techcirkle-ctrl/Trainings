@@ -13,8 +13,12 @@ The single source of truth for every external link used in a lesson. Lessons cit
 | R7 | Anthropic — Claude Agent Skills | Docs | W3 preread 3 | https://docs.anthropic.com/en/docs/agents-and-tools/agent-skills |
 | R8 | DeepLearning.AI — Multi-Agent Systems | Short course | W2/W3 preread | https://www.deeplearning.ai/short-courses/ |
 | R9 | Google Cloud — What is Retrieval-Augmented Generation (RAG)? | Concept explainer | W1 preread 5 (RAG) | https://cloud.google.com/use-cases/retrieval-augmented-generation |
+| R10 | DeepLearning.AI — AI Agentic Design Patterns | Short course (~1.5 hr) | W2 preread 2 (architectures) | https://www.deeplearning.ai/short-courses/ |
+| R11 | Anthropic — Claude docs: Tool Use | Docs | W2 preread 3 (tools) | https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview |
+| R12 | Anthropic — Model Context Protocol (MCP) | Docs | W2 preread 3 (tools) | https://docs.anthropic.com/en/docs/agents-and-tools/mcp |
+| R13 | PE Reading — Agent Architectures: ReAct, Plan-Execute, Multi-Agent | PE reading (in-house) | W2 preread 5 | `weeks/week-2-agentic-deep-dive/00-preread/5-pe-reading-agent-architectures.md` |
 
-> Verify each URL before sending the Week-0 preread email. Where a link is approximate (R4, R8 landing pages, R9 explainer page), pin the exact page before launch.
+> Verify each URL before sending the Week-0 preread email. Where a link is approximate (R4, R8 landing pages, R9 explainer page, **R10 course landing, R11/R12 docs roots**), pin the exact page before launch.
 
 ## How resources flow into the model
 

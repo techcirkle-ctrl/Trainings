@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<!--
+  AI Capability Program — Week 2 Prework (single-file, tabbed, self-teaching).
+  Self-contained: inline CSS + vanilla JS, no network, no build. Open with:
+      open "week-2-prework.html"
+  Five sections: The agent loop · Workflow vs agent · Tools · Memory & state · Design your agent.
+  Progress is saved locally (this device only) — nothing is sent anywhere.
+  Visual system + several widgets ported from week-1-preread-v2.html (the design canon).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Week 2 Prework — AI Capability Program</title>
+<style>
+  :root{
+    --ink:#16202b; --muted:#5c6b7a; --line:#e4e8ec;
+    --paper:#ffffff; --wash:#f6f8fa; --accent:#0b6e6e; --accent-soft:#e2f0ef;
+    --warn:#b06a00; --good:#1c7a4a; --bad:#b23b3b;
+    --maxw:820px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--wash); color:var(--ink);
+    font:17px/1.65 ui-serif,Georgia,"Iowan Old Style",Palatino,serif; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px 110px}
+  header.masthead{max-width:var(--maxw); margin:0 auto; padding:30px 22px 6px}
+  .kicker{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--accent)}
+  h1{font-size:2.05rem; line-height:1.12; margin:.3em 0 .15em; letter-spacing:-.01em}
+  .meta{font:14px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .sans{font-family:ui-sans-serif,system-ui,sans-serif}
+  .small{font-size:.86rem}
+  .muted{color:var(--muted)}
+  p{margin:.7em 0}
+  a{color:var(--accent); text-underline-offset:3px}
+  .lead{font-size:1.12rem; color:#26323d}
+  h2{font-size:1.45rem; margin:.2em 0 .4em; letter-spacing:-.01em}
+  h3{font:600 1.05rem/1.4 ui-sans-serif,system-ui,sans-serif; margin:1.3em 0 .3em}
+  .card{background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:22px 24px; margin:16px 0; box-shadow:0 1px 2px rgba(16,32,43,.04)}
+
+  /* progress + pills (sticky nav) */
+  .navbar{position:sticky; top:0; z-index:20; background:rgba(246,248,250,.92); backdrop-filter:saturate(1.2) blur(6px);
+    border-bottom:1px solid var(--line); padding:10px 0 12px; margin-bottom:8px}
+  .navbar .inner{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+  .prog{display:flex; align-items:center; gap:12px; margin:2px 0 10px}
+  .prog .bar{flex:1; height:8px; background:#e7edf0; border-radius:99px; overflow:hidden}
+  .prog .fill{height:100%; width:0; background:var(--accent); border-radius:99px; transition:width .35s ease}
+  .prog .lbl{font:600 13px ui-sans-serif,system-ui,sans-serif; color:var(--accent); white-space:nowrap}
+  .pills{display:flex; flex-wrap:wrap; gap:8px}
+  .pill{cursor:pointer; border:1px solid var(--line); background:var(--paper); color:var(--ink);
+    font:600 13px/1 ui-sans-serif,system-ui,sans-serif; padding:9px 12px 9px 11px; border-radius:99px; display:flex; align-items:center; gap:7px;
+    transition:border-color .12s, background .12s, color .12s}
+  .pill:hover{border-color:var(--accent)}
+  .pill.active{background:var(--accent); color:#fff; border-color:var(--accent)}
+  .pill .num{display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%;
+    background:var(--wash); color:var(--accent); font-size:11px; font-weight:700}
+  .pill.active .num{background:rgba(255,255,255,.22); color:#fff}
+  .pill.done .num{background:var(--good); color:#fff}
+  .pill.done.active .num{background:#fff; color:var(--good)}
+
+  /* panels */
+  .panel{display:none; animation:fade .25s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none}}
+  .why{background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:14px; padding:16px 20px; margin:14px 0}
+  .why .kicker{color:var(--accent)}
+  .tag{display:inline-block; font:600 11px/1 ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); background:var(--wash); border:1px solid var(--line); border-radius:6px; padding:5px 8px; margin-right:6px}
+  .callback{background:#fff7ea; border:1px solid #f0e1c2; border-radius:12px; padding:13px 16px; font:.93rem/1.55 ui-sans-serif,system-ui,sans-serif; margin:14px 0}
+  .callback b{color:var(--warn)}
+
+  /* generic interactive widget shell */
+  .lab{background:#fbfdfd; border:1px solid #cfe6e4; border-radius:14px; padding:18px 20px; margin:16px 0}
+  .lab .hint{font:13px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin-top:8px}
+  .btn{display:inline-block; cursor:pointer; font:600 14px ui-sans-serif,system-ui,sans-serif;
+    background:var(--accent); color:#fff; border:0; border-radius:9px; padding:10px 15px; margin:6px 6px 0 0}
+  .btn.ghost{background:transparent; color:var(--accent); border:1px solid var(--accent)}
+  .btn:disabled{opacity:.45; cursor:default}
+  .out{font:15px/1.55 ui-sans-serif,system-ui,sans-serif; background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-top:12px}
+  input[type=range]{accent-color:var(--accent); height:22px}
+
+  /* segmented control (reusable) */
+  .seg{display:inline-flex; gap:2px; border:1px solid var(--line); border-radius:99px; background:var(--wash); padding:3px}
+  .seg button{border:0; background:transparent; cursor:pointer; color:var(--muted);
+    font:700 12.5px ui-sans-serif,system-ui,sans-serif; padding:7px 15px; border-radius:99px; transition:background .18s, color .18s, box-shadow .18s}
+  .seg button.on{background:var(--accent); color:#fff; box-shadow:0 1px 3px rgba(11,110,110,.32)}
+  .seg button[data-mode="chatbot"].on{background:#e7ebee; color:var(--ink); box-shadow:0 1px 2px rgba(16,32,43,.10)}
+
+  /* agent loop graph (S1) — ported from week-1 deck */
+  .agent2 svg{width:100%; height:auto; display:block; max-height:340px}
+  .agent2 .edge{stroke:#cdd5db; stroke-width:1.7; fill:none; transition:stroke .25s, stroke-width .25s}
+  .agent2 .edge.hot{stroke:var(--accent); stroke-width:2.6}
+  .agent2 .nrect{fill:#fff; stroke:var(--line); stroke-width:1.5; transition:fill .25s, stroke .25s}
+  .agent2 .nlab{font:700 12px ui-sans-serif,system-ui,sans-serif; fill:var(--ink)}
+  .agent2 .nsub{font:600 10px ui-sans-serif,system-ui,sans-serif; fill:var(--muted)}
+  .agent2 .gnode.on .nrect{fill:var(--accent); stroke:var(--accent)}
+  .agent2 .gnode.on .nlab,.agent2 .gnode.on .nsub{fill:#fff}
+  .agent2 .gnode.goal .nrect{fill:var(--accent-soft); stroke:#cfe6e4}
+  .agent2 .gnode.goal .nlab{fill:var(--accent)} .agent2 .gnode.goal .nsub{fill:var(--accent)}
+  .agent2 .gnode.done.on .nrect{fill:var(--good); stroke:var(--good)}
+  .agent2 .gnode.tool.on .nrect{fill:var(--accent-soft); stroke:var(--accent)}
+  .agent2 .gnode.tool.on .nlab{fill:var(--accent)}
+  .agent2 .gnarr{background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-top:12px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:62px}
+  .agent2 .gnarr .ph{font:700 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:3px}
+  .loopcount{font:700 12px ui-sans-serif,system-ui,sans-serif; color:var(--accent); background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:99px; padding:4px 11px; margin-left:6px}
+
+  /* autonomy ladder (S2) */
+  .ladder{display:grid; gap:8px; margin:6px 0}
+  .rung{border:1px solid var(--line); border-left:5px solid var(--line); border-radius:10px; padding:11px 14px; background:#fff; transition:border-color .2s, background .2s, box-shadow .2s}
+  .rung .rtop{display:flex; align-items:baseline; gap:9px; flex-wrap:wrap}
+  .rung .rname{font:700 14.5px ui-sans-serif,system-ui,sans-serif; color:var(--ink)}
+  .rung .rgrp{font:700 10px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; padding:3px 7px; border-radius:6px}
+  .rung .rgrp.wf{color:var(--muted); background:var(--wash); border:1px solid var(--line)}
+  .rung .rgrp.ag{color:var(--accent); background:var(--accent-soft); border:1px solid #cfe6e4}
+  .rung .rblurb{font:13.5px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin-top:3px}
+  .rung.on{border-left-color:var(--accent); background:var(--accent-soft); box-shadow:inset 0 0 0 1px var(--accent)}
+  .rung.on .rblurb{color:#2a3b3a}
+  .grouplbl{font:700 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin:8px 0 2px}
+  .taskchips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:6px}
+  .taskchip{cursor:pointer; border:1px solid var(--line); background:var(--paper); color:var(--ink);
+    font:600 13px ui-sans-serif,system-ui,sans-serif; padding:8px 13px; border-radius:99px; transition:border-color .15s, background .15s, color .15s}
+  .taskchip:hover{border-color:var(--accent)}
+  .taskchip.on{background:var(--accent); color:#fff; border-color:var(--accent)}
+  .autorow{display:flex; align-items:center; gap:10px; margin-top:12px}
+  .autorow .albl{font:700 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); white-space:nowrap}
+  .autobar{flex:1; height:10px; background:#eef2f4; border-radius:99px; overflow:hidden}
+  .autobar .afill{height:100%; width:0; background:var(--accent); border-radius:99px; transition:width .4s ease}
+  .pickout{background:#fff; border:1px solid var(--line); border-radius:10px; padding:13px 15px; margin-top:12px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:64px}
+  .pickout .pname{font:700 1.02rem ui-sans-serif,system-ui,sans-serif; color:var(--accent)}
+
+  /* tool-call stepper (S3) */
+  .toolwrap .stepper{display:flex; gap:7px; align-items:center; margin:8px 0; flex-wrap:wrap}
+  .toolwrap .dot{width:26px; height:26px; border-radius:50%; border:1px solid var(--line); background:#fff; display:flex; align-items:center; justify-content:center;
+    font:700 12px ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .toolwrap .dot.on{background:var(--accent); color:#fff; border-color:var(--accent)}
+  .toolwrap .dot.dn{background:var(--accent-soft); color:var(--accent); border-color:#cfe6e4}
+  .toolwrap .conn{flex:1; height:2px; background:var(--line); min-width:14px}
+  .toolwrap .who{display:inline-block; font:700 10.5px ui-sans-serif,system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; border-radius:6px; padding:4px 8px; margin-bottom:8px}
+  .toolwrap .who.model{color:var(--accent); background:var(--accent-soft); border:1px solid #cfe6e4}
+  .toolwrap .who.system{color:var(--warn); background:#fff7ea; border:1px solid #f0e1c2}
+  .toolwrap .codeln{font:13.5px/1.6 ui-monospace,Menlo,Consolas,monospace; background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px; color:#24323c; white-space:pre-wrap; min-height:54px}
+  .toolwrap .tnarr{background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-top:10px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:54px}
+  .mcp{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:8px}
+  .mcp .hub{flex:0 0 132px; background:var(--accent); color:#fff; border-radius:12px; padding:13px 15px; font:700 14px ui-sans-serif,system-ui,sans-serif; text-align:center}
+  .mcp .hub small{display:block; font:500 11px ui-sans-serif,system-ui,sans-serif; opacity:.85; margin-top:3px}
+  .mcp .port{font:700 20px ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .mcp .plugs{display:flex; gap:8px; flex:1; flex-wrap:wrap}
+  .mcp .plug{flex:1; min-width:104px; border:1px solid var(--line); background:#fff; border-radius:10px; padding:9px 11px; font:600 12.5px ui-sans-serif,system-ui,sans-serif; text-align:center}
+
+  /* context window desk (S4) */
+  .deskwrap .desktop{border:2px dashed #cfe6e4; border-radius:12px; padding:12px; min-height:78px; background:#fff; display:flex; flex-wrap:wrap; gap:6px; align-content:flex-start}
+  .deskwrap .cap{font:700 10px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:10px 0 4px; display:flex; justify-content:space-between}
+  .tok{font:13px ui-sans-serif,system-ui,sans-serif; background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:7px; padding:5px 9px; transition:opacity .3s, background .3s}
+  .tok.pinned{background:#fff7ea; border-color:#f0e1c2}
+  .tok.loaded{background:#eef6f5; border-style:dashed}
+  .tok.dropped{opacity:.25; text-decoration:line-through}
+  .cabinet{border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:var(--wash); min-height:46px; display:flex; flex-wrap:wrap; gap:6px; align-items:center}
+  .cabinet .empty{color:var(--muted); font:13px ui-sans-serif,system-ui,sans-serif}
+  .deskwrap .tnarr{background:#fff; border:1px solid var(--line); border-radius:10px; padding:11px 14px; margin-top:10px; font:14px/1.5 ui-sans-serif,system-ui,sans-serif; min-height:40px}
+
+  /* lifecycle + spec composer (S5) */
+  .life{display:grid; grid-template-columns:repeat(5,1fr); gap:7px; margin:6px 0}
+  .life .stage{cursor:pointer; border:1px solid var(--line); border-top:4px solid var(--line); border-radius:10px; padding:10px 8px; background:#fff; text-align:center;
+    font:700 12.5px ui-sans-serif,system-ui,sans-serif; color:var(--ink); transition:border-color .2s, background .2s}
+  .life .stage small{display:block; font:600 9.5px ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin-top:3px}
+  .life .stage:hover{border-color:var(--accent)}
+  .life .stage.on{border-top-color:var(--accent); background:var(--accent-soft)}
+  .life .stage.on, .life .stage.on small{color:var(--accent)}
+  .lifedetail{background:#fff; border:1px solid var(--line); border-radius:10px; padding:13px 15px; margin-top:10px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:74px}
+  .lifedetail .human{color:var(--warn); font-weight:600; display:block; margin-top:6px}
+  .build .caps{display:flex; gap:8px; flex-wrap:wrap}
+  .build .cap{flex:1; min-width:150px; cursor:pointer; text-align:left; border:1px solid var(--line); background:#fff; border-radius:11px; padding:11px 13px;
+    font:700 13.5px ui-sans-serif,system-ui,sans-serif; color:var(--ink); transition:background .18s, border-color .18s, box-shadow .18s}
+  .build .cap small{display:block; font:500 11px/1.35 ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin-top:3px}
+  .build .cap:hover{border-color:var(--accent)}
+  .build .cap.on{background:var(--accent-soft); border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent)}
+  .build .cap.on small{color:var(--accent)}
+  .build .cap.req::after{content:"required"; float:right; font:700 9px ui-sans-serif,system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; color:var(--warn)}
+  .build .meter{height:10px; background:#eef2f4; border-radius:99px; overflow:hidden; margin:12px 0 0}
+  .build .meter .fill{height:100%; width:0; background:var(--accent); transition:width .35s, background .35s}
+  .build .readout{background:#fff; border:1px solid var(--line); border-radius:10px; padding:13px 15px; margin-top:10px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:58px}
+  .build .readout.warnstate{border-color:#f0e1c2; background:#fff9f0}
+  .build .readout.okstate{border-color:#bfe3cd; background:#f4fbf6}
+  .build .readout .flag{font-weight:700} .build .readout.okstate .flag{color:var(--good)} .build .readout.warnstate .flag{color:var(--warn)}
+
+  /* keep-this recap table */
+  table.lens{width:100%; border-collapse:collapse; font:14.5px/1.5 ui-sans-serif,system-ui,sans-serif; margin-top:8px}
+  table.lens th,table.lens td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top}
+  table.lens th{background:var(--wash); font-weight:600}
+
+  /* quiz */
+  .quiz .q{border-top:1px solid var(--line); padding:16px 0}
+  .quiz .q:first-of-type{border-top:0}
+  .quiz .stem{font-weight:600; font-family:ui-sans-serif,system-ui,sans-serif}
+  .quiz .opts{list-style:none; margin:.6em 0 0; padding:0}
+  .quiz .opts li{margin:7px 0}
+  .quiz button.opt{width:100%; text-align:left; cursor:pointer; font:14.5px/1.45 ui-sans-serif,system-ui,sans-serif;
+    background:#fff; border:1px solid var(--line); border-radius:9px; padding:10px 12px; color:var(--ink)}
+  .quiz button.opt:hover{border-color:var(--accent)}
+  .quiz button.opt.correct{border-color:var(--good); background:#eaf6ef}
+  .quiz button.opt.wrong{border-color:var(--bad); background:#fbeaea}
+  .quiz button.opt[disabled]{cursor:default}
+  .quiz .fb{display:none; margin-top:9px; font:13.5px/1.55 ui-sans-serif,system-ui,sans-serif; padding:9px 11px; border-radius:8px}
+  .quiz .fb.show{display:block}
+  .quiz .fb.ok{background:#eaf6ef; color:var(--good)}
+  .quiz .fb.no{background:#fbeaea; color:var(--bad)}
+
+  .deeper{font:14px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted); background:var(--wash); border:1px solid var(--line);
+    border-radius:10px; padding:11px 14px; margin-top:16px}
+  .deeper b{color:var(--ink)}
+
+  /* section nav + complete */
+  .secfoot{display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; margin-top:22px;
+    border-top:1px solid var(--line); padding-top:16px}
+  .done{cursor:pointer; font:600 14px ui-sans-serif,system-ui,sans-serif; background:var(--good); color:#fff; border:0; border-radius:9px; padding:11px 16px}
+  .done.is-done{background:#eaf6ef; color:var(--good); border:1px solid #bfe3cd}
+  .ask{background:#fff7ea; border:1px solid #f0e1c2; border-radius:12px; padding:13px 16px; font:.93rem/1.55 ui-sans-serif,system-ui,sans-serif; margin-top:16px}
+  .finale{display:none; background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:14px; padding:18px 22px; margin-top:18px}
+  .finale.show{display:block}
+  footer.ft{max-width:var(--maxw); margin:26px auto 0; padding:20px 22px; border-top:1px solid var(--line); color:var(--muted); font:.85rem ui-sans-serif,system-ui,sans-serif}
+
+  @media print{
+    .navbar{position:static} .panel{display:block !important; page-break-inside:avoid}
+    .btn,.done,.pill{display:none !important} .quiz .fb{display:block !important}
+    body{background:#fff} .lab,.card,.why{box-shadow:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="kicker">AI Capability Program · Week 2 — Agentic Deep Dive</div>
+  <h1>Week 2 Prework</h1>
+  <div class="meta">Work at your own pace · ~1–1.25 hr total · 5 short, interactive sections. <b>Your progress is saved on this device only — nothing is sent anywhere.</b></div>
+</header>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="prog">
+      <div class="bar"><div class="fill" id="progFill"></div></div>
+      <div class="lbl" id="progLbl">0 / 5 complete</div>
+    </div>
+    <div class="pills" id="pills"></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ============================ SECTION 1 — THE AGENT LOOP ============================ -->
+  <section class="panel" id="s1">
+    <span class="tag">Section 1 of 5</span><span class="tag">~15 min</span>
+    <h2>The agent loop</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">Last week you decided <b>which part of your problem needs an agent</b>. This week you build it — so you need to see what an agent actually <i>is</i> underneath the word. It's a <b>loop</b>, and the loop is where both the power and the risk live. Understanding it is what lets you design one and govern it.</p></div>
+
+    <div class="callback">↩ <b>From Week 1:</b> you learned an <b>agent = LLM + tools + a loop</b> — it takes a <i>goal</i> (not a question) and cycles <i>think → act → observe → decide</i> until it's done. That one line is the seed. Now we open the loop up and watch it run.</div>
+
+    <p class="lead">A chatbot answers once and waits. An <b>agent</b> is handed a goal and then <b>loops</b>: it thinks about what to do next, <b>acts</b> by calling a tool, <b>observes</b> the result, and <b>decides</b> whether it's done or needs another pass. Step it through and count the loops:</p>
+
+    <div class="lab agent2">
+      <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px">
+        <button class="btn" id="agStep">Step →</button>
+        <button class="btn ghost" id="agRun">Run all</button>
+        <button class="btn ghost" id="agReset">Reset</button>
+        <span class="loopcount" id="agLoops">Loops: 0</span>
+      </div>
+      <div id="agGraph"></div>
+      <div class="gnarr" id="agNarr"></div>
+    </div>
+
+    <p>Notice three things you'll own as a leader: it kept going <b>on its own</b> (autonomy), it only <b>touched the real world through tools</b>, and it <b>stopped</b> — handing the two it wasn't allowed to decide to a human. Those are the dials you set.</p>
+
+    <h3>Keep this</h3>
+    <table class="lens">
+      <tr><th>Part</th><th>What it is</th><th>The decision you own</th></tr>
+      <tr><td><b>Goal</b></td><td>An outcome to reach, not a single question.</td><td>Is this really goal-shaped, or just a question a chatbot answers?</td></tr>
+      <tr><td><b>Loop</b></td><td>Think → Act → Observe → Decide, repeated.</td><td>How much autonomy is safe here?</td></tr>
+      <tr><td><b>Tools</b></td><td>How it acts and looks things up.</td><td>What is it allowed to touch?</td></tr>
+      <tr><td><b>Stopping rule</b></td><td>How it knows it's done — or must escalate.</td><td>Where does a human stay in the loop?</td></tr>
+    </table>
+    <div class="why"><div class="kicker">Leader's read</div>
+      <p style="margin:.2em 0">More loops and more tools = more autonomy = <b>more power and more places to go wrong</b>. An agent without a clear stopping rule and a human checkpoint isn't powerful — it's ungoverned. You own those two.</p></div>
+
+    <div class="card quiz" id="q1"></div>
+
+    <div class="deeper">📚 <b>Go deeper (optional):</b> Anthropic — <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building Effective Agents</a> (what makes a system genuinely "agentic"). Tracked as R5.</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s1">Mark this section complete</button>
+      <button class="btn ghost" data-next="s2">Next: Workflow vs agent →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 2 — WORKFLOW VS AGENT ============================ -->
+  <section class="panel" id="s2">
+    <span class="tag">Section 2 of 5</span><span class="tag">~15 min</span>
+    <h2>Workflow vs agent — pick the least autonomy</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">Most things people proudly call "agents" are actually <b>workflows</b> — and that's good news: they're cheaper, more reliable, and far easier to govern. The single most valuable judgement you'll make this week is choosing the <b>least autonomy that still solves the problem</b>.</p></div>
+
+    <div class="callback">↩ <b>From Week 1:</b> "the cheapest layer that works wins." This week it sharpens to one level deeper: <b>the least autonomy that works wins.</b></div>
+
+    <p class="lead">There's a spectrum. At one end, <b>workflows</b> — <i>you</i> fix the path the AI follows step by step. At the other, <b>agents</b> — the <i>model</i> decides the path itself, as you just saw. The named "architectures" are points along it. Pick a real task and watch where it lands:</p>
+
+    <div class="lab">
+      <div class="kicker" style="margin-bottom:8px">Pick a task — see the lightest pattern that handles it</div>
+      <div class="taskchips" id="patChips"></div>
+      <div class="ladder" id="patLadder"></div>
+      <div class="autorow"><span class="albl">Autonomy</span><div class="autobar"><div class="afill" id="patAuto"></div></div></div>
+      <div class="pickout" id="patOut">Pick a task above — the matching pattern lights up, with one line on why not reach higher.</div>
+      <div class="hint">Workflow patterns put <b>you</b> in control of the path; agent patterns hand that control to the model. Reach right only when the path genuinely can't be drawn in advance.</div>
+    </div>
+
+    <h3>Keep this</h3>
+    <table class="lens">
+      <tr><th></th><th>Workflow</th><th>Agent</th></tr>
+      <tr><td><b>Who picks the path?</b></td><td>You do, in advance.</td><td>The model does, at run time.</td></tr>
+      <tr><td><b>Patterns</b></td><td>Prompt chaining · Routing · Parallelisation</td><td>ReAct · Plan-and-Execute · Reflection · Multi-agent</td></tr>
+      <tr><td><b>Strength</b></td><td>Predictable, cheap, easy to govern.</td><td>Handles paths you can't predefine.</td></tr>
+      <tr><td><b>Cost</b></td><td>Low.</td><td>Higher cost, latency, harder to predict.</td></tr>
+    </table>
+    <div class="why"><div class="kicker">Leader's read</div>
+      <p style="margin:.2em 0">When a fixed sequence would do, an agent is <b>over-building</b> — the most common and expensive mistake. Start as far <i>left</i> as the problem allows; earn each step right.</p></div>
+
+    <div class="card quiz" id="q2"></div>
+
+    <div class="deeper">📚 <b>Go deeper (optional):</b> DeepLearning.AI — <a href="https://www.deeplearning.ai/short-courses/" target="_blank" rel="noopener">AI Agentic Design Patterns</a> (R10) · in-house PE reading <i>Agent Architectures: ReAct, Plan-Execute, Multi-Agent</i> (R13).</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s2">Mark this section complete</button>
+      <button class="btn ghost" data-next="s3">Next: Tools →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 3 — TOOLS ============================ -->
+  <section class="panel" id="s3">
+    <span class="tag">Section 3 of 5</span><span class="tag">~15 min</span>
+    <h2>Tools — how an agent acts</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">An agent with no tools is just a chatbot talking to itself. <b>Tools</b> are how it reaches into your real systems — your CRM, a database, email. That makes them the most useful part <i>and</i> the riskiest: tools are exactly where the agent touches reality, so they're where your controls belong.</p></div>
+
+    <p class="lead">Here's the part that surprises people: the model <b>never acts directly</b>. When it needs a tool, it just <b>writes a request</b> — and <i>your</i> system decides whether and how to run it. Step through one tool call:</p>
+
+    <div class="lab toolwrap">
+      <div class="stepper" id="toolDots"></div>
+      <div class="who" id="toolWho">&nbsp;</div>
+      <div class="codeln" id="toolCode">Press <b>Step →</b> to watch a single tool call, start to finish.</div>
+      <div class="tnarr" id="toolNarr">The model is mid-loop and needs something it can't answer from memory.</div>
+      <div style="margin-top:10px">
+        <button class="btn" id="toolStep">Step →</button>
+        <button class="btn ghost" id="toolReset">Reset</button>
+      </div>
+    </div>
+
+    <p>The key control point: the model only ever <b>asks</b>. Something you own actually runs the tool — so you decide what it may touch, what needs a human's nod first, and what data is even allowed near it.</p>
+
+    <h3>One agent, many tools: MCP</h3>
+    <p>Every tool has to be wired in. <b>MCP (Model Context Protocol)</b> is a <b>standard plug</b> — think USB-C — so any tool connects to any agent the same way. Wire a tool once; any agent can use it.</p>
+    <div class="lab">
+      <div class="mcp">
+        <div class="hub">Your agent<small>speaks MCP</small></div>
+        <div class="port">⇄</div>
+        <div class="plugs">
+          <div class="plug">📁 SharePoint<small class="muted">docs</small></div>
+          <div class="plug">🗃 CRM<small class="muted">records</small></div>
+          <div class="plug">✉ Email<small class="muted">send/draft</small></div>
+          <div class="plug">📊 Database<small class="muted">query</small></div>
+        </div>
+      </div>
+      <div class="hint">In the session your trainer wires real tools live in Claude Code (two examples), and you'll connect one alongside. Your no-code build uses <b>Claude Projects</b> — knowledge + connectors — with a human checkpoint where it matters.</div>
+    </div>
+
+    <div class="callback">↩ <b>From Week 1:</b> the data-sensitivity rule lives right here. Because tools touch real systems, the question "what data may go near this?" is a <b>tool</b> question — and a governance call you own.</div>
+
+    <div class="card quiz" id="q3"></div>
+
+    <div class="deeper">📚 <b>Go deeper (optional):</b> Anthropic — <a href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview" target="_blank" rel="noopener">Tool Use</a> (R11) · <a href="https://docs.anthropic.com/en/docs/agents-and-tools/mcp" target="_blank" rel="noopener">Model Context Protocol</a> (R12).</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s3">Mark this section complete</button>
+      <button class="btn ghost" data-next="s4">Next: Memory &amp; state →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 4 — MEMORY & STATE ============================ -->
+  <section class="panel" id="s4">
+    <span class="tag">Section 4 of 5</span><span class="tag">~15 min</span>
+    <h2>Memory &amp; state</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">Your agent forgets everything between sessions <i>unless you design memory in</i>. Deciding what it should <b>remember</b> versus <b>look up</b> is a leadership call — it drives cost, consistency, and what private data sits around.</p></div>
+
+    <div class="callback">↩ <b>From Week 1:</b> the <b>context window = the desk</b>. The model can only "see" what's on the desk right now. Everything you've learned about the desk applies here — we're just adding what happens when the desk fills, and where things go to persist.</div>
+
+    <p class="lead">Two kinds of memory. <b>Short-term</b> is the desk — this conversation, in view now, but wiped when you start a new chat and pushed off the edge when it overflows. <b>Long-term</b> is the filing cabinet — <b>Project knowledge</b> you save once, and it's there every time. Drive it:</p>
+
+    <div class="lab deskwrap">
+      <div class="cap"><span>Short-term · the desk (this chat)</span><span id="deskCount">0 in view</span></div>
+      <div class="desktop" id="desk"></div>
+      <div style="margin-top:10px">
+        <button class="btn" id="deskAdd">+ Add a message</button>
+        <button class="btn ghost" id="deskPin">📌 Save last to knowledge</button>
+        <button class="btn ghost" id="deskNew">↻ Start a new chat</button>
+      </div>
+      <div class="cap" style="margin-top:14px">Long-term · Project knowledge (persists)</div>
+      <div class="cabinet" id="cabinet"><span class="empty">— nothing saved yet —</span></div>
+      <div class="tnarr" id="deskNarr">Add messages until the desk overflows — watch the oldest fall off. Pin one to knowledge, then start a new chat: see what survives.</div>
+    </div>
+
+    <h3>Keep this</h3>
+    <table class="lens">
+      <tr><th></th><th>Short-term (context window)</th><th>Long-term (Project knowledge)</th></tr>
+      <tr><td><b>Holds</b></td><td>The current conversation.</td><td>What you deliberately save.</td></tr>
+      <tr><td><b>Lost when</b></td><td>New chat, or it overflows.</td><td>It doesn't — it persists.</td></tr>
+      <tr><td><b>Use for</b></td><td>The here-and-now of one task.</td><td>Standing facts, policies, house style.</td></tr>
+    </table>
+    <div class="why"><div class="kicker">Leader's read</div>
+      <p style="margin:.2em 0">Don't pour everything into memory. Decide what must <b>persist</b> (save it) versus what it can <b>look up</b> when needed. In no-code terms, <b>Claude Projects is your persistent memory</b> — and the more it remembers, the more you must govern what's in there.</p></div>
+
+    <div class="card quiz" id="q4"></div>
+
+    <div class="deeper">📚 <b>Go deeper (optional):</b> Anthropic — <a href="https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview" target="_blank" rel="noopener">Claude docs: context &amp; tool use</a> (R11).</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s4">Mark this section complete</button>
+      <button class="btn ghost" data-next="s5">Next: Design your agent →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 5 — DESIGN YOUR AGENT (LIFECYCLE) ============================ -->
+  <section class="panel" id="s5">
+    <span class="tag">Section 5 of 5</span><span class="tag">~15 min</span>
+    <h2>Design your agent — the lifecycle</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">In the session you build v1 of <b>your own</b> agent. Before you do, here's the whole journey of <i>owning</i> one — and the one part you must never automate away. This is also the shape of your 1-page design doc.</p></div>
+
+    <p class="lead">An agent isn't a one-off build; it's a <b>lifecycle</b> you sponsor: <b>design → build → test → deploy → monitor</b>. Click each stage to see what you decide there — and where the human stays in the loop:</p>
+
+    <div class="lab">
+      <div class="life" id="lifeStages"></div>
+      <div class="lifedetail" id="lifeDetail">Click a stage above.</div>
+    </div>
+
+    <h3>Now assemble the agent itself</h3>
+    <p>Your agent is made of a few parts. Switch them on and watch whether it's actually ready to build — some parts aren't optional:</p>
+    <div class="lab build">
+      <div class="caps" id="specCaps">
+        <button class="cap req" data-cap="instr">Instructions<small>role · task · guardrails</small></button>
+        <button class="cap" data-cap="know">Knowledge<small>your documents</small></button>
+        <button class="cap" data-cap="tools">Tools / connectors<small>how it acts</small></button>
+        <button class="cap" data-cap="stop">Stopping rule<small>when it's done</small></button>
+        <button class="cap req" data-cap="human">Human checkpoint<small>approve before it acts</small></button>
+      </div>
+      <div class="meter"><div class="fill" id="specMeter"></div></div>
+      <div class="readout warnstate" id="specOut"><span class="flag">Switch on the parts</span> — start with what's marked <b>required</b>.</div>
+    </div>
+
+    <h3>Keep this</h3>
+    <table class="lens">
+      <tr><th>Stage</th><th>The call you own</th></tr>
+      <tr><td><b>Design</b></td><td>Least autonomy that works; where the human checkpoint sits. (Your Week-1 doc feeds this.)</td></tr>
+      <tr><td><b>Build</b></td><td>Assemble in Claude Projects: instructions + knowledge + connectors.</td></tr>
+      <tr><td><b>Test</b></td><td>Run real inputs; hunt the failure modes before anyone relies on it.</td></tr>
+      <tr><td><b>Deploy</b></td><td>Into the team's real workflow — start small.</td></tr>
+      <tr><td><b>Monitor</b></td><td>Watch cost, drift and errors; keep the human checkpoint live.</td></tr>
+    </table>
+    <div class="why"><div class="kicker">Leader's read</div>
+      <p style="margin:.2em 0">You don't operate the agent — you <b>sponsor its lifecycle</b>. The human checkpoint isn't a weakness in the design; it's the governance you own. Bring one real, agent-shaped problem to the session and we build it.</p></div>
+
+    <div class="card quiz" id="q5"></div>
+
+    <div class="ask">💬 <b>Your trainer is your teacher.</b> Anything here unclear — bring it to the mid-week clinic or the Teams doubt channel (answered within 1 business day). The prework builds intuition; the session is where you build the thing.</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s5">Mark this section complete</button>
+      <span class="small muted">That's the set — bring your problem to the session.</span>
+    </div>
+  </section>
+
+  <div class="finale" id="finale">
+    <div class="kicker">All five done 🎉</div>
+    <p style="margin:.3em 0 0">You can now read an agent for what it is: a governed loop. You know the spectrum from workflow to agent, how tools let it act, how memory persists, and the lifecycle you sponsor. Come to the session with one real, agent-shaped problem from your function — we build v1 of it together.</p>
+  </div>
+
+</div>
+
+<footer class="ft">
+  AI Capability Program · Week 2 — Agentic Deep Dive · Prework. Compressed essentials live in <code>reference/glossary.html</code>. All external links are tracked in <code>RESOURCES.md</code>. Progress is stored in your browser on this device only.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var SECTIONS = ["s1","s2","s3","s4","s5"];
+  var TITLES = {s1:"The loop", s2:"Workflow vs agent", s3:"Tools", s4:"Memory", s5:"Design it"};
+  var KEY = "acp-w2-preread";
+
+  /* ---------- progress / tabs ---------- */
+  var state = load();
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || {done:[]}; }catch(e){ return {done:[]}; } }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+  var pillsEl = document.getElementById("pills");
+  SECTIONS.forEach(function(id, i){
+    var b = document.createElement("button");
+    b.className = "pill"; b.dataset.target = id;
+    b.innerHTML = '<span class="num">'+(i+1)+'</span>'+TITLES[id];
+    b.onclick = function(){ show(id); };
+    pillsEl.appendChild(b);
+  });
+
+  function show(id){
+    SECTIONS.forEach(function(s){
+      document.getElementById(s).classList.toggle("active", s===id);
+      var p = pillsEl.querySelector('[data-target="'+s+'"]');
+      if(p) p.classList.toggle("active", s===id);
+    });
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  function renderProgress(){
+    var n = state.done.length;
+    document.getElementById("progFill").style.width = (n/SECTIONS.length*100)+"%";
+    document.getElementById("progLbl").textContent = n + " / " + SECTIONS.length + " complete";
+    SECTIONS.forEach(function(s){
+      var p = pillsEl.querySelector('[data-target="'+s+'"]');
+      if(p) p.classList.toggle("done", state.done.indexOf(s)>=0);
+      var btn = document.querySelector('.done[data-sec="'+s+'"]');
+      if(btn){
+        var isDone = state.done.indexOf(s)>=0;
+        btn.classList.toggle("is-done", isDone);
+        btn.textContent = isDone ? "✓ Completed — click to undo" : "Mark this section complete";
+      }
+    });
+    document.getElementById("finale").classList.toggle("show", n===SECTIONS.length);
+  }
+
+  document.querySelectorAll(".done").forEach(function(btn){
+    btn.onclick = function(){
+      var s = btn.dataset.sec, i = state.done.indexOf(s);
+      if(i>=0) state.done.splice(i,1); else state.done.push(s);
+      save(); renderProgress();
+      if(i<0){ var nx = document.querySelector('#'+s+' [data-next]'); if(nx) setTimeout(function(){ show(nx.dataset.next); }, 250); }
+    };
+  });
+  document.querySelectorAll("[data-next]").forEach(function(b){ b.onclick = function(){ show(b.dataset.next); }; });
+
+  /* ---------- generic quiz ---------- */
+  function makeQuiz(elId, questions){
+    var el = document.getElementById(elId); if(!el) return;
+    questions.forEach(function(q, i){
+      var wrapEl = document.createElement("div"); wrapEl.className="q";
+      var stem = document.createElement("div"); stem.className="stem"; stem.textContent=(i+1)+". "+q.stem; wrapEl.appendChild(stem);
+      var ul = document.createElement("ul"); ul.className="opts";
+      var fb = document.createElement("div"); fb.className="fb";
+      q.opts.forEach(function(opt, j){
+        var li=document.createElement("li");
+        var b=document.createElement("button"); b.className="opt"; b.textContent=opt;
+        b.onclick=function(){
+          if(b.disabled) return;
+          Array.prototype.forEach.call(ul.querySelectorAll("button"), function(x){ x.disabled=true; });
+          if(j===q.answer){ b.classList.add("correct"); fb.className="fb ok show"; fb.textContent="Correct. "+q.why; }
+          else { b.classList.add("wrong"); ul.querySelectorAll("button")[q.answer].classList.add("correct"); fb.className="fb no show"; fb.textContent="Not quite. "+q.why; }
+        };
+        li.appendChild(b); ul.appendChild(li);
+      });
+      wrapEl.appendChild(ul); wrapEl.appendChild(fb); el.appendChild(wrapEl);
+    });
+  }
+
+  /* ---------- S1: agent loop graph (ported from week-1 deck) ---------- */
+  (function(){
+    var host=document.getElementById("agGraph"); if(!host) return;
+    var NS="http://www.w3.org/2000/svg";
+    function el(tag,a){ var e=document.createElementNS(NS,tag); for(var k in a) e.setAttribute(k,a[k]); return e; }
+    function buildGraph(vw,vh,mid,nodes,edges){
+      var svg=el("svg",{viewBox:"0 0 "+vw+" "+vh});
+      var defs=el("defs",{});
+      var m=el("marker",{id:mid,markerWidth:9,markerHeight:9,refX:7,refY:4,orient:"auto"});
+      m.appendChild(el("path",{d:"M0,0 L8,4 L0,8 z",fill:"context-stroke"}));
+      defs.appendChild(m); svg.appendChild(defs);
+      var edgeEls={};
+      edges.forEach(function(e){
+        var ln=el("line",{x1:e.x1,y1:e.y1,x2:e.x2,y2:e.y2,"class":"edge","marker-end":"url(#"+mid+")"});
+        svg.appendChild(ln); edgeEls[e.id]=ln;
+      });
+      var nodeEls={};
+      Object.keys(nodes).forEach(function(id){
+        var n=nodes[id], g=el("g",{"class":"gnode "+(n.kind||"")}), cx=n.x+n.w/2;
+        g.appendChild(el("rect",{x:n.x,y:n.y,width:n.w,height:n.h,rx:9,"class":"nrect"}));
+        if(n.sub){
+          var t1=el("text",{x:cx,y:n.y+n.h/2-2,"text-anchor":"middle","class":"nlab"}); t1.textContent=n.lab;
+          var t2=el("text",{x:cx,y:n.y+n.h/2+13,"text-anchor":"middle","class":"nsub"}); t2.textContent=n.sub;
+          g.appendChild(t1); g.appendChild(t2);
+        } else {
+          var t=el("text",{x:cx,y:n.y+n.h/2+4,"text-anchor":"middle","class":"nlab"}); t.textContent=n.lab; g.appendChild(t);
+        }
+        svg.appendChild(g); nodeEls[id]=g;
+      });
+      return {svg:svg, nodeEls:nodeEls, edgeEls:edgeEls};
+    }
+    var A={
+      goal:{x:18,y:8,w:250,h:46,lab:"GOAL",sub:"clear the complaint queue",kind:"goal"},
+      think:{x:186,y:92,w:108,h:44,lab:"1 · Think",kind:"phase"},
+      act:{x:300,y:166,w:108,h:44,lab:"2 · Act",kind:"phase"},
+      observe:{x:186,y:240,w:108,h:44,lab:"3 · Observe",kind:"phase"},
+      decide:{x:72,y:166,w:108,h:44,lab:"4 · Decide",kind:"phase"},
+      done:{x:40,y:248,w:120,h:44,lab:"✓ Done",kind:"done"},
+      t_inbox:{x:470,y:34,w:190,h:40,lab:"📥 Read inbox",kind:"tool"},
+      t_order:{x:470,y:86,w:190,h:40,lab:"🗃 Order system",kind:"tool"},
+      t_draft:{x:470,y:166,w:190,h:40,lab:"✍ Draft reply",kind:"tool"},
+      t_esc:{x:470,y:228,w:190,h:40,lab:"⚠ Escalate to human",kind:"tool"}
+    };
+    var AE=[
+      {id:"goal-think",x1:160,y1:54,x2:222,y2:92},
+      {id:"think-act",x1:294,y1:126,x2:312,y2:166},
+      {id:"act-observe",x1:318,y1:210,x2:294,y2:248},
+      {id:"observe-decide",x1:186,y1:254,x2:162,y2:204},
+      {id:"decide-think",x1:138,y1:166,x2:206,y2:136},
+      {id:"decide-done",x1:110,y1:210,x2:104,y2:248},
+      {id:"act-t_inbox",x1:408,y1:182,x2:470,y2:54},
+      {id:"act-t_order",x1:408,y1:186,x2:470,y2:106},
+      {id:"act-t_draft",x1:408,y1:188,x2:470,y2:186},
+      {id:"act-t_esc",x1:408,y1:192,x2:470,y2:248}
+    ];
+    var AS=[
+      {node:"goal",loop:0,text:"GOAL — “Clear the overnight complaint queue: triage each, draft replies, escalate the severe ones.” You hand over an outcome, not a question."},
+      {node:"think",edges:["goal-think"],loop:1,text:"THINK — Plan: read the inbox, handle each complaint, escalate anything about safety."},
+      {node:"act",edges:["think-act"],tool:"t_inbox",toolEdge:"act-t_inbox",loop:1,text:"ACT — Calls a tool: read the inbox."},
+      {node:"observe",edges:["act-observe"],loop:1,text:"OBSERVE — 7 complaints found: 5 routine, 2 mention safety."},
+      {node:"decide",edges:["observe-decide"],loop:1,text:"DECIDE — Not finished. Handle the 5 routine ones first."},
+      {node:"think",edges:["decide-think"],loop:2,text:"THINK · loop 2 — Draft replies for the 5 routine complaints. ← it just looped back."},
+      {node:"act",edges:["think-act"],tool:"t_draft",toolEdge:"act-t_draft",loop:2,text:"ACT — Calls a tool: draft 5 replies, grounded in policy."},
+      {node:"observe",edges:["act-observe"],loop:2,text:"OBSERVE — 5 drafts ready for your review."},
+      {node:"decide",edges:["observe-decide"],loop:2,text:"DECIDE — Still 2 safety complaints; those exceed its authority."},
+      {node:"think",edges:["decide-think"],loop:3,text:"THINK · loop 3 — Escalate the 2 safety complaints to a human."},
+      {node:"act",edges:["think-act"],tool:"t_esc",toolEdge:"act-t_esc",loop:3,text:"ACT — Calls a tool: flag the 2 safety complaints to you with a summary. ← the human checkpoint."},
+      {node:"observe",edges:["act-observe"],loop:3,text:"OBSERVE — Human notified."},
+      {node:"decide",edges:["observe-decide"],loop:3,text:"DECIDE — All complaints handled → the stopping rule says finish."},
+      {node:"done",edges:["decide-done"],loop:3,text:"DONE ✅ — Queue cleared. You only touched the 2 that genuinely needed a human."}
+    ];
+    var g=buildGraph(680,308,"arrowA",A,AE);
+    host.appendChild(g.svg);
+    var narr=document.getElementById("agNarr"), loops=document.getElementById("agLoops"),
+        bStep=document.getElementById("agStep"), bRun=document.getElementById("agRun"), bReset=document.getElementById("agReset");
+    var step=-1, timer=null;
+    function clearHi(){ Object.keys(g.nodeEls).forEach(function(k){ g.nodeEls[k].classList.remove("on"); }); Object.keys(g.edgeEls).forEach(function(k){ g.edgeEls[k].classList.remove("hot"); }); }
+    function render(){
+      clearHi();
+      if(step<0){
+        narr.innerHTML='<span class="ph">Agent · a loop with tools</span>Press <b>Step →</b> to begin. Watch it loop through its tools until the goal is met — and count the passes.';
+        loops.textContent="Loops: 0";
+        return;
+      }
+      var s=AS[step];
+      if(s.node) g.nodeEls[s.node].classList.add("on");
+      (s.edges||[]).forEach(function(id){ if(g.edgeEls[id]) g.edgeEls[id].classList.add("hot"); });
+      if(s.tool){ g.nodeEls[s.tool].classList.add("on"); if(s.toolEdge && g.edgeEls[s.toolEdge]) g.edgeEls[s.toolEdge].classList.add("hot"); }
+      narr.innerHTML = s.text;
+      loops.textContent = "Loops: "+s.loop;
+    }
+    function stop(){ if(timer){ clearInterval(timer); timer=null; bRun.textContent="Run all"; } }
+    bStep.onclick=function(){ stop(); if(step<AS.length-1){ step++; render(); } };
+    bRun.onclick=function(){
+      if(timer){ stop(); return; }
+      if(step>=AS.length-1){ step=-1; render(); }
+      bRun.textContent="Pause";
+      timer=setInterval(function(){ if(step<AS.length-1){ step++; render(); } else stop(); }, 1150);
+    };
+    bReset.onclick=function(){ stop(); step=-1; render(); };
+    render();
+  })();
+
+  /* ---------- S2: workflow→agent pattern picker ---------- */
+  (function(){
+    var ladderEl=document.getElementById("patLadder"); if(!ladderEl) return;
+    var chipsEl=document.getElementById("patChips"), autoEl=document.getElementById("patAuto"), outEl=document.getElementById("patOut");
+    var PATTERNS=[
+      {id:"chain", name:"Prompt chaining", grp:"wf", auto:18, blurb:"A fixed sequence of steps you define — output of one feeds the next."},
+      {id:"route", name:"Routing", grp:"wf", auto:30, blurb:"Classify the input, then send it down one of a few known branches."},
+      {id:"parallel", name:"Parallelisation", grp:"wf", auto:38, blurb:"Run several fixed sub-tasks at once, then combine the results."},
+      {id:"react", name:"ReAct agent", grp:"ag", auto:64, blurb:"The model decides each step and loops with tools — the path differs every run."},
+      {id:"plan", name:"Plan-and-Execute", grp:"ag", auto:74, blurb:"The model plans the whole approach up front, then carries it out."},
+      {id:"reflect", name:"Reflection", grp:"ag", auto:80, blurb:"The model critiques and improves its own output before finishing."},
+      {id:"multi", name:"Multi-agent", grp:"ag", auto:94, blurb:"Several specialist agents coordinated — rarely needed, highest cost."}
+    ];
+    var TASKS=[
+      {short:"Summarise each contract, then compare", pat:"chain",
+       decide:"that the steps never change", why:"Two known steps in a fixed order — summarise, then compare. You can draw the whole path, so a workflow chain is cheaper and more reliable than an agent."},
+      {short:"Route an HR query (policy / escalate / FAQ)", pat:"route",
+       decide:"the branches in advance", why:"A classify-then-branch problem with known destinations. Routing handles it — no need for the model to invent a path."},
+      {short:"Generate 4 JD drafts at once, then merge", pat:"parallel",
+       decide:"the sub-tasks up front", why:"Independent sub-tasks done together, then combined. Still a workflow — you define the parts; the model doesn't choose them."},
+      {short:"Triage overnight tickets: diagnose, draft, escalate", pat:"react",
+       decide:"how much autonomy is safe", why:"Each ticket needs a different path, decided live, using tools. That's a genuine agent — the path can't be predefined."},
+      {short:"Plan & assemble the monthly board pack", pat:"plan",
+       decide:"where the human reviews the plan", why:"A multi-step goal you can plan up front, then execute. Plan-and-Execute fits — and you approve the plan before it runs."},
+      {short:"Draft a proposal, then self-critique & improve", pat:"reflect",
+       decide:"the quality bar it checks against", why:"A quality loop on its own output, not new actions. Reflection is the lightest agent pattern that adds a self-review pass."},
+      {short:"Run a deal desk: research, price, comply, draft", pat:"multi",
+       decide:"whether it's truly worth the cost", why:"Genuinely distinct specialist jobs coordinated at once — the rare case that earns multi-agent. Most problems never do."}
+    ];
+    var rungs={};
+    PATTERNS.forEach(function(p){
+      var r=document.createElement("div"); r.className="rung"; r.id="rung-"+p.id;
+      r.innerHTML='<div class="rtop"><span class="rname">'+p.name+'</span>'
+        +'<span class="rgrp '+p.grp+'">'+(p.grp==="wf"?"Workflow":"Agent")+'</span></div>'
+        +'<div class="rblurb">'+p.blurb+'</div>';
+      ladderEl.appendChild(r); rungs[p.id]=r;
+    });
+    var sel=-1;
+    TASKS.forEach(function(t,idx){
+      var c=document.createElement("button"); c.className="taskchip"; c.textContent=t.short;
+      c.onclick=function(){ pick(idx); };
+      chipsEl.appendChild(c);
+    });
+    function pick(idx){
+      sel=idx;
+      Array.prototype.forEach.call(chipsEl.children, function(c,i){ c.classList.toggle("on", i===idx); });
+      var t=TASKS[idx], p=null;
+      PATTERNS.forEach(function(P){ rungs[P.id].classList.toggle("on", P.id===t.pat); if(P.id===t.pat) p=P; });
+      autoEl.style.width=p.auto+"%";
+      outEl.innerHTML='<span class="pname">'+p.name+'</span> &nbsp;<span class="tag" style="margin:0">'+(p.grp==="wf"?"Workflow":"Agent")+'</span>'
+        +'<div style="margin-top:7px"><b>You\'ll decide:</b> '+t.decide+'.</div>'
+        +'<div style="margin-top:5px">'+t.why+'</div>';
+    }
+  })();
+
+  /* ---------- S3: tool-call stepper ---------- */
+  (function(){
+    var dotsEl=document.getElementById("toolDots"); if(!dotsEl) return;
+    var whoEl=document.getElementById("toolWho"), codeEl=document.getElementById("toolCode"),
+        narrEl=document.getElementById("toolNarr"), bStep=document.getElementById("toolStep"), bReset=document.getElementById("toolReset");
+    var STEPS=[
+      {who:"model", wlabel:"The model",
+       code:'(mid-loop)  "What\'s the status of order #4471?\\n I can\'t answer this from memory — I need a tool."',
+       narr:"The model hits something it can't answer from its frozen training — a live fact in your systems. So it reaches for a tool."},
+      {who:"model", wlabel:"The model — requests",
+       code:'get_order_status({ "order_id": "4471" })',
+       narr:"It writes a structured request — not prose, not an action. This is the whole move people miss: the model only ASKS for the tool to run."},
+      {who:"system", wlabel:"Your system — runs it",
+       code:'→ querying order database…\\n← { "status": "delayed", "eta": "2026-07-03" }',
+       narr:"YOUR system — not the model — actually runs the tool against the real order database and gets a result. This is your control point."},
+      {who:"system", wlabel:"Result returns",
+       code:'observation: order 4471 is DELAYED, eta 2026-07-03',
+       narr:"The result is handed back into the loop as an OBSERVATION — the model can now see the real fact."},
+      {who:"model", wlabel:"The model — continues",
+       code:'"Order 4471 is delayed to 3 Jul. Drafting a proactive note to the customer…"',
+       narr:"Grounded in the real result, the model continues the loop — draft, or call another tool, or finish. The loop you saw in Section 1, with a tool in the middle."}
+    ];
+    var dots=[];
+    STEPS.forEach(function(s,i){
+      if(i>0){ var c=document.createElement("div"); c.className="conn"; dotsEl.appendChild(c); }
+      var d=document.createElement("div"); d.className="dot"; d.textContent=(i+1); dotsEl.appendChild(d); dots.push(d);
+    });
+    var step=-1;
+    function render(){
+      dots.forEach(function(d,i){ d.classList.toggle("on", i===step); d.classList.toggle("dn", i<step); });
+      if(step<0){ whoEl.innerHTML="&nbsp;"; whoEl.className="who"; codeEl.innerHTML="Press <b>Step →</b> to watch a single tool call, start to finish.";
+        narrEl.textContent="The model is mid-loop and needs something it can't answer from memory."; return; }
+      var s=STEPS[step];
+      whoEl.textContent=s.wlabel || s.wlabel; whoEl.className="who "+s.who;
+      codeEl.textContent=s.code.replace(/\\n/g,"\n");
+      narrEl.textContent=s.narr;
+    }
+    bStep.onclick=function(){ if(step<STEPS.length-1){ step++; render(); } };
+    bReset.onclick=function(){ step=-1; render(); };
+    render();
+  })();
+
+  /* ---------- S4: context window desk ---------- */
+  (function(){
+    var deskEl=document.getElementById("desk"); if(!deskEl) return;
+    var cabEl=document.getElementById("cabinet"), countEl=document.getElementById("deskCount"), narrEl=document.getElementById("deskNarr");
+    var addBtn=document.getElementById("deskAdd"), pinBtn=document.getElementById("deskPin"), newBtn=document.getElementById("deskNew");
+    var MSGS=["“What's our returns policy?”","“Summarise this contract.”","“Draft a reply to the vendor.”",
+      "“Compare these two quotes.”","“What did we decide last time?”","“Flag any safety issues.”",
+      "“Translate this for the EU team.”","“Pull the Q3 numbers.”","“Who owns this action?”"];
+    var CAP=7; /* desk capacity before overflow */
+    var shortTerm=[], longTerm=[], mi=0;
+    function render(){
+      deskEl.innerHTML="";
+      longTerm.forEach(function(m){
+        var t=document.createElement("span"); t.className="tok loaded"; t.textContent="📌 "+m; deskEl.appendChild(t);
+      });
+      var visibleShort = shortTerm.length;
+      shortTerm.forEach(function(m,i){
+        var t=document.createElement("span"); t.className="tok"; t.textContent=m;
+        /* overflow: the oldest short-term items beyond capacity fall off */
+        if(longTerm.length + shortTerm.length > CAP && i < (longTerm.length + shortTerm.length - CAP)){
+          t.classList.add("dropped");
+        }
+        deskEl.appendChild(t);
+      });
+      var live = Math.max(0, Math.min(shortTerm.length, CAP - longTerm.length));
+      countEl.textContent = (longTerm.length+visibleShort)+" on desk";
+      cabEl.innerHTML="";
+      if(!longTerm.length){ cabEl.innerHTML='<span class="empty">— nothing saved yet —</span>'; }
+      else longTerm.forEach(function(m){ var t=document.createElement("span"); t.className="tok pinned"; t.textContent="📌 "+m; cabEl.appendChild(t); });
+    }
+    function overflowing(){ return longTerm.length + shortTerm.length > CAP; }
+    addBtn.onclick=function(){
+      shortTerm.push(MSGS[mi % MSGS.length]); mi++;
+      render();
+      narrEl.innerHTML = overflowing()
+        ? "The desk is <b>full</b> — the oldest messages just fell off the edge (greyed out). The model can no longer see them. That's the context window overflowing."
+        : "Each message lands on the desk — in view, the model can use it right now.";
+    };
+    pinBtn.onclick=function(){
+      if(!shortTerm.length){ narrEl.textContent="Add a message first, then save it to knowledge."; return; }
+      var last=shortTerm[shortTerm.length-1];
+      if(longTerm.indexOf(last)<0) longTerm.push(last);
+      render();
+      narrEl.innerHTML="Saved “"+last+"” to <b>Project knowledge</b> — it's now long-term. It'll be loaded into <i>every</i> new chat (shown dashed at the front of the desk).";
+    };
+    newBtn.onclick=function(){
+      shortTerm=[]; mi=0; render();
+      narrEl.innerHTML = longTerm.length
+        ? "New chat: the desk is wiped — but what you <b>saved to knowledge survives</b> and is reloaded automatically (the dashed items). Short-term forgotten; long-term kept."
+        : "New chat: the desk is wiped clean. Nothing was saved to knowledge, so the agent starts with a blank slate — it remembers nothing.";
+    };
+    render();
+  })();
+
+  /* ---------- S5: lifecycle stepper ---------- */
+  (function(){
+    var stagesEl=document.getElementById("lifeStages"); if(!stagesEl) return;
+    var detailEl=document.getElementById("lifeDetail");
+    var STAGES=[
+      {k:"Design", s:"scope it", d:"Define the goal, choose the <b>least autonomy that works</b>, and decide where the human checkpoint sits. Your Week-1 architecture doc is the input here.", h:"You set the boundaries before a line is built."},
+      {k:"Build", s:"assemble", d:"Assemble it in <b>Claude Projects</b>: instructions (role · task · guardrails) + knowledge (your documents) + connectors. No code on the core track.", h:"You decide what it may touch."},
+      {k:"Test", s:"break it", d:"Run <b>real inputs</b> — including awkward ones — and hunt the failure modes before anyone relies on it. Three real cases is the floor.", h:"You judge whether it's good enough to trust."},
+      {k:"Deploy", s:"go small", d:"Put it into the team's <b>real workflow</b>, starting small — one user, one slice of the work — so a mistake is cheap.", h:"You choose how much it runs unattended."},
+      {k:"Monitor", s:"watch it", d:"Watch <b>cost, drift and errors</b> over time. Models and data change; an agent that was right in June can be wrong in September.", h:"You keep the human checkpoint live."}
+    ];
+    var sel=-1, els=[];
+    STAGES.forEach(function(st,i){
+      var d=document.createElement("div"); d.className="stage";
+      d.innerHTML=st.k+'<small>'+st.s+'</small>';
+      d.onclick=function(){ choose(i); };
+      stagesEl.appendChild(d); els.push(d);
+    });
+    function choose(i){
+      sel=i; els.forEach(function(e,j){ e.classList.toggle("on", j===i); });
+      var st=STAGES[i];
+      detailEl.innerHTML='<b>'+st.k+'</b> — '+st.d+'<span class="human">👤 Human in the loop: '+st.h+'</span>';
+    }
+    choose(0);
+  })();
+
+  /* ---------- S5: spec composer ---------- */
+  (function(){
+    var capsWrap=document.getElementById("specCaps"); if(!capsWrap) return;
+    var meter=document.getElementById("specMeter"), out=document.getElementById("specOut");
+    var on={instr:false, know:false, tools:false, stop:false, human:false};
+    Array.prototype.forEach.call(capsWrap.querySelectorAll(".cap"), function(b){
+      b.onclick=function(){ var c=b.dataset.cap; on[c]=!on[c]; b.classList.toggle("on", on[c]); render(); };
+    });
+    function render(){
+      var count=0; ["instr","know","tools","stop","human"].forEach(function(k){ if(on[k]) count++; });
+      meter.style.width=(count/5*100)+"%";
+      var msg, cls;
+      if(!on.instr){
+        cls="warnstate"; meter.style.background="var(--warn)";
+        msg='<span class="flag">⚠ Not an agent yet.</span> With no <b>instructions</b>, there\'s no role, task or guardrails — it\'s just a blank chatbot. Start here.';
+      } else if(on.tools && !on.human){
+        cls="warnstate"; meter.style.background="var(--warn)";
+        msg='<span class="flag">⚠ Unsafe to let loose.</span> It can <b>act</b> (tools on) but has <b>no human checkpoint</b> — exactly the combination that gets a leader into trouble. Add the checkpoint before it can take consequential actions.';
+      } else if(!on.stop && on.tools){
+        cls="warnstate"; meter.style.background="var(--warn)";
+        msg='<span class="flag">⚠ It may not know when to stop.</span> An acting agent with no <b>stopping rule</b> can loop or over-run. Define "done".';
+      } else if(on.instr && on.human){
+        cls="okstate"; meter.style.background="var(--good)";
+        msg='<span class="flag">✓ Ready to build a v1.</span> Instructions set the behaviour, a human checkpoint keeps it governed'
+          +(on.know?', knowledge grounds it in your docs':'')+(on.tools?', tools let it act':'')+(on.stop?', and a stopping rule bounds it':'')
+          +'. This is the shape of your design doc.';
+      } else {
+        cls="warnstate"; meter.style.background="var(--accent)";
+        msg='<span class="flag">Getting there.</span> Instructions are on — now add the <b>human checkpoint</b> (required) before this is safe to build.';
+      }
+      out.className="readout "+cls; out.innerHTML=msg;
+    }
+    render();
+  })();
+
+  /* ---------- quizzes ---------- */
+  makeQuiz("q1",[
+    {stem:"What makes something an agent rather than a chatbot?",
+     opts:["It uses a bigger model","It's given a goal and loops — think, act via tools, observe, decide — until done","It answers in full sentences","It has a friendlier tone"], answer:1,
+     why:"A chatbot answers once and waits. An agent pursues a goal by looping with tools until a stopping rule says finish."},
+    {stem:"In the loop you stepped through, where did a human stay involved?",
+     opts:["It drafted every reply for a human to send","It escalated the 2 safety complaints rather than deciding them","A human ran each tool by hand","Humans aren't involved in agents"], answer:1,
+     why:"The stopping rule sent the consequential cases to a human — that escalation is the checkpoint you design in."},
+    {stem:"Why is 'more loops and more tools' not simply better?",
+     opts:["It's slower to type","More autonomy means more power but more places to go wrong — it needs governing","Bigger models can't loop","It always costs the same"], answer:1,
+     why:"Autonomy is a cost as well as a capability. Without a stopping rule and a human checkpoint, extra autonomy is just extra risk."}
+  ]);
+  makeQuiz("q2",[
+    {stem:"A task is the same fixed sequence of steps every single time. Best fit?",
+     opts:["A fully autonomous agent","A workflow (e.g. prompt chaining) — you can define the path","Multi-agent","It can't be automated"], answer:1,
+     why:"If you can draw the path in advance, a workflow is cheaper, more reliable and easier to govern than an agent."},
+    {stem:"When is reaching for an autonomous agent genuinely justified?",
+     opts:["Whenever you want it to feel advanced","When the path differs each run and can't be predefined","When the task is short","When leadership is watching the demo"], answer:1,
+     why:"Autonomy earns its cost only when the path can't be fixed up front. Otherwise it's over-building."},
+    {stem:"Which is the Week-2 sharpening of Week 1's 'cheapest layer that works wins'?",
+     opts:["Always use multi-agent","The least autonomy that works wins","The newest model wins","More tools always win"], answer:1,
+     why:"Same restraint, one level deeper: start as far toward 'workflow' as the problem allows; earn each step toward autonomy."}
+  ]);
+  makeQuiz("q3",[
+    {stem:"When an agent 'uses a tool', what does the model itself actually do?",
+     opts:["It directly changes the database","It writes a structured request for a tool; your system runs it","It emails the customer on its own","Nothing — tools are decoration"], answer:1,
+     why:"The model only requests. Something you control executes the tool and returns the result — that separation is your control point."},
+    {stem:"What problem does MCP (Model Context Protocol) solve?",
+     opts:["It makes the model bigger","It's a standard 'plug' so any tool connects to any agent the same way","It stores long-term memory","It writes the prompts for you"], answer:1,
+     why:"MCP standardises how tools connect — wire a tool once and any MCP-speaking agent can use it, like USB-C for tools."},
+    {stem:"Where does your data-sensitivity rule from Week 1 most apply?",
+     opts:["At the tools — they touch real systems and real data","In the model's training","Only in the homework","Nowhere — agents are sandboxed"], answer:0,
+     why:"Tools are where the agent reaches real systems, so 'what data may go near this?' is a tool-level governance call you own."}
+  ]);
+  makeQuiz("q4",[
+    {stem:"What's the difference between short-term and long-term memory for an agent?",
+     opts:["There isn't one","Short-term is the current conversation (lost on a new chat / overflow); long-term is saved knowledge that persists","Long-term is faster","Short-term costs more"], answer:1,
+     why:"Short-term lives in the context window — the desk — and is wiped or overflows. Long-term is what you deliberately save to Project knowledge."},
+    {stem:"You want your agent to always apply the same policy, in every chat. Where does it belong?",
+     opts:["Type it in each time","Save it to long-term Project knowledge once","Hope it remembers","In a bigger model"], answer:1,
+     why:"Standing facts and policies belong in persistent knowledge so they're loaded every time — not re-pasted per chat."},
+    {stem:"The 'desk' (context window) overflowed mid-task. What happens?",
+     opts:["Nothing","The oldest items fall off — the model can no longer see them","It saves them automatically","The model gets bigger"], answer:1,
+     why:"The window is finite. When it overflows the earliest content drops out of view — a reason to save what must persist."}
+  ]);
+  makeQuiz("q5",[
+    {stem:"Which best describes the leader's role across an agent's lifecycle?",
+     opts:["Operate it day-to-day","Sponsor design → build → test → deploy → monitor, and own the human checkpoint","Write the code","Approve the budget and step away"], answer:1,
+     why:"You don't run the agent — you sponsor its lifecycle and own the governance, above all the human checkpoint."},
+    {stem:"In the composer, why won't an agent with tools but no human checkpoint pass?",
+     opts:["It's too slow","It can act on the world with nothing to catch a consequential mistake","Tools always need RAG","It needs a bigger model"], answer:1,
+     why:"Acting + no checkpoint is the dangerous combination. A human approval point on consequential actions is non-negotiable."},
+    {stem:"Why does 'monitor' stay on the list after deployment?",
+     opts:["To justify the project","Because models and data drift — what was right in June can be wrong in September","Agents never change","It's optional, really"], answer:1,
+     why:"An agent isn't fire-and-forget. Inputs, models and the world change, so monitoring and the live checkpoint keep it trustworthy."}
+  ]);
+
+  /* ---------- boot ---------- */
+  renderProgress();
+  show("s1");
+})();
+</script>
+</body>
+</html>

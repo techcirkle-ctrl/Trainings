@@ -71,11 +71,9 @@
     <div class="term"><dt>Chatbot</dt>
       <dd>An AI you ask questions and get answers from. It replies with text; it doesn't take actions or run multi-step work. The thing an <b>agent</b> goes beyond.</dd></div>
 
-    <div class="term"><dt>Gem</dt>
-      <dd>A no-code agent built in Google Workspace, given persistent instructions and connected knowledge for one job. <span class="also">The no-code build surface every leader uses in this program — no terminal, no code.</span></dd></div>
-
     <div class="term"><dt>Claude Project</dt>
-      <dd>A workspace that gives Claude persistent instructions plus connected knowledge for a specific job. Leaders use one for a connected-knowledge assistant; the trainer also runs Claude Code + MCP inside one as the program's facilitator — the build engine behind every rung.</dd></div>
+      <dd>A workspace that gives Claude persistent instructions plus connected knowledge (and, optionally, connectors) for a specific job. <span class="also">The no-code build surface every leader uses in this program — no terminal, no code.</span> Leaders assemble their agent as a Project; the trainer also runs Claude Code + MCP inside one as the program's facilitator.
+      <span class="tie">The build surface for every hands-on build in the program.</span></dd></div>
 
     <div class="term"><dt>Token</dt>
       <dd>A word-chunk — the unit an LLM reads and predicts. Text is broken into tokens; the model generates one at a time. Roughly ¾ of a word each.</dd></div>
@@ -97,6 +95,52 @@
 
     <div class="term"><dt>Zone of proximal development</dt>
       <dd>The sweet spot just beyond what you can already do — challenging enough to grow, not so hard you stall. Each lesson is pitched here.</dd></div>
+
+    <!-- ===== Added in Week 2 · Agentic Deep Dive ===== -->
+
+    <div class="term"><dt>Agent loop</dt>
+      <dd>The cycle an agent repeats — <b>think → act → observe → decide</b> — calling tools until a stopping rule fires. It's where both an agent's power and its risk live.
+      <span class="tie">The "loop" in "an agent is an <b>LLM + tools + a loop</b>." Governed by a <b>stopping rule</b> and a <b>human checkpoint</b>.</span></dd></div>
+
+    <div class="term"><dt>Autonomy <span class="also">— the least-autonomy principle</span></dt>
+      <dd>How much an agent decides for itself versus following a fixed path. The program's rule: pick the <i>least autonomy that still solves the problem</i> — autonomy is a cost, not a prize, because every step of freedom is another place it can go wrong.
+      <span class="tie">The Week-2 sharpening of <b>"the cheapest layer that works wins."</b></span></dd></div>
+
+    <div class="term"><dt>Workflow vs agent</dt>
+      <dd>Two ways to structure multi-step AI work. In a <b>workflow</b> you fix the path in advance (chaining, routing, parallelisation); in an <b>agent</b> the model chooses the path at run time. Most things called "agents" are really workflows — and that's good: cheaper, more reliable, easier to govern.
+      <span class="tie">Reach right (toward agent) only when the path genuinely can't be drawn in advance. See <b>Autonomy</b>.</span></dd></div>
+
+    <div class="term"><dt>ReAct</dt>
+      <dd>An agent pattern where the model <b>rea</b>sons and <b>act</b>s in alternation — decide a step, call a tool, read the result, decide the next — so the path differs every run. The default "agent" shape.
+      <span class="tie">An <b>Agent</b> pattern; higher autonomy than any workflow.</span></dd></div>
+
+    <div class="term"><dt>Plan-and-Execute</dt>
+      <dd>An agent pattern where the model plans the whole approach up front, then carries it out — which lets a human <i>approve the plan before it runs</i>.
+      <span class="tie">An <b>Agent</b> pattern; pairs naturally with a <b>human checkpoint</b> on the plan.</span></dd></div>
+
+    <div class="term"><dt>Reflection</dt>
+      <dd>An agent pattern where the model critiques and improves its own output before finishing — a quality loop rather than new actions. The lightest agent pattern.
+      <span class="tie">An <b>Agent</b> pattern.</span></dd></div>
+
+    <div class="term"><dt>Tool call <span class="also">— tool calling</span></dt>
+      <dd>The mechanic behind tool use: the model <i>writes a structured request</i> for a tool; <b>your system — not the model — decides whether to run it</b> and hands the result back as an observation. The model only ever asks.
+      <span class="tie">The seam where your <b>human checkpoint</b> and data rules apply. The how of <b>Tool use</b>.</span></dd></div>
+
+    <div class="term"><dt>MCP <span class="also">— Model Context Protocol</span></dt>
+      <dd>A standard way to connect tools to an agent — think <i>USB-C</i>: wire a tool once and any agent can use it the same way.
+      <span class="tie">The plumbing under <b>Tool use</b>; demoed live on Claude Code in this program.</span></dd></div>
+
+    <div class="term"><dt>Stopping rule</dt>
+      <dd>How an agent knows it's <i>done</i> — or must escalate. Without one, an acting agent can loop or over-run.
+      <span class="tie">One of the two things that make an agent <b>governed</b> rather than just powerful; the other is the <b>human checkpoint</b>.</span></dd></div>
+
+    <div class="term"><dt>Human checkpoint</dt>
+      <dd>The specific point where an agent hands a decision back to a person before acting. The concrete form a human-in-the-loop takes inside an agent's design — and the governance a leader owns.
+      <span class="tie">The applied form of <b>Human-in-the-loop</b>. Tools without a checkpoint is the combination that gets a leader into trouble.</span></dd></div>
+
+    <div class="term"><dt>Agent lifecycle</dt>
+      <dd>The stages of owning an agent — <b>design → build → test → deploy → monitor</b>. A leader <i>sponsors</i> the lifecycle and owns the checkpoint; they don't operate the agent day to day.
+      <span class="tie">The shape of the Week-2 design doc.</span></dd></div>
 
   </dl>
 
