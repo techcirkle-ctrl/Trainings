@@ -83,6 +83,11 @@ The client-requested support layer. Same shape every week, described once here:
 
 ## Tooling & two-track delivery
 
+> **Reconciled (see `.claude/skills/teach/PLAYBOOK.md` §7):** the *shipped* program runs on
+> **Claude chat + Claude Projects** (no-code), on the program workspace account; the trainer
+> demos **Claude Code** live. The Gems / ADK ladder below is the original aspiration, not what
+> Week 1 ran — treat it as a roadmap, not the current build tool.
+
 Environment: **Google Workspace**. The stack, as a capability ladder:
 
 | Rung                           | Tool                           | Who builds                            | Week |

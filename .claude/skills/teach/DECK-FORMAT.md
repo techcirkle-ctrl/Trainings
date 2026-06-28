@@ -5,8 +5,13 @@ The authoring spec for a week's session: **N projectable HTML decks** (one per a
 team copies prompts from. Read this before authoring them.
 
 > Supersedes `KEYNOTE-FORMAT.md` and `run-of-show.md`. The session is no longer a markdown
-> script — it is a set of **presenter-projected decks** built on **movements**, with the
-> hands-on prompts pulled into one markdown helper. See ADR 0002.
+> script — it is a set of **presenter-projected decks** built on **movements**.
+>
+> **RECONCILED (see `PLAYBOOK.md` §7 — shipment wins):** Week 1 actually shipped **two decks
+> of the same slides — `…-audience.html` + `…-presenter.html`** (the presenter copy adds the
+> per-slide script) — with **hands-on prompts inline behind copy buttons**, *not* the
+> "3 act-decks + a separate `hands-on-movements.md` helper" model described below. Follow the
+> shipped audience/presenter pattern unless a week deliberately revives the helper split.
 
 ## The model in one paragraph
 
