@@ -93,7 +93,7 @@ together before any HTML is written.*
 Each defers to its format file for mechanics; here is *what it is* and *when it's done*.
 
 ### 3a. Pre-read — `weeks/week-N-<theme>/00-preread/week-N-prework.html`
-One self-contained, tabbed, interactive HTML file. Teach-by-doing per section. → `LESSON-FORMAT.md`
+One self-contained, tabbed, interactive HTML file. Teach-by-doing per section. → **`PRE-READ-PLAYBOOK.md`** is the **primary source of truth for pre-reads** (supersedes `LESSON-FORMAT.md` for them; read it before building any pre-read).
 - **Done when:** every section is `why-this-matters → ≤3-min teaching-through-an-interaction →
   "keep this" recap → instant-feedback self-check → mark-complete`; every session topic is
   covered; every widget runs on every path; progress persists locally; prints clean.
