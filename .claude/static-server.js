@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = '/Users/admin/Documents/shashi/techcirkle/Trainings';
-const PORT = 8765;
+const PORT = process.env.PORT || 8765;
 const TYPES = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css',
   '.json': 'application/json', '.svg': 'image/svg+xml', '.png': 'image/png',
   '.pdf': 'application/pdf', '.md': 'text/markdown' };

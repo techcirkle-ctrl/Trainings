@@ -16,7 +16,9 @@ The single source of truth for every external link used in a lesson. Lessons cit
 | R10 | DeepLearning.AI — AI Agentic Design Patterns | Short course (~1.5 hr) | W2 preread 2 (architectures) | https://www.deeplearning.ai/short-courses/ |
 | R11 | Anthropic — Claude docs: Tool Use | Docs | W2 preread 3 (tools) | https://docs.anthropic.com/en/docs/build-with-claude/tool-use/overview |
 | R12 | Anthropic — Model Context Protocol (MCP) | Docs | W2 preread 3 (tools) | https://docs.anthropic.com/en/docs/agents-and-tools/mcp |
-| R13 | PE Reading — Agent Architectures: ReAct, Plan-Execute, Multi-Agent | PE reading (in-house) | W2 preread 5 | `weeks/week-2-agentic-deep-dive/00-preread/5-pe-reading-agent-architectures.md` |
+| R13 | Agent Architectures — ReAct · Plan-and-Execute · Multi-agent (IBM Think explainers) | Explainer articles (IBM) | W2 preread (required · pairs with S3 Workflow-vs-agent) | https://www.ibm.com/think/topics/react-agent · https://www.ibm.com/think/topics/ai-agent-planning · https://www.ibm.com/think/topics/multiagent-system |
+| R14 | IBM Technology — What are AI Agents? | Video (YouTube) | W2 preread 1 (watch-first on-ramp) | https://www.youtube.com/watch?v=F8NKVhkZZWI |
+| R15 | MCP — Beyond the Hype (Model Context Protocol, clearly explained) | Video (YouTube) | W2 preread 3 (watch-first on-ramp) | https://www.youtube.com/watch?v=tzrwxLNHtRY |
 
 > Verify each URL before sending the Week-0 preread email. Where a link is approximate (R4, R8 landing pages, R9 explainer page, **R10 course landing, R11/R12 docs roots**), pin the exact page before launch.
 

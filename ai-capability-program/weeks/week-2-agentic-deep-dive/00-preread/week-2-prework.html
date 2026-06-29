@@ -69,6 +69,36 @@
   .callback{background:#fff7ea; border:1px solid #f0e1c2; border-radius:12px; padding:13px 16px; font:.93rem/1.55 ui-sans-serif,system-ui,sans-serif; margin:14px 0}
   .callback b{color:var(--warn)}
 
+  /* always-visible intro: Start-here card + required-reads callout (above the pills) */
+  .intro{max-width:var(--maxw); margin:0 auto; padding:6px 22px 0}
+  .starthere{background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:14px; padding:18px 22px; margin:10px 0}
+  .starthere .kicker{color:var(--accent)}
+  .starthere h2{font:700 1.18rem/1.25 ui-sans-serif,system-ui,sans-serif; margin:.25em 0 .35em; letter-spacing:-.01em}
+  .starthere p{margin:.55em 0}
+  .starthere ol{margin:.5em 0 .2em; padding-left:1.3em}
+  .starthere li{margin:.3em 0}
+  .reqreads{background:#fff7ea; border:1px solid #f0e1c2; border-radius:12px; padding:14px 18px; margin:12px 0 4px; font:.95rem/1.6 ui-sans-serif,system-ui,sans-serif}
+  .reqreads .kicker{color:var(--warn)}
+  .reqreads b{color:var(--warn)}
+
+  /* video on-ramp box (optional watch-first) */
+  .watch{background:#fbfdfd; border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:10px;
+    padding:12px 15px; margin:14px 0; font:14px/1.55 ui-sans-serif,system-ui,sans-serif}
+  .watch .wk{font:700 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:3px}
+  .watch a{font-weight:600}
+  .watch .opt{color:var(--muted); font-weight:600}
+
+  /* two-path note (S3 tool wording) */
+  .twopath{background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:12px; padding:14px 18px; margin:14px 0; font:14.5px/1.6 ui-sans-serif,system-ui,sans-serif}
+  .twopath b{color:var(--accent)}
+
+  /* build-the-shell close (S5) */
+  .buildshell{background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:14px; padding:18px 22px; margin:18px 0}
+  .buildshell h3{margin-top:0}
+  .buildshell ul{margin:.5em 0; padding-left:1.25em}
+  .buildshell li{margin:.35em 0; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif}
+  .buildshell .lread{display:block; margin-top:12px; padding-top:12px; border-top:1px solid #cfe6e4}
+
   /* generic interactive widget shell */
   .lab{background:#fbfdfd; border:1px solid #cfe6e4; border-radius:14px; padding:18px 20px; margin:16px 0}
   .lab .hint{font:13px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin-top:8px}
@@ -154,6 +184,10 @@
   .tok.pinned{background:#fff7ea; border-color:#f0e1c2}
   .tok.loaded{background:#eef6f5; border-style:dashed}
   .tok.dropped{opacity:.25; text-decoration:line-through}
+  .tok.forgettable{cursor:pointer}
+  .tok.forgettable .x{color:var(--bad); font-weight:700; font-size:11px; margin-left:1px; opacity:.5}
+  .tok.forgettable:hover{border-color:var(--bad)}
+  .tok.forgettable:hover .x{opacity:1}
   .cabinet{border:1px solid var(--line); border-radius:12px; padding:10px 12px; background:var(--wash); min-height:46px; display:flex; flex-wrap:wrap; gap:6px; align-items:center}
   .cabinet .empty{color:var(--muted); font:13px ui-sans-serif,system-ui,sans-serif}
   .deskwrap .tnarr{background:#fff; border:1px solid var(--line); border-radius:10px; padding:11px 14px; margin-top:10px; font:14px/1.5 ui-sans-serif,system-ui,sans-serif; min-height:40px}
@@ -168,14 +202,20 @@
   .life .stage.on, .life .stage.on small{color:var(--accent)}
   .lifedetail{background:#fff; border:1px solid var(--line); border-radius:10px; padding:13px 15px; margin-top:10px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:74px}
   .lifedetail .human{color:var(--warn); font-weight:600; display:block; margin-top:6px}
-  .build .caps{display:flex; gap:8px; flex-wrap:wrap}
-  .build .cap{flex:1; min-width:150px; cursor:pointer; text-align:left; border:1px solid var(--line); background:#fff; border-radius:11px; padding:11px 13px;
-    font:700 13.5px ui-sans-serif,system-ui,sans-serif; color:var(--ink); transition:background .18s, border-color .18s, box-shadow .18s}
-  .build .cap small{display:block; font:500 11px/1.35 ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin-top:3px}
+  .build .grouphd{font:700 10.5px ui-sans-serif,system-ui,sans-serif; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin:12px 0 5px; display:flex; align-items:baseline; gap:7px}
+  .build .grouphd.req{color:var(--accent)}
+  .build .grouphd .sub{font:600 10px ui-sans-serif,system-ui,sans-serif; letter-spacing:.02em; text-transform:none; color:var(--muted)}
+  .build .caps{display:grid; gap:8px; align-items:stretch}
+  .build .caps.two{grid-template-columns:repeat(2,1fr)}
+  .build .caps.three{grid-template-columns:repeat(3,1fr)}
+  .build .cap{cursor:pointer; text-align:left; border:1px solid var(--line); background:#fff; border-radius:11px; padding:11px 13px 12px;
+    font:700 13px ui-sans-serif,system-ui,sans-serif; color:var(--ink); transition:background .18s, border-color .18s, box-shadow .18s}
+  .build .cap small{display:block; font:500 10.5px/1.35 ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin-top:4px}
+  .build .cap.req{border-color:#bcdedd; background:#fbfdfd}
+  @media(max-width:620px){ .build .caps.two,.build .caps.three{grid-template-columns:1fr} }
   .build .cap:hover{border-color:var(--accent)}
   .build .cap.on{background:var(--accent-soft); border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent)}
   .build .cap.on small{color:var(--accent)}
-  .build .cap.req::after{content:"required"; float:right; font:700 9px ui-sans-serif,system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; color:var(--warn)}
   .build .meter{height:10px; background:#eef2f4; border-radius:99px; overflow:hidden; margin:12px 0 0}
   .build .meter .fill{height:100%; width:0; background:var(--accent); transition:width .35s, background .35s}
   .build .readout{background:#fff; border:1px solid var(--line); border-radius:10px; padding:13px 15px; margin-top:10px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:58px}
@@ -231,14 +271,14 @@
 <header class="masthead">
   <div class="kicker">AI Capability Program · Week 2 — Agentic Deep Dive</div>
   <h1>Week 2 Prework</h1>
-  <div class="meta">Work at your own pace · ~1–1.25 hr total · 5 short, interactive sections. <b>Your progress is saved on this device only — nothing is sent anywhere.</b></div>
+  <div class="meta">Work at your own pace · ~1.25 hr on this page + two short required reads (~1 hr) · 6 short, interactive sections. <b>Your progress is saved on this device only — nothing is sent anywhere.</b></div>
 </header>
 
 <div class="navbar">
   <div class="inner">
     <div class="prog">
       <div class="bar"><div class="fill" id="progFill"></div></div>
-      <div class="lbl" id="progLbl">0 / 5 complete</div>
+      <div class="lbl" id="progLbl">0 / 6 complete</div>
     </div>
     <div class="pills" id="pills"></div>
   </div>
@@ -246,12 +286,44 @@
 
 <div class="wrap">
 
-  <!-- ============================ SECTION 1 — THE AGENT LOOP ============================ -->
+  <!-- ============================ SECTION 1 — START HERE ============================ -->
+  <section class="panel" id="s0">
+    <span class="tag">Section 1 of 6</span><span class="tag">~10 min</span>
+    <h2>Start here — finish what we started</h2>
+    <div class="starthere">
+      <p style="margin-top:0">Before anything else this week:</p>
+      <p>Last week you were asked to write the <b>full spec of your capstone project</b> — the one real problem you'll carry across these four weeks. First, make sure that spec is finished: it's the blueprint for everything below, and it's what you'll start building this week.</p>
+      <p>Then do one small thing — about 10 minutes:</p>
+      <ol>
+        <li><b>Open a Project in Claude</b> on the program workspace account.</li>
+        <li><b>Connect one non-sensitive source to it</b> — your <b>Google Drive</b> or a <b>Teams</b> channel works today (or a similar non-sensitive source such as a Jira board or Confluence docs). Pick something with <b>nothing confidential</b> in it.</li>
+      </ol>
+      <p style="margin-bottom:0">That's it — you've just linked a <b>real tool to a real agent, with no code</b>. Hold that thought: in <b>Section 4 (Tools)</b> you'll see this was the part everyone worries about — and you've already done it. From here on, assume you know your way around a Claude Project, because now you do.</p>
+    </div>
+
+    <div class="reqreads">
+      <div class="kicker">Two short required reads · ~1 hr · before the session</div>
+      <p style="margin:.45em 0"><b><a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Anthropic — Building Effective Agents</a></b> (~30 min · R5) — the backbone for everything here; read it first.</p>
+      <p style="margin:.45em 0"><b>Agent Architectures — ReAct · Plan-and-Execute · Multi-agent</b> (~30 min · R13) — pairs with Section 3 (Workflow vs agent). Three short IBM explainers: <a href="https://www.ibm.com/think/topics/react-agent" target="_blank" rel="noopener">ReAct</a> · <a href="https://www.ibm.com/think/topics/ai-agent-planning" target="_blank" rel="noopener">Plan-and-Execute</a> · <a href="https://www.ibm.com/think/topics/multiagent-system" target="_blank" rel="noopener">Multi-agent</a>.</p>
+      <p class="muted small" style="margin:.45em 0 0">Everything else (the DeepLearning.AI courses, Anthropic's Tool Use &amp; MCP docs) stays optional "go deeper."</p>
+    </div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s0">Mark this section complete</button>
+      <button class="btn ghost" data-next="s1">Next: The agent loop →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 2 — THE AGENT LOOP ============================ -->
   <section class="panel" id="s1">
-    <span class="tag">Section 1 of 5</span><span class="tag">~15 min</span>
+    <span class="tag">Section 2 of 6</span><span class="tag">~15 min</span>
     <h2>The agent loop</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
-      <p style="margin:.2em 0">Last week you decided <b>which part of your problem needs an agent</b>. This week you build it — so you need to see what an agent actually <i>is</i> underneath the word. It's a <b>loop</b>, and the loop is where both the power and the risk live. Understanding it is what lets you design one and govern it.</p></div>
+      <p style="margin:.2em 0">Last week you decided <b>which part of your problem needs an agent</b>. This week you build it — so you need to see what an agent actually <i>is</i> underneath the word. It's a <b>loop</b>, and the loop is where both the power and the risk live. Understanding it is what lets you build one — and govern what you build.</p></div>
+
+    <!-- TRAINER: confirm runtime + that this primer still matches our framing before launch. -->
+    <div class="watch"><span class="wk">▶ Watch first <span class="opt">(optional)</span></span>
+      <b><a href="https://www.youtube.com/watch?v=F8NKVhkZZWI" target="_blank" rel="noopener">IBM Technology — What are AI Agents?</a></b> — a short, plain-English primer on what an agent is and how it reasons, uses tools, and acts toward a goal. <span class="muted">(R14)</span></div>
 
     <div class="callback">↩ <b>From Week 1:</b> you learned an <b>agent = LLM + tools + a loop</b> — it takes a <i>goal</i> (not a question) and cycles <i>think → act → observe → decide</i> until it's done. That one line is the seed. Now we open the loop up and watch it run.</div>
 
@@ -279,11 +351,11 @@
       <tr><td><b>Stopping rule</b></td><td>How it knows it's done — or must escalate.</td><td>Where does a human stay in the loop?</td></tr>
     </table>
     <div class="why"><div class="kicker">Leader's read</div>
-      <p style="margin:.2em 0">More loops and more tools = more autonomy = <b>more power and more places to go wrong</b>. An agent without a clear stopping rule and a human checkpoint isn't powerful — it's ungoverned. You own those two.</p></div>
+      <p style="margin:.2em 0">When you build this loop, more loops and more tools means more autonomy — <b>more power, and more places to go wrong</b>. So you design in two things as you build: a clear <b>stopping rule</b> and a <b>human checkpoint</b>. They aren't red tape bolted on afterwards — they're part of the agent you make, and the difference between one you can trust and one that's merely loose.</p></div>
 
     <div class="card quiz" id="q1"></div>
 
-    <div class="deeper">📚 <b>Go deeper (optional):</b> Anthropic — <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building Effective Agents</a> (what makes a system genuinely "agentic"). Tracked as R5.</div>
+    <div class="deeper">📚 <b>Your required read for this section:</b> Anthropic — <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building Effective Agents</a> (R5) — the backbone for everything this week; read it first (it's listed in Section 1 — Start here).</div>
 
     <div class="secfoot">
       <button class="done" data-sec="s1">Mark this section complete</button>
@@ -293,7 +365,7 @@
 
   <!-- ============================ SECTION 2 — WORKFLOW VS AGENT ============================ -->
   <section class="panel" id="s2">
-    <span class="tag">Section 2 of 5</span><span class="tag">~15 min</span>
+    <span class="tag">Section 3 of 6</span><span class="tag">~15 min</span>
     <h2>Workflow vs agent — pick the least autonomy</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
       <p style="margin:.2em 0">Most things people proudly call "agents" are actually <b>workflows</b> — and that's good news: they're cheaper, more reliable, and far easier to govern. The single most valuable judgement you'll make this week is choosing the <b>least autonomy that still solves the problem</b>.</p></div>
@@ -324,7 +396,7 @@
 
     <div class="card quiz" id="q2"></div>
 
-    <div class="deeper">📚 <b>Go deeper (optional):</b> DeepLearning.AI — <a href="https://www.deeplearning.ai/short-courses/" target="_blank" rel="noopener">AI Agentic Design Patterns</a> (R10) · in-house PE reading <i>Agent Architectures: ReAct, Plan-Execute, Multi-Agent</i> (R13).</div>
+    <div class="deeper">📚 <b>Your required read for this section:</b> <i>Agent Architectures — ReAct · Plan-and-Execute · Multi-agent</i> (R13), three short IBM explainers listed in Section 1 (Start here): <a href="https://www.ibm.com/think/topics/react-agent" target="_blank" rel="noopener">ReAct</a> · <a href="https://www.ibm.com/think/topics/ai-agent-planning" target="_blank" rel="noopener">Plan-and-Execute</a> · <a href="https://www.ibm.com/think/topics/multiagent-system" target="_blank" rel="noopener">Multi-agent</a>. <b>Go deeper (optional):</b> DeepLearning.AI — <a href="https://www.deeplearning.ai/short-courses/" target="_blank" rel="noopener">AI Agentic Design Patterns</a> (R10).</div>
 
     <div class="secfoot">
       <button class="done" data-sec="s2">Mark this section complete</button>
@@ -334,12 +406,12 @@
 
   <!-- ============================ SECTION 3 — TOOLS ============================ -->
   <section class="panel" id="s3">
-    <span class="tag">Section 3 of 5</span><span class="tag">~15 min</span>
+    <span class="tag">Section 4 of 6</span><span class="tag">~15 min</span>
     <h2>Tools — how an agent acts</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
       <p style="margin:.2em 0">An agent with no tools is just a chatbot talking to itself. <b>Tools</b> are how it reaches into your real systems — your CRM, a database, email. That makes them the most useful part <i>and</i> the riskiest: tools are exactly where the agent touches reality, so they're where your controls belong.</p></div>
 
-    <p class="lead">Here's the part that surprises people: the model <b>never acts directly</b>. When it needs a tool, it just <b>writes a request</b> — and <i>your</i> system decides whether and how to run it. Step through one tool call:</p>
+    <p class="lead">Back in Section 2, our complaint-queue agent kept "calling tools" — read the inbox, check the order system, draft a reply. Here's what <i>calling a tool</i> actually means underneath. The surprise: the model <b>never acts directly</b>. When it needs a tool, it just <b>writes a request</b> — and <i>your</i> system decides whether and how to run it. Step through one tool call — a complaint about <b>order&nbsp;#4471</b>:</p>
 
     <div class="lab toolwrap">
       <div class="stepper" id="toolDots"></div>
@@ -355,6 +427,9 @@
     <p>The key control point: the model only ever <b>asks</b>. Something you own actually runs the tool — so you decide what it may touch, what needs a human's nod first, and what data is even allowed near it.</p>
 
     <h3>One agent, many tools: MCP</h3>
+    <!-- TRAINER: confirm runtime + that this explainer still matches our "USB-C for tools" framing before launch. -->
+    <div class="watch"><span class="wk">▶ Watch first <span class="opt">(optional)</span></span>
+      <b><a href="https://www.youtube.com/watch?v=tzrwxLNHtRY" target="_blank" rel="noopener">MCP — Beyond the Hype</a></b> — uses the same "USB-C for tools" picture we use here. <span class="muted">(R15)</span></div>
     <p>Every tool has to be wired in. <b>MCP (Model Context Protocol)</b> is a <b>standard plug</b> — think USB-C — so any tool connects to any agent the same way. Wire a tool once; any agent can use it.</p>
     <div class="lab">
       <div class="mcp">
@@ -367,8 +442,8 @@
           <div class="plug">📊 Database<small class="muted">query</small></div>
         </div>
       </div>
-      <div class="hint">In the session your trainer wires real tools live in Claude Code (two examples), and you'll connect one alongside. Your no-code build uses <b>Claude Projects</b> — knowledge + connectors — with a human checkpoint where it matters.</div>
     </div>
+    <div class="twopath"><b>Two paths — and you're only on one of them.</b> Your trainer wires custom tools in <b>Claude Code</b> — the two live examples — and that part is watch-only; the terminal stays the trainer's instrument. You connect tools the way you already did in the "Start here" step: <b>Projects → Connectors, no code</b> — Google Drive or Teams. So when we say your agent "uses tools," that's <i>you</i>, in Claude Projects — not the terminal.</div>
 
     <div class="callback">↩ <b>From Week 1:</b> the data-sensitivity rule lives right here. Because tools touch real systems, the question "what data may go near this?" is a <b>tool</b> question — and a governance call you own.</div>
 
@@ -384,7 +459,7 @@
 
   <!-- ============================ SECTION 4 — MEMORY & STATE ============================ -->
   <section class="panel" id="s4">
-    <span class="tag">Section 4 of 5</span><span class="tag">~15 min</span>
+    <span class="tag">Section 5 of 6</span><span class="tag">~15 min</span>
     <h2>Memory &amp; state</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
       <p style="margin:.2em 0">Your agent forgets everything between sessions <i>unless you design memory in</i>. Deciding what it should <b>remember</b> versus <b>look up</b> is a leadership call — it drives cost, consistency, and what private data sits around.</p></div>
@@ -401,9 +476,9 @@
         <button class="btn ghost" id="deskPin">📌 Save last to knowledge</button>
         <button class="btn ghost" id="deskNew">↻ Start a new chat</button>
       </div>
-      <div class="cap" style="margin-top:14px">Long-term · Project knowledge (persists)</div>
+      <div class="cap" style="margin-top:14px">Long-term · Project knowledge (persists · click a saved card to forget it)</div>
       <div class="cabinet" id="cabinet"><span class="empty">— nothing saved yet —</span></div>
-      <div class="tnarr" id="deskNarr">Add messages until the desk overflows — watch the oldest fall off. Pin one to knowledge, then start a new chat: see what survives.</div>
+      <div class="tnarr" id="deskNarr">Add messages until the desk overflows — watch the oldest fall off. Pin one to knowledge, then start a new chat to see what survives — and click a saved card to forget it.</div>
     </div>
 
     <h3>Keep this</h3>
@@ -414,7 +489,7 @@
       <tr><td><b>Use for</b></td><td>The here-and-now of one task.</td><td>Standing facts, policies, house style.</td></tr>
     </table>
     <div class="why"><div class="kicker">Leader's read</div>
-      <p style="margin:.2em 0">Don't pour everything into memory. Decide what must <b>persist</b> (save it) versus what it can <b>look up</b> when needed. In no-code terms, <b>Claude Projects is your persistent memory</b> — and the more it remembers, the more you must govern what's in there.</p></div>
+      <p style="margin:.2em 0">When you build your agent, memory is a design choice you make: decide what must <b>persist</b> (save it to Project knowledge) versus what it can <b>look up</b> when needed. In no-code terms, <b>Claude Projects is the persistent memory you set up</b> — so the more you load into it, the more deliberate you are about what belongs there.</p></div>
 
     <div class="card quiz" id="q4"></div>
 
@@ -428,12 +503,12 @@
 
   <!-- ============================ SECTION 5 — DESIGN YOUR AGENT (LIFECYCLE) ============================ -->
   <section class="panel" id="s5">
-    <span class="tag">Section 5 of 5</span><span class="tag">~15 min</span>
+    <span class="tag">Section 6 of 6</span><span class="tag">~15 min</span>
     <h2>Design your agent — the lifecycle</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
-      <p style="margin:.2em 0">In the session you build v1 of <b>your own</b> agent. Before you do, here's the whole journey of <i>owning</i> one — and the one part you must never automate away. This is also the shape of your 1-page design doc.</p></div>
+      <p style="margin:.2em 0">This week you build v1 of <b>your own</b> agent. Everything here is the builder's map: the lifecycle you'll run, and the parts you snap together. The one human checkpoint is something you <i>design in</i> as you build — not a posture above the keyboard. This is also the shape of your 1-page design doc.</p></div>
 
-    <p class="lead">An agent isn't a one-off build; it's a <b>lifecycle</b> you sponsor: <b>design → build → test → deploy → monitor</b>. Click each stage to see what you decide there — and where the human stays in the loop:</p>
+    <p class="lead">An agent isn't a one-off build; it's a <b>lifecycle you run</b>: <b>design → build → test → deploy → monitor</b>. Click each stage to see what you decide there — and where you keep a human in the loop:</p>
 
     <div class="lab">
       <div class="life" id="lifeStages"></div>
@@ -443,12 +518,18 @@
     <h3>Now assemble the agent itself</h3>
     <p>Your agent is made of a few parts. Switch them on and watch whether it's actually ready to build — some parts aren't optional:</p>
     <div class="lab build">
-      <div class="caps" id="specCaps">
-        <button class="cap req" data-cap="instr">Instructions<small>role · task · guardrails</small></button>
-        <button class="cap" data-cap="know">Knowledge<small>your documents</small></button>
-        <button class="cap" data-cap="tools">Tools / connectors<small>how it acts</small></button>
-        <button class="cap" data-cap="stop">Stopping rule<small>when it's done</small></button>
-        <button class="cap req" data-cap="human">Human checkpoint<small>approve before it acts</small></button>
+      <div id="specCaps">
+        <div class="grouphd req">Required <span class="sub">— it isn't an agent without these</span></div>
+        <div class="caps two">
+          <button class="cap req" data-cap="instr">Instructions<small>role · task · guardrails</small></button>
+          <button class="cap req" data-cap="human">Human checkpoint<small>approve before it acts</small></button>
+        </div>
+        <div class="grouphd">Strongly recommended <span class="sub">— they make it work well</span></div>
+        <div class="caps three">
+          <button class="cap" data-cap="know">Knowledge<small>your documents</small></button>
+          <button class="cap" data-cap="tools">Tools / connectors<small>how it acts</small></button>
+          <button class="cap" data-cap="stop">Stopping rule<small>when it's done</small></button>
+        </div>
       </div>
       <div class="meter"><div class="fill" id="specMeter"></div></div>
       <div class="readout warnstate" id="specOut"><span class="flag">Switch on the parts</span> — start with what's marked <b>required</b>.</div>
@@ -463,8 +544,20 @@
       <tr><td><b>Deploy</b></td><td>Into the team's real workflow — start small.</td></tr>
       <tr><td><b>Monitor</b></td><td>Watch cost, drift and errors; keep the human checkpoint live.</td></tr>
     </table>
-    <div class="why"><div class="kicker">Leader's read</div>
-      <p style="margin:.2em 0">You don't operate the agent — you <b>sponsor its lifecycle</b>. The human checkpoint isn't a weakness in the design; it's the governance you own. Bring one real, agent-shaped problem to the session and we build it.</p></div>
+    <div class="buildshell">
+      <h3>Build the shell of your agent — before you walk in</h3>
+      <p>Here's where the register changes. Until now you've owned <i>decisions</i> about agents. This week you build one — your own — and you don't get to stay in the sponsor's chair while someone else types. The good news: you've already stood up a Project, connected a tool (Drive or Teams), and written your capstone spec. The pieces are in your hands. Tonight you assemble them into a <b>v1 shell</b>.</p>
+      <p>Take your capstone spec and your Week-1 stack-map — <i>which layer does it actually need?</i> — and stand up the shell in a new Project:</p>
+      <ul>
+        <li><b>Instructions</b> — role, task, and the guardrails (what it must never do).</li>
+        <li><b>Knowledge</b> — load one real document it needs to do the job.</li>
+        <li><b>Tool / connector</b> — name the one connector it needs. You've connected one already.</li>
+        <li><b>Stopping rule</b> — how it knows it's done.</li>
+        <li><b>Human checkpoint</b> — the one place it must stop and ask you.</li>
+      </ul>
+      <p>That's your whole 1-page design doc, made real. <b>Don't try to get it <i>working</i> tonight</b> — that's what the five hours are for, with the trainer beside you, breaking it and rebuilding it. Tonight is <i>decided and stood up</i>: every choice made, the Project created, the shell standing. Walk in with that and you build a real agent in the session instead of staring at a blank page.</p>
+      <span class="lread"><b>Leader's read:</b> the human checkpoint isn't a weakness you tolerate — it's the governance you designed in. But you only earn the right to govern an agent once you've built one. This week, you earn it.</span>
+    </div>
 
     <div class="card quiz" id="q5"></div>
 
@@ -478,7 +571,7 @@
 
   <div class="finale" id="finale">
     <div class="kicker">All five done 🎉</div>
-    <p style="margin:.3em 0 0">You can now read an agent for what it is: a governed loop. You know the spectrum from workflow to agent, how tools let it act, how memory persists, and the lifecycle you sponsor. Come to the session with one real, agent-shaped problem from your function — we build v1 of it together.</p>
+    <p style="margin:.3em 0 0">You can now read an agent for what it is: a loop you build and govern. You know the spectrum from workflow to agent, how tools let it act, how memory persists, and the lifecycle you run. Walk into the session with your <b>v1 shell already stood up</b> — Project created, one tool connected, the five parts decided — and we turn it into a working agent together.</p>
   </div>
 
 </div>
@@ -490,8 +583,8 @@
 <script>
 (function(){
   "use strict";
-  var SECTIONS = ["s1","s2","s3","s4","s5"];
-  var TITLES = {s1:"The loop", s2:"Workflow vs agent", s3:"Tools", s4:"Memory", s5:"Design it"};
+  var SECTIONS = ["s0","s1","s2","s3","s4","s5"];
+  var TITLES = {s0:"Start here", s1:"The loop", s2:"Workflow vs agent", s3:"Tools", s4:"Memory", s5:"Design it"};
   var KEY = "acp-w2-preread";
 
   /* ---------- progress / tabs ---------- */
@@ -690,8 +783,8 @@
        decide:"the branches in advance", why:"A classify-then-branch problem with known destinations. Routing handles it — no need for the model to invent a path."},
       {short:"Generate 4 JD drafts at once, then merge", pat:"parallel",
        decide:"the sub-tasks up front", why:"Independent sub-tasks done together, then combined. Still a workflow — you define the parts; the model doesn't choose them."},
-      {short:"Triage overnight tickets: diagnose, draft, escalate", pat:"react",
-       decide:"how much autonomy is safe", why:"Each ticket needs a different path, decided live, using tools. That's a genuine agent — the path can't be predefined."},
+      {short:"Clear the overnight complaint queue: triage, draft, escalate", pat:"react",
+       decide:"how much autonomy is safe", why:"This is the agent from Section 2 — each complaint needs a different path, decided live, using tools. That's a genuine agent: the path can't be predefined."},
       {short:"Plan & assemble the monthly board pack", pat:"plan",
        decide:"where the human reviews the plan", why:"A multi-step goal you can plan up front, then execute. Plan-and-Execute fits — and you approve the plan before it runs."},
       {short:"Draft a proposal, then self-critique & improve", pat:"reflect",
@@ -745,7 +838,7 @@
        narr:"The result is handed back into the loop as an OBSERVATION — the model can now see the real fact."},
       {who:"model", wlabel:"The model — continues",
        code:'"Order 4471 is delayed to 3 Jul. Drafting a proactive note to the customer…"',
-       narr:"Grounded in the real result, the model continues the loop — draft, or call another tool, or finish. The loop you saw in Section 1, with a tool in the middle."}
+       narr:"Grounded in the real result, the model continues the loop — draft, or call another tool, or finish. The loop you saw in Section 2, with a tool in the middle."}
     ];
     var dots=[];
     STEPS.forEach(function(s,i){
@@ -772,9 +865,10 @@
     var deskEl=document.getElementById("desk"); if(!deskEl) return;
     var cabEl=document.getElementById("cabinet"), countEl=document.getElementById("deskCount"), narrEl=document.getElementById("deskNarr");
     var addBtn=document.getElementById("deskAdd"), pinBtn=document.getElementById("deskPin"), newBtn=document.getElementById("deskNew");
-    var MSGS=["“What's our returns policy?”","“Summarise this contract.”","“Draft a reply to the vendor.”",
-      "“Compare these two quotes.”","“What did we decide last time?”","“Flag any safety issues.”",
-      "“Translate this for the EU team.”","“Pull the Q3 numbers.”","“Who owns this action?”"];
+    /* spine: the same complaint-queue agent's working desk */
+    var MSGS=["“Complaint #1: late delivery, order #4471”","“Policy: refunds within 30 days”","“Draft a reply to complaint #1”",
+      "“Complaint #2: damaged item”","“What did we promise this customer before?”","“Flag: complaint #5 mentions an injury”",
+      "“Escalate the safety complaints”","“Summarise today's queue for the manager”","“Who owns the refund approval?”"];
     var CAP=7; /* desk capacity before overflow */
     var shortTerm=[], longTerm=[], mi=0;
     function render(){
@@ -795,7 +889,18 @@
       countEl.textContent = (longTerm.length+visibleShort)+" on desk";
       cabEl.innerHTML="";
       if(!longTerm.length){ cabEl.innerHTML='<span class="empty">— nothing saved yet —</span>'; }
-      else longTerm.forEach(function(m){ var t=document.createElement("span"); t.className="tok pinned"; t.textContent="📌 "+m; cabEl.appendChild(t); });
+      else longTerm.forEach(function(m){
+        var t=document.createElement("span"); t.className="tok pinned forgettable";
+        t.innerHTML="📌 "+m+' <span class="x">✕</span>';
+        t.title="Click to forget — remove from long-term knowledge";
+        t.onclick=function(){ forget(m); };
+        cabEl.appendChild(t);
+      });
+    }
+    function forget(m){
+      var i=longTerm.indexOf(m); if(i<0) return;
+      longTerm.splice(i,1); render();
+      narrEl.innerHTML = "Forgotten “"+m+"” — removed from <b>Project knowledge</b>. It won't load into new chats any more. <i>You</i> decide what the agent keeps and what it drops.";
     }
     function overflowing(){ return longTerm.length + shortTerm.length > CAP; }
     addBtn.onclick=function(){
@@ -892,7 +997,10 @@
      why:"The stopping rule sent the consequential cases to a human — that escalation is the checkpoint you design in."},
     {stem:"Why is 'more loops and more tools' not simply better?",
      opts:["It's slower to type","More autonomy means more power but more places to go wrong — it needs governing","Bigger models can't loop","It always costs the same"], answer:1,
-     why:"Autonomy is a cost as well as a capability. Without a stopping rule and a human checkpoint, extra autonomy is just extra risk."}
+     why:"Autonomy is a cost as well as a capability. Without a stopping rule and a human checkpoint, extra autonomy is just extra risk."},
+    {stem:"An agent calls a tool, reads the result, and the goal still isn't met. What does it do next?",
+     opts:["Stops and waits for a human to take over","Loops again — thinks about the new result, then acts on it","Forgets the result and starts fresh","Returns an error"], answer:1,
+     why:"That's the loop: each observation feeds the next think → act → observe pass, until the stopping rule says it's done."}
   ]);
   makeQuiz("q2",[
     {stem:"A task is the same fixed sequence of steps every single time. Best fit?",
@@ -903,7 +1011,13 @@
      why:"Autonomy earns its cost only when the path can't be fixed up front. Otherwise it's over-building."},
     {stem:"Which is the Week-2 sharpening of Week 1's 'cheapest layer that works wins'?",
      opts:["Always use multi-agent","The least autonomy that works wins","The newest model wins","More tools always win"], answer:1,
-     why:"Same restraint, one level deeper: start as far toward 'workflow' as the problem allows; earn each step toward autonomy."}
+     why:"Same restraint, one level deeper: start as far toward 'workflow' as the problem allows; earn each step toward autonomy."},
+    {stem:"You can write down the exact steps a task follows, and they never change. Workflow or agent?",
+     opts:["An agent — it sounds more capable","A workflow — a fixed path is cheaper, steadier and easier to govern","Multi-agent, to be safe","It can't be automated"], answer:1,
+     why:"If you can draw the whole path in advance, a workflow beats an agent on cost, reliability and control."},
+    {stem:"What's the real cost of using an agent where a workflow would have done the job?",
+     opts:["It looks too basic to leadership","Higher cost, less predictability and harder governance — for no real gain","It uses up your memory","Nothing — agents are always the safer bet"], answer:1,
+     why:"Reaching for autonomy you don't need is the common, expensive mistake: you pay in money and in control, and gain nothing."}
   ]);
   makeQuiz("q3",[
     {stem:"When an agent 'uses a tool', what does the model itself actually do?",
@@ -914,7 +1028,10 @@
      why:"MCP standardises how tools connect — wire a tool once and any MCP-speaking agent can use it, like USB-C for tools."},
     {stem:"Where does your data-sensitivity rule from Week 1 most apply?",
      opts:["At the tools — they touch real systems and real data","In the model's training","Only in the homework","Nowhere — agents are sandboxed"], answer:0,
-     why:"Tools are where the agent reaches real systems, so 'what data may go near this?' is a tool-level governance call you own."}
+     why:"Tools are where the agent reaches real systems, so 'what data may go near this?' is a tool-level governance call you own."},
+    {stem:"Connecting Google Drive to your agent's Project — who does that, and how?",
+     opts:["Only an engineer, in code","You do — no code, through Projects → Connectors (you did it in 'Start here')","Nobody; it happens automatically","The model connects itself"], answer:1,
+     why:"No-code connectors are yours to wire up in Claude Projects. Only custom, code-built tools are the trainer's Claude Code track — watch-only."}
   ]);
   makeQuiz("q4",[
     {stem:"What's the difference between short-term and long-term memory for an agent?",
@@ -925,7 +1042,10 @@
      why:"Standing facts and policies belong in persistent knowledge so they're loaded every time — not re-pasted per chat."},
     {stem:"The 'desk' (context window) overflowed mid-task. What happens?",
      opts:["Nothing","The oldest items fall off — the model can no longer see them","It saves them automatically","The model gets bigger"], answer:1,
-     why:"The window is finite. When it overflows the earliest content drops out of view — a reason to save what must persist."}
+     why:"The window is finite. When it overflows the earliest content drops out of view — a reason to save what must persist."},
+    {stem:"Something private got saved into long-term knowledge by mistake. What can you do?",
+     opts:["Nothing — it's permanent now","Remove it — you decide what the agent keeps and what it forgets","Delete the whole Project and rebuild","Wait for it to expire on its own"], answer:1,
+     why:"Persistent memory is curated by you: you can add to it and remove from it. Controlling what data sits around is part of governing the agent."}
   ]);
   makeQuiz("q5",[
     {stem:"Which best describes the leader's role across an agent's lifecycle?",
@@ -936,12 +1056,18 @@
      why:"Acting + no checkpoint is the dangerous combination. A human approval point on consequential actions is non-negotiable."},
     {stem:"Why does 'monitor' stay on the list after deployment?",
      opts:["To justify the project","Because models and data drift — what was right in June can be wrong in September","Agents never change","It's optional, really"], answer:1,
-     why:"An agent isn't fire-and-forget. Inputs, models and the world change, so monitoring and the live checkpoint keep it trustworthy."}
+     why:"An agent isn't fire-and-forget. Inputs, models and the world change, so monitoring and the live checkpoint keep it trustworthy."},
+    {stem:"You're asked to walk into the session with a 'v1 shell'. What does that mean?",
+     opts:["A finished, tested, working agent","The pieces decided and stood up — Project created, one connector linked, the five parts chosen — but not yet working","Just the idea, in your head","A copy of someone else's agent"], answer:1,
+     why:"Decided and stood up at home; built, broken and rebuilt in the room with the trainer. You don't arrive with it already working."},
+    {stem:"In the build, what earns you the right to govern an agent?",
+     opts:["Approving the budget","Having built one yourself — governance is something a builder designs in","Seniority","Buying the biggest model"], answer:1,
+     why:"The human checkpoint is governance you design into what you build. You earn the governor's chair by first building the thing."}
   ]);
 
   /* ---------- boot ---------- */
   renderProgress();
-  show("s1");
+  show("s0");
 })();
 </script>
 </body>
