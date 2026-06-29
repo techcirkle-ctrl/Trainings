@@ -134,29 +134,34 @@
   .agent2 .gnarr .ph{font:700 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:3px}
   .loopcount{font:700 12px ui-sans-serif,system-ui,sans-serif; color:var(--accent); background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:99px; padding:4px 11px; margin-left:6px}
 
-  /* autonomy ladder (S2) */
-  .ladder{display:grid; gap:8px; margin:6px 0}
-  .rung{border:1px solid var(--line); border-left:5px solid var(--line); border-radius:10px; padding:11px 14px; background:#fff; transition:border-color .2s, background .2s, box-shadow .2s}
-  .rung .rtop{display:flex; align-items:baseline; gap:9px; flex-wrap:wrap}
-  .rung .rname{font:700 14.5px ui-sans-serif,system-ui,sans-serif; color:var(--ink)}
-  .rung .rgrp{font:700 10px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; padding:3px 7px; border-radius:6px}
-  .rung .rgrp.wf{color:var(--muted); background:var(--wash); border:1px solid var(--line)}
-  .rung .rgrp.ag{color:var(--accent); background:var(--accent-soft); border:1px solid #cfe6e4}
-  .rung .rblurb{font:13.5px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin-top:3px}
-  .rung.on{border-left-color:var(--accent); background:var(--accent-soft); box-shadow:inset 0 0 0 1px var(--accent)}
-  .rung.on .rblurb{color:#2a3b3a}
-  .grouplbl{font:700 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin:8px 0 2px}
-  .taskchips{display:flex; flex-wrap:wrap; gap:8px; margin-bottom:6px}
-  .taskchip{cursor:pointer; border:1px solid var(--line); background:var(--paper); color:var(--ink);
-    font:600 13px ui-sans-serif,system-ui,sans-serif; padding:8px 13px; border-radius:99px; transition:border-color .15s, background .15s, color .15s}
-  .taskchip:hover{border-color:var(--accent)}
-  .taskchip.on{background:var(--accent); color:#fff; border-color:var(--accent)}
-  .autorow{display:flex; align-items:center; gap:10px; margin-top:12px}
-  .autorow .albl{font:700 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); white-space:nowrap}
-  .autobar{flex:1; height:10px; background:#eef2f4; border-radius:99px; overflow:hidden}
-  .autobar .afill{height:100%; width:0; background:var(--accent); border-radius:99px; transition:width .4s ease}
-  .pickout{background:#fff; border:1px solid var(--line); border-radius:10px; padding:13px 15px; margin-top:12px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:64px}
-  .pickout .pname{font:700 1.02rem ui-sans-serif,system-ui,sans-serif; color:var(--accent)}
+  /* workflow-vs-agent accordion (S2) */
+  .wfa-top{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:10px}
+  .wfa-filters{display:flex; gap:7px}
+  .wfa-filt{cursor:pointer; display:inline-flex; align-items:center; gap:6px; font:700 12px ui-sans-serif,system-ui,sans-serif;
+    padding:5px 11px; border-radius:99px; border:1px solid var(--line); background:#fff; color:var(--ink); transition:border-color .15s, background .15s, color .15s}
+  .wfa-filt .sw{width:10px; height:10px; border-radius:3px; display:inline-block; border:1px solid var(--muted)}
+  .wfa-filt .ck{color:var(--accent)}
+  .wfa-filt.off{color:var(--muted); background:transparent}
+  .wfa-acc{display:flex; flex-direction:column; gap:7px}
+  .wfa-row{border:1px solid var(--line); border-radius:12px; overflow:hidden; background:#fff; transition:border-color .15s}
+  .wfa-row.open{border-color:var(--accent); box-shadow:inset 0 0 0 1px var(--accent)}
+  .wfa-head{width:100%; text-align:left; cursor:pointer; border:0; background:transparent; padding:11px 13px;
+    display:flex; align-items:center; gap:10px; line-height:1.4}
+  .wfa-task{flex:1; font:600 14.5px ui-sans-serif,system-ui,sans-serif; color:var(--ink)}
+  .wfa-pat{flex:none; font:700 12px ui-sans-serif,system-ui,sans-serif; padding:3px 11px; border-radius:99px; white-space:nowrap}
+  .wfa-pat.wf{color:var(--warn); background:#fff7ea; border:1px solid #f0e1c2}
+  .wfa-pat.ag{color:var(--accent); background:var(--accent-soft); border:1px solid #cfe6e4}
+  .wfa-chev{flex:none; font-size:12px; color:var(--muted); transition:transform .2s}
+  .wfa-row.open .wfa-chev{transform:rotate(180deg)}
+  .wfa-body{padding:0 13px 13px; border-top:1px solid var(--line)}
+  .wfa-autorow{display:flex; align-items:center; gap:10px; margin:11px 0 4px}
+  .wfa-autorow .albl{font:700 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); white-space:nowrap}
+  .wfa-autobar{flex:1; height:9px; background:#eef2f4; border-radius:99px; overflow:hidden}
+  .wfa-autobar .afill{height:100%; background:var(--accent); border-radius:99px}
+  .wfa-grp{font:700 11px ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .wfa-decide{font:14px/1.55 ui-sans-serif,system-ui,sans-serif; margin:10px 0 4px}
+  .wfa-why{font:13.5px/1.6 ui-sans-serif,system-ui,sans-serif; color:#2a3b3a; margin:4px 0 0}
+  .wfa-empty{display:none; font:13.5px ui-sans-serif,system-ui,sans-serif; color:var(--muted); text-align:center; padding:14px 0; margin:0}
 
   /* tool-call stepper (S3) */
   .toolwrap .stepper{display:flex; gap:7px; align-items:center; margin:8px 0; flex-wrap:wrap}
@@ -261,7 +266,7 @@
 
   @media print{
     .navbar{position:static} .panel{display:block !important; page-break-inside:avoid}
-    .btn,.done,.pill{display:none !important} .quiz .fb{display:block !important}
+    .btn,.done,.pill{display:none !important} .quiz .fb{display:block !important} .wfa-body{display:block !important}
     body{background:#fff} .lab,.card,.why{box-shadow:none}
   }
 </style>
@@ -375,12 +380,13 @@
     <p class="lead">There's a spectrum. At one end, <b>workflows</b> — <i>you</i> fix the path the AI follows step by step. At the other, <b>agents</b> — the <i>model</i> decides the path itself, as you just saw. The named "architectures" are points along it. Pick a real task and watch where it lands:</p>
 
     <div class="lab">
-      <div class="kicker" style="margin-bottom:8px">Pick a task — see the lightest pattern that handles it</div>
-      <div class="taskchips" id="patChips"></div>
-      <div class="ladder" id="patLadder"></div>
-      <div class="autorow"><span class="albl">Autonomy</span><div class="autobar"><div class="afill" id="patAuto"></div></div></div>
-      <div class="pickout" id="patOut">Pick a task above — the matching pattern lights up, with one line on why not reach higher.</div>
-      <div class="hint">Workflow patterns put <b>you</b> in control of the path; agent patterns hand that control to the model. Reach right only when the path genuinely can't be drawn in advance.</div>
+      <div class="wfa-top">
+        <div class="kicker" style="margin:0">Each task → its one pattern · low to high autonomy</div>
+        <div class="wfa-filters" id="patFilters"></div>
+      </div>
+      <div class="wfa-acc" id="patAcc"></div>
+      <p class="wfa-empty" id="patEmpty">Tick a type above to see tasks.</p>
+      <div class="hint">Each task opens to show <b>why</b> it lands there. Scan the labels down the right to see the whole spectrum: workflow patterns keep <b>you</b> in control of the path; agent patterns hand that control to the model. Reach right only when the path genuinely can't be drawn in advance.</div>
     </div>
 
     <h3>Keep this</h3>
@@ -763,59 +769,77 @@
     render();
   })();
 
-  /* ---------- S2: workflow→agent pattern picker ---------- */
+  /* ---------- S2: workflow→agent accordion (one task → one pattern, with group filters) ---------- */
   (function(){
-    var ladderEl=document.getElementById("patLadder"); if(!ladderEl) return;
-    var chipsEl=document.getElementById("patChips"), autoEl=document.getElementById("patAuto"), outEl=document.getElementById("patOut");
-    var PATTERNS=[
-      {id:"chain", name:"Prompt chaining", grp:"wf", auto:18, blurb:"A fixed sequence of steps you define — output of one feeds the next."},
-      {id:"route", name:"Routing", grp:"wf", auto:30, blurb:"Classify the input, then send it down one of a few known branches."},
-      {id:"parallel", name:"Parallelisation", grp:"wf", auto:38, blurb:"Run several fixed sub-tasks at once, then combine the results."},
-      {id:"react", name:"ReAct agent", grp:"ag", auto:64, blurb:"The model decides each step and loops with tools — the path differs every run."},
-      {id:"plan", name:"Plan-and-Execute", grp:"ag", auto:74, blurb:"The model plans the whole approach up front, then carries it out."},
-      {id:"reflect", name:"Reflection", grp:"ag", auto:80, blurb:"The model critiques and improves its own output before finishing."},
-      {id:"multi", name:"Multi-agent", grp:"ag", auto:94, blurb:"Several specialist agents coordinated — rarely needed, highest cost."}
-    ];
+    var accEl=document.getElementById("patAcc"); if(!accEl) return;
+    var filtersEl=document.getElementById("patFilters"), emptyEl=document.getElementById("patEmpty");
+    var GRPLBL={wf:"Workflow", ag:"Agent"};
     var TASKS=[
-      {short:"Summarise each contract, then compare", pat:"chain",
+      {t:"Summarise each contract, then compare", name:"Prompt chaining", grp:"wf", auto:18,
        decide:"that the steps never change", why:"Two known steps in a fixed order — summarise, then compare. You can draw the whole path, so a workflow chain is cheaper and more reliable than an agent."},
-      {short:"Route an HR query (policy / escalate / FAQ)", pat:"route",
+      {t:"Route an HR query (policy / escalate / FAQ)", name:"Routing", grp:"wf", auto:30,
        decide:"the branches in advance", why:"A classify-then-branch problem with known destinations. Routing handles it — no need for the model to invent a path."},
-      {short:"Generate 4 JD drafts at once, then merge", pat:"parallel",
+      {t:"Generate 4 JD drafts at once, then merge", name:"Parallelisation", grp:"wf", auto:38,
        decide:"the sub-tasks up front", why:"Independent sub-tasks done together, then combined. Still a workflow — you define the parts; the model doesn't choose them."},
-      {short:"Clear the overnight complaint queue: triage, draft, escalate", pat:"react",
+      {t:"Clear the overnight complaint queue: triage, draft, escalate", name:"ReAct agent", grp:"ag", auto:64,
        decide:"how much autonomy is safe", why:"This is the agent from Section 2 — each complaint needs a different path, decided live, using tools. That's a genuine agent: the path can't be predefined."},
-      {short:"Plan & assemble the monthly board pack", pat:"plan",
+      {t:"Plan & assemble the monthly board pack", name:"Plan-and-Execute", grp:"ag", auto:74,
        decide:"where the human reviews the plan", why:"A multi-step goal you can plan up front, then execute. Plan-and-Execute fits — and you approve the plan before it runs."},
-      {short:"Draft a proposal, then self-critique & improve", pat:"reflect",
+      {t:"Draft a proposal, then self-critique & improve", name:"Reflection", grp:"ag", auto:80,
        decide:"the quality bar it checks against", why:"A quality loop on its own output, not new actions. Reflection is the lightest agent pattern that adds a self-review pass."},
-      {short:"Run a deal desk: research, price, comply, draft", pat:"multi",
+      {t:"Run a deal desk: research, price, comply, draft", name:"Multi-agent", grp:"ag", auto:94,
        decide:"whether it's truly worth the cost", why:"Genuinely distinct specialist jobs coordinated at once — the rare case that earns multi-agent. Most problems never do."}
     ];
-    var rungs={};
-    PATTERNS.forEach(function(p){
-      var r=document.createElement("div"); r.className="rung"; r.id="rung-"+p.id;
-      r.innerHTML='<div class="rtop"><span class="rname">'+p.name+'</span>'
-        +'<span class="rgrp '+p.grp+'">'+(p.grp==="wf"?"Workflow":"Agent")+'</span></div>'
-        +'<div class="rblurb">'+p.blurb+'</div>';
-      ladderEl.appendChild(r); rungs[p.id]=r;
+    var active={wf:true, ag:true};
+    var open=-1, rows=[];
+
+    TASKS.forEach(function(task,i){
+      var row=document.createElement("div"); row.className="wfa-row";
+      var head=document.createElement("button"); head.type="button"; head.className="wfa-head";
+      head.innerHTML='<span class="wfa-task">'+task.t+'</span>'
+        +'<span class="wfa-pat '+task.grp+'">'+task.name+'</span>'
+        +'<span class="wfa-chev" aria-hidden="true">▾</span>';
+      var body=document.createElement("div"); body.className="wfa-body";
+      body.innerHTML='<div class="wfa-autorow"><span class="albl">Autonomy</span>'
+        +'<div class="wfa-autobar"><div class="afill" style="width:'+task.auto+'%"></div></div>'
+        +'<span class="wfa-grp">'+GRPLBL[task.grp]+'</span></div>'
+        +'<div class="wfa-decide"><b>You\'ll decide:</b> '+task.decide+'.</div>'
+        +'<div class="wfa-why">'+task.why+'</div>';
+      head.onclick=function(){ open=(open===i?-1:i); render(); };
+      row.appendChild(head); row.appendChild(body); accEl.appendChild(row);
+      rows.push({row:row, body:body, grp:task.grp});
     });
-    var sel=-1;
-    TASKS.forEach(function(t,idx){
-      var c=document.createElement("button"); c.className="taskchip"; c.textContent=t.short;
-      c.onclick=function(){ pick(idx); };
-      chipsEl.appendChild(c);
+
+    ["wf","ag"].forEach(function(grp){
+      var b=document.createElement("button"); b.type="button"; b.className="wfa-filt"; b.dataset.grp=grp;
+      b.onclick=function(){
+        var other=grp==="wf"?"ag":"wf";
+        if(active[grp] && !active[other]) return; /* keep at least one type on */
+        active[grp]=!active[grp]; render();
+      };
+      filtersEl.appendChild(b);
     });
-    function pick(idx){
-      sel=idx;
-      Array.prototype.forEach.call(chipsEl.children, function(c,i){ c.classList.toggle("on", i===idx); });
-      var t=TASKS[idx], p=null;
-      PATTERNS.forEach(function(P){ rungs[P.id].classList.toggle("on", P.id===t.pat); if(P.id===t.pat) p=P; });
-      autoEl.style.width=p.auto+"%";
-      outEl.innerHTML='<span class="pname">'+p.name+'</span> &nbsp;<span class="tag" style="margin:0">'+(p.grp==="wf"?"Workflow":"Agent")+'</span>'
-        +'<div style="margin-top:7px"><b>You\'ll decide:</b> '+t.decide+'.</div>'
-        +'<div style="margin-top:5px">'+t.why+'</div>';
+
+    function render(){
+      Array.prototype.forEach.call(filtersEl.children, function(b){
+        var grp=b.dataset.grp, on=active[grp];
+        b.classList.toggle("off", !on);
+        var sw = grp==="ag" ? "var(--accent)" : "var(--warn)";
+        b.innerHTML='<span class="sw" style="background:'+(on?sw:"transparent")+'; border-color:'+sw+'"></span>'
+          +GRPLBL[grp]+(on?' <span class="ck" aria-hidden="true">✓</span>':'');
+      });
+      var shown=0;
+      rows.forEach(function(r,i){
+        var vis=active[r.grp];
+        r.row.style.display=vis?"":"none";
+        if(vis) shown++;
+        var isOpen=(i===open && vis);
+        r.row.classList.toggle("open", isOpen);
+        r.body.style.display=isOpen?"block":"none";
+      });
+      emptyEl.style.display=shown?"none":"block";
     }
+    render();
   })();
 
   /* ---------- S3: tool-call stepper ---------- */
