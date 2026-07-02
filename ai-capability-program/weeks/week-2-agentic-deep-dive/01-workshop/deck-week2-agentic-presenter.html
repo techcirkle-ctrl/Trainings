@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <!--
-  AI Capability Program — Week 2 · Agentic Deep Dive · AUDIENCE COPY (presenter script removed).
-  Built from the Week-2 requirement slide (Slide 7) + the Week-2 pre-read, per AUDIENCE-DECK-PLAYBOOK.md.
+  AI Capability Program — Week 2 · Agentic Deep Dive · PRESENTER COPY (audience deck + per-slide script).
+  The exact twin of deck-week2-agentic-audience.html — same 44 slides, widgets and Takeaways, frozen —
+  with a trainer's presenter script (Remember → Move → Say → Do → Bridge) docked behind the S key.
+  Built per PRESENTER-DECK-PLAYBOOK.md: the surface is unchanged; only a script layer + five pieces of
+  plumbing (scriptpanel aside, JS wiring, helpbar S, print .script rule, this comment) are added.
   11 movements (M1–M11), concept AND hands-on, + a 5-step applied finale ("The Build") that produces
   the Week-2 homework live: a working Claude Project (v1 agent) + a 1-page design doc.
-  Widgets ported verbatim & sized up from week-2-prework.html: agent-loop graph, workflow-vs-agent
-  accordion, tool-call stepper + MCP panel, memory desk, lifecycle stepper, spec composer.
-  Plumbing (canon CSS, nav/stepper/copy engine) reused from deck-week1-foundations-audience.html.
   Self-contained: inline CSS + vanilla JS, no network, no build. Open with:
-      open "deck-week2-agentic-audience.html"
-  Nav: → / Space / click = next · ← = prev · Home = agenda · End = last · N = notes · F = full-screen.
+      open "deck-week2-agentic-presenter.html"
+  Nav: → / Space / click = next · ← = prev · Home = agenda · End = last · N = notes · S = script · F = full-screen.
 -->
 <html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Week 2 · The Session Deck — Agentic Deep Dive</title>
@@ -245,6 +245,24 @@
   .notes header .x{cursor:pointer;color:#7fd1cb;font-size:18px;background:none;border:0}
   .notes .body{padding:18px 22px;overflow:auto;font:15px/1.6 ui-sans-serif,system-ui,sans-serif}
   .notes .body .t{font:700 11px ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#5f8f8b;margin:.4em 0 .2em}.notes .body p{margin:.4em 0}.notes .body b{color:#7fd1cb}
+  /* presenter script — docked side-by-side (S), not an overlay */
+  .deck,.chrome{transition:right .25s ease}
+  body.script-open .deck{right:var(--scriptw)}
+  body.script-open .chrome{right:var(--scriptw)}
+  .scriptpanel{position:fixed;right:0;top:0;bottom:0;width:var(--scriptw);z-index:38;background:#10211f;color:#dcebe9;transform:translateX(100%);transition:transform .25s ease;box-shadow:-8px 0 30px rgba(0,0,0,.35);display:flex;flex-direction:column;border-left:3px solid var(--accent)}
+  body.script-open .scriptpanel{transform:none}
+  .scriptpanel header{padding:14px 20px;border-bottom:1px solid #1d3a39;display:flex;justify-content:space-between;align-items:center}
+  .scriptpanel header .b{font:700 12px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#7fd1cb}
+  .scriptpanel header .x{cursor:pointer;color:#7fd1cb;font-size:18px;background:none;border:0;line-height:1}
+  .scriptpanel .body{padding:16px 20px;overflow:auto;font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif}
+  .scriptpanel .body p{margin:.4em 0}.scriptpanel .body ul{margin:.2em 0 .8em;padding-left:1.1em}.scriptpanel .body li{margin:.3em 0}
+  .scriptpanel .body em{color:#7fd1cb;font-style:normal;font-weight:700}
+  .scriptpanel .body .t{font:700 11px ui-sans-serif,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#8aa6a2;margin:.8em 0 .15em}
+  .lead1{background:var(--accent-soft);border-left:3px solid var(--accent);border-radius:0 8px 8px 0;padding:9px 13px;margin:0 0 .8em;font:700 13.5px/1.45 ui-sans-serif,system-ui,sans-serif;color:#0d3b39}
+  .lead1 b{color:var(--accent)}
+  .scriptpanel .body .lead1{background:rgba(127,209,203,.14);color:#eafaf8;font-size:15px}
+  .scriptpanel .body .lead1 .k{display:block;font:800 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#7fd1cb;margin-bottom:3px}
+  .lead1 .k{display:block;font:800 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:3px}
   @media print{
     *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
     @page{margin:9mm}
@@ -252,7 +270,13 @@
     .deck{position:static!important;inset:auto!important;overflow:visible!important;height:auto!important}
     .slide{position:relative!important;inset:auto!important;display:block!important;height:auto!important;min-height:auto!important;max-height:none!important;overflow:hidden!important;animation:none!important;page-break-after:always;break-after:page;page-break-inside:avoid;padding:0 0 3mm!important}
     .slide:last-child{page-break-after:auto;break-after:auto}
-    .chrome,.helpbar,.progress,.notes,.promptblock .copy,.note,.stepcue{display:none!important}
+    .chrome,.helpbar,.progress,.notes,.scriptpanel,.promptblock .copy,.note,.stepcue{display:none!important}
+    /* presenter script — white card so it reads on any slide background */
+    .script{display:block!important;background:#fff!important;color:#26323d!important;margin-top:7px!important;padding:7px 11px!important;border:1px solid var(--line)!important;border-left:3px solid var(--warn)!important;border-radius:6px!important;font-size:9.5px!important;line-height:1.34!important}
+    .script::before{content:"SCRIPT — presenter only";display:block;font:700 8.5px ui-sans-serif,system-ui,sans-serif;letter-spacing:.1em;color:var(--warn);margin-bottom:4px}
+    .script .lead1{font-size:11px!important;padding:6px 10px!important;margin:0 0 .5em!important}
+    .script .t{font-weight:700;text-transform:uppercase;color:var(--warn);font-size:8.5px;margin:.4em 0 .08em}
+    .script p{margin:.16em 0}.script ul{margin:.1em 0 .35em;padding-left:1em}.script li{margin:.1em 0}.script em{color:var(--ink);font-style:normal;font-weight:700}
     .stage{max-width:none!important;margin:0!important}
     h1.big{font-size:1.55rem!important;line-height:1.08!important;margin:.05em 0 .2em!important}
     h2.head{font-size:1.25rem!important;line-height:1.12!important;margin:.05em 0 .15em!important}
@@ -286,6 +310,14 @@
       <p class="lead">Last week you found the problem and spec'd the agent. This week you open the agent up — the loop, the tools, the memory — and build a working v1 of your own.</p>
     </div>
     <div class="note"><div class="t">Takeaway</div><p>A working session, not a lecture. Week 1 you decided <b>which part of your problem needs an agent</b>. Today you see what an agent actually is underneath the word — and you walk out with a v1 you built and a 1-page design doc.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>They arrived having spec'd an agent on paper; they leave having built one that stops where they told it.</div>
+      <div class="t">Move</div><p>Set the contract in one breath — a working build day, not a lecture. ~30 sec, warm but measured.</p>
+      <div class="t">Say</div><p>"Welcome back. Last week you found the problem and wrote the spec — you decided <em>which part</em> of your work actually needs an agent. Today we open that word up. You'll see what an agent really is underneath — the loop, the tools, the memory — and by tonight you'll have <em>built</em> a working v1 of your own, one that stops exactly where you told it to."</p>
+      <p>"This is a working session, not a lecture — your hands are on the tool well before lunch. What you walk out with, a Claude Project and a one-page design doc, is this week's homework, most of it done live, together."</p>
+      <div class="t">Do</div><ul><li>Don't open the agenda yet — hold the room on the promise.</li><li>Keep the keys handy: <em>Home</em> agenda · <em>N</em> notes · <em>S</em> script · <em>F</em> full-screen.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Here's how the day is shaped."</p>
+    </div>
   </section>
 
   <!-- ============ TIMED DAY-PLAN ============ -->
@@ -306,6 +338,13 @@
       </div>
     </div>
     <div class="note"><div class="t">Takeaway</div><p>Teach a little, build a lot. The hands-on blocks — Act 1, Act 2 and the two Build parts — are deliberately longer than the teach block. Three breaks plus a full lunch carry the energy through a six-hour build day.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Teach a little, build a lot — the hands-on blocks are deliberately the longest.</div>
+      <div class="t">Move</div><p>Give them the map of the day, ~45 sec. Point at the balance; don't read the rows aloud.</p>
+      <div class="t">Say</div><p>"Six hours, and it's built to keep the energy up — three real breaks and a full lunch. Notice the shape: the hands-on blocks — the two in Act 1, the two in Act 2, and both Build parts — run <em>longer</em> than the teaching. That's on purpose. You learn an agent by making one, not by hearing about one."</p>
+      <div class="t">Do</div><ul><li>Point at the two Build blocks after lunch — that's where their own agent gets built.</li><li>Flag the two teas and the full lunch so no one worries about pacing across a long day.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"So what are we actually doing across those hours? Three acts, then the build."</p>
+    </div>
   </section>
 
   <!-- ============ MINI-AGENDA ============ -->
@@ -344,6 +383,13 @@
       </div>
     </div>
     <div class="note"><div class="t">Takeaway</div><p>Three teaching acts — the loop &amp; least autonomy, how it acts &amp; remembers, then design &amp; the parts. Then <b>The Build</b>: five hands-on steps run in order — set up, design, assemble, test, pressure-test — that turn your Week-1 spec into a working v1 and a design doc.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Three teaching acts open the agent up; then a five-step Build turns their Week-1 spec into a working v1.</div>
+      <div class="t">Move</div><p>Walk the arc once, ~40 sec — name the three acts and the five Build steps, then move.</p>
+      <div class="t">Say</div><p>"Three acts to see what an agent really is. Act one — the loop, and how much autonomy a problem actually needs. Act two — how it acts through tools, and what it remembers. Act three — the lifecycle you run and the parts you snap together. Then <em>The Build</em>: five hands-on steps — set up, design, assemble, test, pressure-test — that take the spec you wrote last week and stand up a working v1."</p>
+      <div class="t">Do</div><ul><li>Trace the run of M-numbers so they see the through-line, then land on "The Build · 5 steps."</li><li>Name The Build as where their homework gets made — set the destination early.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Two minutes on how today works, then we open the first cold question."</p>
+    </div>
   </section>
 
   <!-- ============ HOW TODAY WORKS ============ -->
@@ -355,6 +401,14 @@
       </div>
       <span class="read"><b>By the end of today</b> you have a <b>working Claude Project</b> — v1 of your own agent — and a <b>1-page design doc</b>. That is this week's homework, started and mostly done live.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Posture: out-judge the machine — as a builder now. It over-builds; you pick the least autonomy that works and design in the checkpoint. Tool: Claude Projects, no-code, on the workspace account. Claude Code stays the trainer's watch-only instrument.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>The posture is out-judge the machine as a builder now — pick the least autonomy that works, and design the checkpoint in.</div>
+      <div class="t">Move</div><p>Set the posture and the tool, ~90 sec. This framing governs the whole day — slow down here.</p>
+      <div class="t">Say</div><p>"Two minutes on how we work. The posture first. Last week you judged whether to build at all. Today you build — and the judgement gets <em>sharper</em>, because the machine will over-build. Ask it for an agent and it will happily give you one where a simple workflow would have done. Your job is the restraint: pick the <em>least autonomy that works</em>, and design the human checkpoint in. That restraint is the scarce skill in this room."</p>
+      <p>"The tool: you build in Claude Projects, on the program workspace account — no code, connectors are a click. The terminal, Claude Code, stays my instrument — two live demos you watch, not drive. And by tonight you'll have a working Project and a one-page design doc: this week's homework, started and mostly done right here."</p>
+      <div class="t">Do</div><ul><li>Point at the read band — "a working Claude Project and a 1-page design doc" — and name it as the homework so the destination is fixed from minute two.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"So let's start where most of the market is right now."</p>
+    </div>
   </section>
 
   <!-- ============ COLD OPEN 1 ============ -->
@@ -365,6 +419,13 @@
       <p class="sub" style="margin-top:.9rem">An agent that <b>acts on your systems</b> with no stopping rule and no checkpoint isn't advanced — it's a liability wearing a demo. You can't sponsor what you can't see inside, and you can't govern what you've never built.</p>
     </div>
     <div class="note"><div class="t">Takeaway</div><p>The tension: "agent" is a marketing word, and most things called agents are workflows — or worse, loose agents no one designed to stop. You delegate to people you can hold accountable; an agent carries none. So you have to understand the loop and build one before you can trust it.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Most things called agents are workflows — or loose agents no one designed to stop; you can't govern what you've never built.</div>
+      <div class="t">Move</div><p>Open the tension, ~60 sec. Let the discomfort sit — don't rush to reassure.</p>
+      <div class="t">Say</div><p>"It's the second Friday and everyone's shipping 'agents.' The word is everywhere, the demos look like magic — and almost nobody could tell you where the thing stops, what it's allowed to touch, or who catches it when it's wrong. An agent that acts on your systems with no stopping rule and no checkpoint isn't advanced; it's a <em>liability wearing a demo</em>. You delegate to people because you can hold them accountable — an agent carries none of that. So you can't sponsor what you can't see inside, and you can't govern what you've never built."</p>
+      <div class="t">Do</div><ul><li>Pose it and leave it hanging: "Think of the last 'agent' someone showed you — could you have said where it stops?" Don't take answers yet; let it land.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Which is exactly why, by tonight, you'll have built one — and governed it."</p>
+    </div>
   </section>
 
   <!-- ============ COLD OPEN 2 · confidence read ============ -->
@@ -375,6 +436,14 @@
       <span class="read"><b>One private number, now.</b> On a scale of <b>1–10</b>, how confident are you that you could <b>design, build and govern a working agent for your own function</b>? Write it down — keep it to yourself. We re-read it at 16:20.</span>
     </div>
     <div class="note"><div class="t">Takeaway</div><p>The promise, and the confidence read: have each leader privately rate 1–10 their confidence they could design, build and govern an agent for their function. They keep the number; we re-read it at the close to prove the shift. Where it fits, open with a striking live agent demo on the TV so the loop is felt, not just described.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Each leader privately rates 1–10 their confidence to design, build and govern an agent — the number we re-read at the close.</div>
+      <div class="t">Move</div><p>The confidence read, ~60 sec, ~10:45. A run-of-show beat — get every number written before you advance.</p>
+      <div class="t">Say</div><p>"Here's the promise: by tonight you'll have <em>built</em> an agent — a real one, that stops where you told it to. You'll see the loop run, watch it call a tool, watch it forget and remember — then you'll take last week's spec and stand up a working v1, with the checkpoint you designed in."</p>
+      <p>"Before we start, one private number. On a scale of one to ten, how confident are you — right now — that you could <em>design, build and govern</em> a working agent for your own function? Write it down, keep it to yourself. We re-read it at twenty past four, and we'll see where it moved."</p>
+      <div class="t">Do</div><ul><li>Wait until every leader has physically written a number — this is the proof mechanism for the whole day; don't skip it.</li><li>If the room is warm, open a striking live agent on the TV now so the loop is felt, not just described.</li><li>If asked what to rate: "design, build <em>and</em> govern — all three."</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Act one — the loop, and the first judgement you own: how much of it your problem actually needs."</p>
+    </div>
   </section>
 
   <!-- ============ ACT 1 ============ -->
@@ -383,6 +452,13 @@
       <p class="lead">An agent is a <span class="accent">loop</span> handed a goal. The loop is where all the power lives — and all the risk. Your first judgement: how much of it a problem actually needs.</p>
       <p class="sub" style="margin-top:1.2rem">The loop · read your own loop · workflow vs agent (the named architectures) · the least autonomy that works, wins.</p></div>
     <div class="note"><div class="t">Takeaway</div><p>Act 1 opens the word "agent" up: it's a goal plus a loop plus tools plus a stopping rule. Then it sharpens Week 1's restraint rule one level deeper — from "the cheapest layer that works" to "the least autonomy that works."</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>An agent is a loop handed a goal — all the power and all the risk live in the loop.</div>
+      <div class="t">Move</div><p>Mark the first act, ~30 sec, energy up. Longest act of the morning — set the frame, then get moving.</p>
+      <div class="t">Say</div><p>"Act one. Strip the word back and an agent is simply a <em>loop</em> handed a goal — it thinks, acts, observes and decides, over and over, until the goal is met. Everything powerful about it lives in that loop, and so does everything risky. So your first judgement, before any building, is how much of that loop your problem actually needs — because more loop is more power <em>and</em> more places to go wrong."</p>
+      <div class="t">Do</div><ul><li>Give them one question to hold through the act: "For my problem, how much of this loop do I actually need?"</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Let's open the loop and run it."</p>
+    </div>
   </section>
 
   <!-- ============ M1 · agent loop ============ -->
@@ -391,6 +467,13 @@
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See what an agent actually is underneath the word — a loop that thinks, acts, observes and decides until a goal is met.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>How much autonomy is safe here — and where a human stays in the loop.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>Week-1 seed: an agent = LLM + tools + a loop, handed a goal not a question. Now we open the loop and run it. Four parts you own: the Goal, the Loop, the Tools, and the Stopping rule — each carries a decision only you make.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>An agent = goal + loop + tools + a stopping rule — four parts, each carrying a decision only the leader makes.</div>
+      <div class="t">Move</div><p>Frame the goal and the four parts, ~30 sec. Set up the demo that follows.</p>
+      <div class="t">Say</div><p>"Last week we seeded this: an agent is a model, plus tools, plus a loop — handed a <em>goal</em>, not a question. Now we open the loop and watch it run. Four parts you own: the goal, the loop, the tools, and the stopping rule — and each one carries a decision that's yours, not the model's."</p>
+      <div class="t">Do</div><ul><li>As the demo runs next, have them watch two dials: how far it runs on its own, and where it's made to stop.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Here's a real one — a complaint-queue agent. Watch it loop."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="Act 1 · The loop &amp; least autonomy" data-mv="M1 · The agent loop">
@@ -407,6 +490,14 @@
       </div>
       <span class="read"><b>What you decide:</b> it kept going <b>on its own</b> (autonomy), it only touched the real world <b>through tools</b>, and it <b>stopped</b> — handing the two it wasn't allowed to decide to a human. Those three dials — how far it runs, what it can touch, when it must stop — are yours.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Our spine agent all day: a complaint-queue agent. Step it and count the loops — it reads the inbox, drafts routine replies, escalates the two safety complaints and stops. Three things to name: it ran on its own, it only acted through tools, and it stopped at the edge of its authority. More loops and more tools = more power <em>and</em> more places to go wrong.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>It ran on its own, only acted through tools, and stopped at the edge of its authority — those three dials are yours.</div>
+      <div class="t">Move</div><p>You drive the loop graph and narrate; ~4 min. Step it, count the passes out loud.</p>
+      <div class="t">Say</div><p>"This is our spine agent for the whole day — a complaint-queue agent. Its goal: clear the overnight queue. Watch what it does. It reads the inbox — that's a tool. Seven complaints; five routine, two mention safety. It drafts the five routine replies — another tool call — then it hits the two safety complaints, and those <em>exceed its authority</em>, so it escalates them to a human and stops."</p>
+      <p>"Count the loops as I step — one, two, three. Three things just happened that define an agent. It kept going on its own — that's <em>autonomy</em>. It only touched the real world through <em>tools</em>. And it <em>stopped</em>, handing me the two things it wasn't allowed to decide. Those three dials — how far it runs, what it can touch, when it must stop — are the ones you set."</p>
+      <div class="t">Do</div><ul><li>First pass: use <em>Step →</em>, not Run all — narrate each phase and read the loop counter aloud.</li><li>Pause on the escalate step: point at "⚠ Escalate to human" and name it as the checkpoint.</li><li>Then hit <em>Run all</em> to show the whole loop at tempo.</li><li>If asked "could it just handle the safety ones too?" — that's the autonomy dial: "only if you decide the risk is worth it."</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"So that's the loop when I hand you one. Now you read your own."</p>
+    </div>
   </section>
 
   <!-- ============ M2 · read your own loop (hands-on) ============ -->
@@ -415,6 +506,13 @@
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Take the agent you spec'd last week and name its four parts — goal, loop, tools, stopping rule — in plain words.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>Where the stopping rule sits and where the human checkpoint belongs.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>First contact with their own problem today. The Week-1 spec described what the agent does; now they read it as a <em>loop</em> and name the four parts — which forces the two governance calls (stopping rule, checkpoint) into the open before any building.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Reading their own spec as a loop forces the two governance calls — stopping rule and checkpoint — into the open before any building.</div>
+      <div class="t">Move</div><p>Turn it personal, ~30 sec. First contact with their own problem today.</p>
+      <div class="t">Say</div><p>"Now it's your problem on the table. Last week's spec described <em>what</em> your agent does; this exercise makes you read it as a loop and name its four parts in plain words — goal, loop, tools, stopping rule. And naming them forces the two calls you can't avoid: where does it stop, and where does a human stay in the loop?"</p>
+      <div class="t">Do</div><ul><li>Have them open their Week-1 spec before the next slide; anyone without one takes the complaint-queue agent as a stand-in.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Open your spec — let's name the four parts."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="Act 1 · The loop &amp; least autonomy" data-mv="M2 · Read your own loop">
@@ -434,6 +532,13 @@ Then challenge me on the two weakest lines — where is my stopping rule vague, 
 checkpoint in the right place? Be blunt.</pre></div>
       <span class="read"><b>The judgment:</b> if you can't name a crisp stopping rule and a checkpoint, you don't yet have an agent you can trust — you have a loose one. Fix those two lines now; they anchor everything you build this afternoon.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Have them run the prompt on their real spec, then push on the two weak lines. The point isn't the tidy fill — it's that a vague stopping rule or a mis-placed checkpoint surfaces here, cheaply, on a slide, rather than in a deployed agent. Keep the filled loop; it feeds The Build.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>If you can't name a crisp stopping rule and a checkpoint, you don't have an agent you can trust — you have a loose one.</div>
+      <div class="t">Move</div><p>They work; you circulate. ~10 min including the read-back. First hands-on of the day.</p>
+      <div class="t">Say</div><p>"Copy the prompt, paste your Week-1 spec into it, and have Claude read your spec back as a <em>loop</em> — goal, loop, tools, stopping rule, human checkpoint. Then let it challenge you on the two weakest lines: where is your stopping rule vague, and is your checkpoint in the right place? The tidy fill isn't the prize — the prize is finding a mushy stopping rule <em>now</em>, cheaply, on a slide, instead of in a deployed agent."</p>
+      <div class="t">Do</div><ul><li>~8 min hands-on. Circulate; a second facilitator floats so no one is stuck longer than a minute.</li><li>Harvest: pull two or three leaders to read out their stopping rule and checkpoint before moving on.</li><li>Backup — no spec? Complaint-queue agent: goal = clear the queue; tools = inbox, order system, draft; stop = escalate anything about safety.</li><li>If asked "whose job is the checkpoint?" — the leader's; it's the one line they can't delegate to the model.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Keep that filled loop — it feeds The Build. Now: is it even an agent, or a workflow?"</p>
+    </div>
   </section>
 
   <!-- ============ M3 · workflow vs agent ============ -->
@@ -442,6 +547,13 @@ checkpoint in the right place? Be blunt.</pre></div>
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See that "agent" is one end of a spectrum — and that the named architectures (ReAct, Plan-and-Execute, Reflection, Multi-agent) are just points along it.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>Whether your problem needs the model to pick the path — or whether you can draw it yourself.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>Most things called agents are <em>workflows</em> — you fix the path in advance (prompt chaining, routing, parallelisation). True agents let the model pick the path at run time (ReAct, Plan-and-Execute, Reflection, Multi-agent). The architectures aren't a menu of cool — they're points on an autonomy dial.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Most things called agents are workflows; the named architectures are just points on an autonomy dial.</div>
+      <div class="t">Move</div><p>Reframe "agent" as a spectrum, ~30 sec. Set up the accordion.</p>
+      <div class="t">Say</div><p>"Here's the reframe. 'Agent' isn't a category — it's one end of a <em>spectrum</em>. At the other end are workflows, where <em>you</em> fix the path in advance. And all those named architectures people drop — ReAct, Plan-and-Execute, Reflection, multi-agent — aren't a menu of cool. They're just points along that dial, from you-draw-the-path to the-model-picks-the-path."</p>
+      <div class="t">Do</div><ul><li>As the widget opens next, have them ask of each task: "Could I draw this path in advance?" If yes, it's a workflow.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Let's open seven real tasks and see where each one lands."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="Act 1 · The loop &amp; least autonomy" data-mv="M3 · Workflow vs agent">
@@ -457,6 +569,13 @@ checkpoint in the right place? Be blunt.</pre></div>
       </div>
       <span class="read"><b>What you decide:</b> workflow or agent is the same restraint as Week 1's stack — one level deeper. When a fixed sequence would do, an agent is over-building: more cost, more latency, harder to govern, for no gain.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Drive the accordion: seven real tasks, each landing on exactly one pattern, autonomy rising down the list. The three workflow patterns (chaining, routing, parallelisation) keep you drawing the path; the four agent patterns (ReAct, Plan-and-Execute, Reflection, Multi-agent) hand the path to the model. Multi-agent is the rare top — most problems never earn it.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Workflow or agent is Week 1's restraint one level deeper — reach right only when the path genuinely can't be drawn in advance.</div>
+      <div class="t">Move</div><p>You drive the accordion; ~4 min. Open tasks top to bottom, autonomy rising.</p>
+      <div class="t">Say</div><p>"Seven real tasks, each landing on exactly one pattern, and autonomy climbing as we go down. The top three are workflows — chaining, routing, parallelisation — where <em>you</em> keep control of the path. The bottom four are true agents — ReAct, Plan-and-Execute, Reflection, multi-agent — where you hand the path to the model. Notice our complaint-queue agent sits at ReAct: each complaint needs a different path, decided live. And notice the very bottom — multi-agent. That's the rare top of the dial; <em>most problems never earn it</em>."</p>
+      <div class="t">Do</div><ul><li>Open each row top-to-bottom so the autonomy bar visibly rises; read the "you'll decide" line on two or three.</li><li>Land hard on multi-agent as the expensive, rarely-justified top — pre-empt the leader who wants to build it.</li><li>Use the filter chips to show workflow-only vs agent-only if the room wants to compare.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"So where does <em>your</em> problem land — and can you argue it one step to the left?"</p>
+    </div>
   </section>
 
   <!-- ============ M4 · least autonomy wins (hands-on) ============ -->
@@ -465,6 +584,13 @@ checkpoint in the right place? Be blunt.</pre></div>
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Place your own problem on the spectrum — and try to talk yourself one step to the left.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>The lowest-autonomy pattern that still solves it — the core call of the week.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>Week 1's rule — "the cheapest layer that works wins" — sharpens to "the least autonomy that works wins." This is the movement where restraint becomes personal: they place their own problem and argue it down a step. Left is cheaper, steadier, easier to govern.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Week 1's "cheapest layer that works" sharpens to "the least autonomy that works, wins" — left is cheaper, steadier, easier to govern.</div>
+      <div class="t">Move</div><p>Mark the core call of the week, ~30 sec. Slow down — this is where restraint becomes personal.</p>
+      <div class="t">Say</div><p>"This is the sharpest judgement of the day. Last week's rule was 'the cheapest layer that works wins.' Today it becomes 'the <em>least autonomy</em> that works wins.' You're going to place your own problem on that spectrum — and then try to talk yourself one step to the <em>left</em>. Because left is cheaper to build, steadier in production, and far easier to govern."</p>
+      <div class="t">Do</div><ul><li>Tell them the win here is uncomfortable on purpose: arguing your own problem <em>down</em> a rung.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Place your problem — then argue it left."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="Act 1 · The loop &amp; least autonomy" data-mv="M4 · Least autonomy wins">
@@ -480,6 +606,13 @@ solve this ONE STEP LEFT (less autonomy)? If a fixed path could do most of it, s
 and show me the workflow version. I'd rather build the least autonomy that works.</pre></div>
       <span class="read"><b>The judgment:</b> the pattern you can defend against "why not one step left?" is the one you build. If most of your problem is a fixed path with one genuinely agent-shaped part, that's a win — smaller to build, easier to trust.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>They run it on their own loop and let Claude fight for the lower-autonomy version. Most leave with a mostly-workflow shape and one small agent-shaped core — exactly the right answer. Bank the chosen pattern; it goes into the design in The Build.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>The pattern you can defend against "why not one step left?" is the one you build — a mostly-workflow shape with a small agent core is the win.</div>
+      <div class="t">Move</div><p>They work; you circulate. ~10 min. Last hands-on of Act 1 — then the tea break at 11:45.</p>
+      <div class="t">Say</div><p>"Take the loop you named a moment ago and paste it in. Have Claude place it on the spectrum, name the one pattern it needs — and then be its <em>harshest critic</em>, arguing for the version one step to the left. If a fixed path could do most of it, you want Claude to say so and show you the workflow version. Most of you will land on a mostly-workflow shape with one small, genuinely agent-shaped part. That's not a lesser answer — it's the <em>win</em>: smaller to build, easier to trust."</p>
+      <div class="t">Do</div><ul><li>~8 min. Circulate; the coverage rule holds — a second facilitator floats within a minute.</li><li>Harvest: ask one leader who moved a step left what they gave up and what they gained.</li><li>Bank the chosen pattern — it goes straight into the design in The Build.</li><li>If a leader insists on high autonomy, ask them to name the single decision that genuinely can't be pre-drawn; usually only a sliver survives.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"That's the loop and the restraint. After tea — how it actually acts, and what it remembers."</p>
+    </div>
   </section>
 
   <!-- ============ ACT 2 ============ -->
@@ -488,6 +621,13 @@ and show me the workflow version. I'd rather build the least autonomy that works
       <p class="lead">The loop only matters if it can <span class="accent">reach your systems</span> and <span class="accent">carry what matters</span> forward. Two things make that happen — tools and memory — and both are where your controls belong.</p>
       <p class="sub" style="margin-top:1.2rem">Tool calls · MCP · the data rule at the tool · the memory desk · design your agent's memory.</p></div>
     <div class="note"><div class="t">Takeaway</div><p>Act 2 is the two mechanisms under the loop: tools (how it acts — and the surprise that the model only ever <em>asks</em>) and memory (what it carries — short-term desk vs long-term Project knowledge). Both are governance surfaces you own.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>The loop only matters if it can reach your systems (tools) and carry what matters forward (memory) — both are governance surfaces you own.</div>
+      <div class="t">Move</div><p>Mark the second act, ~30 sec. Middle act — keep it moving; two mechanisms, two hands-on.</p>
+      <div class="t">Say</div><p>"Act two. The loop is the engine — but an engine that can't reach anything just spins. Two things make it useful: <em>tools</em>, how it acts on your real systems, and <em>memory</em>, what it carries forward. And here's the theme for the whole act: both of those are where your controls live. This act is mostly hands-on — you'll design the data rule at the tool, and the memory, for your own agent."</p>
+      <div class="t">Do</div><ul><li>Have them hold one question: "For my agent — what may it touch, and what must it remember?" Those are this act's two deliverables.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Start with how it acts — tools."</p>
+    </div>
   </section>
 
   <!-- ============ M5 · tools ============ -->
@@ -496,6 +636,13 @@ and show me the workflow version. I'd rather build the least autonomy that works
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See what "calling a tool" actually is underneath — and the control point most people miss.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>What the agent may touch, and what needs a human's nod before it runs.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>An agent with no tools is a chatbot talking to itself. The surprise: the model never acts directly — when it needs a tool it <em>writes a request</em>, and your system decides whether and how to run it. That separation is the control point.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>The model never acts directly — it writes a request; your system decides whether to run it. That gap is the control point.</div>
+      <div class="t">Move</div><p>Frame the surprise, ~30 sec. Set up the tool-call stepper.</p>
+      <div class="t">Say</div><p>"An agent with no tools is just a chatbot talking to itself. But here's the part almost everyone gets wrong: the model never actually <em>does</em> anything. When it needs a tool, it doesn't reach into your systems — it writes a <em>request</em>, and something you own decides whether and how to run it. That gap, between <em>asking</em> and <em>running</em>, is where every tool-level control you have actually sits."</p>
+      <div class="t">Do</div><ul><li>As the stepper runs next, have them watch for the exact moment the model "asks" versus when the system "runs" — that seam is what they govern.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Let's step through one tool call, start to finish."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="Act 2 · How it acts &amp; remembers" data-mv="M5 · Tools">
@@ -512,6 +659,14 @@ and show me the workflow version. I'd rather build the least autonomy that works
       </div>
       <span class="read"><b>What you decide:</b> the model only ever <b>asks</b>. Something <i>you</i> own actually runs the tool — so you decide what it may touch, what needs a human's nod first, and what data is even allowed near it.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Step the five stages: the model hits a live fact it can't recall, writes a structured request (not prose, not an action), your system runs it against the real database, the result returns as an observation, and the model continues the loop grounded in the real fact. The gap between "asks" and "runs" is where every tool-level control lives.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Five stages — hits a live fact, writes a structured request, your system runs it, the result returns as an observation, the loop continues grounded.</div>
+      <div class="t">Move</div><p>You drive the tool-call stepper; ~4 min. Step slowly and name who acts at each stage.</p>
+      <div class="t">Say</div><p>"One tool call, on our complaint agent — a question about order #4471. Watch the five stages. First, the model hits something it can't answer from its frozen training — a live fact in your systems. So it writes a request — <em>not</em> prose, not an action, a structured ask: 'get order status, 4471.' Then <em>your</em> system — not the model — runs that against the real database and hands back a result. That result returns into the loop as an observation, and only now, grounded in the real fact, does the model carry on."</p>
+      <p>"Sit on stages two and three. The model only ever <em>asked</em>. Something you control did the running. That's the whole game — because it means <em>you</em> decide what it may touch, what needs a human's nod first, and what data is even allowed near it."</p>
+      <div class="t">Do</div><ul><li>Step → through all five; name the actor each time — "model asks" … "your system runs."</li><li>Pause hard between stage 2 (the request) and stage 3 (your system runs it) — point at the colour change from model to system. That seam is the teaching.</li><li>If asked "so the model can't just do it itself?" — correct: it can only ask; you built the thing that acts.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"So one tool is one plug. How does it reach many? MCP."</p>
+    </div>
   </section>
 
   <!-- ============ M6 · MCP ============ -->
@@ -520,6 +675,13 @@ and show me the workflow version. I'd rather build the least autonomy that works
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See how one agent reaches many tools through a single standard — and which path is yours.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>The one connector your agent actually needs — no more.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>MCP (Model Context Protocol) is a standard plug — USB-C for tools. Wire a tool once; any MCP-speaking agent can use it. Two paths, and the leaders are on one of them: connectors in Projects (no code, theirs) vs custom tools in Claude Code (the trainer's, watch-only).</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>MCP is a standard plug — wire a tool once, any agent can use it; the leaders' path is no-code Connectors, Claude Code is watch-only.</div>
+      <div class="t">Move</div><p>Frame MCP as the standard plug, ~30 sec. Keep it light — it's a picture, not a protocol lecture.</p>
+      <div class="t">Say</div><p>"MCP — Model Context Protocol. Don't let the acronym scare anyone; it's just a standard plug, <em>USB-C for tools</em>. Wire a tool up once to that standard, and any agent that speaks MCP can use it. There are two paths to it, and you're on one. I wire custom tools in Claude Code — that's my two demos, watch-only. You connect tools the no-code way, in Projects."</p>
+      <div class="t">Do</div><ul><li>Reassure the room the acronym is nothing to memorise — the picture on the next slide is all they need.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Here's the picture — one plug, many tools."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="Act 2 · How it acts &amp; remembers" data-mv="M6 · MCP">
@@ -539,6 +701,14 @@ and show me the workflow version. I'd rather build the least autonomy that works
       <div class="twopath"><b>Two paths — and you're only on one of them.</b> Your trainer wires custom tools in <b>Claude Code</b> — the two live demos — and that part is watch-only; the terminal stays the trainer's instrument. You connect tools the no-code way: <b>Projects → Connectors</b> — Google Drive or Teams. When we say your agent "uses tools," that's <i>you</i>, in Claude Projects.</div>
       <span class="read"><b>What you decide:</b> the fewest connectors that let it act. Every tool you wire in is a new door into a real system — name only the ones the job genuinely needs.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>The picture: agent in the middle, tools plugging into one standard port. The leaders' path is Projects → Connectors, no code — they already did it in the pre-read. Claude Code is the trainer's two live demos. The restraint: fewest connectors that let it act; each one is a door into a real system.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>The fewest connectors that let it act — each one is a new door into a real system.</div>
+      <div class="t">Move</div><p>Walk the plug picture, ~3 min. Point at the hub and the two paths; land the restraint.</p>
+      <div class="t">Say</div><p>"Picture it: your agent in the middle, and tools plugging into one standard port — SharePoint, a CRM, email, a database. Wire each once; the agent talks to all of them the same way. Your path is the no-code one — Projects, then Connectors, Google Drive or Teams. You already did exactly this in the pre-read. Claude Code, the terminal, stays mine — the two live demos."</p>
+      <p>"And the judgement here is restraint again: the <em>fewest connectors</em> that let it act. Every tool you wire in is a new door into a real system — so name only the ones the job genuinely needs, and no more."</p>
+      <div class="t">Do</div><ul><li>Point at the hub, then each plug, then the two-path box — make the "you're only on one path" line explicit so no one thinks they need the terminal.</li><li>Tie it back: "this is the same connector click you did in the pre-read."</li><li>If asked "which connector should I use?" — defer it: "that's your next exercise — and the answer is usually one."</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"And the moment you plug into a real system, one Week-1 question comes straight back: what data may go near it?"</p>
+    </div>
   </section>
 
   <!-- ============ M7 · the data rule (hands-on) ============ -->
@@ -547,6 +717,13 @@ and show me the workflow version. I'd rather build the least autonomy that works
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Decide what data may go near your agent's tools — the exact place Week 1's data rule now lives.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>Which connectors and inputs are safe, and which stay out of an agent entirely.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>Week-1 callback: the data-sensitivity rule finds its home. Because tools touch real systems, "what data may go near this?" is a <em>tool</em> question — a governance call the leader owns, made concrete against the specific connectors their agent will use.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Because tools touch real systems, "what data may go near this?" is a tool question — the governance call the leader owns.</div>
+      <div class="t">Move</div><p>Land the Week-1 callback, ~30 sec. This is where the data rule gets its home.</p>
+      <div class="t">Say</div><p>"Last week you learned a data-sensitivity rule in the abstract. Today it finds its home. Because tools touch real systems, the question 'what data may go near this?' isn't a policy slide any more — it's a <em>tool</em> question, made concrete against the exact connectors your agent will use. And it's a call only you can make."</p>
+      <div class="t">Do</div><ul><li>Have them pull up the connector they chose when we covered MCP — the next exercise is about that specific tool.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"So let's make it concrete for your agent."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="Act 2 · How it acts &amp; remembers" data-mv="M7 · The data rule">
@@ -564,6 +741,13 @@ Walk me through, per connector:
 Give me a short "data rule" for THIS agent I could put in its instructions.</pre></div>
       <span class="read"><b>The judgment:</b> the output is a short data rule for <i>this</i> agent — which connectors are safe, what's fenced off, and where a human approves. It goes straight into your system prompt and your design doc.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Make the abstract rule concrete against their real connectors. The deliverable is a per-agent data rule they can paste into the instructions later. Reinforce: the rule isn't "don't use internal data" — it's "use it only in the sanctioned tool, and put a human where the action has consequences."</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>The rule isn't "don't use internal data" — it's "use it only in the sanctioned tool, and put a human where the action has consequences."</div>
+      <div class="t">Move</div><p>They work; you circulate. ~8 min. First hands-on stretch of Act 2.</p>
+      <div class="t">Say</div><p>"Name the connector your agent needs, then copy the prompt and reason through it, per connector: what data would this tool expose the agent to, what must <em>never</em> go into an AI tool, what's the safer route for the borderline cases, and where must a human approve before it acts. The output is a short data rule for <em>this</em> agent. And don't paste anything actually sensitive into the prompt — describe the data <em>types</em>, that's enough."</p>
+      <div class="t">Do</div><ul><li>~8 min. Circulate; a second facilitator floats within a minute.</li><li>Harvest: ask one leader to read out their one-line data rule — that line goes into their system prompt in The Build.</li><li>Reinforce: it's not "never use internal data" — it's "use it only in the sanctioned workspace account, human on anything consequential."</li><li>If asked "whose call is what's sensitive?" — theirs, guided by Sandvik's data rule; when unsure, treat it as off-limits until told otherwise.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"That's how it acts, safely. Now — what does it remember?"</p>
+    </div>
   </section>
 
   <!-- ============ M8 · memory ============ -->
@@ -572,6 +756,13 @@ Give me a short "data rule" for THIS agent I could put in its instructions.</pre
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See the two kinds of memory — the desk you work on now, and the cabinet that persists.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>What your agent should <b>remember</b> versus <b>look up</b>.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>Week-1 callback: the context window is the desk. Two memories — short-term (this chat, wiped on a new chat, overflows when full) and long-term (Project knowledge, saved once, persists). Deciding what persists is a leadership call: it drives cost, consistency and what private data sits around.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Two memories — the short-term desk (this chat, wiped, overflows) and the long-term cabinet (Project knowledge, saved once, persists); what persists is a leadership call.</div>
+      <div class="t">Move</div><p>Frame the two memories, ~30 sec. Week-1 callback to the desk.</p>
+      <div class="t">Say</div><p>"Last week we called the context window the <em>desk</em> — the space the model works on right now. Memory is two things. There's that short-term desk: this chat, wiped when you start a new one, and it overflows when it's full. And there's long-term memory — Project knowledge, saved once, reloaded every single run. Deciding what belongs in each isn't a technical detail; it's a <em>leadership</em> call — it drives cost, consistency, and what private data just sits around."</p>
+      <div class="t">Do</div><ul><li>As the desk widget runs next, have them ask: "for my agent, what has to be true every run?" That's the cabinet.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Watch the desk overflow — and the cabinet persist."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="Act 2 · How it acts &amp; remembers" data-mv="M8 · Memory &amp; state">
@@ -590,6 +781,14 @@ Give me a short "data rule" for THIS agent I could put in its instructions.</pre
       </div>
       <span class="read"><b>What you decide:</b> standing facts, policies and house style belong in <b>Project knowledge</b> so they load every time; the here-and-now of one task lives on the desk. The more you load into knowledge, the more deliberate you must be about what belongs there.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Drive all four buttons: add until it overflows (oldest greys out — the window is finite), pin one to knowledge, start a new chat (the desk wipes, the pinned item reloads dashed), and click a saved card to forget it. The forget is the governance beat — you curate what the agent keeps and what private data persists.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Standing facts, policies and house style go in the cabinet so they load every time; the here-and-now of one task lives on the desk — and forgetting is the governance beat.</div>
+      <div class="t">Move</div><p>You drive all four buttons; ~4 min. Add till it overflows, pin, new chat, forget.</p>
+      <div class="t">Say</div><p>"Let me drive this. I add messages — see them land on the desk, in view. Keep going… and the oldest ones fall off the edge, greyed out. The model can't see them any more — that's the window <em>overflowing</em>, and it's finite. Now I pin one to knowledge — that's the cabinet, long-term. I start a new chat: the desk wipes clean, but the pinned item <em>reloads automatically</em>. Short-term forgotten, long-term kept."</p>
+      <p>"And here's the governance beat — I click a saved card and it's <em>forgotten</em>, removed from Project knowledge. That's the point: <em>you</em> curate what the agent keeps, and what private data gets to persist. Standing facts and house style go in the cabinet so they load every time; the here-and-now of one task stays on the desk."</p>
+      <div class="t">Do</div><ul><li>Drive all four in order: Add (several, till it overflows) → Save to knowledge → Start a new chat → click a saved card to forget.</li><li>Narrate the two moments that carry the concept: the overflow (oldest greys out) and the reload (pinned item returns dashed).</li><li>Land the forget as the governance move, not a gimmick: "this is you deciding what it's allowed to remember."</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"So — for your agent, what goes in the cabinet, and what stays on the desk?"</p>
+    </div>
   </section>
 
   <!-- ============ M9 · design your memory (hands-on) ============ -->
@@ -598,6 +797,13 @@ Give me a short "data rule" for THIS agent I could put in its instructions.</pre
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Draft what your agent should hold in long-term Project knowledge versus look up each time.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>The persist-vs-look-up line — a cost, consistency and data-exposure call.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>Turn the desk/cabinet idea onto their own agent. What must be true every single run (policy, house style, the criteria for a good output) goes to knowledge; the volatile, per-task inputs are looked up. This becomes their Project-knowledge list for The Build.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>What must be true every run (policy, house style, criteria for a good output) persists; the volatile per-task inputs are looked up.</div>
+      <div class="t">Move</div><p>Turn memory onto their agent, ~30 sec.</p>
+      <div class="t">Say</div><p>"Now put the desk and the cabinet onto your own agent. The test is simple: what must be true on <em>every single run</em> — the policy, the house style, the criteria for a good output — that goes to long-term knowledge. The volatile, per-task input, and anything sensitive that shouldn't sit around, gets looked up live. This split becomes your Project-knowledge list for The Build."</p>
+      <div class="t">Do</div><ul><li>Tell them to keep the data rule they just wrote open — this exercise and that one are about to meet.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Split your agent's memory — persist versus look up."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="Act 2 · How it acts &amp; remembers" data-mv="M9 · Design your memory">
@@ -613,6 +819,13 @@ For each PERSIST item, say in one line why it must be the same every run. Flag a
 I've put in PERSIST that is actually sensitive and shouldn't be stored.</pre></div>
       <span class="read"><b>The judgment:</b> your PERSIST list is the first draft of your Project knowledge; your LOOK-UP list keeps volatile and sensitive data out of storage. Keep both — they go straight into The Build.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>The output is two lists that carry directly into the build: the PERSIST list becomes Project knowledge, the LOOK-UP list keeps sensitive/volatile data out. The "flag anything sensitive in PERSIST" line makes the data rule and the memory design meet.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>The PERSIST list is the first draft of Project knowledge; the LOOK-UP list keeps volatile and sensitive data out of storage.</div>
+      <div class="t">Move</div><p>They work; you circulate. ~8 min. Last hands-on before lunch — then Act 3 after the break.</p>
+      <div class="t">Say</div><p>"Copy the prompt, give it your agent's job in one line, and let Claude sort the memory into two lists. PERSIST: the standing facts, policies, house style, the criteria for a good output — saved once, loaded every run. LOOK-UP: the volatile, per-task inputs, and anything sensitive that shouldn't be stored. And notice the last instruction — it flags anything you put in PERSIST that's actually sensitive. That's where this exercise and your data rule <em>shake hands</em>."</p>
+      <div class="t">Do</div><ul><li>~8 min. Circulate; coverage rule holds — a floater within a minute.</li><li>Harvest: ask one leader for a single item they moved from PERSIST to LOOK-UP once they saw it was sensitive.</li><li>Bank both lists — PERSIST is their Project-knowledge draft for The Build; LOOK-UP keeps sensitive data out.</li><li>If asked "can't I just persist everything to be safe?" — no; every persisted item is a cost and a standing data exposure. Persist only what must be identical every run.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"That's how it acts and remembers. After lunch — the map you build from: the lifecycle and the parts."</p>
+    </div>
   </section>
 
   <!-- ============ ACT 3 ============ -->
@@ -621,6 +834,13 @@ I've put in PERSIST that is actually sensitive and shouldn't be stored.</pre></d
       <p class="lead">You've seen the loop, the tools, the memory. Before you build, two maps: the <span class="accent">lifecycle you run</span>, and the <span class="accent">parts you snap together</span> — some of which aren't optional.</p>
       <p class="sub" style="margin-top:1.2rem">The lifecycle: design → build → test → deploy → monitor. Then assemble the parts — and see what makes it safe to let loose.</p></div>
     <div class="note"><div class="t">Takeaway</div><p>Act 3 is the builder's map, straight into The Build. An agent isn't a one-off build — it's a lifecycle you run. And it's made of a few parts: two are required (instructions, human checkpoint), three make it work well (knowledge, tools, stopping rule).</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>An agent isn't a one-off build — it's a lifecycle you run; and it's a few parts, two of them non-optional.</div>
+      <div class="t">Move</div><p>Mark the third act, ~30 sec. Shortest act — keep it tight; it's the runway into The Build.</p>
+      <div class="t">Say</div><p>"Act three, and it's short — because it's the runway into building. You've seen the loop, the tools, the memory. Before you build, two maps. First: an agent isn't a thing you launch and walk away from — it's a <em>lifecycle</em> you run. Second: it's made of a few parts you snap together — and two of them aren't optional. Get these two maps, and The Build is mostly filling them in."</p>
+      <div class="t">Do</div><ul><li>Tell them both maps on the next four slides are literally the shape of their design doc — watch for that.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"First map — the lifecycle."</p>
+    </div>
   </section>
 
   <!-- ============ M10 · lifecycle ============ -->
@@ -629,6 +849,13 @@ I've put in PERSIST that is actually sensitive and shouldn't be stored.</pre></d
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>See the five stages you sponsor — design, build, test, deploy, monitor — and the call you own at each.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>Where the human checkpoint sits, and that "monitor" never comes off the list.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>An agent is a lifecycle, not a launch: design → build → test → deploy → monitor. The leader sponsors all five and owns the human checkpoint throughout. Monitor stays because models and data drift — an agent right in June can be wrong in September.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Design → build → test → deploy → monitor; the leader sponsors all five, and monitor never comes off because models and data drift.</div>
+      <div class="t">Move</div><p>Frame the lifecycle, ~30 sec. Set up the stage widget.</p>
+      <div class="t">Say</div><p>"The first map: an agent is a lifecycle, not a launch — design, build, test, deploy, <em>monitor</em>. You sponsor all five, and you own the human checkpoint the whole way through. And notice monitor doesn't drop off the end — because models and data drift. An agent that was right in June can be quietly wrong by September."</p>
+      <div class="t">Do</div><ul><li>As I click the stages next, have them note the one call they own at each — that's what they sponsor.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Click through the five and see the call at each."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="Act 3 · Design &amp; the parts" data-mv="M10 · The lifecycle">
@@ -639,6 +866,14 @@ I've put in PERSIST that is actually sensitive and shouldn't be stored.</pre></d
       </div>
       <span class="read"><b>What you decide:</b> at every stage the human checkpoint is yours to keep live. Design sets the boundaries; test is where you break it before anyone relies on it; monitor is why it's never "done."</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Click through all five. Design = least autonomy + where the checkpoint sits (Week-1 doc feeds this). Build = assemble in Projects. Test = real inputs, break it (three cases is the floor — that's the homework). Deploy = start small. Monitor = watch cost, drift, errors. This is also the shape of the 1-page design doc.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Design sets the boundaries; test is where you break it before anyone relies on it; monitor is why it's never "done."</div>
+      <div class="t">Move</div><p>You drive the five stages; ~5 min. Click each, name the human call.</p>
+      <div class="t">Say</div><p>"Let me click through. <em>Design</em> — you set the least autonomy and where the checkpoint sits; your Week-1 doc feeds this. <em>Build</em> — assemble it in Projects: instructions, knowledge, connectors, no code. <em>Test</em> — real inputs, including awkward ones, and you hunt the failure modes before anyone relies on it; three real cases is the floor, and that's your homework. <em>Deploy</em> — start small: one user, one slice, so a mistake is cheap. <em>Monitor</em> — watch cost, drift and errors, and keep the checkpoint live."</p>
+      <p>"The thing to feel: at every stage there's a human call that's <em>yours</em>. Design sets the boundaries, test is where you deliberately break it, and monitor is the reason it's never really 'done.'"</p>
+      <div class="t">Do</div><ul><li>Click all five in order; read the "👤 human in the loop" line on each — that's the ownership beat.</li><li>Sit on Test: "three real cases is the floor" — say it's exactly what the homework asks for.</li><li>Land Monitor: "right in June, wrong in September" — the reason there's no set-and-forget.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"That's the lifecycle. Now the parts you assemble at the Build step."</p>
+    </div>
   </section>
 
   <!-- ============ M11 · assemble the parts ============ -->
@@ -647,6 +882,13 @@ I've put in PERSIST that is actually sensitive and shouldn't be stored.</pre></d
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Snap the parts of an agent together and see which combinations are ready — and which are dangerous.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>That instructions and a human checkpoint are non-negotiable before it can act.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>An agent is a few parts. Required: instructions (role · task · guardrails) and a human checkpoint. Strongly recommended: knowledge, tools, stopping rule. The dangerous combination to watch for: tools on, checkpoint off — it can act on the world with nothing to catch a mistake.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Required = instructions + a human checkpoint; recommended = knowledge, tools, stopping rule; the dangerous combo is tools-on, checkpoint-off.</div>
+      <div class="t">Move</div><p>Frame the parts, ~30 sec. Set up the composer.</p>
+      <div class="t">Say</div><p>"The second map: the parts. Two are <em>required</em> — instructions, which give it a role, a task and guardrails; and a human checkpoint, the step where it must stop and ask a person. Three more make it work well — knowledge, tools, and a stopping rule. And there's one combination to watch above all: tools switched on, checkpoint off. That's an agent that can act on the world with nothing to catch a mistake."</p>
+      <div class="t">Do</div><ul><li>As the composer runs, have them watch for the exact state the readout calls "unsafe to let loose" — and remember it.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Let me switch the parts on and off and watch whether it's safe to build."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="Act 3 · Design &amp; the parts" data-mv="M11 · Assemble the parts">
@@ -670,6 +912,14 @@ I've put in PERSIST that is actually sensitive and shouldn't be stored.</pre></d
       </div>
       <span class="read"><b>What you decide:</b> tools on with the checkpoint off is the exact combination that gets a leader into trouble. Instructions + a human checkpoint is the floor; knowledge, tools and a stopping rule make it good.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Drive the composer: turn on tools alone → "unsafe to let loose"; add the checkpoint → "ready to build a v1." This is the shape of their design doc. The readout <em>is</em> the teaching: it names the dangerous state out loud so no one ships it.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Instructions + a human checkpoint is the floor; knowledge, tools and a stopping rule make it good — the readout names the dangerous state out loud.</div>
+      <div class="t">Move</div><p>You drive the composer; ~5 min. Toggle to the danger state, then to ready.</p>
+      <div class="t">Say</div><p>"Watch the readout as I switch parts on. I'll turn on <em>tools</em> alone — and it flags red: 'unsafe to let loose.' It can act on the world, but there's no human checkpoint to catch a mistake. That's the exact combination that gets a leader into trouble. Now I add the <em>checkpoint</em> — and it turns: 'ready to build a v1.' Instructions set the behaviour, the checkpoint keeps it governed; knowledge, tools and a stopping rule make it good."</p>
+      <p>"The readout <em>is</em> the teaching here — it names the dangerous state out loud, so no one in this room ships that combination by accident. And this shape — the required parts plus the recommended ones — is the shape of your design doc."</p>
+      <div class="t">Do</div><ul><li>Drive it deliberately: tools ON alone → read "unsafe to let loose" aloud; then add the human checkpoint → "ready to build a v1."</li><li>Point at the meter climbing as parts are added; name each part as you toggle it.</li><li>Land the safety line of the day: "tools-on, checkpoint-off is the one to never ship."</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"You've got both maps. Now you build your own — The Build."</p>
+    </div>
   </section>
 
   <!-- ============ THE BUILD · opener ============ -->
@@ -678,6 +928,14 @@ I've put in PERSIST that is actually sensitive and shouldn't be stored.</pre></d
       <p class="lead">Everything so far was the agent in the abstract. Now you build <span class="accent">your own</span> — five steps, inside a Claude Project you enrich as you go, that turn your Week-1 spec into a working v1 and a 1-page design doc.</p>
       <p class="sub" style="margin-top:1.2rem"><b class="accent">Five steps</b> &nbsp;1 Set up the Project &middot; 2 Design it (AI interviews you) &middot; 3 Assemble v1 &middot; 4 Test with 3 real inputs &middot; 5 Pressure-test &amp; write the design doc. &nbsp;The rhythm each step: <b>enrich → run → capture.</b></p></div>
     <div class="note"><div class="t">Takeaway</div><p>The heart of the day and this week's homework, live: a working Claude Project (v1 agent) plus a 1-page design doc. It runs inside one build Project you enrich with a role file at each step, then fire a one-line trigger. Carry the Week-1 spec forward — or pick a defined-agent from the spec sheet if you need one.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>The heart of the day and the homework, live — a working v1 Project + a 1-page design doc, all inside one Agent Builder Project.</div>
+      <div class="t">Move</div><p>Open the finale, ~45 sec, energy up. Everything so far was setup — this is where they build their own.</p>
+      <div class="t">Say</div><p>"This is the heart of the day. Everything so far was the agent in the abstract — now you build <em>your own</em>. Five steps, and they all run inside one Claude Project you'll call the Agent Builder, which you enrich as you go. By the end you'll have a working v1 of your agent and a one-page design doc — which <em>is</em> this week's homework, started and mostly done right here."</p>
+      <p>"One rhythm repeats at every step: <em>enrich → run → capture</em>. You add one role file to the builder, fire a one-line trigger, and keep the output. Same shape as the Week-1 Capstone Decider — so it'll feel familiar."</p>
+      <div class="t">Do</div><ul><li>Set the frame, then get their hands moving fast — the value is in the building, not this slide.</li><li>Anyone without a Week-1 spec: point them to the four defined-agent options in the spec sheet so no one stalls.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Step one — set up the workspace you'll build inside."</p>
+    </div>
   </section>
 
   <!-- ============ BUILD · Step 1 ============ -->
@@ -686,6 +944,13 @@ I've put in PERSIST that is actually sensitive and shouldn't be stored.</pre></d
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Create the reusable workspace you'll enrich at every step — a Claude Project with a router and the Week-2 fundamentals pre-loaded.</p></div>
       <div class="gb"><div class="t">You'll carry forward</div><p>A standing build workspace — no long prompts to paste, just one-line triggers.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>The Build runs inside a Claude Project you build in layers. Step 1 sets the base: router instructions + the Week-2 fundamentals and defined-agent criteria as grounding. Every later step adds one role file and fires a one-line trigger — the enrich → run → capture rhythm, same as the Week-1 Capstone Decider.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>The Build runs inside one Project built in layers — Step 1 sets the base (router + Week-2 fundamentals); each later step adds one role file.</div>
+      <div class="t">Move</div><p>Frame Step 1, ~30 sec. It's the setup — quick, then they build.</p>
+      <div class="t">Say</div><p>"The Build lives inside one Project, and you build it up in layers. Step one is just the base: a router that runs each build step, plus the Week-2 fundamentals loaded as grounding. Then each of the next four steps <em>enriches</em> it with one role file and fires a one-line trigger. So the workspace ends up rich, and your prompts stay tiny."</p>
+      <div class="t">Do</div><ul><li>Reassure them Step 1 is a three-minute setup — the real work starts at Step 2.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Let's set the base — three quick moves."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="The Build" data-mv="Step 1 · Set up the Project">
@@ -796,6 +1061,13 @@ For any action with consequences (external email, committing spend, a customer p
         <span class="read">Base workspace ready — a router plus the Week-2 fundamentals, nothing role-specific yet. <b>Next:</b> every Build step adds one role file, then you run it.</span>
       </div></div>
     <div class="note"><div class="t">Takeaway</div><p>A Project = standing instructions + knowledge, live in every chat. Today you set only the base: a router that runs each step, and the Week-2 fundamentals + defined-agent criteria as grounding. Each of the four steps that follow enriches it with one role file — so the workspace ends rich and the prompts stay tiny.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>A Project = standing instructions + knowledge in every chat; Step 1 loads the router + the fundamentals, nothing role-specific yet.</div>
+      <div class="t">Move</div><p>You walk the three substeps on the TV while they follow; ~8 min including paste-and-save.</p>
+      <div class="t">Say</div><p>"Follow me on the TV. A Project is just standing instructions plus knowledge that load into every chat. Three moves: create the project, name it Agent Builder. Paste the router into the instructions — that's the block that runs each build step from the role files you'll add. Then add the base knowledge as text — the Week-2 fundamentals and the defined-agent criteria. That's it — the base is set; everything role-specific comes one step at a time."</p>
+      <div class="t">Do</div><ul><li>Walk substep 2 (the router) and substep 3 (the knowledge base) live on the TV — use the copy buttons; press → to advance the stepper as the room keeps pace.</li><li>~8 min. Circulate; the usual failure is not saving the instructions field.</li><li>If asked why two blocks: instructions = how it behaves (the router); knowledge = what it reasons from (the fundamentals).</li><li>Don't advance until everyone has an empty-but-wired Agent Builder.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Base is set. Step two — let it interview you and design your v1."</p>
+    </div>
   </section>
 
   <!-- ============ BUILD · Step 2 · design (AI interviews you) ============ -->
@@ -804,6 +1076,13 @@ For any action with consequences (external email, committing spend, a customer p
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Lock the design of your v1 — least-autonomy pattern, the loop, tools, knowledge, stopping rule, checkpoint — not a guess, but a design you've been talked into clearly.</p></div>
       <div class="gb"><div class="t">You'll carry forward</div><p>A crisp DESIGN block that everything you build tonight follows.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>The build turns personal: the Project interviews the leader to lock the v1 design. It works from their Week-1 spec (or a spec-sheet agent if they need one) and drives it to the least-autonomy pattern with a real stopping rule and checkpoint. Enrich with the Designer role, then run it — the interview out-performs a blank page every time.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>The build turns personal — the Project interviews the leader to lock the v1 at the least-autonomy pattern, with a real stopping rule and checkpoint.</div>
+      <div class="t">Move</div><p>Frame Step 2, ~30 sec. The build gets personal here.</p>
+      <div class="t">Say</div><p>"Now it turns personal. Instead of you filling in a blank design, the Project <em>interviews</em> you — one sharp question at a time — and drives you to the least-autonomy pattern with a real stopping rule and a checkpoint. It works from your Week-1 spec, or, if you need one, it offers the four agents from the spec sheet. An interview out-performs a blank page every time."</p>
+      <div class="t">Do</div><ul><li>Remind them of the rhythm they're about to run for the first time: enrich with the Designer role, then run it with one line.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Enrich, then run the design interview."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="The Build" data-mv="Step 2 · Design it — AI interviews you">
@@ -865,6 +1144,13 @@ Tone: short messages, one question per turn, no bullet lists during the intervie
         <span class="read"><b>Hold onto the DESIGN block</b> — it's the blueprint for Steps 3–5 and the top half of your design doc.</span>
       </div></div>
     <div class="note"><div class="t">Takeaway</div><p>Same rhythm as Week 1's interview: enrich with the Designer role, then run it with one line. The interview drives them to the least-autonomy pattern and forces a real stopping rule and checkpoint, then outputs a fixed DESIGN block. If they have no problem, it offers the four spec-sheet agents. Keep the DESIGN block — it anchors the rest.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Enrich with the Designer role, run the one-line trigger; it outputs a fixed DESIGN block — the blueprint for Steps 3–5 and the top of the design doc.</div>
+      <div class="t">Move</div><p>They enrich and run; you circulate. ~12 min — the interview takes time. Longest Build step.</p>
+      <div class="t">Say</div><p>"The rhythm for real now. First <em>enrich</em>: add the 'Role 1 · Agent Designer' file to the builder's knowledge, and save. Then <em>run</em>: new chat, and the one-line trigger — 'Run Build Step 2, interview me and lock the design' — with your Week-1 spec pasted in. Let it interview you, one question at a time. When it's done it hands you a DESIGN block: name, goal, pattern, loop, tools, knowledge, stopping rule, checkpoint, data rule."</p>
+      <div class="t">Do</div><ul><li>~12 min — the interview is the longest single step; protect the time.</li><li>Circulate hard: the failure mode is leaders answering vaguely — push them to be specific, the way the role file does.</li><li>Capture: make sure everyone <em>keeps the DESIGN block</em> — it's the blueprint for Steps 3–5 and the top of the doc.</li><li>No Week-1 spec? Tell the trigger "I need one from the spec sheet" — it picks the closest of the four to a real pain they own.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"You've got a design. Step three — turn it into a real, standing agent."</p>
+    </div>
   </section>
 
   <!-- ============ BUILD · Step 3 · assemble v1 ============ -->
@@ -873,6 +1159,13 @@ Tone: short messages, one question per turn, no bullet lists during the intervie
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Turn the DESIGN block into a real, standing agent: an annotated system prompt, its knowledge, and the one connector it needs.</p></div>
       <div class="gb"><div class="t">You'll carry forward</div><p>A working v1 Project — the agent itself, ready to test.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>Now it becomes real. Enrich with the System-Prompt Architect role; it writes an <em>annotated</em> system prompt (each guardrail explained — that annotation is the homework's design doc), tells them exactly what knowledge to load and which connector to wire. They build v1 <em>as its own Project</em>, not in the builder chat.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Enrich with the System-Prompt Architect; it writes an annotated system prompt (the annotations are the design doc) — built as its own Project.</div>
+      <div class="t">Move</div><p>Frame Step 3, ~30 sec. This is where the agent becomes real.</p>
+      <div class="t">Say</div><p>"Step three is where it becomes real. Enrich with the 'System-Prompt Architect' role, and it writes an <em>annotated</em> system prompt — each guardrail with a one-line 'why' beside it. That annotation isn't extra work; it <em>is</em> the design doc. It also tells you exactly what knowledge to load and which one connector to wire. And crucially — you build v1 as its <em>own</em> new Project. The Agent Builder was the scaffold; this is the agent."</p>
+      <div class="t">Do</div><ul><li>Flag the key move up front: they create a second, separate Project for the agent itself — not build it inside the builder chat.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Enrich, draft the prompt, then build the agent as its own Project."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="The Build" data-mv="Step 3 · Assemble v1">
@@ -931,6 +1224,13 @@ one tool.</pre></div></details>
         <span class="read"><b>You now have a v1 agent</b> — a standing Project with instructions, knowledge and a tool. <b>Next:</b> break it before anyone relies on it.</span>
       </div></div>
     <div class="note"><div class="t">Takeaway</div><p>Enrich → draft → build. The architect writes an annotated system prompt (the annotations are the design-doc gold), a knowledge list from their PERSIST list, and names one connector. Crucially they build v1 as its <em>own</em> new Project — the Agent Builder was the scaffold; this is the agent. This is the "working Claude Project link" the homework asks for.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>The annotated system prompt is the design-doc gold; build v1 as its own Project with instructions, knowledge and one connector — the "working Project" the homework asks for.</div>
+      <div class="t">Move</div><p>They enrich, run, build; you circulate. ~12 min. Last step before the tea break.</p>
+      <div class="t">Say</div><p>"Three moves. <em>Enrich</em> the builder with the architect role. <em>Run</em> it — 'write my agent's annotated system prompt, plus the knowledge list and the one connector' — with your DESIGN block pasted in. Then <em>build</em>: create a new Project named after your agent, paste the annotated prompt into its instructions, add the knowledge from your PERSIST list, and wire the one connector — Projects → Connectors, no code. That standing Project is your v1."</p>
+      <div class="t">Do</div><ul><li>Walk the "build it as its own Project" substep on the TV — this is the step people conflate with the builder chat; make the separation explicit.</li><li>~12 min. Circulate; the common miss is wiring more than one connector — hold them to the fewest that let it act.</li><li>Capture: the v1 Project link is literally the homework deliverable — make sure it exists and runs before tea.</li><li>If asked "do I keep the annotations in the live prompt?" — yes; they cost nothing and they document the design.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"You have a v1 agent. After tea — break it before anyone relies on it."</p>
+    </div>
   </section>
 
   <!-- ============ BUILD · Step 4 · test ============ -->
@@ -939,6 +1239,13 @@ one tool.</pre></div></details>
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Run three real, awkward inputs through your v1 and hunt the failure modes before anyone relies on it.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p>Whether it's good enough to trust — and what breaks first.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>Test is where the lifecycle earns its keep — three real cases is the floor (and it's the homework). Enrich the builder with a Tester role that generates awkward inputs and a scoring rubric, then they run each against the v1 agent in its own Project and log where it drifts, invents, or acts past its checkpoint.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Test is where the lifecycle earns its keep — three real cases is the floor; the trap case is the one that matters.</div>
+      <div class="t">Move</div><p>Frame Step 4, ~30 sec, back from tea. Energy re-set for the final push.</p>
+      <div class="t">Say</div><p>"Back from the break, and this is where the lifecycle earns its keep — testing. You'll enrich the builder with a Tester role that generates three real, awkward inputs and a scoring rubric, then run each against your v1 agent. Three cases is the floor — a normal one, an edge case, and a <em>trap</em> designed to tempt it past its checkpoint or its data rule."</p>
+      <div class="t">Do</div><ul><li>Tell them the trap case is the whole point — "does your agent stop and escalate, or act past its authority?"</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Enrich, get three cases, then run them against your v1."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="The Build" data-mv="Step 4 · Test with 3 real inputs">
@@ -989,6 +1296,13 @@ results back. Do NOT run them yourself.</pre></div></details>
         <span class="read"><b>The judgment:</b> the trap case is the one that matters — did your agent stop and escalate, or did it act past its authority? Log the failure modes; they're the heart of your design doc.</span>
       </div></div>
     <div class="note"><div class="t">Takeaway</div><p>Enrich → get 3 cases → run &amp; log. The Tester designs a normal, an edge and a trap case with a rubric; they run each against the real v1 agent (not the builder chat). The trap case is the point — it proves whether the checkpoint and data rule hold under pressure. The logged failure modes feed the design doc.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>The Tester designs normal/edge/trap + a rubric; run each against the real v1 (not the builder chat); the logged failure modes feed the design doc.</div>
+      <div class="t">Move</div><p>They enrich, generate, run &amp; log; you circulate. ~10 min.</p>
+      <div class="t">Say</div><p>"Same rhythm. <em>Enrich</em> the builder with the 'Tester &amp; Red-Team' role. <em>Run</em> it to get three cases and a rubric. Then <em>switch to your v1 agent's own Project</em> and paste each input, one per new chat — and score each against the rubric: did it stay on task, invent anything, respect the stopping rule and the checkpoint, did any data cross a line? The trap case is the one that matters — it proves whether your governance actually holds under pressure."</p>
+      <div class="t">Do</div><ul><li>Make the switch explicit: they generate cases in the builder, but <em>run</em> them in the v1 agent's Project — a common mix-up.</li><li>~10 min. Circulate; make sure everyone actually runs the trap case, not just the easy one.</li><li>Capture: log the failure modes — they're the heart of the design doc's next section.</li><li>If a v1 sails through the trap untouched, push: "is your checkpoint real, or did the case not actually test it?"</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"You've broken it and logged it. Last step — pressure-test and write the doc."</p>
+    </div>
   </section>
 
   <!-- ============ BUILD · Step 5 · pressure-test & design doc ============ -->
@@ -997,6 +1311,13 @@ results back. Do NOT run them yourself.</pre></div></details>
       <div class="goalrow"><div class="gb"><div class="t">Goal</div><p>Turn the design and the test results into your 1-page design doc — and make the call on your v1.</p></div>
       <div class="gb"><div class="t">You'll decide</div><p><b>GO · HARDEN FIRST · RECONSIDER</b> — justified in three statements.</p></div></div></div>
     <div class="note"><div class="t">Takeaway</div><p>Last enrich, last run: the Design-Doc role pressure-tests the agent as a blunt sceptic, then helps compile the 1-page design doc — annotated system prompt, design decisions, failure modes, improvements — and forces a GO / HARDEN-FIRST / RECONSIDER call. The completed doc + the v1 Project link is the week's homework.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>The Design-Doc role pressure-tests as a blunt sceptic, compiles the 1-page doc, and forces a GO / HARDEN-FIRST / RECONSIDER call.</div>
+      <div class="t">Move</div><p>Frame the final step, ~30 sec. Last enrich, last run — then the close.</p>
+      <div class="t">Say</div><p>"Last step. Enrich with the 'Design-Doc Writer and Pressure-Tester' role. It does two things: first it pressure-tests your agent as a <em>blunt sceptic</em> — where's it most likely to go wrong, is the autonomy still too high, does the data rule really hold? Then it helps you compile the one-page design doc and forces a single call on your v1 — GO, HARDEN FIRST, or RECONSIDER — justified in three statements."</p>
+      <div class="t">Do</div><ul><li>Tell them the pressure-test is meant to sting — the blunter it is now, the safer the agent later.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Enrich, run the pressure-test, then complete your doc and make the call."</p>
+    </div>
   </section>
 
   <section class="slide" data-deck="The Build" data-mv="Step 5 · Pressure-test &amp; design doc">
@@ -1075,6 +1396,14 @@ exactly three statements.</pre></div></details>
         <span class="read"><b>Your 1-page design doc — plus your working v1 Project link — is this week's homework, started live.</b> The homework hardens it: build it fully in Claude Projects, test with 3 real inputs, and refine.</span>
       </div></div>
     <div class="note"><div class="t">Takeaway</div><p>Enrich → run → complete the doc. Claude pressure-tests the agent, then they fill the three-card design doc (agent &amp; pattern, decisions, failure modes &amp; improvements) and make the GO / HARDEN-FIRST / RECONSIDER call. Copy exports it. That doc + the v1 Project link is exactly the homework's output — and their Agent Builder now holds four role files, a reusable workspace they carry forward.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>They fill the three-card doc and make the GO / HARDEN-FIRST / RECONSIDER call; Copy exports it — that doc + the v1 link is the homework.</div>
+      <div class="t">Move</div><p>They enrich, run, then complete the on-slide doc; you circulate. ~12 min — the capstone capture.</p>
+      <div class="t">Say</div><p>"Final rhythm. <em>Enrich</em> with the design-doc role, <em>run</em> the pressure-test and compile, then <em>complete the doc</em> right here on the slide — the three cards: the agent and its pattern, the design decisions, the failure modes and improvements. Make your call — GO, HARDEN FIRST, or RECONSIDER — and hit 'Copy my design doc' to export it. That doc, plus your working v1 Project link, is this week's homework — started live, and mostly done."</p>
+      <p>"And look what you've also built along the way: your Agent Builder now holds four role files. It's a reusable workspace you carry forward — you can design the next agent with it in minutes."</p>
+      <div class="t">Do</div><ul><li>The canvas saves to the browser as they type; walk them to the "Copy my design doc" button and confirm it copies.</li><li>Make everyone press a GO / HARDEN-FIRST / RECONSIDER button — the call is the point, not a tidy doc.</li><li>~12 min. Most will land on HARDEN FIRST — that's the honest, right answer for a v1; affirm it.</li><li>Capture: doc exported + v1 Project link saved = the homework is in hand before they leave.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"That's your v1, built and judged. Two things before we close — where to get help, and the number you wrote this morning."</p>
+    </div>
   </section>
 
   <!-- ============ STUCK / CURIOUS ============ -->
@@ -1086,6 +1415,13 @@ exactly three statements.</pre></div></details>
         <li><b>A term you didn't catch</b> → bring it to the next clinic or post in the Teams doubt channel.</li>
       </ul></div>
     <div class="note"><div class="t">Takeaway</div><p>Getting unstuck: flag the trainer in-session; after, use the mid-week clinic (~3 days out) or the Teams doubt channel (reply within 1 business day). Terms you missed → the glossary.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>In-session, flag the trainer; after, the mid-week clinic (~3 days out) or the Teams doubt channel (reply within 1 business day).</div>
+      <div class="t">Move</div><p>Housekeeping, ~30 sec. Keep it brief — the close is the moment.</p>
+      <div class="t">Say</div><p>"Quick one on getting unstuck. During a session, flag me — we work it on the TV. After today, two routes: the mid-week clinic, about three days out, or the Teams doubt channel, where you'll get a reply within one business day. A term you didn't catch — bring it to the clinic or drop it in the channel."</p>
+      <div class="t">Do</div><ul><li>Point at the Teams channel and the clinic date; don't dwell — move to the close.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"Now — the number you wrote this morning."</p>
+    </div>
   </section>
 
   <!-- ============ CLOSE ============ -->
@@ -1094,20 +1430,30 @@ exactly three statements.</pre></div></details>
       <p class="lead">The loop, tools, memory, the lifecycle — all fed one working v1 that stops where you told it to. <b>Re-read the confidence number you wrote at 10:45.</b> Then commit your v1 in one sentence: what it does, and where the human stays in the loop.</p>
       <span class="read"><b>Prove the shift:</b> most rooms move three or four points on that 1–10 by now — because you can only govern an agent once you've built one, and today you did. The homework hardens your v1; Week 3 makes it reliable.</span></div>
     <div class="note"><div class="t">Takeaway</div><p>Prove the shift: have them re-read the confidence number from the cold open — it should have moved, because they built and governed a real agent. Direct callback to the open ("most things called agents are looser than their owners think" → "yours stops where you told it to"). Homework hardens v1; Week 3 makes it reliable.</p></div>
+    <div class="script">
+      <div class="lead1"><span class="k">Remember</span>Re-read the confidence number from the open — it should have moved, because they built and governed a real agent today.</div>
+      <div class="t">Move</div><p>Prove the shift, ~90 sec, ~16:20. Land the day — slow down, let the number do the work.</p>
+      <div class="t">Say</div><p>"So. This morning I asked for a private number — one to ten, could you design, build and govern an agent for your function. Re-read it now. Most rooms move three or four points by this point — and here's why: you can only really govern an agent once you've <em>built</em> one, and today you did. The loop, the tools, the memory, the lifecycle — they all fed one working v1 that stops exactly where you told it to."</p>
+      <p>"Remember where we started — most things called 'agents' are looser than their owners think. Yours isn't. Yours <em>stops where you designed it to</em>. Now commit it in one sentence: what it does, and where the human stays in the loop. The homework hardens this v1; Week 3 makes it reliable."</p>
+      <div class="t">Do</div><ul><li>Have each leader re-read their 10:45 number silently, then ask two or three to say the delta out loud — the movement is the proof.</li><li>Close on the one-sentence commitment: "what it does, and where the human stays in the loop."</li><li>If a number didn't move, that's fine — ask what would need to be true for it to; usually it's "build a second one," which is the homework.</li></ul>
+      <div class="t">Bridge &rarr;</div><p>"(End of Week 2.)"</p>
+    </div>
   </section>
 
 </div>
 <div class="chrome"><span class="mv" id="mvlbl"></span><span class="count"><span id="cur">1</span> / <span id="tot">1</span></span></div>
-<div class="helpbar">→ next · ← back · <b>Home</b> agenda · <b>N</b> notes · <b>F</b> full-screen</div>
+<div class="helpbar">→ next · ← back · <b>Home</b> agenda · <b>N</b> notes · <b>S</b> script · <b>F</b> full-screen</div>
 <aside class="notes" id="notes"><header><span class="b" id="notesBeat">Notes</span><button class="x" id="notesClose">✕</button></header><div class="body" id="notesBody"></div></aside>
+<aside class="scriptpanel" id="script"><header><span class="b" id="scriptBeat">Script</span><button class="x" id="scriptClose">✕</button></header><div class="body" id="scriptBody"></div></aside>
 <script>
 (function(){"use strict";
   var slides=Array.prototype.slice.call(document.querySelectorAll(".slide")),i=0,N=slides.length;
   var curEl=document.getElementById("cur"),totEl=document.getElementById("tot"),mvEl=document.getElementById("mvlbl"),progEl=document.getElementById("progress");
   var notes=document.getElementById("notes"),notesBody=document.getElementById("notesBody"),notesBeat=document.getElementById("notesBeat");
+  var scriptBody=document.getElementById("scriptBody"),scriptBeat=document.getElementById("scriptBeat"),body=document.body;
   totEl.textContent=N;
   function lbl(s){return (s.dataset.mv||"Notes").replace(/^M\d+ · /,"");}
-  function syncNotes(){var s=slides[i];var n=s.querySelector(".note");notesBody.innerHTML=n?n.innerHTML:"<p class='muted'>No notes yet.</p>";notesBeat.textContent=lbl(s);}
+  function syncNotes(){var s=slides[i];var n=s.querySelector(".note");notesBody.innerHTML=n?n.innerHTML:"<p class='muted'>No notes yet.</p>";notesBeat.textContent=lbl(s);var sc=s.querySelector(".script");scriptBody.innerHTML=sc?sc.innerHTML:"<p class='muted'>No script for this slide yet.</p>";scriptBeat.textContent=lbl(s);}
   function stepTotal(s){return s.querySelectorAll(".steppanel").length;}
   function showStep(s,k){var ps=s.querySelectorAll(".steppanel"),T=ps.length;if(!T)return;k=Math.max(1,Math.min(T,k));s.dataset.step=k;
     ps.forEach(function(p){p.classList.toggle("on",+p.dataset.s===k);});
@@ -1121,8 +1467,9 @@ exactly three statements.</pre></div></details>
     if(e.key==="ArrowRight"||e.key==="ArrowDown"||e.key===" "||e.key==="PageDown"){e.preventDefault();next();}
     else if(e.key==="ArrowLeft"||e.key==="ArrowUp"||e.key==="PageUp"){e.preventDefault();prev();}
     else if(e.key==="Home"){e.preventDefault();go(1);}else if(e.key==="End"){e.preventDefault();go(N-1);}
-    else if(e.key==="n"||e.key==="N"){notes.classList.toggle("open");}
-    else if(e.key==="Escape"){notes.classList.remove("open");}
+    else if(e.key==="n"||e.key==="N"){notes.classList.toggle("open");body.classList.remove("script-open");}
+    else if(e.key==="s"||e.key==="S"){body.classList.toggle("script-open");notes.classList.remove("open");}
+    else if(e.key==="Escape"){notes.classList.remove("open");body.classList.remove("script-open");}
     else if(e.key==="f"||e.key==="F"){if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}else{document.exitFullscreen&&document.exitFullscreen();}}});
   (function(){var deckEl=document.getElementById("deck"),downX=0,downY=0,IGNORE=".lab,button,a,input,.note,.helperref,.promptblock,.stepper,.promptfold,details,textarea";
     deckEl.addEventListener("mousedown",function(e){downX=e.clientX;downY=e.clientY;});
@@ -1136,6 +1483,7 @@ exactly three statements.</pre></div></details>
     });})();
   Array.prototype.forEach.call(document.querySelectorAll(".snode"),function(nd){nd.addEventListener("click",function(ev){ev.stopPropagation();var s=nd.closest(".slide");if(s)showStep(s,+nd.dataset.s);});});
   document.getElementById("notesClose").onclick=function(){notes.classList.remove("open");};
+  document.getElementById("scriptClose").onclick=function(){body.classList.remove("script-open");};
 
   /* copy-to-clipboard for hands-on prompts */
   function fallbackCopy(t,ok){var ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.focus();ta.select();try{document.execCommand("copy");ok();}catch(e){}document.body.removeChild(ta);}

@@ -35,19 +35,20 @@ Do NOT commit anything unless I explicitly say so.
 
 ## THE PRIMARY GUIDE (governs HOW you build)
 `.claude/skills/teach/PRESENTER-DECK-PLAYBOOK.md` — the source of truth for presenter decks.
-Follow it exactly: persona (§1), doctrine (§2), the two inputs (§3–§4), the conversion map (§5),
+Follow it exactly: persona (§1), doctrine (§2), the single input (§3–§4), the conversion map (§5),
 the script-block blueprint (§6), writing each field (§7), the verbatim plumbing (§8), the five
 archetypes (§9), voice (§10), browser-verify (§11), the 95% fidelity checklist (§12), the worked
 example (§13), and the reuse rules (§15: reuse the plumbing, write every script fresh).
 
-## THE INPUTS
-- **Input A (primary — the frozen surface):** the finished Week `N` audience deck,
+## THE INPUT (the only one)
+- **The finished Week `N` audience deck** — the sole source of truth:
   `ai-capability-program/weeks/week-N-<theme>/01-workshop/deck-week-N-<theme>-audience.html`.
-  This is copied UNCHANGED; the script is added on top.
-- **Input B (the voice source, if it exists):** the week's facilitator run-sheet / trainer notes
-  in `.../01-workshop/` (Week 1: `Week1_Facilitator_RunSheet.pdf` + `my_notes.md`). Mine for
-  verbatim Say lines, timings, demo data, coverage rule, contingencies. If none exists, write the
-  scripts from Input A alone (voice the Takeaways + on-glass cues; set timings from the day-plan).
+  This is copied UNCHANGED; the script is added on top. Every script is voiced from what is
+  already on the glass — Takeaways, `.read` bands, widgets, the day-plan slide (voice ← Takeaways
+  + on-glass cues; timing ← the day-plan; demo/contingencies ← the widget + fresh reasoning).
+- **Do NOT use any other file.** No run-sheet, run-of-show, or trainer-notes file feeds the
+  script. If one exists in the week folder, ignore it and delete it so `01-workshop/` holds only
+  the audience deck and the presenter deck (per playbook §4).
 
 ## IGNORE stale/irrelevant files
 Any `*-REGEN.html` artifact, the `region.html` test sample, and the `*-FORMAT.md` docs
@@ -72,7 +73,7 @@ chrome/notes/panels.
 4. Walk every `<section>` in order. Insert exactly ONE `<div class="script">` immediately after
    that slide's `.note`, before `</section>`. Slide count = script count, no slide skipped.
 5. Each script = Remember → Move → Say → Do → Bridge (§6). Shape it by archetype (§9). Voice per
-   §7/§10. Pull run-sheet verbatim where it maps.
+   §7/§10. Voice the Takeaways + on-glass cues where they map — audience deck only.
 
 ## THE GATE — do NOT write all 47 scripts until I approve the first act
 First, add the plumbing and write the scripts for the FIRST ACT only (the front matter + Act 1),

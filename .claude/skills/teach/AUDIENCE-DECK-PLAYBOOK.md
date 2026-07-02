@@ -174,6 +174,19 @@ just buckets.
 movement** (the pre-read widget) plus, where the slide's session calls for practice, **1–2
 hands-on movements**. Number them **M1…MN across the whole week** (Week 1 = M1–M13).
 
+> **Reference prior content by NAME — never by number (movement *or* slide), never by a vague word.**
+> Movement numbers (M1…MN) exist only for *you*, for the **mini-agenda badges** (where the number
+> sits *beside its title*, so it's self-defining), and in the hidden `data-mv` attribute. An
+> individual movement slide **never shows its own number**, and slide *positions* shift the moment
+> any slide is added or removed. So **every pointer to a position is either invisible or fragile** —
+> never write "in **M2**" or "on **slide 11**" in a `.hodo`, `.read`, prompt, **widget text**, or the
+> presenter script.
+> Instead, **point at the thing's identity — its name.** A movement's name is its own heading and
+> its agenda title, so it's already on the glass: *"the loop you named in **Read your own loop**"*,
+> *"the **complaint-queue agent**"*. For open/close callbacks a **time anchor** also works
+> (*"the number you wrote **at 10:45**"*). A name and a time travel with the content; a number does
+> not. And prefer the **name** over a vague *"earlier"* whenever the thing has one — name it.
+
 **Step 4 — design the finale from the build hour + the homework.** The slide's Hr 5 ("build…")
 and the Homework/Output become a **multi-step applied finale** (§7) — the Capstone Decider
 (Week 1) or The Build (Week 2). This is where the day converges on the leader's own problem.
@@ -403,10 +416,17 @@ Author these once, in this order. They are the deck's spine and rarely change we
    homework + next week.
 
 **The engine (copy from the Week 1 deck's `<script>`):**
-- **Nav:** `→`/`Space`/`↓`/`PageDown`/right-click-zone = next; `←`/`↑`/`PageUp` = prev;
+- **Nav:** `→`/`Space`/`↓`/`PageDown` = next; `←`/`↑`/`PageUp` = prev;
   **`Home` = mini-agenda (slide 2-ish)**; `End` = last; `N` = notes; `F` = full-screen; `Esc`
-  closes notes. Click-left-third = prev, else next (but not when the click lands on a widget,
-  button, link, input, stepper, details or note).
+  closes notes.
+- **Click-to-advance (safe zones + selection guard):** clicking the **left 25%** of the width goes
+  back, the **right 25%** goes forward, and the **middle 50% does nothing** — so the presenter can
+  point at or highlight content in the middle without the slide jumping. Never advance when (a) the
+  click lands on a widget, button, link, input, stepper, `details`, promptblock or note; (b) there
+  is an active **text selection** (`window.getSelection().toString()` is non-empty); or (c) the
+  gesture was a **drag** (mouse moved >8px between down and up). The left/right zones show a
+  `pointer` cursor on hover; the middle keeps the default (so text reads as selectable). This is
+  shared engine plumbing — identical in the audience and presenter decks.
 - **In-slide steppers:** on a slide with `.steppanel`s, `→` advances the **sub-step** first and
   only moves to the next slide once the last sub-step is shown (and `←` reverses). Clicking a
   `.snode` jumps to that sub-step.

@@ -1,18 +1,17 @@
 # PRESENTER-DECK PLAYBOOK
 ### The primary source of truth for turning a week's finished audience deck into the trainer's presenter deck
 
-> **The job in one sentence:** hand me a week's **finished audience deck** (and its
-> **facilitator run-sheet / source notes** where they exist), and by following this playbook I
-> produce the **presenter deck** — the *same* deck, byte-for-byte on the glass, with a
-> per-slide **presenter script** (Remember → Move → Say → Do → Bridge) docked behind the `S`
-> key — at least **95% identical to the audience deck in slides and content**, looking and
-> teaching exactly like the Week 1 presenter deck, or better.
+> **The job in one sentence:** hand me a week's **finished audience deck** — the **only** input —
+> and by following this playbook I produce the **presenter deck**: the *same* deck, byte-for-byte
+> on the glass, with a per-slide **presenter script** (Remember → Move → Say → Do → Bridge) docked
+> behind the `S` key — at least **95% identical to the audience deck in slides and content**,
+> looking and teaching exactly like the Week 1 presenter deck, or better.
 
 This playbook is **only about one transformation**:
 
 ```
-   (finished audience deck HTML)  +  (facilitator run-sheet / notes)   ─────►   presenter deck HTML
-        the frozen surface              the trainer's voice & timing            the same deck + a script layer
+   (finished audience deck HTML)   ─────►   presenter deck HTML
+     the single source of truth              the same deck + a script layer
 ```
 
 It is **not** a deck-authoring guide (that is `AUDIENCE-DECK-PLAYBOOK.md`'s job) and it does
@@ -54,9 +53,11 @@ Week 1 presenter deck and copy how it does the thing.**
 
 ## 0. How to use this playbook
 
-You are given **one primary input** — the week's **finished audience deck HTML** — and, where
-they exist, a **secondary input**: the week's **facilitator run-sheet / trainer notes** (Week 1
-= `Week1_Facilitator_RunSheet.pdf` + `my_notes.md`). Then, in order:
+You are given **exactly one input** — the week's **finished audience deck HTML**. It is the sole
+source of truth: every script is voiced from what is already on the glass (Takeaways, `.read`
+bands, widgets, the day-plan slide). **Do not look for, open, or use any other file** — no
+run-sheet, no run-of-show, no "trainer notes". If such a file exists in the week folder, ignore
+it (and delete it — see §4). Then, in order:
 
 1. Read **§1 Persona** and **§2 Doctrine** — *who you are* and *the beliefs that don't bend*.
 2. Run **§5 the conversion map** to lock the two rules that protect the 95% (freeze the
@@ -84,7 +85,7 @@ inventing new teaching. Hold this voice:
   broken the 95%.
 - **You are the calm expert in the trainer's ear.** The Week 1 room is five senior leaders; the
   posture is *calm expert who respects their seniority*, not high-energy L&D. The script must
-  sound like that — measured, precise, never chirpy. (Straight from the run-sheet.)
+  sound like that — measured, precise, never chirpy. (The deck's own framing sets this altitude.)
 - **You write what the trainer *says* and *does*, not what the slide shows.** The slide is the
   cue; the script is the performance. Every script re-teaches the slide's idea out loud, in the
   trainer's first-person voice — it never says "read the slide."
@@ -94,9 +95,10 @@ inventing new teaching. Hold this voice:
   call on, the backup bank).
 - **You keep the trainer one step ahead.** Every script ends with a **Bridge** — the sentence
   that launches the next slide — so the trainer never stalls at a transition.
-- **You mine the run-sheet for gold and put it where it belongs.** Verbatim demo lines, the
-  confidence-read wording, the "why are we here for four weeks?" beat, contingency answers,
-  the coverage rule — these live in the script, never on the glass.
+- **You mine the audience deck for gold and put it where it belongs.** The Takeaway's prose, the
+  `.read` band's call, the widget's control paths, the demo data baked into the widget, the
+  day-plan's timings — these become the script's Say, Do and Move. Anything that reads like a
+  talk-track lives in the script, never on the glass.
 
 If a script would leave the trainer guessing what to say, how long to spend, or what to click,
 it is not finished. Rewrite it.
@@ -123,14 +125,14 @@ it is not finished. Rewrite it.
    toggle *in order* and what to point at; for every hands-on slide it names the timing, the
    circulate-and-harvest move, and the **backup bank** so no leader stalls.
 7. **The voice is the room's voice.** British spelling, executive register, calm-expert posture.
-   The Week 1 room is named in the run-sheet (MD · Finance Head · HR Head · HR Deputy · one more
-   lead) — pitch the Say to *that* altitude.
-8. **The run-sheet is the source of truth for the open and the demo.** Where the run-sheet gives
-   verbatim lines (the March bridge, the 1–5 confidence read, the vendor-quote demo, the
-   coverage rule), the script uses them — that is the trainer's tested wording.
-9. **Contingencies live in the Do.** "If asked whose job the data cleanup is…", the backup
-   problem bank, "if the two prompts land too close, make the vague one lazier" — the hard-won
-   facilitation gold goes in the **Do** bullets of the slide it applies to.
+   The room is senior leaders — pitch the Say to *that* altitude. (Who the room is comes from the
+   deck's own framing, not any outside file.)
+8. **The audience deck is the only source of truth.** Every line the trainer speaks is voiced from
+   what is already on the glass — the Takeaway, the `.read` band, the widget, the day-plan. No
+   external run-sheet, run-of-show or notes file is consulted; if one exists, ignore and delete it.
+9. **Contingencies live in the Do.** "If asked whose job the data cleanup is…", the backup problem
+   bank, "if a leader wants high autonomy, ask what genuinely can't be pre-drawn" — you write these
+   fresh from the slide's own content, into the **Do** bullets of the slide they apply to.
 10. **The Takeaway and the script are different organs.** The Takeaway (kept, unchanged) is the
     one-line *landing* for the reader of the audience copy; the script is the trainer's *full
     delivery*. Never delete or rewrite the Takeaway to make room for the script — they coexist,
@@ -140,7 +142,7 @@ it is not finished. Rewrite it.
 
 ---
 
-## 3. Input A — anatomy of the finished audience deck
+## 3. The input — anatomy of the finished audience deck (the sole source)
 
 The audience deck is your **frozen canvas and your richest content source at once**. Every part
 of a slide tells you what its script must carry. Mine each slide, change none of it:
@@ -162,29 +164,27 @@ of a slide tells you what its script must carry. Mine each slide, change none of
 
 ---
 
-## 4. Input B — the facilitator run-sheet & trainer notes (the voice source)
+## 4. There is no second input — the audience deck is the whole source
 
-Where a week has a **facilitator run-sheet** (Week 1: `Week1_Facilitator_RunSheet.pdf`) and/or
-**trainer notes** (`my_notes.md`), they are the **voice and timing source** — the trainer's own
-tested wording. Mine them for the script; never for the slide.
+Earlier drafts of this playbook allowed a "secondary input" (a facilitator run-sheet / trainer
+notes file) as a voice source. **That is removed.** The presenter deck is built from the
+**audience deck alone** — everything the script needs is already on the glass:
 
-| Run-sheet / notes element | Becomes, in the script |
+| Where each field comes from | In the audience deck |
 |---|---|
-| The **posture** ("calm expert… energy from the content, not working the room") | The register of every **Say**; the tone note in early **Move**s. |
-| **Verbatim "Say" lines** (the March bridge, the confidence read, the demo beats) | The **Say**, used close to verbatim on the slides they map to (open, cold-open, demo). |
-| **Timings** (10:00 0–3 min, 11–15 min…) | The **Move** durations; the day-plan the scripts must sum to. |
-| **Demo data / prompts** (the vendor-quote reconciliation) | The **Do** of the demo slide — what to paste, the wifi-failure backup, the "make the vague one lazier" contingency. |
-| **The coverage rule** ("a second person floats… within ~60 seconds") | A **Do** bullet on the hands-on slides. |
-| Contingency Q&A ("if asked whose job the data cleanup is…") | **Do** bullets — "If asked X:" on the slide it would come up. |
-| The **realistic Day-1 promise** (spec, not a built agent) | Keeps the **Say** honest at the open and the close. |
+| **Say** (the spoken talk-track) | The Takeaway `.note` (expanded to spoken form) + the `.read` band + the on-glass cue, voiced. |
+| **Move** (timing + energy) | The archetype (§9) + the **day-plan slide's** timings (the scripts sum to those hours). |
+| **Do** (stage directions) | The widget's control paths (read them off the widget) + the hands-on facilitation + the demo data baked into the widget. |
+| **Contingencies / backup bank** | Written **fresh** by reasoning about the slide ("If asked X:", "no spec? use the spine agent…") — not lifted from any notes file. |
+| **Remember / Bridge** | The slide's core thesis / the next slide's kicker. |
 
-> If a week has **no** run-sheet, the script is written purely from Input A — voice the
-> Takeaway and the on-glass cue as spoken lines, and set timings from the audience deck's
-> day-plan slide. The run-sheet makes the script *sharper*; it is not required to make it.
+**Do not read any other file into the script.** If a week folder contains a `run-of-show.md`,
+`*-RunSheet.*`, `my_notes.md`, or any similar planning/notes file, **ignore it — and delete it**
+so the week folder stays clean. A week's `01-workshop/` folder should hold only the **audience
+deck** and the **presenter deck** (the pre-read lives in `00-preread/`, homework in `02-homework/`).
 
-**Excluded / stale inputs (do not read as sources):** any `*-REGEN.html` artifact, the
-`region.html` test sample, and the stale `*-FORMAT.md` docs. If you are unsure whether a file is
-a source, ask the trainer before reading it into the script.
+**Also excluded / stale (never read as sources):** any `*-REGEN.html` artifact, the `region.html`
+test sample, and the stale `*-FORMAT.md` docs.
 
 ---
 
@@ -214,14 +214,13 @@ guarantees ≥95%.
 `<section>`, insert exactly one `.script` block **immediately after that slide's `.note`**, just
 before `</section>`. 47 slides → 47 scripts. Never skip, never double.
 
-**Step 3 — plan each script's content source.** For each slide, note in a one-line plan where
-its Say/Do come from:
-- **Say** ← the Takeaway note (expanded to spoken form) + the run-sheet's verbatim line if one
-  maps to this slide + the on-glass cue voiced.
+**Step 3 — plan each script's content source (all from the audience deck).** For each slide, note
+in a one-line plan where its Say/Do come from:
+- **Say** ← the Takeaway note (expanded to spoken form) + the on-glass cue voiced.
 - **Do** ← the widget's control paths (read them off the audience widget) / the hands-on
-  facilitation + backup bank / the finale stepper rhythm / the run-sheet's demo & contingencies.
+  facilitation + backup bank / the finale stepper rhythm / contingencies you write from the slide.
 - **Remember** ← the slide's `.read` band or core thesis, in one line.
-- **Move** ← the slide's archetype (§9) + its timing from the day-plan / run-sheet.
+- **Move** ← the slide's archetype (§9) + its timing from the day-plan slide.
 - **Bridge** ← the next slide's kicker/title.
 
 **Step 4 — add the plumbing (§8) once.** The aside, the JS wiring, the helpbar `S`, the print
@@ -239,7 +238,7 @@ For each of the deck's N slides (unchanged):
       <div class="script">
         Remember  ← the slide's one-line thesis (.read / core claim)
         Move      ← archetype + timing/energy
-        Say       ← the Takeaway voiced + run-sheet verbatim + cue spoken   (1–3 paras)
+        Say       ← the Takeaway voiced + the on-glass cue spoken   (1–3 paras)
         Do        ← widget drive-path / hands-on facilitation + backup / finale rhythm  (bullets; optional on pure framing slides)
         Bridge →  ← the line into the next slide
       </div>
@@ -322,8 +321,9 @@ click/circulate this → launch the next.**
 - **Re-teach, don't read.** Voice the idea; never "as you can see on the slide."
 - **1–3 paragraphs.** A framing slide is one paragraph; a heavy concept (the engine, the RAG
   demo, a finale step's rhythm) may run three.
-- **Use the run-sheet verbatim where it maps** — the March bridge, the confidence read, the
-  "that's a good answer — so why are we here for four weeks?" beat are already tested; use them.
+- **Voice the Takeaway and the on-glass cue** — expand the slide's Takeaway and its `.read` band
+  into spoken lines. Reuse the deck's own callbacks (a confidence read it sets up, a prior-week
+  rule it sharpens) on the slides where the deck itself plants them.
 - **Stress with `<em>`** the two or three words that carry the point ("specificity is
   *control*", "*out-judge* it", "it *refuses*").
 - **British spelling, executive altitude** — behaviour, summarise, organised, prioritise; pitch
@@ -454,7 +454,7 @@ Every slide is one of five archetypes (read it off the register + content). The 
 
 | Archetype | How to recognise it | Move | Say | Do |
 |---|---|---|---|---|
-| **Front-matter / framing** (`.slide.active` title, `.isnow` day-plan, mini-agenda, how-today-works, cold-open, stuck, close) | Muted/wash register, no widget | Short, ~30–45 sec, tone note | 1–2 paras; the run-sheet's open lines live here | **One-line Do** — the watching question, a tone/timing directive, hold for laptops, or point at the day-plan/agenda |
+| **Front-matter / framing** (`.slide.active` title, `.isnow` day-plan, mini-agenda, how-today-works, cold-open, stuck, close) | Muted/wash register, no widget | Short, ~30–45 sec, tone note | 1–2 paras; the deck's opening framing, voiced | **One-line Do** — the watching question, a tone/timing directive, hold for laptops, or point at the day-plan/agenda |
 | **Dark movement divider** (`.slide.dark`, `.goalrow`) | Deep-teal, Goal + You'll decide | "Frame the goal / mark the pivot", short | 1–2 paras framing the goal + the call they own | **One-line Do** — the watching question for the widget/hands-on that follows, or a tone/timing directive; omit only on a truly bare divider |
 | **Concept widget panel** (paper, a `.lab` widget) | Teaching surface with a driveable widget | "You drive…", the widget's tempo | 1–3 paras re-teaching through the widget | **Required** — controls to toggle *in order*, what to point at |
 | **Hands-on** (`.hobadge`, `.hodo`, `.promptblock`) | Hands-on badge + copyable prompts | "They work; you circulate…", ~6–12 min | 1–2 paras — the task, the one question to answer | **Required** — timing, circulate/harvest, coverage rule, **backup bank** |
@@ -474,11 +474,18 @@ Match the archetype and the script writes itself into the right shape.
 - **Stress sparingly with `<em>`** — two or three words per Say paragraph, the ones that carry
   the point.
 - **Move and Do are terse and imperative** — stage directions, not prose. Timings are explicit.
-- **Callbacks land where they belong** — the March→builder bridge at the open, the confidence
-  re-read at the close, the DRIVES "evaluator → builder" line on the qualify step.
+- **Callbacks land where the deck plants them** — a confidence read set up at the open is
+  re-read at the close; a prior-week rule is called back on the slide that sharpens it. Take the
+  callback from the deck's own copy, not from memory of another week.
+- **Reference prior content by name, never by number.** Not a movement number ("M2"), not a slide
+  number ("slide 11") — both are position pointers that are invisible to the room or drift the
+  moment the deck is edited. Name it: "the loop you named in *Read your own loop*", "the
+  complaint-queue agent". For open/close callbacks a **time anchor** works ("the number you wrote at
+  10:45"). Prefer a name over a vague "earlier" whenever the thing has one. (See
+  AUDIENCE-DECK-PLAYBOOK §5.)
 - **Contingencies and backup banks live in Do**, on the slide they'd arise — never on the glass.
-- **Honesty about the Day-1 promise** — the run-sheet's realistic line (a *spec*, not a built
-  agent) keeps the Say truthful at open and close.
+- **Honesty about the day's promise** — keep the Say truthful about what they actually leave with
+  (per the deck's own framing) at open and close; never over-promise beyond the slide.
 
 ---
 
@@ -532,8 +539,9 @@ The presenter deck is not ready until **all** of these are true:
 - [ ] **Move** carries a timing/energy note; the durations roughly sum to the day-plan.
 - [ ] **Do** names widget controls *in order* / hands-on timing + coverage + backup bank /
       finale enrich→run→capture; contingencies folded in as "If asked X:".
-- [ ] Run-sheet verbatim (March bridge, confidence read, vendor demo, coverage rule) is used on
-      the slides it maps to.
+- [ ] The deck's own callbacks (confidence read, a prior-week rule it sharpens, the demo data
+      baked into the widget, the coverage rule) are voiced on the slides they map to — every line
+      sourced from the audience deck, no external file.
 
 **Build & canon**
 - [ ] The §8 plumbing is present and correct; the CSS shell verified (dormant hooks reused, not
@@ -557,7 +565,7 @@ presenter script added *after* that Takeaway:
 - **Remember:** "Working session, not a lecture — they leave owning a real problem."
 - **Move:** "Set the contract in one breath — a working session, not a lecture. ~30 sec, energy up."
 - **Say:** "Welcome. This is a working session, not a lecture — your hands are on the tool within
-  the first half hour…" (voices the Takeaway, run-sheet register).
+  the first half hour…" (voices the Takeaway, executive register).
 - **Do:** "Don't read the agenda yet. Keep the keys handy: *Home* agenda · *N* notes · *F*
   full-screen." (framing slide → light Do.)
 - **Bridge →:** "Here's how the day flows." (→ the day-plan slide.)
@@ -602,12 +610,12 @@ Walk the whole presenter deck, slide by slide, and check:
 | Reuse verbatim (plumbing) | Write fresh every week (the script content) |
 |---|---|
 | The §8 CSS shell, aside, JS wiring, helpbar `S`, print rule | Every Remember / Move / Say / Do / Bridge |
-| The five-field block shape (§6) | The run-sheet verbatim lines (they are *this* week's) |
+| The five-field block shape (§6) | The talk-track voiced from *this* week's Takeaways &amp; `.read` bands |
 | The archetype→shape mapping (§9) | The widget drive-paths (read off *this* week's widgets) |
 | The verify + diff routine (§11) | The backup banks, timings, and contingencies |
 
 **The line you don't cross:** copy the *plumbing and the block shape*, then fill the scripts with
-**this week's** talk-track, drawn from **this week's** audience deck and run-sheet. If you ever
+**this week's** talk-track, drawn from **this week's** audience deck. If you ever
 paste a Week-1 **Say** line onto a later week's slide, you have copied the body — start it over.
 And **never** copy a change to a slide — the surface is always the current week's frozen audience
 deck.
@@ -633,6 +641,13 @@ twin) is the **floor, not the ceiling.**
 - **Keep it lean.** When you add a rule, check whether it *replaces* a vaguer one.
 
 **Lessons log (newest first):**
+- **2026-07-02 · single-source rule (audience deck only).** The presenter deck is now built from
+  the **audience deck alone**. The old "secondary input" — a facilitator run-sheet / run-of-show /
+  trainer-notes file — is removed as a source: it proved stale and unused (Week 2's
+  `run-of-show.md` was a 24-line skeleton whose hour-structure didn't even match the shipped deck).
+  New rule (now in §0, §2.8, §4): voice ← Takeaways + `.read` bands; timing ← the day-plan slide;
+  demo/contingencies ← the widget + fresh reasoning. Any such notes file in a week folder is
+  ignored **and deleted**; a `01-workshop/` folder holds only the audience deck + presenter deck.
 - **2026-07-02 · validation pass against the Week-1 benchmark.** A blind build from this playbook
   reproduced the surface at 100% (machine diff = scripts + plumbing only) but under-covered **Do**:
   the build put Do on 26/47 slides, the shipped deck carries it on **45/47**. Correction (now
@@ -645,9 +660,9 @@ twin) is the **floor, not the ceiling.**
   additive only. 47 slides, 47 Takeaways, unchanged; 47 scripts added, one per slide, each
   Remember → Move → Say → Do → Bridge, placed right after the Takeaway. The CSS shell was already
   dormant in the audience deck; the active plumbing is the aside + JS wiring + helpbar `S` + the
-  print `.script` rule. The scripts' voice and verbatim lines come from the facilitator
-  run-sheet; timings sum to the 5-hour day. ≥95% identity is guaranteed by freezing the surface
-  and proven by a machine diff that shows only scripts + plumbing.
+  print `.script` rule. The scripts' voice is drawn from the audience deck's Takeaways and
+  on-glass copy; timings sum to the day-plan's hours. ≥95% identity is guaranteed by freezing the
+  surface and proven by a machine diff that shows only scripts + plumbing.
 
 ---
 
