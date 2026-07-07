@@ -4,7 +4,7 @@
 > **The job in one sentence:** hand me a week's **requirement slide** and its **finished
 > pre-read**, and by following this playbook I produce the **projectable, hands-on audience
 > deck** the trainer runs in the room — at least **90% ship-ready on the first pass**, looking
-> and teaching like the Week 1 deck, or better.
+> and teaching like the Week 2 deck, or better.
 
 This playbook is **only about one transformation**:
 
@@ -17,15 +17,20 @@ It is **not** a general deck-authoring guide, and it does **not** re-derive the 
 is `PRE-READ-PLAYBOOK.md`'s job). It takes inspiration from that playbook's *shape*, but its
 whole focus is the **correct conversion** of the two inputs into the deck.
 
-**Calibration target (the benchmark):** the shipped
-`weeks/week-1-foundations/01-workshop/deck-week1-foundations-audience.html`. Everything here is
-reverse-engineered from how Week 1's Slide 6 + `week-1-preread-v2.html` became that deck. The
-bar: re-run this playbook on Week 1's two inputs and reproduce **~90–95%** of that deck.
+**Calibration target (the benchmark):** the shipped **Week 2** deck (our gold standard) —
+`weeks/week-2-agentic-deep-dive/01-workshop/deck-week2-agentic-audience.html`. Match it first.
+**Week 1** (`deck-week1-foundations-audience.html`) is a **secondary reference** — draw a few
+cues from it, but Week 2 is the bar. The bar: re-run this playbook on Week 2's two inputs and
+reproduce **~90–95%** of that deck.
+
+> **Note:** the worked example in §17 still walks through **Week 1** (Slide 6 + `week-1-preread-v2.html`)
+> as the illustrative method. Treat it as a valid *method* walkthrough, but calibrate the final
+> look/feel/richness against the **Week 2** deck above.
 
 **Ignore the stale format docs.** `DECK-FORMAT.md`, `KEYNOTE-FORMAT.md`, `LESSON-FORMAT.md`,
 `PLAYBOOK.md` and the other `*-FORMAT.md` files in this folder describe superseded models
-(e.g. "N decks + a helper.md"). The Week 1 deck did **not** follow them. Do not cite, follow,
-or reconcile against them. When in doubt, **open the Week 1 deck and copy how it does the
+(e.g. "N decks + a helper.md"). The shipped decks did **not** follow them. Do not cite, follow,
+or reconcile against them. When in doubt, **open the Week 2 deck and copy how it does the
 thing.** Ignore the stale pointers inside the deck's own HTML comments too (it references
 `DECK-FORMAT.md` and `reference/DESIGN.md`) — derive the canon straight from the file.
 

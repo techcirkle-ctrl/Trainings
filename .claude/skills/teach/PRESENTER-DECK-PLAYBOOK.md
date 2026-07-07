@@ -5,7 +5,7 @@
 > and by following this playbook I produce the **presenter deck**: the *same* deck, byte-for-byte
 > on the glass, with a per-slide **presenter script** (Remember → Move → Say → Do → Bridge) docked
 > behind the `S` key — at least **95% identical to the audience deck in slides and content**,
-> looking and teaching exactly like the Week 1 presenter deck, or better.
+> looking and teaching exactly like the Week 2 presenter deck, or better.
 
 This playbook is **only about one transformation**:
 
@@ -19,35 +19,40 @@ It is **not** a deck-authoring guide (that is `AUDIENCE-DECK-PLAYBOOK.md`'s job)
 nothing else.** Everything the audience already sees stays *exactly* as it is — that is the
 whole point, and it is what guarantees the 95%.
 
-**Calibration target (the benchmark):** the shipped
-`weeks/week-1-foundations/01-workshop/deck-week1-foundations-presenter.html`, measured against
-its own audience twin `deck-week1-foundations-audience.html`. Everything here is
-reverse-engineered from how those two files differ. **The measured truth of that pair — the
-contract this playbook must reproduce:**
+**Calibration target (the benchmark):** the shipped **Week 2** presenter deck (our gold
+standard) — `weeks/week-2-agentic-deep-dive/01-workshop/deck-week2-agentic-presenter.html`,
+measured against its own audience twin `deck-week2-agentic-audience.html`. Match it first.
+**Week 1** (`deck-week1-foundations-presenter.html` + its audience twin) is a **secondary
+reference**. **The contract this playbook must reproduce** — measure it against the *target
+week's own* audience deck:
 
-- **47 slides in both. Identical.** Same order, same registers, same widgets, same on-glass copy.
-- **47 Takeaway `.note` blocks in both. Identical.** The presenter deck does **not** touch the
+- **Same slide count in both. Identical.** Same order, same registers, same widgets, same on-glass copy.
+- **Same Takeaway `.note` blocks in both. Identical.** The presenter deck does **not** touch the
   Takeaways.
-- **47 `.script` blocks in the presenter, 0 in the audience.** **Exactly one script per slide —
-  1:1, no slide skipped, no slide doubled.**
-- **Do is near-universal — 45 of the 47 scripts carry a Do.** Only the two barest movement
-  dividers omit it. Even the title, the act-openers, and the dark dividers get a **one-line
-  stage Do** (a watching question to pose the room, a tone/timing directive, or a
-  "collect the artefact" note). Treat a Do-less script as the rare exception, not the default.
+- **Exactly one `.script` block per slide in the presenter, 0 in the audience — 1:1, no slide
+  skipped, no slide doubled.**
+- **Do is near-universal — almost every script carries a Do.** Only the barest movement dividers
+  omit it. Even the title, the act-openers, and the dark dividers get a **one-line stage Do** (a
+  watching question to pose the room, a tone/timing directive, or a "collect the artefact" note).
+  Treat a Do-less script as the rare exception, not the default.
 - The *only* other differences are five pieces of **plumbing** (§8): the print rule that shows
   the script on paper, the `<aside class="scriptpanel">`, the JS wiring, the helpbar `S` entry,
   and the header comment.
 
+> **Concrete illustration (Week 1 pair):** 47 slides in both · 47 Takeaways in both · 47 scripts
+> in the presenter / 0 in the audience · Do on 45 of 47. Use these as the *shape* to expect; the
+> exact counts for your week come from that week's own audience deck.
+
 The bar: re-run this playbook on any week's audience deck and reproduce a presenter deck that
 is **≥95% identical to that audience deck** (it can only differ by the added script layer +
-plumbing) **and** whose scripts read like Week 1's.
+plumbing) **and** whose scripts read like the **Week 2** presenter deck's.
 
 **Ignore the stale format docs.** `DECK-FORMAT.md`, `KEYNOTE-FORMAT.md`, `LESSON-FORMAT.md`,
 `PLAYBOOK.md`'s older per-artifact notes, and the other `*-FORMAT.md` files describe superseded
 models (the "3 act-decks + a hands-on-movements.md helper", the standalone `keynote.html`).
-Week 1 shipped **two decks of the same 47 slides** — audience + presenter — and that is the
+Each week ships **two decks of the same slides** — audience + presenter — and that is the
 only model. Do not cite, follow, or reconcile against the stale docs. When in doubt, **open the
-Week 1 presenter deck and copy how it does the thing.**
+Week 2 presenter deck and copy how it does the thing.**
 
 ---
 

@@ -75,7 +75,7 @@ chrome/notes/panels.
 5. Each script = Remember → Move → Say → Do → Bridge (§6). Shape it by archetype (§9). Voice per
    §7/§10. Voice the Takeaways + on-glass cues where they map — audience deck only.
 
-## THE GATE — do NOT write all 47 scripts until I approve the first act
+## THE GATE — do NOT write all the scripts until I approve the first act
 First, add the plumbing and write the scripts for the FIRST ACT only (the front matter + Act 1),
 and show me. I'll check the voice and the freeze. ONLY THEN write the rest, act by act, showing me
 as you go.
