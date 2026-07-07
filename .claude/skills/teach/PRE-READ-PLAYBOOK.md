@@ -189,6 +189,8 @@ bullet list, or a passive reveal, you've lost the room — convert it.
 | **State/“desk” widget** | Add items; watch capacity overflow and drop the oldest; pin to persist; start-new to show what survives; remove to curate. | Memory & context windows — short-term desk vs long-term knowledge, and that *you* curate it. |
 | **Filterable labelled accordion** | Rows each carry their **one answer as a label** (visible at a glance, ordered to show a spectrum); click a row to open its "why"; group **filter toggles** at top. | A one-to-one decision set where the *spectrum* matters — task → its one pattern (workflow vs agent). |
 | **Sorter** | Classify items, instant per-item verdict. | Judgement calls — data-sensitivity. |
+| **Optional video on-ramp (`.watch`)** | A teal left-bordered box labelled `▶ Watch first (optional)` with a link to a short external primer. Never required; always cited to `RESOURCES.md`. | Offering a plain-English video primer *before* the interactive widget when a 3-min clip genuinely lowers the activation energy (e.g. "What are AI Agents?" before the loop graph). Use sparingly — one per section at most. |
+| **Two-path clarity box (`.twopath`)** | A teal accent-soft box that draws an explicit line between the leaders' no-code track (Claude Projects) and the trainer's code track (Claude Code, watch-only). | Any section that discusses tools, MCP, or anything that could blur the boundary between what leaders build and what the trainer demonstrates. Always include one when tools appear. |
 
 ### Avoid these (they read as passive or as a quiz in disguise)
 
@@ -245,7 +247,13 @@ Inline these tokens in every file:
   feels inert). *What Could Be* = teal `--accent`, `--paper`, more light (the future warms the
   room). Code both poles this way **everywhere**.
 - **Named components:** `.card` `.pills/.pill` `.why` `.lab` `.kicker` `.tag` `.callback`
-  `.deeper` `.secfoot` `.quiz` `table.lens`. Reuse; don't invent parallels.
+  `.deeper` `.secfoot` `.quiz` `table.lens` `.starthere` `.reqreads` `.buildshell`
+  `.watch` `.twopath`. Reuse; don't invent parallels.
+  - `.starthere` — teal accent-soft card inside Section 1; stronger visual weight than `.why`; used for the homework-anchor action list.
+  - `.reqreads` — amber (`--warn` palette) required-reads callout; sits inside Section 1; links must be clickable.
+  - `.buildshell` — teal accent-soft card closing the final section; the build-forward, hands-on close.
+  - `.watch` — teal left-bordered optional-video box (`border-left:4px solid var(--accent)`); label `▶ Watch first (optional)`; always optional, never required.
+  - `.twopath` — teal accent-soft box drawing the no-code vs code-track distinction; use whenever tools or MCP appear.
 - **Hard rules:** self-contained (inline CSS + vanilla JS, no CDN/network/build); `@media print`
   reveals all panels and expands interactive content; local-only state.
 - **No dark surfaces** — keep everything light.
@@ -273,6 +281,9 @@ Inline these tokens in every file:
   correct answer is affirmed; a wrong answer is corrected *and* the right one highlighted.
 - Reinforce the section's own content and the **new** things the page introduced (a new widget
   behaviour, a build step). Feedback is immediate and automatic — never "answers at the bottom."
+- **Vary correct-answer position.** Across the 4–5 questions in a section, the correct option
+  should not always sit at index 1 (the second button). Deliberately place correct answers at
+  different positions (0, 1, 2, 3) so the page doesn't train a click-pattern rather than understanding.
 - Local only.
 
 ---
@@ -306,7 +317,11 @@ Inline these tokens in every file:
    reveals everything.
 8. **Self-audit** as teacher *and* student (§17); clear the **§15 checklist**; fix cross-reference
    / finale / section-number drift.
-9. **Don't commit** unless the trainer says so.
+9. **Mark time-sensitive spots with a `<!-- TRAINER: … -->` HTML comment** — flag any
+   widget framing, video link, or external claim that needs a pre-launch check (e.g.
+   `<!-- TRAINER: confirm this MCP framing still matches our Week-3 session before launch. -->`).
+   One comment per spot; placed immediately before the relevant element.
+10. **Don't commit** unless the trainer says so.
 
 ---
 

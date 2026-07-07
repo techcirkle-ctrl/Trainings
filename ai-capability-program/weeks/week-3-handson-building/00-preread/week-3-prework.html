@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<!--
+  AI Capability Program — Week 3 Prework (single-file, tabbed, self-teaching).
+  Self-contained: inline CSS + vanilla JS, no network, no build. Open with:
+      open "week-3-prework.html"
+  Five sections: Start here · System prompts · Workflows & chains · Knowledge & grounding · Build sprint.
+  Progress is saved locally (this device only) — nothing is sent anywhere.
+  Visual system ported from week-2-prework.html (the design canon).
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Week 3 Prework — AI Capability Program</title>
+<style>
+  :root{
+    --ink:#16202b; --muted:#5c6b7a; --line:#e4e8ec;
+    --paper:#ffffff; --wash:#f6f8fa; --accent:#0b6e6e; --accent-soft:#e2f0ef;
+    --warn:#b06a00; --good:#1c7a4a; --bad:#b23b3b;
+    --maxw:820px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0; background:var(--wash); color:var(--ink);
+    font:17px/1.65 ui-serif,Georgia,"Iowan Old Style",Palatino,serif; -webkit-font-smoothing:antialiased;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 22px 110px}
+  header.masthead{max-width:var(--maxw); margin:0 auto; padding:30px 22px 6px}
+  .kicker{font:600 12px/1.4 ui-sans-serif,system-ui,sans-serif; letter-spacing:.14em; text-transform:uppercase; color:var(--accent)}
+  h1{font-size:2.05rem; line-height:1.12; margin:.3em 0 .15em; letter-spacing:-.01em}
+  .meta{font:14px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .sans{font-family:ui-sans-serif,system-ui,sans-serif}
+  .small{font-size:.86rem}
+  .muted{color:var(--muted)}
+  p{margin:.7em 0}
+  a{color:var(--accent); text-underline-offset:3px}
+  .lead{font-size:1.12rem; color:#26323d}
+  h2{font-size:1.45rem; margin:.2em 0 .4em; letter-spacing:-.01em}
+  h3{font:600 1.05rem/1.4 ui-sans-serif,system-ui,sans-serif; margin:1.3em 0 .3em}
+  .card{background:var(--paper); border:1px solid var(--line); border-radius:14px; padding:22px 24px; margin:16px 0; box-shadow:0 1px 2px rgba(16,32,43,.04)}
+
+  /* progress + pills (sticky nav) */
+  .navbar{position:sticky; top:0; z-index:20; background:rgba(246,248,250,.92); backdrop-filter:saturate(1.2) blur(6px);
+    border-bottom:1px solid var(--line); padding:10px 0 12px; margin-bottom:8px}
+  .navbar .inner{max-width:var(--maxw); margin:0 auto; padding:0 22px}
+  .prog{display:flex; align-items:center; gap:12px; margin:2px 0 10px}
+  .prog .bar{flex:1; height:8px; background:#e7edf0; border-radius:99px; overflow:hidden}
+  .prog .fill{height:100%; width:0; background:var(--accent); border-radius:99px; transition:width .35s ease}
+  .prog .lbl{font:600 13px ui-sans-serif,system-ui,sans-serif; color:var(--accent); white-space:nowrap}
+  .pills{display:flex; flex-wrap:wrap; gap:8px}
+  .pill{cursor:pointer; border:1px solid var(--line); background:var(--paper); color:var(--ink);
+    font:600 13px/1 ui-sans-serif,system-ui,sans-serif; padding:9px 12px 9px 11px; border-radius:99px; display:flex; align-items:center; gap:7px;
+    transition:border-color .12s, background .12s, color .12s}
+  .pill:hover{border-color:var(--accent)}
+  .pill.active{background:var(--accent); color:#fff; border-color:var(--accent)}
+  .pill .num{display:inline-flex; align-items:center; justify-content:center; width:18px; height:18px; border-radius:50%;
+    background:var(--wash); color:var(--accent); font-size:11px; font-weight:700}
+  .pill.active .num{background:rgba(255,255,255,.22); color:#fff}
+  .pill.done .num{background:var(--good); color:#fff}
+  .pill.done.active .num{background:#fff; color:var(--good)}
+
+  /* panels */
+  .panel{display:none; animation:fade .25s ease}
+  .panel.active{display:block}
+  @keyframes fade{from{opacity:0; transform:translateY(4px)} to{opacity:1; transform:none}}
+  .why{background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:14px; padding:16px 20px; margin:14px 0}
+  .why .kicker{color:var(--accent)}
+  .tag{display:inline-block; font:600 11px/1 ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); background:var(--wash); border:1px solid var(--line); border-radius:6px; padding:5px 8px; margin-right:6px}
+  .callback{background:#fff7ea; border:1px solid #f0e1c2; border-radius:12px; padding:13px 16px; font:.93rem/1.55 ui-sans-serif,system-ui,sans-serif; margin:14px 0}
+  .callback b{color:var(--warn)}
+
+  /* starthere card */
+  .starthere{background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:14px; padding:18px 22px; margin:10px 0}
+  .starthere .kicker{color:var(--accent)}
+  .starthere h2{font:700 1.18rem/1.25 ui-sans-serif,system-ui,sans-serif; margin:.25em 0 .35em; letter-spacing:-.01em}
+  .starthere p{margin:.55em 0}
+  .starthere ol{margin:.5em 0 .2em; padding-left:1.3em}
+  .starthere li{margin:.3em 0}
+
+  /* required reads callout */
+  .reqreads{background:#fff7ea; border:1px solid #f0e1c2; border-radius:12px; padding:14px 18px; margin:12px 0 4px; font:.95rem/1.6 ui-sans-serif,system-ui,sans-serif}
+  .reqreads .kicker{color:var(--warn)}
+  .reqreads b{color:var(--warn)}
+
+  /* optional video on-ramp */
+  .watch{background:#fbfdfd; border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:10px;
+    padding:12px 15px; margin:14px 0; font:14px/1.55 ui-sans-serif,system-ui,sans-serif}
+  .watch .wk{font:700 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:3px}
+  .watch a{font-weight:600}
+  .watch .opt{color:var(--muted); font-weight:600}
+
+  /* two-path note */
+  .twopath{background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:12px; padding:14px 18px; margin:14px 0; font:14.5px/1.6 ui-sans-serif,system-ui,sans-serif}
+  .twopath b{color:var(--accent)}
+
+  /* build-the-shell close */
+  .buildshell{background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:14px; padding:18px 22px; margin:18px 0}
+  .buildshell h3{margin-top:0}
+  .buildshell ul{margin:.5em 0; padding-left:1.25em}
+  .buildshell li{margin:.35em 0; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif}
+  .buildshell .lread{display:block; margin-top:12px; padding-top:12px; border-top:1px solid #cfe6e4}
+
+  /* generic interactive widget shell */
+  .lab{background:#fbfdfd; border:1px solid #cfe6e4; border-radius:14px; padding:18px 20px; margin:16px 0}
+  .lab .hint{font:13px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin-top:8px}
+  .btn{display:inline-block; cursor:pointer; font:600 14px ui-sans-serif,system-ui,sans-serif;
+    background:var(--accent); color:#fff; border:0; border-radius:9px; padding:10px 15px; margin:6px 6px 0 0}
+  .btn.ghost{background:transparent; color:var(--accent); border:1px solid var(--accent)}
+  .btn:disabled{opacity:.45; cursor:default}
+  .out{font:15px/1.55 ui-sans-serif,system-ui,sans-serif; background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-top:12px}
+
+  /* segmented control */
+  .seg{display:inline-flex; gap:2px; border:1px solid var(--line); border-radius:99px; background:var(--wash); padding:3px}
+  .seg button{border:0; background:transparent; cursor:pointer; color:var(--muted);
+    font:700 12.5px ui-sans-serif,system-ui,sans-serif; padding:7px 15px; border-radius:99px; transition:background .18s, color .18s, box-shadow .18s}
+  .seg button.on{background:var(--accent); color:#fff; box-shadow:0 1px 3px rgba(11,110,110,.32)}
+
+  /* S2: system prompt build-up composer — grouped toggle rows */
+  .sp-wrap .sp-group{margin:4px 0 10px}
+  .sp-group-lbl{font:700 10.5px ui-sans-serif,system-ui,sans-serif; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin-bottom:6px}
+  .sp-group-lbl.req-lbl{color:var(--accent)}
+  .sp-wrap .sp-row{display:flex; flex-wrap:wrap; gap:7px}
+  .sp-toggle{cursor:pointer; border:1px solid var(--line); border-radius:99px; padding:8px 14px;
+    background:#fff; display:inline-flex; align-items:center; gap:6px;
+    font:700 13px ui-sans-serif,system-ui,sans-serif; color:var(--muted);
+    transition:border-color .15s, background .15s, color .15s, box-shadow .15s}
+  .sp-toggle.req{border-color:#bcdedd}
+  .sp-toggle.on{background:var(--accent); color:#fff; border-color:var(--accent); box-shadow:0 1px 4px rgba(11,110,110,.22)}
+  .sp-toggle .sp-icon{font-size:15px}
+  .sp-toggle .sp-req-dot{width:6px; height:6px; border-radius:50%; background:var(--accent); flex:none}
+  .sp-toggle.on .sp-req-dot{background:#fff}
+  /* preview area sits immediately below the row */
+  .sp-preview-wrap{margin:0 0 10px}
+  .sp-preview-label{font:700 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:5px}
+  .sp-preview{background:#fff; border:1px solid var(--line); border-radius:11px; padding:14px 16px; font:13.5px/1.7 ui-monospace,Menlo,Consolas,monospace; color:#1e2d3a; white-space:pre-wrap; min-height:80px}
+  .sp-preview .ph{font:14px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted); font-family:ui-sans-serif,system-ui,sans-serif}
+  .sp-preview-note{font:13px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin-top:7px}
+  .sp-preview-note b{color:var(--ink)}
+  .sp-meter{height:9px; background:#eef2f4; border-radius:99px; overflow:hidden; margin:10px 0 0}
+  .sp-meter .fill{height:100%; width:0; background:var(--accent); transition:width .35s, background .35s}
+  .sp-verdict{background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 15px; margin-top:10px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:50px}
+  .sp-verdict .flag{font-weight:700}
+  .sp-verdict.warnstate{border-color:#f0e1c2; background:#fff9f0}
+  .sp-verdict.okstate{border-color:#bfe3cd; background:#f4fbf6}
+  .sp-verdict.warnstate .flag{color:var(--warn)}
+  .sp-verdict.okstate .flag{color:var(--good)}
+
+  /* S3: chain step-through */
+  .chain-wrap .mode-row{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; align-items:center}
+  .chain-wrap .mode-btn{cursor:pointer; border:1px solid var(--line); background:#fff; border-radius:99px; padding:8px 16px;
+    font:700 13px ui-sans-serif,system-ui,sans-serif; color:var(--muted); transition:border-color .15s, background .15s, color .15s}
+  .chain-wrap .mode-btn.on{background:var(--accent); color:#fff; border-color:var(--accent)}
+  .chain-wrap .stages{display:flex; gap:6px; align-items:stretch; flex-wrap:wrap; margin:8px 0}
+  .chain-wrap .stage-node{flex:1; min-width:90px; border:1px solid var(--line); border-radius:10px; padding:10px 10px 9px; background:#fff; text-align:center;
+    font:700 12px ui-sans-serif,system-ui,sans-serif; color:var(--muted); transition:border-color .2s, background .2s, color .2s; position:relative}
+  .chain-wrap .stage-node.hot{background:var(--accent); border-color:var(--accent); color:#fff}
+  .chain-wrap .stage-node.done-node{background:var(--accent-soft); border-color:#cfe6e4; color:var(--accent)}
+  .chain-wrap .stage-node small{display:block; font:500 10px ui-sans-serif,system-ui,sans-serif; margin-top:3px; opacity:.75}
+  .chain-wrap .arrow{flex:none; font-size:18px; color:var(--muted); align-self:center; padding:0 2px}
+  .chain-wrap .arrow.hot{color:var(--accent)}
+  .chain-wrap .chain-narr{background:#fff; border:1px solid var(--line); border-radius:10px; padding:13px 15px; margin-top:10px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:70px}
+  .chain-wrap .chain-narr .ph{font:700 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--accent); display:block; margin-bottom:4px}
+  .chain-wrap .cost-strip{margin-top:10px; display:flex; gap:18px; flex-wrap:wrap}
+  .chain-wrap .cost-item{font:12.5px ui-sans-serif,system-ui,sans-serif; color:var(--muted); display:flex; align-items:center; gap:6px}
+  .chain-wrap .cost-dot{width:11px; height:11px; border-radius:50%; flex:none}
+  .chain-wrap .cgraph{display:block; width:100%; height:auto; max-width:600px; margin:6px auto 2px}
+  .chain-wrap .cnode rect,.chain-wrap .cnode polygon{fill:#fff; stroke:var(--line); stroke-width:1.5; transition:fill .25s, stroke .25s}
+  .chain-wrap .cnode text{fill:var(--muted); font-family:ui-sans-serif,system-ui,sans-serif; transition:fill .25s}
+  .chain-wrap .cnode.on rect,.chain-wrap .cnode.on polygon{fill:var(--accent); stroke:var(--accent)}
+  .chain-wrap .cnode.on text{fill:#fff}
+  .chain-wrap .cnode.branch.on polygon{fill:var(--warn); stroke:var(--warn)}
+  .chain-wrap .cnode.reject.on rect{fill:var(--bad); stroke:var(--bad)}
+  .chain-wrap .cnode.final.on rect{fill:var(--good); stroke:var(--good)}
+  .chain-wrap .cnode .csub{opacity:.8}
+  .chain-wrap .cedge{stroke:var(--line); stroke-width:2.5; fill:none; transition:stroke .25s}
+  .chain-wrap .cedge.on{stroke:var(--accent)}
+  .chain-wrap .cedge.reject.on{stroke:var(--bad)}
+  .chain-wrap .cedge.yes.on{stroke:var(--good)}
+  .chain-wrap .clbl{font:700 11px ui-sans-serif,system-ui,sans-serif; fill:var(--muted); opacity:.5; transition:opacity .25s, fill .25s}
+  .chain-wrap .clbl.on{opacity:1}
+  .chain-wrap .clbl.reject.on{fill:var(--bad)}
+  .chain-wrap .clbl.yes.on{fill:var(--good)}
+  .chain-wrap .branch-choice{display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:10px 0 0}
+  .chain-wrap .branch-choice:empty{margin:0}
+  .chain-wrap .branch-choice .cq{font:700 13px ui-sans-serif,system-ui,sans-serif; color:var(--ink)}
+  .chain-wrap .branch-choice .cbtn{cursor:pointer; border:1.5px solid var(--accent); background:#fff; color:var(--accent);
+    border-radius:99px; padding:7px 15px; font:700 13px ui-sans-serif,system-ui,sans-serif; transition:background .15s}
+  .chain-wrap .branch-choice .cbtn:hover{background:var(--accent-soft)}
+
+  /* S4: grounding stepper + toggle */
+  .gnd-wrap .stepper{display:flex; gap:7px; align-items:center; margin:8px 0; flex-wrap:wrap}
+  .gnd-wrap .dot{width:26px; height:26px; border-radius:50%; border:1px solid var(--line); background:#fff; display:flex; align-items:center; justify-content:center;
+    font:700 12px ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .gnd-wrap .dot.on{background:var(--accent); color:#fff; border-color:var(--accent)}
+  .gnd-wrap .dot.dn{background:var(--accent-soft); color:var(--accent); border-color:#cfe6e4}
+  .gnd-wrap .conn{flex:1; height:2px; background:var(--line); min-width:14px}
+  .gnd-wrap .who{display:inline-block; font:700 10.5px ui-sans-serif,system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; border-radius:6px; padding:4px 8px; margin-bottom:8px}
+  .gnd-wrap .who.model{color:var(--accent); background:var(--accent-soft); border:1px solid #cfe6e4}
+  .gnd-wrap .who.system{color:var(--warn); background:#fff7ea; border:1px solid #f0e1c2}
+  .gnd-wrap .codeln{font:13.5px/1.6 ui-monospace,Menlo,Consolas,monospace; background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px; color:#24323c; white-space:pre-wrap; min-height:54px}
+  .gnd-wrap .tnarr{background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-top:10px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:54px}
+  /* grounded vs ungrounded toggle */
+  .gnd-toggle{margin-top:18px; border-top:1px solid var(--line); padding-top:16px}
+  .gnd-toggle h3{margin-top:0}
+  .gnd-result{background:#fff; border:1px solid var(--line); border-radius:10px; padding:14px 16px; margin-top:10px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif}
+  .gnd-result.grounded{border-color:#bfe3cd; background:#f4fbf6}
+  .gnd-result.ungrounded{border-color:#e8b9b9; background:#fdf4f4}
+  .gnd-result .label{font:700 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; display:block; margin-bottom:6px}
+  .gnd-result.grounded .label{color:var(--good)}
+  .gnd-result.ungrounded .label{color:var(--bad)}
+
+  /* S5: hardening checklist composer */
+  .harden-wrap .harden-group{margin:2px 0 12px}
+  .harden-wrap .harden-group-lbl{font:700 10.5px ui-sans-serif,system-ui,sans-serif; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin-bottom:7px}
+  .harden-wrap .harden-group-lbl.must{color:var(--bad)}
+  .harden-wrap .harden-list{display:flex; flex-direction:column; gap:8px; margin:0}
+  .harden-item{border:1px solid var(--line); border-left:3px solid #e0b6b6; border-radius:11px; padding:11px 14px; background:#fff;
+    transition:border-color .2s, background .2s}
+  .harden-item .h-row{display:flex; align-items:center; gap:9px}
+  .harden-item .h-title{font:700 14px ui-sans-serif,system-ui,sans-serif; color:var(--ink)}
+  .harden-item .h-toggle{cursor:pointer; flex:none; margin-left:auto; border:1.5px solid var(--accent); background:#fff; color:var(--accent);
+    border-radius:99px; padding:6px 14px; font:700 12.5px ui-sans-serif,system-ui,sans-serif; transition:background .15s, color .15s}
+  .harden-item .h-toggle:hover{background:var(--accent-soft)}
+  .harden-item .h-state{margin-top:8px; font:13.5px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .harden-item .h-badge{flex:none; font:700 9.5px ui-sans-serif,system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase;
+    padding:3px 8px; border-radius:99px; background:#f7e6e6; color:var(--bad)}
+  .harden-item.hardened{border-color:var(--accent); border-left-color:var(--accent); background:var(--accent-soft)}
+  .harden-item.hardened .h-state{color:var(--accent)}
+  .harden-item.hardened .h-badge{background:#fff; color:var(--accent)}
+  .harden-item.hardened .h-toggle{background:var(--accent); color:#fff}
+  .harden-meter{height:10px; background:#eef2f4; border-radius:99px; overflow:hidden; margin:12px 0 0}
+  .harden-meter .fill{height:100%; width:0; background:var(--accent); transition:width .35s, background .35s}
+  .harden-readout{background:#fff; border:1px solid var(--line); border-radius:10px; padding:13px 15px; margin-top:10px; font:14.5px/1.55 ui-sans-serif,system-ui,sans-serif; min-height:58px}
+  .harden-readout.warnstate{border-color:#f0e1c2; background:#fff9f0}
+  .harden-readout.okstate{border-color:#bfe3cd; background:#f4fbf6}
+  .harden-readout .flag{font-weight:700}
+  .harden-readout.warnstate .flag{color:var(--warn)}
+  .harden-readout.okstate .flag{color:var(--good)}
+
+  /* keep-this recap table */
+  table.lens{width:100%; border-collapse:collapse; font:14.5px/1.5 ui-sans-serif,system-ui,sans-serif; margin-top:8px}
+  table.lens th,table.lens td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top}
+  table.lens th{background:var(--wash); font-weight:600}
+
+  /* quiz */
+  .quiz .q{border-top:1px solid var(--line); padding:16px 0}
+  .quiz .q:first-of-type{border-top:0}
+  .quiz .stem{font-weight:600; font-family:ui-sans-serif,system-ui,sans-serif}
+  .quiz .opts{list-style:none; margin:.6em 0 0; padding:0}
+  .quiz .opts li{margin:7px 0}
+  .quiz button.opt{width:100%; text-align:left; cursor:pointer; font:14.5px/1.45 ui-sans-serif,system-ui,sans-serif;
+    background:#fff; border:1px solid var(--line); border-radius:9px; padding:10px 12px; color:var(--ink)}
+  .quiz button.opt:hover{border-color:var(--accent)}
+  .quiz button.opt.correct{border-color:var(--good); background:#eaf6ef}
+  .quiz button.opt.wrong{border-color:var(--bad); background:#fbeaea}
+  .quiz button.opt[disabled]{cursor:default}
+  .quiz .fb{display:none; margin-top:9px; font:13.5px/1.55 ui-sans-serif,system-ui,sans-serif; padding:9px 11px; border-radius:8px}
+  .quiz .fb.show{display:block}
+  .quiz .fb.ok{background:#eaf6ef; color:var(--good)}
+  .quiz .fb.no{background:#fbeaea; color:var(--bad)}
+
+  .deeper{font:14px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted); background:var(--wash); border:1px solid var(--line);
+    border-radius:10px; padding:11px 14px; margin-top:16px}
+  .deeper b{color:var(--ink)}
+
+  /* section nav + complete */
+  .secfoot{display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; margin-top:22px;
+    border-top:1px solid var(--line); padding-top:16px}
+  .done{cursor:pointer; font:600 14px ui-sans-serif,system-ui,sans-serif; background:var(--good); color:#fff; border:0; border-radius:9px; padding:11px 16px}
+  .done.is-done{background:#eaf6ef; color:var(--good); border:1px solid #bfe3cd}
+  .ask{background:#fff7ea; border:1px solid #f0e1c2; border-radius:12px; padding:13px 16px; font:.93rem/1.55 ui-sans-serif,system-ui,sans-serif; margin-top:16px}
+  .finale{display:none; background:var(--accent-soft); border:1px solid #cfe6e4; border-radius:14px; padding:18px 22px; margin-top:18px}
+  .finale.show{display:block}
+  footer.ft{max-width:var(--maxw); margin:26px auto 0; padding:20px 22px; border-top:1px solid var(--line); color:var(--muted); font:.85rem ui-sans-serif,system-ui,sans-serif}
+
+  @media print{
+    .navbar{position:static} .panel{display:block !important; page-break-inside:avoid}
+    .btn,.done,.pill{display:none !important}
+    .quiz .fb{display:block !important}
+    .sp-preview,.chain-narr,.gnd-result,.harden-readout{display:block !important}
+    body{background:#fff} .lab,.card,.why{box-shadow:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="kicker">AI Capability Program · Week 3 — Hands-On Agent Building</div>
+  <h1>Week 3 Prework</h1>
+  <div class="meta">Work at your own pace · ~55 min on this page + two required reads (~1.5 hr) · 5 short, interactive sections. <b>Your progress is saved on this device only — nothing is sent anywhere.</b></div>
+</header>
+
+<div class="navbar">
+  <div class="inner">
+    <div class="prog">
+      <div class="bar"><div class="fill" id="progFill"></div></div>
+      <div class="lbl" id="progLbl">0 / 5 complete</div>
+    </div>
+    <div class="pills" id="pills"></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ============================ SECTION 1 — START HERE ============================ -->
+  <section class="panel" id="s0">
+    <span class="tag">Section 1 of 5</span><span class="tag">~10 min</span>
+    <h2>Start here — harden what you've got</h2>
+
+    <div class="starthere">
+      <p style="margin-top:0">Before anything else this week, revisit your Week 2 homework:</p>
+      <p>You built a <b>v1 agent as a Claude Project</b> — instructions (role · loop · guardrails · stopping rule · human checkpoint), knowledge loaded, at least three real inputs tested including one deliberately awkward one. You also wrote a <b>1-page design doc</b>. That doc is your hardening brief for Week 3.</p>
+      <p>Do three things now — about 10 minutes:</p>
+      <ol>
+        <li><b>Open your design doc.</b> Find the row where you recorded the awkward input and what broke. That failure mode is what Week 3 opens by fixing.</li>
+        <li><b>Read your instructions field.</b> Check: does it have a clear <b>stopping rule</b>? A named <b>human checkpoint</b>? If either is vague or missing, note it — the session starts by rewriting exactly this.</li>
+        <li><b>Run the awkward input once more</b> in your Claude Project. See if the same failure mode fires. Note it in one line. This is your evidence for the peer review in Hour 1.</li>
+      </ol>
+      <p style="margin-bottom:0">That's it. Walk into the session knowing <b>exactly where your v1 breaks</b> — that's the raw material the trainer works from. In <b>Section 5 (Build sprint)</b> you'll see the full hardening arc that turns this into a v2.</p>
+    </div>
+
+    <div class="reqreads">
+      <div class="kicker">Two required reads · ~1.5 hr · before the session</div>
+      <p style="margin:.45em 0"><b><a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">Anthropic — Prompt Engineering Guide</a></b> (~1 hr · R6) — the backbone for Section 2 (System prompts); read it before the session.</p>
+      <p style="margin:.45em 0"><b><a href="https://docs.anthropic.com/en/docs/agents-and-tools/agent-skills" target="_blank" rel="noopener">Anthropic — Claude Agent Skills</a></b> (~30 min · R7) — pairs with Section 4 (Connecting agents to knowledge).</p>
+      <p class="muted small" style="margin:.45em 0 0">Everything else (DeepLearning.AI Multi-agent, Claude Projects docs) stays optional "go deeper."</p>
+    </div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s0">Mark this section complete</button>
+      <button class="btn ghost" data-next="s1">Next: System prompts →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 2 — SYSTEM PROMPTS ============================ -->
+  <section class="panel" id="s1">
+    <span class="tag">Section 2 of 5</span><span class="tag">~12 min</span>
+    <h2>System prompts that hold under pressure</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">Your agent's system prompt is its <b>constitution</b> — the rules it operates under every single run. A vague prompt produces a compliant agent in good conditions and an unreliable one under pressure: ambiguous inputs, missing data, edge cases. This section shows you exactly what each layer of a system prompt does — so when yours breaks, you know which layer to fix.</p></div>
+
+    <!-- TRAINER: confirm the prompt-engineering guide framing still matches the session's system-prompt masterclass before launch. -->
+    <div class="watch"><span class="wk">▶ Watch first <span class="opt">(optional)</span></span>
+      <b><a href="https://www.youtube.com/watch?v=jC4v5AS4RIM" target="_blank" rel="noopener">Anthropic — Prompt Engineering in 5 Minutes</a></b> — a short plain-English primer on what prompt engineering actually is, before the layers below.</div>
+
+    <div class="callback">↩ <b>From Week 2:</b> you assembled an agent with instructions, knowledge, and a human checkpoint. This week the trainer takes your <i>instructions field</i> apart and rebuilds it — the system prompt masterclass in Hour 2. This widget is the preview: assemble the layers and watch your procurement-compliance agent take shape.</div>
+
+    <p class="lead">A system prompt isn't a single instruction — it's a <b>stack of layers</b>, each doing one specific job. Toggle the layers on and watch the prompt build. Then see what breaks when a layer is missing:</p>
+
+    <div class="lab sp-wrap">
+      <div class="sp-group">
+        <div class="sp-group-lbl req-lbl">Required</div>
+        <div class="sp-row" id="spRowReq"></div>
+      </div>
+      <div class="sp-group">
+        <div class="sp-group-lbl">Strongly recommended</div>
+        <div class="sp-row" id="spRowRec"></div>
+      </div>
+      <div class="sp-preview-wrap">
+        <div class="sp-preview-label">Live prompt preview</div>
+        <div class="sp-preview" id="spPreview"><span class="ph">Click a layer above — the prompt assembles as you go.</span></div>
+        <div class="sp-preview-note">The order never changes, no matter what you click. A system prompt is read top-to-bottom — <b>structure is part of the instruction</b>.</div>
+      </div>
+      <div class="sp-meter"><div class="fill" id="spMeter"></div></div>
+      <div class="sp-verdict warnstate" id="spVerdict"><span class="flag">Click the layers above</span> — watch the prompt assemble in real time.</div>
+      <div class="hint" style="margin-top:10px">Each layer is independent. Try toggling off just <b>Constraints</b> and see what the agent is now allowed to do. Then toggle off <b>Stopping rule</b> — notice what's missing.</div>
+    </div>
+
+    <h3>Keep this</h3>
+    <table class="lens">
+      <tr><th>Layer</th><th>What it governs</th><th>What breaks without it</th></tr>
+      <tr><td><b>Persona</b></td><td>Who the agent is; its tone and expertise.</td><td>Generic, inconsistent responses.</td></tr>
+      <tr><td><b>Constraints</b></td><td>What it must never do.</td><td>No guardrails — it'll attempt anything.</td></tr>
+      <tr><td><b>Knowledge boundary</b></td><td>What it knows and what it must look up.</td><td>Hallucination when it doesn't know.</td></tr>
+      <tr><td><b>Output format</b></td><td>How it structures its answers.</td><td>Free-form prose — hard to parse or act on.</td></tr>
+      <tr><td><b>Stopping rule</b></td><td>When it's done — or must escalate.</td><td>It loops, over-acts, or silently gives up.</td></tr>
+    </table>
+    <div class="why"><div class="kicker">Leader's read</div>
+      <p style="margin:.2em 0">The session will rewrite your v1 system prompt — that's the masterclass in Hour 2. Walk in knowing <b>which layer is weakest in your current instructions</b>: the prompt-under-pressure failure you found in "Start here" almost always traces to a missing or vague layer here.</p></div>
+
+    <div class="card quiz" id="q1"></div>
+
+    <div class="deeper">📚 <b>Your required read for this section:</b> <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">Anthropic — Prompt Engineering Guide</a> (R6) — listed in Section 1. <b>Go deeper (optional):</b> Anthropic — <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building Effective Agents</a> (R5).</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s1">Mark this section complete</button>
+      <button class="btn ghost" data-next="s2">Next: Workflows &amp; chains →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 3 — WORKFLOWS & CHAINS ============================ -->
+  <section class="panel" id="s2">
+    <span class="tag">Section 3 of 5</span><span class="tag">~12 min</span>
+    <h2>Workflows, chains, and conditional logic</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">Most of what looks like "one smart agent" is actually <b>several smaller pieces working in sequence</b> — and that's on purpose. Splitting a task into a chain is often cheaper, faster, and easier to govern than building one monolithic agent. But splitting too aggressively adds cost and complexity with no gain. This section gives you the intuition for when to split — and when not to.</p></div>
+
+    <div class="callback">↩ <b>From Week 2:</b> you learned the spectrum from workflow (you define the path) to agent (the model defines the path). This week goes one level deeper — inside a workflow or agent, you can <b>chain sub-steps</b>, add <b>conditional branches</b>, and link specialists in <b>sequence</b>. The procurement-compliance agent below is the same one you know — now watch it split.</div>
+
+    <p class="lead">The same task can be handled three ways: by <b>one agent</b> doing everything, by a <b>linear chain</b> of specialist steps, or with <b>conditional logic</b> that branches on what it finds. Pick a mode and step through what happens — then check the cost and tradeoffs:</p>
+
+    <div class="lab chain-wrap">
+      <div class="mode-row">
+        <span class="kicker" style="margin:0">Mode:</span>
+        <button class="mode-btn on" data-mode="single">One agent</button>
+        <button class="mode-btn" data-mode="chain">Linear chain</button>
+        <button class="mode-btn" data-mode="conditional">Conditional logic</button>
+      </div>
+      <div class="stages" id="chainStages"></div>
+      <div style="margin-top:10px">
+        <button class="btn" id="chainStep">Step →</button>
+        <button class="btn ghost" id="chainReset">Reset</button>
+      </div>
+      <div class="branch-choice" id="chainChoice"></div>
+      <div class="chain-narr" id="chainNarr"></div>
+      <div class="cost-strip" id="chainCost"></div>
+      <div class="hint">Watch the <b>number of steps</b> and the <b>path</b> change across modes. In conditional logic, steps the agent doesn't need are simply skipped — fewer tokens, lower cost, same result.</div>
+    </div>
+
+    <h3>Keep this</h3>
+    <table class="lens">
+      <tr><th></th><th>One agent</th><th>Linear chain</th><th>Conditional logic</th></tr>
+      <tr><td><b>Strength</b></td><td>Simple; fewest moving parts.</td><td>Each step is specialist, auditable.</td><td>Skips unnecessary steps; cheapest path.</td></tr>
+      <tr><td><b>Risk</b></td><td>One prompt does too much; harder to fix.</td><td>Every step always runs — even when unneeded.</td><td>Conditions must be correct; more to test.</td></tr>
+      <tr><td><b>Use when</b></td><td>Task is simple and self-contained.</td><td>Steps are always needed in sequence.</td><td>Path varies depending on what the agent finds.</td></tr>
+    </table>
+    <div class="why"><div class="kicker">Leader's read</div>
+      <p style="margin:.2em 0">The session's Hour 3 shows you how to wire these patterns in Claude Projects — no code, using sequential prompts and knowledge documents. Your decision: <b>how many steps does my task genuinely need, and does the path ever branch?</b> That determines which pattern earns its complexity.</p></div>
+
+    <div class="card quiz" id="q2"></div>
+
+    <div class="deeper">📚 <b>Go deeper (optional):</b> Anthropic — <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building Effective Agents</a> (R5) · DeepLearning.AI — <a href="https://www.deeplearning.ai/short-courses/" target="_blank" rel="noopener">Multi-agent systems</a> (R8).</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s2">Mark this section complete</button>
+      <button class="btn ghost" data-next="s3">Next: Knowledge &amp; grounding →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 4 — KNOWLEDGE & GROUNDING ============================ -->
+  <section class="panel" id="s3">
+    <span class="tag">Section 4 of 5</span><span class="tag">~12 min</span>
+    <h2>Connecting agents to knowledge</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">An agent that can't look things up <b>makes things up</b>. Grounding — connecting your agent to documents it can actually read — is what separates a useful, trustworthy agent from a confident-sounding one that fabricates policy, figures, or facts. As the leader, you decide what knowledge your agent has access to — and you own what happens when it gets something wrong.</p></div>
+
+    <!-- TRAINER: confirm the knowledge-retrieval framing in the stepper still matches how the session wires docs to Projects in Hour 3 before launch. -->
+
+    <p class="lead">When your procurement-compliance agent needs to check a supplier's data against policy, here's what actually happens. Step through one knowledge lookup — from the agent's request to the grounded answer:</p>
+
+    <div class="lab gnd-wrap">
+      <div class="stepper" id="gndDots"></div>
+      <div class="who" id="gndWho">&nbsp;</div>
+      <div class="codeln" id="gndCode">Press <b>Step →</b> to watch a single knowledge lookup, start to finish.</div>
+      <div class="tnarr" id="gndNarr">The agent is mid-task and needs to verify something against your supplier policy document.</div>
+      <div style="margin-top:10px">
+        <button class="btn" id="gndStep">Step →</button>
+        <button class="btn ghost" id="gndReset">Reset</button>
+      </div>
+
+      <div class="gnd-toggle">
+        <h3>Grounded vs ungrounded — see the difference</h3>
+        <p style="font:14px/1.5 ui-sans-serif,system-ui,sans-serif; margin:.4em 0 10px">Toggle between an agent that has your supplier policy loaded and one that doesn't. Same question; very different answers:</p>
+        <div class="seg" style="margin-bottom:10px">
+          <button class="on" id="gndOn">✓ Knowledge loaded</button>
+          <button id="gndOff">✗ No knowledge</button>
+        </div>
+        <div class="gnd-result grounded" id="gndResult"></div>
+      </div>
+    </div>
+
+    <div class="callback">↩ <b>From Week 2:</b> you loaded one real document into your Claude Project in the homework. That document is your agent's long-term knowledge — the difference between grounded and ungrounded right here.</div>
+
+    <div class="twopath"><b>Two paths — and you're only on one of them.</b> The trainer demonstrates <b>RAG</b> (Retrieval-Augmented Generation) — automatically retrieving the relevant passage from a large document store using Claude Code. That's the engineer's track, watch-only. Your path is simpler and just as real: load your supplier policy, HR guidelines, or approval framework into <b>Claude Projects → Knowledge</b>, no code. The grounding effect is identical; the wiring is done for you.</div>
+
+    <h3>Keep this</h3>
+    <table class="lens">
+      <tr><th></th><th>Grounded (knowledge loaded)</th><th>Ungrounded (no knowledge)</th></tr>
+      <tr><td><b>Answer source</b></td><td>Your actual documents.</td><td>The model's training data — frozen, generic.</td></tr>
+      <tr><td><b>Accuracy</b></td><td>As accurate as your documents.</td><td>Plausible but fabricated where unknown.</td></tr>
+      <tr><td><b>Auditability</b></td><td>Can cite the source passage.</td><td>Cannot; may sound confident regardless.</td></tr>
+      <tr><td><b>Your call</b></td><td>What documents must it always have?</td><td>Is there a risk the agent invents an answer?</td></tr>
+    </table>
+    <div class="why"><div class="kicker">Leader's read</div>
+      <p style="margin:.2em 0">Every document you <em>don't</em> load is a gap the agent may fill with a confident guess. Your job is to decide: <b>what must it always know?</b> Load those. Treat anything else as a lookup risk you're accepting.</p></div>
+
+    <div class="card quiz" id="q3"></div>
+
+    <div class="deeper">📚 <b>Your required read for this section:</b> <a href="https://docs.anthropic.com/en/docs/agents-and-tools/agent-skills" target="_blank" rel="noopener">Anthropic — Claude Agent Skills</a> (R7) — listed in Section 1. <b>Go deeper (optional):</b> Anthropic — <a href="https://docs.anthropic.com/en/docs/agents-and-tools/mcp" target="_blank" rel="noopener">Model Context Protocol</a> (R12).</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s3">Mark this section complete</button>
+      <button class="btn ghost" data-next="s4">Next: Build sprint →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 5 — BUILD SPRINT ============================ -->
+  <section class="panel" id="s4">
+    <span class="tag">Section 5 of 5</span><span class="tag">~10 min</span>
+    <h2>The build sprint — your v1 to v2 arc</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">The session's Hours 4 and 5 are build sprints — two full-build cycles with trainer coaching and peer review. This section gives you the hardening checklist so you walk in knowing the exact gap between your v1 and a v2 that's robust enough to demo. Tick through it now.</p></div>
+
+    <div class="callback">↩ <b>From Week 2:</b> you built v1, tested it, found where it breaks. Today is the hardening session — where the awkward input you documented becomes a design fix, not just a known fault.</div>
+
+    <p class="lead">Six things separate a v1 agent from a v2 that earns the demo slot. Every row starts as your <b>v1 — the version that breaks</b>; hit <b>Harden</b> to see the <b>v2 fix</b>. The top two are <b>non-negotiable</b> — the agent isn't safe to run until they're done:</p>
+
+    <div class="lab harden-wrap">
+      <div id="hardenList"></div>
+      <div class="harden-meter"><div class="fill" id="hardenMeter"></div></div>
+      <div class="harden-readout warnstate" id="hardenReadout"><span class="flag">Every row is a v1 that breaks.</span> Harden each one to see the v2 fix — start with the two non-negotiables.</div>
+      <div class="hint">This is the exact gap the peer reviewer probes in the sprint. Each fix is one you make in Claude Projects — see the <b>Keep this</b> table below for how.</div>
+    </div>
+
+    <h3>Keep this</h3>
+    <table class="lens">
+      <tr><th>From v1 to v2</th><th>The fix</th><th>How to do it in Claude Projects</th></tr>
+      <tr><td><b>Vague stopping rule</b></td><td>Write an explicit rule: "done when X; escalate when Y."</td><td>Add to the instructions field.</td></tr>
+      <tr><td><b>No human checkpoint</b></td><td>Name the exact decision it must pause on.</td><td>Add a pause instruction: "before [action], ask the user to confirm."</td></tr>
+      <tr><td><b>Hallucination on awkward input</b></td><td>Load the relevant document; add a "look it up or say you don't know" guardrail.</td><td>Add to Knowledge; add a guardrail line to instructions.</td></tr>
+      <tr><td><b>Output hard to act on</b></td><td>Specify the exact format in the output layer.</td><td>Add an "Output format" block to the system prompt.</td></tr>
+      <tr><td><b>Too broad a task</b></td><td>Narrow the scope; start with one sub-task.</td><td>Rewrite the task description in instructions.</td></tr>
+      <tr><td><b>No data boundary</b></td><td>Name what it may and may not touch.</td><td>Add a constraints block; don't connect sensitive sources.</td></tr>
+    </table>
+
+    <div class="buildshell">
+      <h3>Walk into the sprint with your v2 plan written</h3>
+      <p>The two build hours go fast. You don't want to spend the first 20 minutes deciding what to fix. Here's the one thing to do before you walk in:</p>
+      <p>Open your 1-page design doc and <b>write three lines</b> at the top:</p>
+      <ul>
+        <li><b>What broke</b> — the exact failure mode from the awkward-input test.</li>
+        <li><b>Which layer to fix</b> — the system-prompt layer, the knowledge gap, or the stopping rule.</li>
+        <li><b>The one concrete change</b> — not "improve it" but "add this exact guardrail line" or "load this document."</li>
+      </ul>
+      <p>That's your sprint brief. Hand it to the trainer in Hour 4 and they'll build alongside you. In Hour 5, you apply what you learned in Sprint 1 to a second agent — your strongest use case — and demo it to the group.</p>
+      <p><b>After the session:</b> your homework is to pick the use case with the most organisational impact, write a v0 specification (users, problem, success criteria, data, guardrails), build the v1 prototype, and get feedback from one colleague. That prototype is your Week 4 capstone input — so the stronger your v2 coming out of today, the less you're building from scratch at the end.</p>
+      <span class="lread"><b>Leader's read:</b> the hardening sprint isn't about polish — it's about <i>trust</i>. A v2 you'd actually put in front of a colleague is the bar. If you wouldn't share it yet, that tells you exactly where to spend the sprint.</span>
+    </div>
+
+    <div class="card quiz" id="q4"></div>
+
+    <div class="ask">💬 <b>Your trainer is your teacher.</b> Anything here unclear — bring it to the mid-week clinic or the Teams doubt channel (answered within 1 business day). Walk in knowing where your v1 breaks — the sprint turns that into a v2.</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s4">Mark this section complete</button>
+      <span class="small muted">That's the set — bring your v2 plan to the session.</span>
+    </div>
+  </section>
+
+  <div class="finale" id="finale">
+    <div class="kicker">All five done ✓</div>
+    <p style="margin:.3em 0 0">You know what makes a system prompt hold under pressure, when to chain versus when to keep things in one agent, and what grounding your agent in documents actually changes. Walk into the session with your <b>awkward-input failure mode documented</b> and your <b>v2 plan written in three lines</b> — the build sprints turn those into a working agent you'd put in front of a colleague.</p>
+  </div>
+
+</div>
+
+<footer class="ft">
+  AI Capability Program · Week 3 — Hands-On Agent Building · Prework. Compressed essentials live in <code>reference/glossary.html</code>. All external links are tracked in <code>RESOURCES.md</code>. Progress is stored in your browser on this device only.
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var SECTIONS = ["s0","s1","s2","s3","s4"];
+  var TITLES = {s0:"Start here", s1:"System prompts", s2:"Workflows", s3:"Knowledge", s4:"Build sprint"};
+  var KEY = "acp-w3-preread";
+
+  /* ---------- progress / tabs ---------- */
+  var state = load();
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || {done:[]}; }catch(e){ return {done:[]}; } }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+
+  var pillsEl = document.getElementById("pills");
+  SECTIONS.forEach(function(id, i){
+    var b = document.createElement("button");
+    b.className = "pill"; b.dataset.target = id;
+    b.innerHTML = '<span class="num">'+(i+1)+'</span>'+TITLES[id];
+    b.onclick = function(){ show(id); };
+    pillsEl.appendChild(b);
+  });
+
+  function show(id){
+    SECTIONS.forEach(function(s){
+      document.getElementById(s).classList.toggle("active", s===id);
+      var p = pillsEl.querySelector('[data-target="'+s+'"]');
+      if(p) p.classList.toggle("active", s===id);
+    });
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+
+  function renderProgress(){
+    var n = state.done.length;
+    document.getElementById("progFill").style.width = (n/SECTIONS.length*100)+"%";
+    document.getElementById("progLbl").textContent = n + " / " + SECTIONS.length + " complete";
+    SECTIONS.forEach(function(s){
+      var p = pillsEl.querySelector('[data-target="'+s+'"]');
+      if(p) p.classList.toggle("done", state.done.indexOf(s)>=0);
+      var btn = document.querySelector('.done[data-sec="'+s+'"]');
+      if(btn){
+        var isDone = state.done.indexOf(s)>=0;
+        btn.classList.toggle("is-done", isDone);
+        btn.textContent = isDone ? "✓ Completed — click to undo" : "Mark this section complete";
+      }
+    });
+    document.getElementById("finale").classList.toggle("show", n===SECTIONS.length);
+  }
+
+  document.querySelectorAll(".done").forEach(function(btn){
+    btn.onclick = function(){
+      var s = btn.dataset.sec, i = state.done.indexOf(s);
+      if(i>=0) state.done.splice(i,1); else state.done.push(s);
+      save(); renderProgress();
+      if(i<0){ var nx = document.querySelector('#'+s+' [data-next]'); if(nx) setTimeout(function(){ show(nx.dataset.next); }, 250); }
+    };
+  });
+  document.querySelectorAll("[data-next]").forEach(function(b){ b.onclick = function(){ show(b.dataset.next); }; });
+
+  /* ---------- generic quiz ---------- */
+  function makeQuiz(elId, questions){
+    var el = document.getElementById(elId); if(!el) return;
+    questions.forEach(function(q, i){
+      var wrapEl = document.createElement("div"); wrapEl.className="q";
+      var stem = document.createElement("div"); stem.className="stem"; stem.textContent=(i+1)+". "+q.stem; wrapEl.appendChild(stem);
+      var ul = document.createElement("ul"); ul.className="opts";
+      var fb = document.createElement("div"); fb.className="fb";
+      q.opts.forEach(function(opt, j){
+        var li=document.createElement("li");
+        var b=document.createElement("button"); b.className="opt"; b.textContent=opt;
+        b.onclick=function(){
+          if(b.disabled) return;
+          Array.prototype.forEach.call(ul.querySelectorAll("button"), function(x){ x.disabled=true; });
+          if(j===q.answer){ b.classList.add("correct"); fb.className="fb ok show"; fb.textContent="Correct. "+q.why; }
+          else { b.classList.add("wrong"); ul.querySelectorAll("button")[q.answer].classList.add("correct"); fb.className="fb no show"; fb.textContent="Not quite. "+q.why; }
+        };
+        li.appendChild(b); ul.appendChild(li);
+      });
+      wrapEl.appendChild(ul); wrapEl.appendChild(fb); el.appendChild(wrapEl);
+    });
+  }
+
+  /* ---------- S2: system prompt build-up composer ---------- */
+  (function(){
+    var layersEl = document.getElementById("spRowReq"); if(!layersEl) return;
+    var recEl = document.getElementById("spRowRec");
+    var meterEl = document.getElementById("spMeter");
+    var verdictEl = document.getElementById("spVerdict");
+    var previewEl = document.getElementById("spPreview");
+
+    var LAYERS = [
+      {id:"persona", icon:"🧭", title:"Persona", sub:"Who the agent is — its role, domain expertise, and tone.", badge:"Required",
+       req:true, text:"You are a procurement-compliance specialist for Sandvik GCC. You help Finance and Operations leaders verify supplier submissions against approved policy. You are precise, factual, and direct — you do not speculate."},
+      {id:"constraints", icon:"🚧", title:"Constraints", sub:"What it must never do — your hard limits.", badge:"Required",
+       req:true, text:"You must never approve a supplier that is not on the approved vendor register. Do not make exceptions, even if asked. Do not share supplier data with anyone not on the approvals list."},
+      {id:"knowledge", icon:"📁", title:"Knowledge boundary", sub:"What it knows vs what it must look up — prevents fabrication.", badge:"Strongly recommended",
+       req:false, text:"Answer only from the loaded supplier policy and the approved vendor register. If information is not in those documents, say: \"I cannot confirm this — please check the source document directly.\""},
+      {id:"output", icon:"📋", title:"Output format", sub:"How it structures its answer — makes it actionable.", badge:"Strongly recommended",
+       req:false, text:"Always respond with: (1) DECISION: Approved / Rejected / Needs review. (2) REASON: one sentence citing the specific policy rule. (3) NEXT STEP: the exact action the requester should take."},
+      {id:"stopping", icon:"🛑", title:"Stopping rule", sub:"When it's done — or when it must stop and escalate.", badge:"Required",
+       req:true, text:"You are done when a clear decision has been stated. If the supplier involves a value over £250,000, or if the submission is ambiguous, STOP and escalate to the Procurement Director before proceeding. Do not guess."}
+    ];
+
+    var on = {};
+    LAYERS.forEach(function(l){ on[l.id] = false; });
+
+    LAYERS.forEach(function(layer){
+      var btn = document.createElement("button");
+      btn.className = "sp-toggle" + (layer.req ? " req" : "");
+      btn.dataset.id = layer.id;
+      btn.title = layer.sub + (layer.req ? " (required)" : "");
+      btn.innerHTML = '<span class="sp-icon">'+layer.icon+'</span>'
+        + layer.title
+        + (layer.req ? '<span class="sp-req-dot"></span>' : '');
+      btn.onclick = function(){
+        on[layer.id] = !on[layer.id];
+        btn.classList.toggle("on", on[layer.id]);
+        render();
+      };
+      (layer.req ? layersEl : recEl).appendChild(btn);
+    });
+
+    function render(){
+      var count = 0, hasPersona = on.persona, hasConstraints = on.constraints, hasStopping = on.stopping;
+      LAYERS.forEach(function(l){ if(on[l.id]) count++; });
+
+      meterEl.style.width = (count / LAYERS.length * 100) + "%";
+
+      // build preview text
+      var lines = [];
+      LAYERS.forEach(function(l){ if(on[l.id]) lines.push(l.text); });
+      if(!lines.length){
+        previewEl.innerHTML = '<span class="ph">Nothing yet — add the first layer to start.</span>';
+      } else {
+        previewEl.textContent = lines.join("\n\n");
+      }
+
+      // verdict
+      var msg, cls;
+      if(!hasPersona){
+        cls = "warnstate";
+        msg = '<span class="flag">⚠ No persona — no agent.</span> Without a role, it\'s a blank chatbot. The persona layer is always first.';
+      } else if(!hasConstraints){
+        cls = "warnstate";
+        msg = '<span class="flag">⚠ No constraints — no guardrails.</span> The agent can do anything. Add the constraints layer before connecting it to any real system.';
+      } else if(!hasStopping){
+        cls = "warnstate";
+        msg = '<span class="flag">⚠ No stopping rule.</span> Without it, the agent doesn\'t know when it\'s done or when to escalate. It may loop or quietly give up.';
+      } else {
+        cls = "okstate";
+        msg = '<span class="flag">✓ Core layers in place.</span> Persona, constraints, and a stopping rule — the minimum for a safe v1.'
+          + (on.knowledge ? ' Knowledge boundary reduces hallucination.' : ' Add a knowledge boundary to prevent the agent from inventing facts.')
+          + (on.output ? ' Output format makes responses actionable.' : ' Add an output format to make answers easier to act on.');
+      }
+      verdictEl.className = "sp-verdict " + cls;
+      verdictEl.innerHTML = msg;
+    }
+    render();
+  })();
+
+  /* ---------- S3: chain step-through ---------- */
+  (function(){
+    var stagesEl = document.getElementById("chainStages"); if(!stagesEl) return;
+    var narrEl = document.getElementById("chainNarr");
+    var costEl = document.getElementById("chainCost");
+    var choiceEl = document.getElementById("chainChoice");
+    var bStep = document.getElementById("chainStep");
+    var bReset = document.getElementById("chainReset");
+
+    var MODES = {
+      single: {
+        label: "One agent",
+        stages: [
+          {name:"Receive request", sub:"one agent"},
+          {name:"Check vendor register", sub:""},
+          {name:"Verify policy", sub:""},
+          {name:"Check value threshold", sub:""},
+          {name:"State decision", sub:""}
+        ],
+        steps: [
+          {active:[0], narr:"The request lands — a supplier submission for a GCC equipment order. One agent handles everything that follows."},
+          {active:[0,1], narr:"The agent checks the approved vendor register. All in one prompt — it's reading the whole policy doc at once."},
+          {active:[0,1,2], narr:"It verifies the supplier against the compliance policy. Still in the same context window — getting longer, more expensive."},
+          {active:[0,1,2,3], narr:"It checks whether the order value crosses the £250,000 escalation threshold. One agent, four tasks so far — the prompt is large."},
+          {active:[0,1,2,3,4], narr:"Decision stated. One agent did everything — simpler to set up, but the prompt grew large and it's harder to trace which step produced what."}
+        ],
+        cost: [{dot:"#0b6e6e", label:"Tokens: high (one large context window)"}, {dot:"#1c7a4a", label:"Steps: always all 5"}, {dot:"#b06a00", label:"Audit: harder — one blob of output"}]
+      },
+      chain: {
+        label: "Linear chain",
+        stages: [
+          {name:"Receive request", sub:"step 1"},
+          {name:"Vendor register check", sub:"step 2"},
+          {name:"Policy verification", sub:"step 3"},
+          {name:"Threshold check", sub:"step 4"},
+          {name:"Decision", sub:"step 5"}
+        ],
+        steps: [
+          {active:[0], narr:"Request received and parsed. Step 1 has one job: extract the supplier name, order value, and category. Nothing else."},
+          {active:[1], narr:"Step 2 only: check the vendor register. Smaller prompt, faster, auditable — you can see exactly what this step found."},
+          {active:[2], narr:"Step 3 only: verify the specific policy clauses that apply. Each step's output feeds the next as a clean, structured handoff."},
+          {active:[3], narr:"Step 4 only: compare the order value to the £250,000 threshold. One rule, one check — easy to test and easy to swap out."},
+          {active:[4], narr:"Step 5 states the decision, citing step 2–4 outputs. Every step ran. Chain is auditable and reliable — but every step always runs, even when the answer is obvious early."}
+        ],
+        cost: [{dot:"#0b6e6e", label:"Tokens: medium (smaller per-step prompts)"}, {dot:"#1c7a4a", label:"Steps: always all 5"}, {dot:"#b06a00", label:"Audit: easy — one output per step"}]
+      },
+    };
+
+    // Conditional logic is a branching graph (approach B: the leader picks the branch).
+    var COST_NO  = [{dot:"#1c7a4a", label:"Steps: 3 (short path — policy skipped)"}, {dot:"#0b6e6e", label:"Tokens: lowest — the obvious reject exits early"}, {dot:"#b06a00", label:"Audit: good — the branch taken is logged"}];
+    var COST_YES = [{dot:"#0b6e6e", label:"Steps: 5 (full path)"}, {dot:"#0b6e6e", label:"Tokens: medium — the policy check was needed"}, {dot:"#b06a00", label:"Audit: good — the branch taken is logged"}];
+
+    var currentMode = "single";
+    var step = -1;
+    // conditional-mode state
+    var cstep = -1;      // -1 start · 0 receive · 1 vendor · 2 diamond
+    var branch = null;   // null | "no" | "yes"
+    var yesStage = 0;    // 0 at policy check · 1 decision reached
+
+    document.querySelectorAll(".chain-wrap .mode-btn").forEach(function(b){
+      b.onclick = function(){
+        document.querySelectorAll(".chain-wrap .mode-btn").forEach(function(x){ x.classList.remove("on"); });
+        b.classList.add("on");
+        currentMode = b.dataset.mode;
+        step = -1; cstep = -1; branch = null; yesStage = 0;
+        render();
+      };
+    });
+
+    function buildStages(){
+      stagesEl.innerHTML = "";
+      var m = MODES[currentMode];
+      m.stages.forEach(function(s, i){
+        if(i > 0){
+          var arr = document.createElement("div");
+          arr.className = "arrow"; arr.id = "arr"+i; arr.textContent = "→";
+          stagesEl.appendChild(arr);
+        }
+        var node = document.createElement("div");
+        node.className = "stage-node"; node.id = "node"+i;
+        node.innerHTML = s.name + (s.sub ? '<small>'+s.sub+'</small>' : '');
+        stagesEl.appendChild(node);
+      });
+    }
+
+    function render(){
+      if(currentMode === "conditional"){ renderCond(); return; }
+      bStep.disabled = false; bStep.style.opacity = 1;
+      if(choiceEl) choiceEl.innerHTML = "";
+      var m = MODES[currentMode];
+      buildStages();
+
+      if(step < 0){
+        narrEl.innerHTML = '<span class="ph">'+m.label+'</span>Press <b>Step →</b> to walk through the task, one step at a time. Watch which stages light up — and which are skipped.';
+        costEl.innerHTML = "";
+        return;
+      }
+
+      var s = m.steps[Math.min(step, m.steps.length-1)];
+      // light nodes
+      m.stages.forEach(function(_, i){
+        var node = document.getElementById("node"+i);
+        var arr = document.getElementById("arr"+i);
+        if(!node) return;
+        var isActive = s.active.indexOf(i) >= 0;
+        var isDone = step >= m.steps.length - 1 && !isActive;
+        // for conditional, dim steps not in active and not previously lit
+        node.classList.toggle("hot", isActive && i === s.active[s.active.length-1]);
+        node.classList.toggle("done-node", isActive && i !== s.active[s.active.length-1]);
+        if(arr) arr.classList.toggle("hot", isActive && i === s.active[s.active.length-1]);
+      });
+
+      narrEl.innerHTML = '<span class="ph">'+m.label+' · step '+(step+1)+' of '+m.steps.length+'</span>' + s.narr;
+
+      if(step === m.steps.length - 1){
+        costEl.innerHTML = "";
+        m.cost.forEach(function(c){
+          var div = document.createElement("div"); div.className = "cost-item";
+          div.innerHTML = '<span class="cost-dot" style="background:'+c.dot+'"></span>' + c.label;
+          costEl.appendChild(div);
+        });
+      } else {
+        costEl.innerHTML = "";
+      }
+    }
+
+    function paintCost(arr){
+      costEl.innerHTML = "";
+      arr.forEach(function(c){
+        var div = document.createElement("div"); div.className = "cost-item";
+        div.innerHTML = '<span class="cost-dot" style="background:'+c.dot+'"></span>' + c.label;
+        costEl.appendChild(div);
+      });
+    }
+
+    function condSVG(){
+      var recv = cstep >= 0, vend = cstep >= 1, dia = cstep >= 2;
+      var no = branch === "no", yes = branch === "yes", dec = yes && yesStage >= 1;
+      function c(on){ return on ? " on" : ""; }
+      return '<svg class="cgraph" viewBox="0 0 600 282" xmlns="http://www.w3.org/2000/svg" role="img">'
+        + '<title>Conditional logic branch: on the register? NO rejects in 3 steps; YES runs the policy check for 5 steps.</title>'
+        + '<path class="cedge'+c(vend)+'" d="M108 132 L128 132"/>'
+        + '<path class="cedge'+c(dia)+'" d="M232 132 L256 132"/>'
+        + '<path class="cedge reject'+c(no)+'" d="M344 132 L385 88 L408 88"/>'
+        + '<path class="cedge yes'+c(yes)+'" d="M344 132 L385 176 L408 176"/>'
+        + '<path class="cedge yes'+c(dec)+'" d="M495 198 L495 224"/>'
+        + '<text class="clbl reject'+c(no)+'" x="368" y="102" text-anchor="middle">NO</text>'
+        + '<text class="clbl yes'+c(yes)+'" x="368" y="164" text-anchor="middle">YES</text>'
+        + '<g class="cnode'+c(recv)+'"><rect x="12" y="110" width="96" height="44" rx="9"/><text x="60" y="136" text-anchor="middle" font-size="11.5" font-weight="600">Receive</text></g>'
+        + '<g class="cnode'+c(vend)+'"><rect x="128" y="110" width="104" height="44" rx="9"/><text x="180" y="136" text-anchor="middle" font-size="11.5" font-weight="600">Vendor check</text></g>'
+        + '<g class="cnode branch'+c(dia)+'"><polygon points="300,104 344,132 300,160 256,132"/><text x="300" y="128" text-anchor="middle" font-size="10.5" font-weight="700">On</text><text x="300" y="141" text-anchor="middle" font-size="10.5" font-weight="700">register?</text></g>'
+        + '<g class="cnode reject'+c(no)+'"><rect x="408" y="66" width="172" height="44" rx="9"/><text x="494" y="86" text-anchor="middle" font-size="11" font-weight="700">Reject — skip policy</text><text class="csub" x="494" y="100" text-anchor="middle" font-size="9.5">3 steps</text></g>'
+        + '<g class="cnode'+c(yes)+'"><rect x="408" y="154" width="172" height="44" rx="9"/><text x="494" y="180" text-anchor="middle" font-size="11.5" font-weight="600">Policy check</text></g>'
+        + '<g class="cnode final'+c(dec)+'"><rect x="408" y="224" width="172" height="44" rx="9"/><text x="494" y="244" text-anchor="middle" font-size="11" font-weight="700">State decision</text><text class="csub" x="494" y="258" text-anchor="middle" font-size="9.5">5 steps</text></g>'
+        + '</svg>';
+    }
+
+    function renderCond(){
+      stagesEl.innerHTML = condSVG();
+
+      var msg;
+      if(cstep < 0){ msg = '<span class="ph">Conditional logic</span>Press <b>Step →</b> to receive the request. At the branch, <b>you decide</b> which way it goes.'; }
+      else if(cstep === 0){ msg = '<span class="ph">Conditional · step 1</span>Request received — a supplier submission for a GCC equipment order. Same first step as the chain.'; }
+      else if(cstep === 1){ msg = '<span class="ph">Conditional · step 2</span>Vendor register checked. The next step is a <b>branch</b> — the path now splits on what it found.'; }
+      else if(cstep === 2 && branch === null){ msg = '<span class="ph">Branch · your call</span>Is the supplier on the approved register? <b>Choose below.</b> In the live agent the register lookup decides this — here you drive it.'; }
+      else if(branch === "no"){ msg = '<span class="ph">Path: NO · done</span><b>Not on the register</b> → reject now and skip the policy check entirely. <b>3 steps</b> — the cheapest path, because the answer was obvious early.'; }
+      else if(branch === "yes" && yesStage === 0){ msg = '<span class="ph">Path: YES · step 3</span><b>On the register</b> → the policy check runs, only because this case needs it. Press <b>Step →</b> to finish.'; }
+      else { msg = '<span class="ph">Path: YES · done</span>Policy verified → decision stated. <b>Full path: 5 steps.</b> Conditional logic runs the long path <b>only</b> when the input demands it.'; }
+      narrEl.innerHTML = msg;
+
+      if(cstep === 2 && branch === null){
+        choiceEl.innerHTML = '<span class="cq">On the register?</span>';
+        var bno = document.createElement("button"); bno.className = "cbtn no"; bno.textContent = "NO — not listed";
+        var byes = document.createElement("button"); byes.className = "cbtn yes"; byes.textContent = "YES — approved vendor";
+        bno.onclick = function(){ branch = "no"; render(); };
+        byes.onclick = function(){ branch = "yes"; yesStage = 0; render(); };
+        choiceEl.appendChild(bno); choiceEl.appendChild(byes);
+      } else {
+        choiceEl.innerHTML = "";
+      }
+
+      var terminal = (branch === "no") || (branch === "yes" && yesStage >= 1);
+      var mustChoose = (cstep === 2 && branch === null);
+      bStep.disabled = terminal || mustChoose;
+      bStep.style.opacity = (terminal || mustChoose) ? .45 : 1;
+
+      if(branch === "no"){ paintCost(COST_NO); }
+      else if(branch === "yes" && yesStage >= 1){ paintCost(COST_YES); }
+      else { costEl.innerHTML = ""; }
+    }
+
+    bStep.onclick = function(){
+      if(currentMode === "conditional"){
+        if(cstep < 2){ cstep++; render(); return; }
+        if(branch === "yes" && yesStage < 1){ yesStage = 1; render(); return; }
+        return;
+      }
+      var m = MODES[currentMode];
+      if(step < m.steps.length - 1){ step++; render(); }
+    };
+    bReset.onclick = function(){ step = -1; cstep = -1; branch = null; yesStage = 0; render(); };
+    render();
+  })();
+
+  /* ---------- S4: grounding stepper + toggle ---------- */
+  (function(){
+    var dotsEl = document.getElementById("gndDots"); if(!dotsEl) return;
+    var whoEl = document.getElementById("gndWho");
+    var codeEl = document.getElementById("gndCode");
+    var narrEl = document.getElementById("gndNarr");
+    var bStep = document.getElementById("gndStep");
+    var bReset = document.getElementById("gndReset");
+
+    var STEPS = [
+      {who:"model", wlabel:"The agent",
+       code:'(mid-task) "Supplier: NovaTech GmbH. Category: Industrial equipment.\nIs this supplier on our approved vendor register?"',
+       narr:"The agent hits a question it cannot answer from training — it needs to check a specific internal document. So it reaches for knowledge."},
+      {who:"model", wlabel:"The agent — requests",
+       code:'search_knowledge({ "query": "NovaTech GmbH vendor register status" })',
+       narr:"It writes a structured lookup request. Not a guess — a specific query against the documents you loaded. The agent never invents what it should look up."},
+      {who:"system", wlabel:"Claude Projects — retrieves",
+       code:'→ searching Project knowledge…\n← { "match": "NovaTech GmbH", "status": "Approved", "category": "Industrial", "limit": "£500,000" }',
+       narr:"Claude Projects searches the vendor register you loaded and returns the matching record. Your document; your data — retrieved at run time."},
+      {who:"system", wlabel:"Observation returned",
+       code:'observation: NovaTech GmbH is an Approved vendor, Industrial category, limit £500,000.',
+       narr:"The result lands back in the agent's context as a factual observation — grounded in your actual register, not in the model's training data."},
+      {who:"model", wlabel:"The agent — continues",
+       code:'"NovaTech GmbH: Approved. Order value £180,000 is within the £500,000 limit.\nDECISION: Approved. REASON: Vendor on register, within category limit.\nNEXT STEP: Proceed to PO."',
+       narr:"The agent states a decision grounded in your document. Accurate, citable, auditable — because you loaded the right knowledge."}
+    ];
+
+    var dots = [];
+    STEPS.forEach(function(s, i){
+      if(i > 0){ var c = document.createElement("div"); c.className = "conn"; dotsEl.appendChild(c); }
+      var d = document.createElement("div"); d.className = "dot"; d.textContent = (i+1); dotsEl.appendChild(d); dots.push(d);
+    });
+
+    var step = -1;
+    function render(){
+      dots.forEach(function(d, i){ d.classList.toggle("on", i===step); d.classList.toggle("dn", i<step); });
+      if(step < 0){
+        whoEl.innerHTML = "&nbsp;"; whoEl.className = "who";
+        codeEl.innerHTML = "Press <b>Step →</b> to watch a single knowledge lookup, start to finish.";
+        narrEl.textContent = "The agent is mid-task and needs to verify something against your supplier policy document.";
+        return;
+      }
+      var s = STEPS[step];
+      whoEl.textContent = s.wlabel; whoEl.className = "who " + s.who;
+      codeEl.textContent = s.code.replace(/\\n/g, "\n");
+      narrEl.textContent = s.narr;
+    }
+    bStep.onclick = function(){ if(step < STEPS.length-1){ step++; render(); } };
+    bReset.onclick = function(){ step = -1; render(); };
+    render();
+
+    /* grounded vs ungrounded toggle */
+    var gndResult = document.getElementById("gndResult");
+    var btnOn = document.getElementById("gndOn");
+    var btnOff = document.getElementById("gndOff");
+
+    var GROUNDED = {
+      cls: "grounded",
+      label: "✓ Grounded answer — knowledge loaded",
+      text: "NovaTech GmbH: Approved vendor, Industrial category, limit £500,000. Order value £180,000 is within the approved limit.\n\nDECISION: Approved.\nREASON: Vendor confirmed on register (Supplier Policy §4.2).\nNEXT STEP: Proceed to Purchase Order."
+    };
+    var UNGROUNDED = {
+      cls: "ungrounded",
+      label: "✗ Ungrounded answer — no knowledge loaded",
+      text: "NovaTech GmbH appears to be a reputable supplier of industrial equipment. Based on general industry practice, this order should be compliant with standard procurement policies.\n\nDECISION: Likely approved.\n\n⚠ Note: This answer is fabricated — the agent has no access to your actual vendor register. It sounds confident. It could be wrong."
+    };
+
+    function setGrounding(isGrounded){
+      var d = isGrounded ? GROUNDED : UNGROUNDED;
+      gndResult.className = "gnd-result " + d.cls;
+      gndResult.innerHTML = '<span class="label">'+d.label+'</span>' + d.text.replace(/\n/g,"<br>");
+      btnOn.classList.toggle("on", isGrounded);
+      btnOff.classList.toggle("on", !isGrounded);
+    }
+    btnOn.onclick = function(){ setGrounding(true); };
+    btnOff.onclick = function(){ setGrounding(false); };
+    setGrounding(true);
+  })();
+
+  /* ---------- S5: hardening checklist ---------- */
+  (function(){
+    var listEl = document.getElementById("hardenList"); if(!listEl) return;
+    var meterEl = document.getElementById("hardenMeter");
+    var readoutEl = document.getElementById("hardenReadout");
+
+    var ITEMS = [
+      {id:"stopping", group:"must", title:"Stopping rule",
+       v1:"Runs on and on — never sure when it's finished, or when a case is beyond it and needs a human.",
+       v2:"“Done when X; escalate to [name] when Y.” Explicit end and hand-off conditions, written into the instructions."},
+      {id:"checkpoint", group:"must", title:"Human checkpoint",
+       v1:"Acts on a consequential decision with nobody in the loop — no chance to catch a costly mistake.",
+       v2:"Pauses before the named action and asks a human to confirm. The exact trigger is spelled out, not “ask if unsure.”"},
+      {id:"awkward", group:"quality", title:"Awkward input",
+       v1:"Invents a confident, wrong answer on an input it's never seen.",
+       v2:"Loads the source; says “I can't confirm this” when absent."},
+      {id:"format", group:"quality", title:"Output format",
+       v1:"Returns a wall of prose a colleague has to re-read twice before they can act on it.",
+       v2:"Decision · Reason · Next step — actionable at a glance, every time."},
+      {id:"scope", group:"quality", title:"Scope",
+       v1:"One agent trying to do five jobs at once — none of them reliably.",
+       v2:"One task, done well — the highest-impact sub-task, in focus. The rest can wait for v3."},
+      {id:"data", group:"quality", title:"Data boundary",
+       v1:"No stated limit on what data it may touch — a governance gap waiting to be found.",
+       v2:"Names what it may and may not access. No sensitive source connected without explicit approval."}
+    ];
+
+    var GROUPS = [
+      {key:"must", label:"Non-negotiable — unsafe to run without these", cls:"must"},
+      {key:"quality", label:"Quality bar — what earns the demo slot", cls:""}
+    ];
+
+    var hardened = {};
+    ITEMS.forEach(function(item){ hardened[item.id] = false; });
+
+    GROUPS.forEach(function(g){
+      var wrap = document.createElement("div"); wrap.className = "harden-group";
+      var lbl = document.createElement("div"); lbl.className = "harden-group-lbl " + g.cls; lbl.textContent = g.label;
+      wrap.appendChild(lbl);
+      var list = document.createElement("div"); list.className = "harden-list";
+      ITEMS.filter(function(it){ return it.group === g.key; }).forEach(function(item){
+        var div = document.createElement("div"); div.className = "harden-item"; div.dataset.id = item.id;
+        function paint(){
+          var on = hardened[item.id];
+          div.classList.toggle("hardened", on);
+          div.querySelector(".h-badge").textContent = on ? "v2 · fixed" : "v1 · breaks";
+          div.querySelector(".h-desc").textContent = on ? item.v2 : item.v1;
+          div.querySelector(".h-toggle").textContent = on ? "✓ Hardened" : "Harden →";
+        }
+        div.innerHTML = '<div class="h-row"><span class="h-title">'+item.title+'</span>'
+          + '<span class="h-badge"></span>'
+          + '<button class="h-toggle" type="button"></button></div>'
+          + '<div class="h-state"><span class="h-desc"></span></div>';
+        div.querySelector(".h-toggle").onclick = function(){
+          hardened[item.id] = !hardened[item.id];
+          paint();
+          renderReadout();
+        };
+        paint();
+        list.appendChild(div);
+      });
+      wrap.appendChild(list);
+      listEl.appendChild(wrap);
+    });
+
+    function renderReadout(){
+      var n = Object.keys(hardened).filter(function(k){ return hardened[k]; }).length;
+      var total = ITEMS.length;
+      meterEl.style.width = (n/total*100)+"%";
+
+      var msg, cls;
+      if(n === 0){
+        cls = "warnstate";
+        msg = '<span class="flag">Every row is a v1 that breaks.</span> Harden each one to see the v2 fix — start with the two non-negotiables.';
+      } else if(!hardened.stopping && !hardened.checkpoint){
+        cls = "warnstate";
+        msg = '<span class="flag">⚠ Not safe to run.</span> No stopping rule and no human checkpoint — this agent cannot go near a consequential task. Harden these two first.';
+      } else if(!hardened.stopping || !hardened.checkpoint){
+        cls = "warnstate";
+        msg = '<span class="flag">⚠ One non-negotiable left.</span> '
+          + (!hardened.stopping ? 'The stopping rule — without it the agent doesn\'t know when to finish or escalate.' : 'The human checkpoint — it can still act without asking anyone.')
+          + ' Harden it before anything else.';
+      } else if(n < 4){
+        cls = "okstate";
+        msg = '<span class="flag">Safe to run.</span> Both non-negotiables are hardened — the agent won\'t run away or act unchecked. Now close the quality gaps that earn the demo slot.';
+      } else if(n < total){
+        cls = "okstate";
+        msg = '<span class="flag">Strong v2 shape.</span> Nearly there — ' + (total - n) + ' fix'+(total-n>1?'es':'')+' left. You\'ll walk into the sprint with a problem to <i>solve</i>, not one to <i>discover</i>.';
+      } else {
+        cls = "okstate";
+        msg = '<span class="flag">✓ Sprint-ready.</span> All six hardened. Walk in, hand this to the trainer, and spend the build hours applying what you know — not diagnosing what you missed.';
+      }
+      readoutEl.className = "harden-readout " + cls;
+      readoutEl.innerHTML = msg;
+    }
+    renderReadout();
+  })();
+
+  /* ---------- quizzes ---------- */
+  makeQuiz("q1",[
+    {stem:"A system prompt has a persona and output format but no stopping rule. What breaks first?",
+     opts:["The tone becomes inconsistent","The agent may loop, over-act, or silently give up when it doesn't know it's done","It forgets the persona mid-task","The output format changes"],
+     answer:1,
+     why:"Without a stopping rule the agent has no signal for 'done' or 'escalate' — it may keep running, repeat itself, or quietly fail rather than hand off correctly."},
+    {stem:"Your v1 agent fabricates a policy figure on an awkward input. Which layer is missing?",
+     opts:["Output format","Persona","Knowledge boundary — it should say 'I don't know' rather than invent","Stopping rule"],
+     answer:2,
+     why:"A knowledge boundary instructs the agent to look up or flag unknowns rather than fill gaps from training data. Without it, confident-sounding fabrication is the default."},
+    {stem:"Which two layers are non-negotiable in any agent that touches real systems?",
+     opts:["Output format and persona","Constraints and stopping rule — together they define what it may do and when to stop","Knowledge boundary and output format","Persona and knowledge boundary"],
+     answer:1,
+     why:"Constraints prevent the agent doing things it shouldn't; a stopping rule tells it when to finish or escalate. Together they are the minimum safety envelope."},
+    {stem:"The session rewrites your v1 system prompt in Hour 2. What should you walk in knowing?",
+     opts:["The full history of prompt engineering","Which layer is weakest in your current instructions — because that's where the rewrite starts","All five layers by heart","Nothing — the trainer builds from scratch"],
+     answer:3,
+     why:"The masterclass starts from your v1 failure mode. Knowing which layer is weakest means you spend the hour on the right fix, not discovering the problem in the room."}
+  ]);
+
+  makeQuiz("q2",[
+    {stem:"A task always follows the same five steps, in the same order, every run. Best fit?",
+     opts:["Conditional logic — it handles branching","One agent — simpler to set up","A linear chain — predictable, auditable, each step specialist","Multi-agent — more capable"],
+     answer:2,
+     why:"If the path never changes, a linear chain gives you auditability and smaller per-step prompts without the complexity of conditional branching."},
+    {stem:"What does conditional logic do that a linear chain cannot?",
+     opts:["It runs faster on all inputs","It skips steps the current input doesn't need — saving tokens and time","It uses fewer documents","It adds more agents"],
+     answer:1,
+     why:"Conditional logic branches on what it finds — a quick reject skips the full policy check. A chain always runs every step, even when the answer is obvious early."},
+    {stem:"When is using one agent (no chain, no conditions) the right call?",
+     opts:["When the task is genuinely simple and self-contained — few steps, no branching","Always — simpler is better","When you want to save money on every task","When the path varies per run"],
+     answer:0,
+     why:"One agent minimises moving parts. It's the right choice when the task is small enough that splitting it adds complexity with no gain."},
+    {stem:"What's the main risk of a linear chain for a task where some steps are often unnecessary?",
+     opts:["The output format breaks","Every step always runs — including ones that aren't needed — wasting tokens","The agent loses its persona","Steps can't be reordered"],
+     answer:1,
+     why:"A chain doesn't branch — every step fires regardless of whether the input needs it. Conditional logic is the right upgrade when paths genuinely vary."},
+    {stem:"Your procurement agent should reject a non-registered supplier immediately, without running the full policy check. Which pattern fits?",
+     opts:["One agent doing everything in one prompt","A linear chain running all five steps","Conditional logic — branch on vendor-register result, skip policy check for obvious rejects","Multi-agent with parallel specialists"],
+     answer:2,
+     why:"This is exactly the branching case conditional logic is designed for: if the register check finds no match, branch to reject immediately and skip the downstream steps."}
+  ]);
+
+  makeQuiz("q3",[
+    {stem:"An ungrounded agent is asked about a supplier it doesn't have on record. Most likely outcome?",
+     opts:["It refuses to answer","It asks you to load the document","It produces a confident-sounding but fabricated answer","It crashes"],
+     answer:2,
+     why:"Without grounding, the agent fills the gap with its training data — which is generic, frozen, and often wrong on specifics. It sounds confident because it doesn't know what it doesn't know."},
+    {stem:"What does loading a document into Claude Projects Knowledge actually do?",
+     opts:["It trains a new model on your data","It makes the document retrievable at run time — the agent searches it instead of guessing","It replaces the system prompt","It restricts what the agent can say"],
+     answer:1,
+     why:"Project knowledge is retrieved at run time — the agent searches your loaded documents and returns grounded answers, not training-data guesses."},
+    {stem:"Which best describes the leader's grounding decision?",
+     opts:["Which model to use","Which documents must the agent always have access to — and accepting that gaps are lookup risks","How to format the output","Whether to use a chain or one agent"],
+     answer:1,
+     why:"Every document you don't load is a gap the agent may fill with a fabrication. Deciding what must always be loaded is a governance call you own."},
+    {stem:"Your agent needs to check a specific internal policy that changes quarterly. How do you handle that?",
+     opts:["Rely on the model's training — it's close enough","Update the loaded document each quarter so the agent always retrieves the current version","Rebuild the agent each quarter","Ask the agent to search the internet"],
+     answer:2,
+     why:"Grounding works only if the loaded documents stay current. A quarterly update to the knowledge base means the agent always reasons from the live policy, not a stale snapshot."}
+  ]);
+
+  makeQuiz("q4",[
+    {stem:"What is the purpose of testing the awkward input again before the session?",
+     opts:["To have concrete evidence of the failure mode — the sprint fixes a known problem, not a vague one","To prove it works","To impress the trainer","To generate new data"],
+     answer:0,
+     why:"A sprint with a specific failure mode to fix is infinitely more productive than one spent discovering what's wrong. Know the wound before you arrive."},
+    {stem:"An agent with tools and no human checkpoint — what's the risk?",
+     opts:["The output format breaks","It can act on consequential decisions without any approval — the dangerous combination","It runs slowly","It loses its knowledge"],
+     answer:1,
+     why:"Tools + no checkpoint = the agent acts on the world with nothing to catch a consequential mistake. The checkpoint is non-negotiable when the agent can take real actions."},
+    {stem:"After the sprint, what does the Week 3 homework ask you to do?",
+     opts:["Build a second v1 from scratch","Submit a presentation","Pick the highest-impact use case, write a v0 spec, build the v1 prototype, and get colleague feedback — to bring to Week 4","Pick the easiest use case"],
+     answer:2,
+     why:"The homework feeds the Week 4 capstone. Picking the highest-impact use case and getting early colleague feedback makes the capstone a real deployment, not a demo."},
+    {stem:"What does 'sprint-ready' mean in the context of the hardening checklist?",
+     opts:["The agent is finished and needs no more work","The six hardening items are addressed so you spend sprint time building, not diagnosing","You've completed the whole programme","The agent has passed a formal audit"],
+     answer:1,
+     why:"Sprint-ready means you arrive with a clear brief — specific failure mode, specific fix, specific change — so the build time goes on solving the problem, not finding it."}
+  ]);
+
+  /* ---------- boot ---------- */
+  renderProgress();
+  show("s0");
+})();
+</script>
+</body>
+</html>
