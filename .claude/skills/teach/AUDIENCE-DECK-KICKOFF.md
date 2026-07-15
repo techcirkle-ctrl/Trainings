@@ -60,6 +60,15 @@ The audience deck is a **conversion of two inputs** — read BOTH before plannin
 **Do NOT use any other input** to source content. No run-of-show, run-sheet, or trainer-notes
 file feeds the deck. If one exists in the week folder, ignore it.
 
+**The deck is the robust, complete artifact — it must cover 100% of the slide.** The pre-read is
+deliberately lean (no trainer walks the leader through it), so the **deck** is where the full week
+lives. Every element of the slide must have a home in the deck: **all five session hours (Hr 1–5)**,
+**every pre-work TASK the session consumes** (e.g. "identify 3 use cases, one-para brief each" —
+the build sprints then pick from these), the exact **build-sprint mechanics** (pick 1 of N use
+cases · 1:1 coaching · peer review · a second agent · timed demos), the **homework**, and the
+**output**. Where the pre-read is silent on a slide element, **build that movement fresh from the
+slide** — a gap in the lean pre-read is **never** an excuse for a gap in the deck.
+
 ## THE PRIMARY GUIDE (governs HOW you build)
 `.claude/skills/teach/AUDIENCE-DECK-PLAYBOOK.md` — the source of truth for audience decks.
 Follow it exactly: persona (§1), doctrine (§2), the two inputs (§3–§4), the conversion map (§5),
@@ -105,12 +114,20 @@ Inline CSS + vanilla JS, no network/build. `@media print` stacks every slide wit
 expanded and drops chrome.
 
 ## THE GATE — do NOT build until I agree
-First, produce the **conversion map** (per playbook §5): read the slide's session hours and the
-pre-read's sections side by side, confirm the full concept list **from the slide**, group the
-concepts into **2–3 acts**, and expand each into **movements** (M1…MN across the week) — noting
-which movements port a pre-read widget and which need a fresh one, plus the **finale plan** and
-the **day-plan**. Give it to me as a short act/movement list. I'll grill and approve it. ONLY
-THEN start building.
+
+**Step A — Slide-coverage audit (do this FIRST).** Produce a table mapping **every** slide element
+to the deck movement/slide that will carry it: each session hour **Hr 1–5**, **each pre-work
+deliverable the session depends on** (e.g. the 3 use cases), the **homework**, and the **output**.
+Any row with **no home is a gap you must design in** before building. This is the guarantee that
+the deck is 100% aligned with the slide — not just with the lean pre-read.
+
+**Step B — Conversion map** (per playbook §5): read the slide's session hours and the pre-read's
+sections side by side, confirm the full concept list **from the slide**, group the concepts into
+**2–3 acts**, and expand each into **movements** (M1…MN across the week) — noting which movements
+port a pre-read widget and which need a fresh one, plus the **finale plan** and the **day-plan**.
+
+Give me **both the coverage audit and the act/movement list** together. I'll grill and approve
+both. ONLY THEN start building.
 
 ## BUILD + VERIFY
 - Thread ONE spine example through the week (cohort-relevant; the same one the pre-read used).

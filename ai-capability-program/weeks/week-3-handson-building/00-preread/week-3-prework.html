@@ -237,6 +237,107 @@
   .harden-readout.warnstate .flag{color:var(--warn)}
   .harden-readout.okstate .flag{color:var(--good)}
 
+  /* S6: RAG lifecycle accordion + conditional architecture (color-coded per phase) */
+  .ragx .anchor{font:13.5px/1.6 ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin:0 0 10px}
+  .ragx .pbox{border:1px solid var(--line); border-radius:14px; background:var(--wash); margin:9px 0; overflow:hidden}
+  .ragx .pbox.ph1{--pc:#0b6e6e; --pcs:#e2f0ef; --pcb:#bfe0dd; --pct:#0b5c56}
+  .ragx .pbox.ph2{--pc:#2f5aa8; --pcs:#e9eefb; --pcb:#cdddf5; --pct:#244a86}
+  .ragx .pbox.ph3{--pc:#8a3f86; --pcs:#f4e9f4; --pcb:#e3cfe2; --pct:#6d2f6a}
+  .ragx .pbox.open{border-color:var(--pcb)}
+  .ragx .phead{display:flex; align-items:center; gap:13px; width:100%; text-align:left; background:none; border:0; padding:15px 16px; cursor:pointer; color:var(--ink); font-family:ui-sans-serif,system-ui,sans-serif}
+  .ragx .pnum{font:600 14px ui-monospace,Menlo,Consolas,monospace; color:#fff; background:var(--pc); width:30px; height:30px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex:0 0 auto}
+  .ragx .ptx{flex:1}
+  .ragx .pkicker{display:block; font:600 10px ui-sans-serif,system-ui,sans-serif; letter-spacing:.15em; text-transform:uppercase; color:var(--muted)}
+  .ragx .pt{display:block; font:600 15.5px/1.2 ui-sans-serif,system-ui,sans-serif; color:var(--ink)}
+  .ragx .ps{display:block; font:12.5px/1.5 ui-sans-serif,system-ui,sans-serif; color:var(--muted); margin-top:2px}
+  .ragx .pchev{color:var(--muted); transition:transform .2s; display:inline-flex; flex:0 0 auto}
+  .ragx .pbox.open .pchev{transform:rotate(180deg)}
+  .ragx .pbody{display:none; padding:2px 13px 13px}
+  .ragx .pbox.open .pbody{display:block}
+  .ragx .row{border:1px solid var(--line); border-radius:11px; background:#fff; margin:7px 0; overflow:hidden}
+  .ragx .row.open{border-color:var(--pcb)}
+  .ragx .rheadrow{display:flex; align-items:flex-start}
+  .ragx .rhead{display:flex; align-items:flex-start; gap:11px; flex:1; min-width:0; text-align:left; background:none; border:0; padding:12px 14px; cursor:pointer; color:var(--ink); font-family:ui-sans-serif,system-ui,sans-serif}
+  .ragx .rvid{flex:0 0 auto; align-self:flex-start; margin-top:11px; display:inline-flex; align-items:center; gap:4px; font:600 12px ui-sans-serif,system-ui,sans-serif; color:var(--pc); text-decoration:none; white-space:nowrap; border:1px solid var(--pcb); background:var(--pcs); border-radius:999px; padding:4px 10px}
+  .ragx .rvid:hover{filter:brightness(.97)}
+  .ragx .rchevbtn{flex:0 0 auto; background:none; border:0; cursor:pointer; padding:12px 14px 0 6px; color:var(--muted)}
+  .ragx .rbadge{width:25px; height:25px; border-radius:8px; background:var(--pcs); color:var(--pct); font:600 12px ui-sans-serif,system-ui,sans-serif; display:flex; align-items:center; justify-content:center; flex:0 0 auto; margin-top:1px}
+  .ragx .rtx{flex:1; display:flex; flex-direction:column; gap:3px}
+  .ragx .rtop{display:flex; align-items:baseline; gap:9px; flex-wrap:wrap}
+  .ragx .rname{font:600 14.5px ui-sans-serif,system-ui,sans-serif; color:var(--ink)}
+  .ragx .ralias{font:11.5px ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .ragx .corepill{font:600 10px ui-sans-serif,system-ui,sans-serif; letter-spacing:.04em; padding:2px 7px; border-radius:999px; background:var(--pcs); color:var(--pct)}
+  .ragx .rdef{font:12.5px/1.55 ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .ragx .rchev{color:var(--muted); transition:transform .2s; margin-top:2px; display:inline-flex; flex:0 0 auto}
+  .ragx .row.open .rchev{transform:rotate(180deg)}
+  .ragx .rbody{display:none; padding:0 14px 14px 50px; border-top:1px solid var(--line)}
+  .ragx .row.open .rbody{display:block}
+  .ragx .blabel{font:600 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:12px 0 7px}
+  .ragx .chips{display:flex; flex-wrap:wrap; gap:7px}
+  .ragx .chip{cursor:pointer; font:600 13px ui-sans-serif,system-ui,sans-serif; padding:6px 12px; border-radius:999px; border:1px solid var(--line); background:var(--wash); color:var(--muted)}
+  .ragx .chip.on{background:var(--pcs); color:var(--pct); border-color:var(--pcb)}
+  .ragx .ex{margin-top:11px; background:var(--wash); border-radius:10px; padding:12px 13px; font:13px/1.6 ui-sans-serif,system-ui,sans-serif; color:var(--ink)}
+  .ragx .cbox{display:inline-block; font:12px ui-monospace,Menlo,Consolas,monospace; background:#fff; border:1px solid var(--line); border-radius:6px; padding:5px 8px; margin:3px; color:var(--ink)}
+  .ragx .hl{background:var(--pcs); color:var(--pct); border-radius:3px; padding:0 2px}
+  .ragx .note{margin-top:9px; color:var(--muted); font:12.5px/1.5 ui-sans-serif,system-ui,sans-serif}
+  .ragx .mono{font:12px ui-monospace,Menlo,Consolas,monospace; color:var(--pc)}
+  .ragx .qline{font:600 13px ui-sans-serif,system-ui,sans-serif; margin-bottom:2px; color:var(--ink)}
+  .ragx .vrow{font:12px ui-monospace,Menlo,Consolas,monospace; margin:4px 0; color:var(--ink)}
+  .ragx .vrow b{color:var(--pc); font-weight:400}
+  .ragx .bar{display:flex; align-items:center; gap:9px; margin:6px 0}
+  .ragx .bl{flex:0 0 116px; font:12px ui-sans-serif,system-ui,sans-serif}
+  .ragx .btk{flex:1; height:12px; background:#fff; border:1px solid var(--line); border-radius:999px; overflow:hidden}
+  .ragx .bfl{height:100%; border-radius:999px; background:#d7dde2}
+  .ragx .bfl.top{background:var(--pc)}
+  .ragx .bsc{flex:0 0 40px; text-align:right; font:600 12px ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .ragx .promptbox{background:#fff; border:1px solid var(--line); border-radius:10px; padding:10px 12px; font:12.5px/1.55 ui-sans-serif,system-ui,sans-serif}
+  .ragx .fail{margin-top:11px; border:1px solid #f0e1c2; border-left:3px solid #d9a441; border-radius:10px; background:#fff7ea; padding:10px 12px; font:12.5px/1.55 ui-sans-serif,system-ui,sans-serif}
+  .ragx .fail .fh{display:flex; align-items:center; gap:6px; font:600 10.5px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--warn); margin-bottom:5px}
+  .ragx .call{margin-top:12px; font:12.5px/1.55 ui-sans-serif,system-ui,sans-serif; color:var(--muted)}
+  .ragx .call b{color:var(--ink); font-weight:600}
+  .ragx .flow{--fpc:#2f5aa8; --fpcs:#e9eefb; --fpcb:#cdddf5; --fpct:#244a86; margin-top:16px; padding:16px; border:1px solid var(--line); border-radius:12px; background:var(--wash)}
+  .ragx .ftitle{font:600 13px ui-sans-serif,system-ui,sans-serif; margin-bottom:12px; color:var(--ink)}
+  .ragx .lane{margin-bottom:15px}
+  .ragx .lane:last-child{margin-bottom:0}
+  .ragx .lnlbl{display:block; font:600 10px ui-sans-serif,system-ui,sans-serif; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin-bottom:8px}
+  .ragx .frow{display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:7px}
+  .ragx .frow:last-child{margin-bottom:0}
+  .ragx .node{font:11.5px ui-sans-serif,system-ui,sans-serif; padding:5px 10px; border-radius:6px; background:#fff; border:1px solid var(--line); color:var(--ink); transition:opacity .2s, background .2s, border-color .2s, color .2s}
+  .ragx .node.dia{border-style:dashed}
+  .ragx .node.on{background:var(--fpcs); border-color:var(--fpcb); color:var(--fpct)}
+  .ragx .node.dim{opacity:.3}
+  .ragx .edge{color:var(--muted); font-size:12px; transition:opacity .2s, color .2s}
+  .ragx .edge.on{color:var(--fpc)}
+  .ragx .edge.dim{opacity:.3}
+  .ragx .brlbl{font:600 10px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); flex:0 0 30px}
+  .ragx .brlbl.on{color:var(--fpc)}
+  .ragx .brlbl.dim{opacity:.4}
+  .ragx .cachetoggle{display:inline-flex; gap:2px; border:1px solid var(--line); border-radius:999px; background:#fff; padding:3px; margin-bottom:4px}
+  .ragx .cachetoggle button{border:0; background:none; cursor:pointer; font:600 12px ui-sans-serif,system-ui,sans-serif; color:var(--muted); padding:5px 13px; border-radius:999px}
+  .ragx .cachetoggle button.on{background:var(--fpcs); color:var(--fpct)}
+  .ragx .fbr{margin-left:6px; padding-left:12px; border-left:1px solid #d7dde2}
+  .ragx .flow .pcard{border:1px solid var(--line); border-radius:12px; background:#fff; padding:13px 15px; margin:9px 0; transition:border-color .2s, opacity .2s, background .2s}
+  .ragx .flow .pcard.lp1{--fpc:#0b6e6e; --fpcs:#e2f0ef; --fpcb:#bfe0dd; --fpct:#0b5c56}
+  .ragx .flow .pcard.lp2{--fpc:#2f5aa8; --fpcs:#e9eefb; --fpcb:#cdddf5; --fpct:#244a86}
+  .ragx .flow .pcard.lp3{--fpc:#8a3f86; --fpcs:#f4e9f4; --fpcb:#e3cfe2; --fpct:#6d2f6a}
+  .ragx .flow .pcard.upcoming{opacity:.5}
+  .ragx .flow .pcard.active{border-color:var(--fpc); box-shadow:0 1px 3px rgba(16,32,43,.06)}
+  .ragx .flow .pcard.done{background:var(--wash)}
+  .ragx .pdone{display:none; margin-left:8px; font:600 10px ui-sans-serif,system-ui,sans-serif; letter-spacing:.04em; text-transform:none; color:var(--fpct)}
+  .ragx .pcard.done .pdone{display:inline}
+  .ragx .slot:not(:empty){margin-top:12px; padding-top:12px; border-top:1px dashed var(--line)}
+  .ragx .flowctrl{margin-bottom:8px}
+  .ragx .flowdone{display:inline-flex; align-items:center; vertical-align:middle; font:600 13px ui-sans-serif,system-ui,sans-serif; color:var(--good); background:#eef7f1; border:1px solid #bfe3cd; border-radius:9px; padding:10px 14px; margin:6px 8px 0 0}
+  .ragx .node.hot{background:var(--fpc); border-color:var(--fpc); color:#fff}
+  .ragx .node.done{background:var(--fpcs); border-color:var(--fpcb); color:var(--fpct)}
+  .ragx .flownarr{background:#fff; border:1px solid var(--line); border-radius:10px; padding:12px 14px; margin-top:13px; font:13.5px/1.55 ui-sans-serif,system-ui,sans-serif; color:var(--ink); min-height:52px}
+  .ragx .flownarr .ph{display:block; font:600 11px ui-sans-serif,system-ui,sans-serif; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin-bottom:4px}
+  .ragx .branchpick{display:flex; gap:8px; align-items:center; flex-wrap:wrap; margin:11px 0 0}
+  .ragx .branchpick:empty{margin:0}
+  .ragx .branchpick .cq{font:600 12.5px ui-sans-serif,system-ui,sans-serif; color:var(--ink)}
+  .ragx .branchpick .cbtn{cursor:pointer; border:1.5px solid var(--fpc); background:#fff; color:var(--fpc); border-radius:999px; padding:6px 14px; font:600 12.5px ui-sans-serif,system-ui,sans-serif}
+  .ragx .branchpick .cbtn:hover{background:var(--fpcs)}
+
   /* keep-this recap table */
   table.lens{width:100%; border-collapse:collapse; font:14.5px/1.5 ui-sans-serif,system-ui,sans-serif; margin-top:8px}
   table.lens th,table.lens td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top}
@@ -287,7 +388,7 @@
 <header class="masthead">
   <div class="kicker">AI Capability Program · Week 3 — Hands-On Agent Building</div>
   <h1>Week 3 Prework</h1>
-  <div class="meta">Work at your own pace · ~55 min on this page + two required reads (~1.5 hr) · 5 short, interactive sections. <b>Your progress is saved on this device only — nothing is sent anywhere.</b></div>
+  <div class="meta">Work at your own pace · ~70 min on this page + a ~1 hr use-case task + two required reads (~1.5 hr) — about <b>3.5 hr</b> total · 6 short, interactive sections. Your progress is saved on this device only — nothing is sent anywhere.</div>
 </header>
 
 <div class="navbar">
@@ -304,19 +405,31 @@
 
   <!-- ============================ SECTION 1 — START HERE ============================ -->
   <section class="panel" id="s0">
-    <span class="tag">Section 1 of 5</span><span class="tag">~10 min</span>
+    <span class="tag">Section 1 of 6</span><span class="tag">~10 min</span>
     <h2>Start here — harden what you've got</h2>
 
     <div class="starthere">
-      <p style="margin-top:0">Before anything else this week, revisit your Week 2 homework:</p>
-      <p>You built a <b>v1 agent as a Claude Project</b> — instructions (role · loop · guardrails · stopping rule · human checkpoint), knowledge loaded, at least three real inputs tested including one deliberately awkward one. You also wrote a <b>1-page design doc</b>. That doc is your hardening brief for Week 3.</p>
-      <p>Do three things now — about 10 minutes:</p>
+      <p style="margin-top:0">Your Week 2 homework was <b>the Build</b> — five steps that turn your Week-1 spec into a <b>working v1 agent</b> inside a Claude Project. Week 3 hardens that v1. So start here by getting it back in front of you.</p>
+      <p>Coming out of that homework, you should have <b>four things</b>:</p>
       <ol>
-        <li><b>Open your design doc.</b> Find the row where you recorded the awkward input and what broke. That failure mode is what Week 3 opens by fixing.</li>
-        <li><b>Read your instructions field.</b> Check: does it have a clear <b>stopping rule</b>? A named <b>human checkpoint</b>? If either is vague or missing, note it — the session starts by rewriting exactly this.</li>
-        <li><b>Run the awkward input once more</b> in your Claude Project. See if the same failure mode fires. Note it in one line. This is your evidence for the peer review in Hour 1.</li>
+        <li>A <b>working Claude Project</b> — your v1 agent, running.</li>
+        <li>An <b>instructions field</b> holding its persona, guardrails, <b>stopping rule</b> and <b>human checkpoint</b>.</li>
+        <li>At least <b>one real document loaded</b> as its knowledge.</li>
+        <li>A <b>1-page design doc</b> — the three inputs you tested (including the deliberately awkward one) and where it broke.</li>
       </ol>
-      <p style="margin-bottom:0">That's it. Walk into the session knowing <b>exactly where your v1 breaks</b> — that's the raw material the trainer works from. In <b>Section 5 (Build sprint)</b> you'll see the full hardening arc that turns this into a v2.</p>
+      <p>Do these three things now — about 10 minutes:</p>
+      <ol>
+        <li><b>Open your 1-page design doc.</b> Go straight to the failure you logged from the awkward input. That exact failure is what Week 3 opens by fixing.</li>
+        <li><b>Re-read your instructions field.</b> Is the <b>stopping rule</b> clear, and is the <b>human checkpoint</b> named on the right step? If either is vague, mark it — Hour 2 rewrites exactly this.</li>
+        <li><b>Run the awkward input once more</b> in your Project. Confirm it still breaks, and write that failure in one line — it's your evidence for the Hour 1 peer review.</li>
+      </ol>
+      <p style="margin-bottom:0"><b>Didn't finish the build?</b> Wednesday's mid-week checkpoint gets you a running v1 to harden here — just bring your Week-1 spec. Either way, walk in knowing <b>exactly where your agent breaks</b>. <b>Section 5 (Build sprint)</b> shows the full arc that turns it into a v2.</p>
+    </div>
+
+    <div class="reqreads">
+      <div class="kicker">Do this before the session · ~1 hr</div>
+      <p style="margin:.45em 0"><b>Write three use-case briefs.</b> Pick <b>three real tasks from your own work</b> that an agent could take on. For each, write <b>one short paragraph</b>: who it's for, the problem it solves, what a good outcome looks like, and where a human must stay in the loop.</p>
+      <p style="margin:.45em 0 0">These are load-bearing. Friday's two build sprints open with <b>"pick one of your three"</b> — if the briefs aren't written, the sprint burns its first 20 minutes deciding <i>what</i> to build. Bring them.</p>
     </div>
 
     <div class="reqreads">
@@ -334,16 +447,15 @@
 
   <!-- ============================ SECTION 2 — SYSTEM PROMPTS ============================ -->
   <section class="panel" id="s1">
-    <span class="tag">Section 2 of 5</span><span class="tag">~12 min</span>
+    <span class="tag">Section 2 of 6</span><span class="tag">~12 min</span>
     <h2>System prompts that hold under pressure</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
       <p style="margin:.2em 0">Your agent's system prompt is its <b>constitution</b> — the rules it operates under every single run. A vague prompt produces a compliant agent in good conditions and an unreliable one under pressure: ambiguous inputs, missing data, edge cases. This section shows you exactly what each layer of a system prompt does — so when yours breaks, you know which layer to fix.</p></div>
 
-    <!-- TRAINER: confirm the prompt-engineering guide framing still matches the session's system-prompt masterclass before launch. -->
     <div class="watch"><span class="wk">▶ Watch first <span class="opt">(optional)</span></span>
       <b><a href="https://www.youtube.com/watch?v=jC4v5AS4RIM" target="_blank" rel="noopener">Anthropic — Prompt Engineering in 5 Minutes</a></b> — a short plain-English primer on what prompt engineering actually is, before the layers below.</div>
 
-    <div class="callback">↩ <b>From Week 2:</b> you assembled an agent with instructions, knowledge, and a human checkpoint. This week the trainer takes your <i>instructions field</i> apart and rebuilds it — the system prompt masterclass in Hour 2. This widget is the preview: assemble the layers and watch your procurement-compliance agent take shape.</div>
+    <div class="callback">↩ <b>From Week 2:</b> you saw how an agent is assembled from instructions, knowledge, and a human checkpoint. This week the trainer takes your <i>instructions field</i> apart and rebuilds it — the system prompt masterclass in Hour 2. This widget is the preview: assemble the layers and watch the example take shape. <b>New worked example this week</b> — a procurement-compliance agent (Week 2's was the complaint queue).</div>
 
     <p class="lead">A system prompt isn't a single instruction — it's a <b>stack of layers</b>, each doing one specific job. Toggle the layers on and watch the prompt build. Then see what breaks when a layer is missing:</p>
 
@@ -390,12 +502,12 @@
 
   <!-- ============================ SECTION 3 — WORKFLOWS & CHAINS ============================ -->
   <section class="panel" id="s2">
-    <span class="tag">Section 3 of 5</span><span class="tag">~12 min</span>
+    <span class="tag">Section 3 of 6</span><span class="tag">~12 min</span>
     <h2>Workflows, chains, and conditional logic</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
       <p style="margin:.2em 0">Most of what looks like "one smart agent" is actually <b>several smaller pieces working in sequence</b> — and that's on purpose. Splitting a task into a chain is often cheaper, faster, and easier to govern than building one monolithic agent. But splitting too aggressively adds cost and complexity with no gain. This section gives you the intuition for when to split — and when not to.</p></div>
 
-    <div class="callback">↩ <b>From Week 2:</b> you learned the spectrum from workflow (you define the path) to agent (the model defines the path). This week goes one level deeper — inside a workflow or agent, you can <b>chain sub-steps</b>, add <b>conditional branches</b>, and link specialists in <b>sequence</b>. The procurement-compliance agent below is the same one you know — now watch it split.</div>
+    <div class="callback">↩ <b>From Week 2:</b> you learned the spectrum from workflow (you define the path) to agent (the model defines the path). This week goes one level deeper — inside a workflow or agent, you can <b>chain sub-steps</b>, add <b>conditional branches</b>, and link specialists in <b>sequence</b>. The procurement-compliance agent below is this week's worked example — now watch it split.</div>
 
     <p class="lead">The same task can be handled three ways: by <b>one agent</b> doing everything, by a <b>linear chain</b> of specialist steps, or with <b>conditional logic</b> that branches on what it finds. Pick a mode and step through what happens — then check the cost and tradeoffs:</p>
 
@@ -427,6 +539,8 @@
     <div class="why"><div class="kicker">Leader's read</div>
       <p style="margin:.2em 0">The session's Hour 3 shows you how to wire these patterns in Claude Projects — no code, using sequential prompts and knowledge documents. Your decision: <b>how many steps does my task genuinely need, and does the path ever branch?</b> That determines which pattern earns its complexity.</p></div>
 
+    <div class="callback">💬 <b>You raised this on Friday — "multi-agent," and one portal where all our agents talk to each other.</b> Worth an honest answer. A <b>chain of specialists</b> — one agent's output handed to the next — is what "multi-agent" usually means at this stage, and you just stepped through it above. <b>True orchestration</b> (agents calling other agents as tools) multiplies token cost fast: every handoff is more tool calls, more tokens, more to govern — which is why most enterprises haven't put it into production. It's a <b>Week 4 / production topic</b>, not this week's build. One leader put it exactly right in the room: <i>"what we need is a workflow, not an agent."</i> Start there — reach for orchestration only when a single agent or a simple chain genuinely can't do the job.</div>
+
     <div class="card quiz" id="q2"></div>
 
     <div class="deeper">📚 <b>Go deeper (optional):</b> Anthropic — <a href="https://www.anthropic.com/engineering/building-effective-agents" target="_blank" rel="noopener">Building Effective Agents</a> (R5) · DeepLearning.AI — <a href="https://www.deeplearning.ai/short-courses/" target="_blank" rel="noopener">Multi-agent systems</a> (R8).</div>
@@ -439,14 +553,12 @@
 
   <!-- ============================ SECTION 4 — KNOWLEDGE & GROUNDING ============================ -->
   <section class="panel" id="s3">
-    <span class="tag">Section 4 of 5</span><span class="tag">~12 min</span>
+    <span class="tag">Section 4 of 6</span><span class="tag">~12 min</span>
     <h2>Connecting agents to knowledge</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
       <p style="margin:.2em 0">An agent that can't look things up <b>makes things up</b>. Grounding — connecting your agent to documents it can actually read — is what separates a useful, trustworthy agent from a confident-sounding one that fabricates policy, figures, or facts. As the leader, you decide what knowledge your agent has access to — and you own what happens when it gets something wrong.</p></div>
 
-    <!-- TRAINER: confirm the knowledge-retrieval framing in the stepper still matches how the session wires docs to Projects in Hour 3 before launch. -->
-
-    <p class="lead">When your procurement-compliance agent needs to check a supplier's data against policy, here's what actually happens. Step through one knowledge lookup — from the agent's request to the grounded answer:</p>
+    <p class="lead">When the procurement-compliance agent needs to check a supplier's data against policy, here's what actually happens. Step through one knowledge lookup — from the agent's request to the grounded answer:</p>
 
     <div class="lab gnd-wrap">
       <div class="stepper" id="gndDots"></div>
@@ -469,9 +581,11 @@
       </div>
     </div>
 
-    <div class="callback">↩ <b>From Week 2:</b> you loaded one real document into your Claude Project in the homework. That document is your agent's long-term knowledge — the difference between grounded and ungrounded right here.</div>
+    <div class="callback">↩ <b>From Week 2:</b> you saw how loading one real document into a Claude Project gives an agent long-term knowledge — the difference between grounded and ungrounded right here. You'll do this for your own agent at Wednesday's checkpoint or in the sprint.</div>
 
     <div class="twopath"><b>Two paths — and you're only on one of them.</b> The trainer demonstrates <b>RAG</b> (Retrieval-Augmented Generation) — automatically retrieving the relevant passage from a large document store using Claude Code. That's the engineer's track, watch-only. Your path is simpler and just as real: load your supplier policy, HR guidelines, or approval framework into <b>Claude Projects → Knowledge</b>, no code. The grounding effect is identical; the wiring is done for you.</div>
+
+    <div class="callback">⚠ <b>A trap you'll likely hit in the sprint — big structured files.</b> A leader loaded a ~1,000-row SharePoint tracker into Project knowledge and got back <b>search snippets, not rows</b> — the agent couldn't see the whole table. Large spreadsheets and trackers aren't a good fit for Project knowledge: it retrieves <i>passages</i>, not full datasets. If your use case needs one, <b>split it, summarise it down to what matters, or use the tool / connector path the trainer shows</b> — don't just paste the whole file in and trust it.</div>
 
     <h3>Keep this</h3>
     <table class="lens">
@@ -496,12 +610,12 @@
 
   <!-- ============================ SECTION 5 — BUILD SPRINT ============================ -->
   <section class="panel" id="s4">
-    <span class="tag">Section 5 of 5</span><span class="tag">~10 min</span>
+    <span class="tag">Section 5 of 6</span><span class="tag">~10 min</span>
     <h2>The build sprint — your v1 to v2 arc</h2>
     <div class="why"><div class="kicker">Why this matters to you</div>
       <p style="margin:.2em 0">The session's Hours 4 and 5 are build sprints — two full-build cycles with trainer coaching and peer review. This section gives you the hardening checklist so you walk in knowing the exact gap between your v1 and a v2 that's robust enough to demo. Tick through it now.</p></div>
 
-    <div class="callback">↩ <b>From Week 2:</b> you built v1, tested it, found where it breaks. Today is the hardening session — where the awkward input you documented becomes a design fix, not just a known fault.</div>
+    <div class="callback">↩ <b>From Week 2:</b> you saw the arc — build a v1, test it, find where it breaks. Today is the hardening session, where the awkward input becomes a design fix, not just a known fault. (No v1 yet? Wednesday's checkpoint gets you one to harden here.)</div>
 
     <p class="lead">Six things separate a v1 agent from a v2 that earns the demo slot. Every row starts as your <b>v1 — the version that breaks</b>; hit <b>Harden</b> to see the <b>v2 fix</b>. The top two are <b>non-negotiable</b> — the agent isn't safe to run until they're done:</p>
 
@@ -526,7 +640,7 @@
     <div class="buildshell">
       <h3>Walk into the sprint with your v2 plan written</h3>
       <p>The two build hours go fast. You don't want to spend the first 20 minutes deciding what to fix. Here's the one thing to do before you walk in:</p>
-      <p>Open your 1-page design doc and <b>write three lines</b> at the top:</p>
+      <p>Open your spec / v1 notes and <b>write three lines</b> at the top:</p>
       <ul>
         <li><b>What broke</b> — the exact failure mode from the awkward-input test.</li>
         <li><b>Which layer to fix</b> — the system-prompt layer, the knowledge gap, or the stopping rule.</li>
@@ -543,13 +657,75 @@
 
     <div class="secfoot">
       <button class="done" data-sec="s4">Mark this section complete</button>
-      <span class="small muted">That's the set — bring your v2 plan to the session.</span>
+      <button class="btn ghost" data-next="s5">Next: How RAG works →</button>
+    </div>
+  </section>
+
+  <!-- ============================ SECTION 6 — HOW RAG WORKS ============================ -->
+  <section class="panel" id="s5">
+    <span class="tag">Section 6 of 6</span><span class="tag">~12 min</span>
+    <h2>How RAG works — the open-book exam</h2>
+    <div class="why"><div class="kicker">Why this matters to you</div>
+      <p style="margin:.2em 0">In Section 4 you loaded a document and the agent gave a grounded answer. <b>RAG</b> (Retrieval-Augmented Generation) is the machine behind that — how an agent finds the <i>right</i> passage in a big pile of documents instead of reading everything or guessing. You won't wire this yourself, but you sponsor it, you fund it, and you'll watch the trainer run it live on Friday. This primer means that won't be your first look.</p></div>
+
+    <div class="watch"><span class="wk">▶ Watch first <span class="opt">(optional)</span></span>
+      <b><a href="https://www.youtube.com/watch?v=_HQ2H_0Ayy0" target="_blank" rel="noopener">RAG Explained for Beginners</a></b> — a plain-English overview of the whole pipeline before you step through it below.</div>
+
+    <div class="callback">↩ <b>From Section 4:</b> you saw the two paths — you load docs into Claude Projects; the engineer's track uses RAG. This section opens up that engineer's track so you understand what's happening under the hood. <b>New this week</b> — and the one concept the session demonstrates end to end.</div>
+
+    <p class="lead">Think of it as an <b>open-book exam</b>: instead of answering from memory, the system retrieves the relevant passages from <i>your</i> documents, then answers from them. Below is the full lifecycle — three phases. Open any stage to see how it works, the strategies behind it, and where it fails:</p>
+
+    <div class="ragx">
+      <div class="anchor">You won't build these stages — you'll recognise them, fund them, and govern them. This is the vocabulary that lets you.</div>
+      <div id="ragAcc"></div>
+      <div class="flow">
+        <div class="ftitle">Reference architecture — step one query through the lifecycle</div>
+        <div class="pcard lp1" id="pc1">
+          <span class="lnlbl">Phase 01 — Ingestion &amp; Indexing · offline, one-time<span class="pdone" id="d1">✓ done</span></span>
+          <div class="frow"><span class="node" id="n_chunk">Chunking</span><span class="edge" id="e_ce">&rarr;</span><span class="node" id="n_embed">Embedding</span><span class="edge" id="e_ei">&rarr;</span><span class="node" id="n_index">Indexing</span></div>
+          <div class="slot" id="slot1"></div>
+        </div>
+        <div class="pcard lp2" id="pc2">
+          <span class="lnlbl">Phase 02 — Retrieval &amp; Generation · per query, conditional on the cache<span class="pdone" id="d2">✓ done</span></span>
+          <div class="frow"><span class="node" id="n_query">Query</span><span class="edge" id="e_q">&rarr;</span><span class="node dia" id="n_cache">Cache lookup</span></div>
+          <div class="fbr">
+            <div class="frow"><span class="brlbl" id="l_hit">hit</span><span class="edge" id="e_hit">&rarr;</span><span class="node" id="n_hit">return cached answer · 0 model calls</span></div>
+            <div class="frow"><span class="brlbl" id="l_miss">miss</span><span class="edge" id="e_miss">&rarr;</span><span class="node" id="n_ret">Retrieval</span><span class="edge" id="e_ret">&rarr;</span><span class="node" id="n_aug">Augmentation</span><span class="edge" id="e_aug">&rarr;</span><span class="node" id="n_gen">Generation</span><span class="edge" id="e_gen">&rarr;</span><span class="node" id="n_write">cache write</span></div>
+          </div>
+          <div class="slot" id="slot2"></div>
+        </div>
+        <div class="pcard lp3" id="pc3">
+          <span class="lnlbl">Phase 03 — Optimization &amp; Assurance · continuous</span>
+          <div class="frow"><span class="node" id="n_eval">Evaluation</span><span class="edge" style="color:var(--muted)">across a test set, in build &amp; monitoring — never per live reply</span></div>
+          <div class="slot" id="slot3"></div>
+        </div>
+        <div id="ragRunner">
+          <div class="flowctrl">
+            <span class="flowdone" id="ragDone" style="display:none"></span>
+            <button class="btn" id="ragFlowStep">Step →</button>
+            <button class="btn ghost" id="ragFlowReset">Reset</button>
+          </div>
+          <div class="flownarr" id="ragFlowNarr"></div>
+          <div class="branchpick" id="ragBranch"></div>
+        </div>
+      </div>
+    </div>
+    <div class="why"><div class="kicker">Leader's read</div>
+      <p style="margin:.2em 0">You don't build the pipeline — but every stage is a <b>decision you sponsor</b>: what goes in the library, how fresh it's kept, whether the agent is told to say "I don't know," and how you'll know the answers are trustworthy. RAG turns "the agent sounds confident" into "the agent can show you the source." That's the difference you're paying for.</p></div>
+
+    <div class="card quiz" id="q5"></div>
+
+    <div class="deeper">📚 <b>Go deeper (optional):</b> Anthropic — <a href="https://www.anthropic.com/news/contextual-retrieval" target="_blank" rel="noopener">Contextual Retrieval</a> · Anthropic — <a href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching" target="_blank" rel="noopener">Prompt caching</a>.</div>
+
+    <div class="secfoot">
+      <button class="done" data-sec="s5">Mark this section complete</button>
+      <span class="small muted">That's the set — you'll see RAG run live on Friday.</span>
     </div>
   </section>
 
   <div class="finale" id="finale">
-    <div class="kicker">All five done ✓</div>
-    <p style="margin:.3em 0 0">You know what makes a system prompt hold under pressure, when to chain versus when to keep things in one agent, and what grounding your agent in documents actually changes. Walk into the session with your <b>awkward-input failure mode documented</b> and your <b>v2 plan written in three lines</b> — the build sprints turn those into a working agent you'd put in front of a colleague.</p>
+    <div class="kicker">All six done ✓</div>
+    <p style="margin:.3em 0 0">You know what makes a system prompt hold under pressure, when to chain versus when to keep things in one agent, what grounding an agent in documents actually changes — and how <b>RAG</b> makes that lookup work under the hood. Walk into the session with your <b>three use-case briefs written</b> and a clear read on <b>where your agent breaks — or will</b>. The build sprints turn those into a working agent you'd put in front of a colleague.</p>
   </div>
 
 </div>
@@ -561,8 +737,8 @@
 <script>
 (function(){
   "use strict";
-  var SECTIONS = ["s0","s1","s2","s3","s4"];
-  var TITLES = {s0:"Start here", s1:"System prompts", s2:"Workflows", s3:"Knowledge", s4:"Build sprint"};
+  var SECTIONS = ["s0","s1","s2","s3","s4","s5"];
+  var TITLES = {s0:"Start here", s1:"System prompts", s2:"Workflows", s3:"Knowledge", s4:"Build sprint", s5:"RAG"};
   var KEY = "acp-w3-preread";
 
   /* ---------- progress / tabs ---------- */
@@ -1097,6 +1273,210 @@
     renderReadout();
   })();
 
+  /* ---------- S6: RAG lifecycle accordion + conditional architecture ---------- */
+  (function(){
+    var acc = document.getElementById("ragAcc"); if(!acc) return;
+    var CHEV = '<svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    var BOLT = '<svg viewBox="0 0 20 20" width="13" height="13" aria-hidden="true"><path d="M11 1L4 11h4l-1 8 8-11h-5l1-7z" fill="currentColor"/></svg>';
+    var CHECK = '<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M3 8.5l3 3 7-7.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+    function boxes(a,n){ return '<div>' + a.map(function(t){ return '<span class="cbox">' + t + '</span>'; }).join('') + '</div><div class="note">' + n + '</div>'; }
+    function vlist(r,n){ return r.map(function(x){ return '<div class="vrow">' + x[0] + ' → <b>' + x[1] + '</b></div>'; }).join('') + '<div class="note">' + n + '</div>'; }
+    function mbars(r){ return r.map(function(x){ return '<div class="bar"><span class="bl">' + x[0] + '</span><span class="btk"><span class="bfl' + (x[2] ? ' top' : '') + '" style="width:' + x[1] + '%"></span></span><span class="bsc">0.' + x[1] + '</span></div>'; }).join(''); }
+    function mex(intro,r,n){ return '<div class="qline">Query: “How many days of paternity leave do I get?”</div><div class="note" style="margin:5px 0 10px">' + intro + '</div>' + mbars(r) + '<div class="note">' + n + '</div>'; }
+    function fail(h){ return '<div class="fail"><div class="fh">⚠ Failure mode</div>' + h + '</div>'; }
+
+    var DATA = [
+     {kick:"LIFECYCLE PHASE",num:"01",pt:"Ingestion & Indexing",ps:"Transform source documents into a queryable vector index. Executed once, ahead of any query.",rows:[
+      {b:"1",core:1,n:"Chunking",al:"segmentation",vid:{u:"https://www.youtube.com/watch?v=Bf_i7cLkX24",t:"RAG chunking strategies explained in 5 minutes"},def:"Partition each document into passages small enough to retrieve precisely, large enough to stay coherent.",
+       strat:["Fixed size","With overlap","By sentence","Semantic"],ex:[
+        boxes(["Paternity leave is 10 workin","g days. Take within 6 months.","A manager approves the dates."],"Cut every N characters — fast, but a fact can be severed mid-word."),
+        boxes(["Paternity leave is 10 <span class='hl'>working</span>","<span class='hl'>working</span> days. Take within <span class='hl'>6 months</span>","<span class='hl'>6 months</span>. A manager approves"],"The highlighted span carries into the next passage, so no fact is lost at the boundary."),
+        boxes(["Paternity leave is 10 working days.","It must be taken within 6 months.","A manager approves the dates."],"Split on sentence boundaries — clean, self-contained passages."),
+        boxes(["Paternity leave is 10 working days, taken within 6 months.","A manager approves the dates."],"Partition by meaning — the two leave facts stay bound; approval is its own unit.")
+       ],call:"<b>Your call:</b> passage size and overlap. Over-large dilutes retrieval; over-small fragments a fact across passages — a defect that surfaces downstream at retrieval."},
+      {b:"2",core:1,n:"Embedding",al:"vectorization",vid:{u:"https://www.youtube.com/watch?v=dN0lsF2cvm4",t:"Embeddings, vectors & indexes explained"},def:"Encode each passage as a vector — a numeric representation of meaning — so semantically similar text sits nearby.",
+       strat:["Dense (semantic)","Domain-tuned","Multilingual"],ex:[
+        vlist([["Annual-leave passage","[0.71, 0.08, 0.44, 0.12]"],["Paternity-leave passage","[0.12, 0.83, 0.29, 0.61]"],["Sick-leave passage","[0.66, 0.14, 0.51, 0.09]"]],"Meaning becomes coordinates. Values are illustrative — production embeddings span hundreds of dimensions, and no single number is meaningful in isolation; only relative proximity carries signal."),
+        vlist([["Paternity-leave passage","[0.09, 0.88, 0.31, 0.58]"]],"A model tuned on your domain (HR, legal, engineering) separates lookalike terms more sharply than a general-purpose one."),
+        vlist([["Paternity leave (EN)","[0.12, 0.83, 0.29, 0.61]"],["Congé paternité (FR)","[0.13, 0.82, 0.30, 0.60]"]],"A multilingual model co-locates the same meaning across languages.")
+       ],call:"<b>Your call:</b> the embedding model — and the discipline of using one model for both corpus and query, or the vectors are not comparable."},
+      {b:"3",core:0,n:"Indexing",al:"vector store",def:"Persist the vectors in a searchable index so any query can be compared against the whole corpus in milliseconds.",
+       strat:["Vector database","In-session (here)"],ex:[
+        vlist([["v01","Leave Policy §2 · Annual leave"],["v02","Leave Policy §3 · Paternity leave"],["v03","Leave Policy §5 · Sick leave"]],"Each vector is indexed against its source. In production this holds millions of entries in a dedicated vector database, searched in milliseconds."),
+        vlist([["v01","Leave Policy §2 · Annual leave"],["v02","Leave Policy §3 · Paternity leave"],["v03","Leave Policy §5 · Sick leave"]],"Here it is exposed in the chat so the mechanism is visible. Behind Claude Projects the identical pipeline runs for you — RAG still requires this infrastructure; it is simply managed on your behalf.")
+       ],call:"<b>Your call:</b> refresh cadence. A stale index silently serves last quarter’s policy."}
+     ]},
+     {kick:"LIFECYCLE PHASE",num:"02",pt:"Retrieval & Generation",ps:"Resolve each query against the index and synthesise a grounded, cited answer. Executed at run time, per query.",rows:[
+      {b:"4",core:1,n:"Retrieval",al:"semantic search",def:"Encode the query with the same model, then return the passages whose vectors are most similar.",
+       strat:["Cosine (semantic)","Keyword (lexical)","Hybrid"],ex:[
+        mex("Encode the query, then score each passage by <b>cosine</b> — the angle between vectors, i.e. closeness of meaning, not length.",[["Annual leave",34],["Paternity leave",92,true],["Sick leave",29]],"Highest similarity wins. Top-k sets how many pass forward (here, 1). Scores illustrative — cosine runs 0 to 1."),
+        mex("Score only the terms the query and passage share — lexical overlap, no notion of meaning.",[["Annual leave",12],["Paternity leave",55,true],["Sick leave",9]],"Exact for codes and identifiers, but a reworded query can score low and be missed."),
+        mex("Combine the semantic score and the lexical score.",[["Annual leave",31],["Paternity leave",93,true],["Sick leave",27]],"The production default — meaning for synonyms, terms for exact matches.")
+       ],fail:fail("Query “how soon must paternity leave be taken?” — if Chunking severed “within 6 months” from “paternity”, no single passage holds both, and retrieval returns the wrong clause. Retrieval is bounded by chunking quality upstream."),
+       call:"<b>Your call:</b> retrieval method and top-k — and recognise retrieval can only surface what chunking kept intact."},
+      {b:"5",core:0,n:"Augmentation",al:"context assembly",def:"Insert the retrieved passages into the prompt alongside the query — the evidence the model must reason over.",
+       strat:["Rank order","Attach provenance","Window budget"],ex:[
+        '<div class="promptbox">Context: “Paternity leave is 10 working days, taken within 6 months.”<br>Query: “How many days of paternity leave do I get?”</div><div class="note">Strongest match placed first — models attend most to the head of the context.</div>',
+        '<div class="promptbox">Context [Leave Policy §3 · Paternity]: “…10 working days…”<br>Query: “How many days…?”</div><div class="note">Each passage carries its source, enabling a citable answer.</div>',
+        '<div class="promptbox">Context: passage 1 … passage 2 … <span style="color:var(--muted)">(passage 3 dropped — budget)</span><br>Query: “…?”</div><div class="note">The context window is finite. Over-fill it and the model’s attention to the middle degrades.</div>'
+       ],call:"<b>Your call:</b> how much context to admit — greater coverage, higher cost, and weaker attention to the middle."},
+      {b:"6",core:1,n:"Generation",al:"grounded response",def:"Compose the answer strictly from the supplied passages — grounded and cited, or an explicit ‘not found’.",
+       strat:["Grounded","Ungrounded"],ex:[
+        '“You are entitled to <b>10 working days</b> of paternity leave, to be taken within 6 months of the birth.”<div class="note">Drawn from the supplied passage and cited — Leave Policy §3, Paternity.</div>',
+        '“Most organisations offer approximately two weeks of paternity leave.”<div class="note">No passage used, no source to verify — plausible and potentially wrong. This is the no-retrieval failure from Section 4.</div>'
+       ],fail:fail("Even with the correct passage supplied, a weak instruction lets the model answer from prior training instead. Grounding is enforced by the instruction — “answer only from the context, else decline” — not by retrieval alone."),
+       call:"<b>Your call:</b> mandate “answer only from the context, cite the source, otherwise decline.”"}
+     ]},
+     {kick:"LIFECYCLE PHASE",num:"03",pt:"Optimization & Assurance",ps:"Govern unit cost and answer fidelity across the lifecycle. Continuous, wrapping the pipeline — not steps in the line.",rows:[
+      {b:BOLT,core:0,n:"Semantic caching",al:"cost control",def:"Serve a stored answer for an equivalent query — a front-end gate and a back-end write, not a pipeline step.",
+       strat:["Exact match","Semantic"],ex:[
+        '“paternity leave days?” against the earlier “how many days of paternity leave?”<div class="note">Different surface form, so exact match fails — the full pipeline re-runs and incurs a call.</div>',
+        '“paternity leave days?” ≈ “how many days of paternity leave?”<div class="note">Equivalent meaning (cosine again, against prior <i>queries</i>) → cache hit, stored answer returned, <b>zero model calls</b>.</div>'
+       ],fail:fail("Two exposures to govern: a <b>stale</b> entry after the source changes, and an <b>over-eager match</b> that returns a near-but-wrong answer to a genuinely different question."),
+       call:"<b>Your call:</b> the similarity threshold and the invalidation policy — the levers on both savings and risk."},
+      {b:CHECK,core:0,n:"Evaluation",al:"faithfulness & quality",def:"Measure whether answers are supported by the retrieved evidence — in build and monitoring, not per live reply.",
+       strat:["Faithfulness","Retrieval accuracy","Answer relevance"],ex:[
+        'The answer states “10 working days”; the retrieved passage states “10 working days”.<div class="note">Every claim is traceable to retrieved evidence — faithful. This is what catches fabricated figures. Run across a test set during build, and sampled in production — not on every reply.</div>',
+        'The query concerned paternity leave; the paternity passage is what was retrieved.<div class="note">The correct evidence was surfaced in the first place — sound retrieval. Catches the “failure mode” under Retrieval.</div>',
+        'The answer addresses the quantity that was asked for.<div class="note">On-topic and responsive — not adjacent or evasive.</div>'
+       ],call:"<b>Your call:</b> the acceptance bar before the system is trusted in front of a stakeholder."}
+     ]}
+    ];
+
+    var pboxes = [];
+    DATA.forEach(function(ph, pi){
+      var pbox = document.createElement("div"); pbox.className = "pbox ph" + (pi + 1);
+      pbox.innerHTML = '<button class="phead"><span class="pnum">' + ph.num + '</span><span class="ptx"><span class="pkicker">' + ph.kick + '</span><span class="pt">' + ph.pt + '</span><span class="ps">' + ph.ps + '</span></span><span class="pchev">' + CHEV + '</span></button><div class="pbody"></div>';
+      var pbody = pbox.querySelector(".pbody");
+      ph.rows.forEach(function(st, ri){
+        var row = document.createElement("div"); row.className = "row";
+        var core = st.core ? '<span class="corepill">core</span>' : '';
+        var chips = st.strat.map(function(s, j){ return '<button class="chip' + (j === 0 ? " on" : "") + '" data-j="' + j + '">' + s + '</button>'; }).join("");
+        var failhtml = st.fail ? st.fail : "";
+        var vid = st.vid ? '<a class="rvid" href="' + st.vid.u + '" target="_blank" rel="noopener" title="' + st.vid.t + '">▶ Video</a>' : '';
+        row.innerHTML = '<div class="rheadrow">'
+          + '<button class="rhead"><span class="rbadge">' + st.b + '</span><span class="rtx"><span class="rtop"><span class="rname">' + st.n + '</span><span class="ralias">' + st.al + '</span>' + core + '</span><span class="rdef">' + st.def + '</span></span></button>'
+          + vid
+          + '<button class="rchevbtn" aria-label="Toggle details"><span class="rchev">' + CHEV + '</span></button>'
+          + '</div>'
+          + '<div class="rbody"><div class="blabel">strategies — select one</div><div class="chips">' + chips + '</div><div class="ex"></div>' + failhtml + '<div class="call">' + st.call + '</div></div>';
+        var exEl = row.querySelector(".ex"); exEl.innerHTML = st.ex[0];
+        var toggleRow = function(){ var o = row.classList.contains("open"); pbody.querySelectorAll(".row").forEach(function(r){ r.classList.remove("open"); }); if(!o) row.classList.add("open"); };
+        row.querySelector(".rhead").onclick = toggleRow;
+        row.querySelector(".rchevbtn").onclick = toggleRow;
+        row.querySelectorAll(".chip").forEach(function(c){ c.onclick = function(){ row.querySelectorAll(".chip").forEach(function(x){ x.classList.remove("on"); }); c.classList.add("on"); exEl.innerHTML = st.ex[+c.dataset.j]; }; });
+        pbody.appendChild(row);
+      });
+      pbox.querySelector(".phead").onclick = function(){ var o = pbox.classList.contains("open"); pboxes.forEach(function(p){ p.classList.remove("open"); }); if(!o) pbox.classList.add("open"); };
+      acc.appendChild(pbox); pboxes.push(pbox);
+    });
+    // accordion starts fully collapsed — the reader opens each phase and stage as they go.
+
+    /* interactive lifecycle flow — per-phase step-through; controls travel with the active phase */
+    var stepBtn = document.getElementById("ragFlowStep");
+    if(stepBtn){
+      var resetBtn = document.getElementById("ragFlowReset");
+      var narr = document.getElementById("ragFlowNarr");
+      var branchEl = document.getElementById("ragBranch");
+      var runner = document.getElementById("ragRunner");
+      var doneEl = document.getElementById("ragDone");
+      function el(id){ return document.getElementById(id); }
+      function cls(id, c, on){ var e = el(id); if(e) e.classList.toggle(c, on); }
+
+      var NODE = {chunk:"n_chunk",embed:"n_embed",index:"n_index",query:"n_query",cache:"n_cache",hit:"n_hit",ret:"n_ret",aug:"n_aug",gen:"n_gen",write:"n_write",eval:"n_eval"};
+      var EDGE = {embed:"e_ce",index:"e_ei",cache:"e_q",hit:"e_hit",ret:"e_miss",aug:"e_ret",gen:"e_aug",write:"e_gen"};
+      var PHASE = {chunk:1,embed:1,index:1,query:2,cache:2,hit:2,ret:2,aug:2,gen:2,write:2,eval:3};
+      var ALLNODES = ["n_chunk","n_embed","n_index","n_query","n_cache","n_hit","n_ret","n_aug","n_gen","n_write","n_eval"];
+      var ALLEDGES = ["e_ce","e_ei","e_q","e_hit","e_miss","e_ret","e_aug","e_gen"];
+      var NARR = {
+        chunk:["Phase 01 · Prepared once","The leave policy is partitioned into passages — one idea each."],
+        embed:["Phase 01 · Prepared once","Each passage is encoded as a vector that captures its meaning."],
+        index:["Phase 01 · Prepared once","The vectors are stored in a searchable index. The knowledge base is ready — this whole phase ran once, ahead of any question."],
+        query:["Phase 02 · Per query","A question arrives: “How many days of paternity leave do I get?”"],
+        cache:["Phase 02 · The cache gate","Before any work, the cache is checked for an equivalent past query. <b>You decide the outcome.</b>"],
+        hit:["Phase 02 · Cache hit","An equivalent query was answered before — the stored answer is returned. <b>Zero model calls, near-instant.</b> The pipeline never runs. Step on to see what runs regardless."],
+        ret:["Phase 02 · Cache miss — Retrieval","No equivalent found, so the pipeline runs. The query is embedded and cosine-matched; the paternity passage scores highest."],
+        aug:["Phase 02 · Cache miss — Augmentation","The top passage is assembled into the prompt alongside the query."],
+        gen:["Phase 02 · Cache miss — Generation","The model composes a grounded, cited answer strictly from that passage."],
+        write:["Phase 02 · Cache miss — done","The answer is written to the cache, so the next equivalent query is a hit. <b>Cost: 1 retrieval + 1 generation call.</b> Step on for what runs regardless."],
+        eval:["Phase 03 · Continuous — always on","This answer is sampled for faithfulness against the retrieved evidence — in build and in production monitoring. <b>Not a step in the query path</b>; it runs continuously around the whole system."]
+      };
+      var PREP = ["chunk","embed","index","query","cache"];
+      var seq, i, branch, curPhase;
+
+      function setPhase(p){
+        curPhase = p;
+        [1,2,3].forEach(function(n){
+          var card = el("pc" + n);
+          card.classList.toggle("active", n === p);
+          card.classList.toggle("done", n < p);
+          card.classList.toggle("upcoming", n > p);
+        });
+        el("slot" + p).appendChild(runner);
+      }
+      function reset(){
+        seq = PREP.slice(); i = -1; branch = null;
+        ALLNODES.forEach(function(n){ cls(n,"hot",false); cls(n,"done",false); cls(n,"dim",true); });
+        ALLEDGES.forEach(function(e){ cls(e,"on",false); cls(e,"dim",true); });
+        cls("l_hit","on",false); cls("l_hit","dim",true); cls("l_miss","on",false); cls("l_miss","dim",true);
+        branchEl.innerHTML = "";
+        stepBtn.disabled = false; stepBtn.style.opacity = 1; stepBtn.style.display = "";
+        doneEl.style.display = "none"; resetBtn.textContent = "Reset";
+        setPhase(1);
+        narr.innerHTML = '<span class="ph">The lifecycle</span>Press <b>Step →</b> to walk one query through the architecture. At the cache, you choose the path it takes.';
+      }
+      function advance(){
+        if(i >= 0){ var pk = seq[i]; cls(NODE[pk],"hot",false); cls(NODE[pk],"done",true); }
+        i++;
+        var k = seq[i];
+        if(PHASE[k] !== curPhase){ setPhase(PHASE[k]); }
+        cls(NODE[k],"dim",false); cls(NODE[k],"hot",true);
+        if(EDGE[k]){ cls(EDGE[k],"dim",false); cls(EDGE[k],"on",true); }
+        narr.innerHTML = '<span class="ph">' + NARR[k][0] + '</span>' + NARR[k][1];
+        if(k === "eval"){
+          stepBtn.style.display = "none";
+          doneEl.style.display = "inline-flex";
+          doneEl.textContent = branch === "hit" ? "✓ Complete · 0 model calls" : "✓ Complete · 1 retrieval + 1 generation call";
+          resetBtn.textContent = "↻ Run it again";
+        }
+      }
+      function showBranch(){
+        branchEl.innerHTML = '<span class="cq">Cache result?</span>';
+        var bh = document.createElement("button"); bh.className = "cbtn"; bh.textContent = "Cache hit";
+        var bm = document.createElement("button"); bm.className = "cbtn"; bm.textContent = "Cache miss";
+        bh.onclick = function(){ chooseBranch("hit"); };
+        bm.onclick = function(){ chooseBranch("miss"); };
+        branchEl.appendChild(bh); branchEl.appendChild(bm);
+        stepBtn.style.display = "none";
+      }
+      function chooseBranch(b){
+        branch = b; branchEl.innerHTML = "";
+        if(b === "hit"){
+          seq = PREP.concat(["hit","eval"]);
+          cls("l_hit","dim",false); cls("l_hit","on",true);
+          ["n_ret","n_aug","n_gen","n_write"].forEach(function(n){ cls(n,"dim",true); });
+          ["e_miss","e_ret","e_aug","e_gen"].forEach(function(e){ cls(e,"dim",true); });
+          cls("l_miss","dim",true);
+        } else {
+          seq = PREP.concat(["ret","aug","gen","write","eval"]);
+          cls("l_miss","dim",false); cls("l_miss","on",true);
+          cls("n_hit","dim",true); cls("e_hit","dim",true); cls("l_hit","dim",true);
+        }
+        stepBtn.style.display = ""; stepBtn.disabled = false; stepBtn.style.opacity = 1;
+        advance();
+      }
+      stepBtn.onclick = function(){
+        if(i < 0){ advance(); return; }
+        if(seq[i] === "cache" && !branch){ showBranch(); return; }
+        if(i >= seq.length - 1) return;
+        advance();
+      };
+      resetBtn.onclick = reset;
+      reset();
+    }
+  })();
+
   /* ---------- quizzes ---------- */
   makeQuiz("q1",[
     {stem:"A system prompt has a persona and output format but no stopping rule. What breaks first?",
@@ -1176,6 +1556,29 @@
      opts:["The agent is finished and needs no more work","The six hardening items are addressed so you spend sprint time building, not diagnosing","You've completed the whole programme","The agent has passed a formal audit"],
      answer:1,
      why:"Sprint-ready means you arrive with a clear brief — specific failure mode, specific fix, specific change — so the build time goes on solving the problem, not finding it."}
+  ]);
+
+  makeQuiz("q5",[
+    {stem:"What problem does RAG solve?",
+     opts:["It makes the model faster","It lets the agent look up the right passages from your documents before answering, instead of guessing from memory","It trains a new model on your data","It removes the need for a system prompt"],
+     answer:1,
+     why:"RAG is the open-book exam: retrieve the relevant passages from your documents, then answer from them — grounded and citable, not guessed."},
+    {stem:"Why is a little overlap used when chunking a document?",
+     opts:["To save storage","So an idea isn't cut in half at a chunk boundary and lost","To make the vectors smaller","To speed up the model"],
+     answer:1,
+     why:"Overlap means a sentence or idea that falls on a boundary still appears whole in at least one chunk — so retrieval doesn't miss it."},
+    {stem:"At match time, how does RAG find the relevant passage?",
+     opts:["It reads every document in full","It compares the question's vector to each chunk's vector — cosine similarity — and keeps the closest","It searches for the exact words only","It asks the user to choose"],
+     answer:1,
+     why:"The question is embedded the same way as the chunks, then cosine similarity finds the chunks whose meaning is nearest — the top-k are pulled in."},
+    {stem:"An agent is told to 'answer only from the retrieved passages.' Why does that matter?",
+     opts:["It makes answers longer","It stops the agent inventing an answer when the documents don't contain one — it can say 'I don't know'","It improves the tone","It reduces the number of chunks"],
+     answer:1,
+     why:"Grounding the answer to the retrieved passages is what prevents confident fabrication — the same grounded-vs-ungrounded difference from Section 4."},
+    {stem:"How does semantic caching cut cost?",
+     opts:["It uses a cheaper model","It reuses a saved answer when a similar question was already asked — skipping the retrieval and the model call","It deletes old documents","It shortens the system prompt"],
+     answer:1,
+     why:"A repeat or reworded question matches a past one (cosine again) and the saved answer is returned — zero model calls. The caveat: expire the cache when the documents change."}
   ]);
 
   /* ---------- boot ---------- */

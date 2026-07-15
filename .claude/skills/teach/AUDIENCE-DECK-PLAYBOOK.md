@@ -159,6 +159,24 @@ spine example, and — crucially — the **driveable widgets**, already built an
 
 This is the contract. Produce it before writing any HTML.
 
+**Step 0 — the slide-coverage audit (the 100% guarantee).** The deck is the **complete** artifact;
+the pre-read is a lean primer. Before anything else, audit the **whole slide** — not just the
+concept hours — and map **every** element to the movement/slide that will carry it:
+
+- **Every session hour, Hr 1–5** — including the debrief/peer-review hour and the build/demo hours.
+- **Every pre-work TASK the session consumes.** These are not just readings — some are *deliverables
+  the session depends on* (Week 3: "identify 3 real use cases, one-para brief each" → **Hr 4 picks
+  1 of those 3**). The deck must **prompt leaders to bring these** and the sprint must **build from
+  them**. A pre-work task the session uses is a slide requirement, not optional.
+- **The build-sprint mechanics, exactly as the slide states them** — pick-1-of-N use cases, 1:1
+  coaching, peer review in pairs, a *second* agent, timed demos (e.g. 3 min each). Mirror them.
+- **The homework and the output** — the finale points at them.
+
+Any slide element with **no home is a gap you must design in.** A gap in the lean pre-read is
+**never** an excuse for a gap in the deck — where the pre-read is silent, build the movement fresh
+from the slide. Produce this audit as a short table (slide element → movement) and agree it with
+the trainer alongside the act/movement plan.
+
 **Step 1 — read the slide's 5 session hours and the pre-read's sections side by side.** They
 *mostly* correspond, but **do not assume 1:1.** The pre-read is often **trimmed** — it drops
 concepts to stay lean (Week 1's pre-read kept only Prompting/RAG/Agents/Stack and **dropped the
@@ -541,6 +559,7 @@ the sandbox):
 A deck is not ready until **all** of these are true:
 
 **Conversion fidelity**
+- [ ] **100% slide coverage (the hard gate).** Every session hour (Hr 1–5), **every pre-work task the session consumes** (e.g. the 3 use cases), the build-sprint mechanics (pick-1-of-N · coaching · peer review · second agent · timed demos), the homework, and the output each map to a movement/slide — verified against the Step 0 slide-coverage audit. **No slide element orphaned.**
 - [ ] Every concept in the slide's session (and its pre-read section) appears as a teaching movement.
 - [ ] **Slide-sourced concepts the pre-read *dropped* are still built** (their widgets built fresh if needed) — no act missing because the pre-read was silent on it.
 - [ ] The finale follows the canonical sequence (set up → surface/interview → qualify/architect → spec → decide) and ends on a real GO/NOT-YET/NO-GO or equivalent decision.
