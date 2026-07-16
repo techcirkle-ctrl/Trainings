@@ -294,9 +294,17 @@ Field rules:
    to point at, timings, who to call on, backup bank, "If asked X:" contingencies.
 5. **Bridge →** — *always present.* One line (usually quoted) into the next slide. The last
    slide's Bridge is a sign-off ("(End of Week 1.)").
+6. **Pre-flight** — *optional; live-demo & high-stakes slides only.* A `<div class="t">Pre-flight</div><p>…</p>`
+   block placed **immediately after Move**, for any slide the trainer must rehearse before the room
+   arrives: a networked/live demo (an optional-key RAG demo, a live model call), a theatrical
+   "break it live" open, or a hardware/wifi-dependent moment. It carries: *run-it-once-before*, the
+   **baked-in expected outputs** the trainer must know cold (the demo's expected answer/figure, the
+   exact question to type), and the **offline/failure fallback**. It reuses the existing `.t`/`.lead1`
+   styling — **no new CSS**, so the plumbing stays byte-identical. Most slides never need it; a
+   watch-only or live-key demo always does. (See §7f.)
 
-Keep the rhythm identical across all 47: **hold this → do this for this long → say this →
-click/circulate this → launch the next.**
+Keep the rhythm identical across all N: **hold this → (rehearse this) → do this for this long →
+say this → click/circulate this → launch the next.**
 
 ---
 
@@ -318,6 +326,19 @@ click/circulate this → launch the next.**
   "They work; you circulate…", "Mark the pivot…").
 - Always include a duration or energy note: "~30 sec, energy up" · "~8 min" · "slow down here" ·
   "shortest act — keep it tight" · "under 90 seconds, then straight to the widget".
+- **Clock-anchor every run-of-show beat, and make the anchors chain.** Weld the wall-clock from
+  the day-plan slide into Move ("~10:45", "then the tea break at 11:45", "~16:20"), and write ranges
+  where a block runs long ("~15 min, ~14:57 → ~15:12"). **The anchors must chain slide to slide with
+  no overlaps or contradictions**, and **each act's durations must SUM to that act's day-plan
+  window** — no under-filled act that empties the room early, no over-stuffed block whose steps
+  exceed their slot. Before shipping, list the Move clocks in order and check they run monotonically
+  and add up (§12). This is the single check that most protects a presenter's live confidence.
+- **Triage every tight or loose block.** Where a block is over-subscribed, add an inline
+  *triage* directive naming what to shave and what to protect ("*Tight window:* Sprint 2 + demos +
+  capstone share only 30 min — hold this to ~10, demo a handful, spill the capstone to homework;
+  never cut the build"). Where a block has slack, name the buffer as protection for a tighter one
+  ("*Triage:* this act holds the day's most buffer — bank spare minutes for the afternoon sprints").
+  The trainer should never have to compute the cut live.
 - Name *who acts*: trainer-drives ("You drive…"), room-does ("They work…"), or trainer-frames
   ("Give them the map…").
 
@@ -338,6 +359,17 @@ click/circulate this → launch the next.**
 - **Widget slides:** name the controls to toggle **in order**, and what to point at.
   (Ex: "Toggle in order: Task → Role → Context → Constraints → Format → Examples. Pause on the
   Constraints and Examples jumps and point at them.")
+- **Surface the widget's baked-in data — never let the trainer drive blind.** Read the demo data
+  *out of the widget's JS* and put it in the Do: the exact input strings it fires, the expected
+  outputs/verdicts, the cost or score values on screen, the sample document's answer. A trainer
+  driving a stress-test must know the three attacks and which one slips; one running a RAG demo must
+  know the expected figure ("paternity = 10 working days") and a concrete out-of-document question.
+  If the trainer would have to read a widget output cold and hope, the Do is unfinished.
+- **Hard-questions depth pass.** On the 3–4 slides where a *senior* room pushes hardest — "why not
+  just use the raw model / ChatGPT?", data & security ("where does our data go?"), cost ("what does
+  this cost to run?"), autonomy ("why not let it run fully?") — pre-load a **sharp, specific
+  rebuttal** as an "If asked X:" bullet on its natural slide. Authority in a senior room is won on
+  the sharp challenge; the trainer must never be caught flat.
 - **Hands-on slides:** the timing ("~8 min"), the circulate-and-harvest move ("Circulate while
   they work. Then pull 2–3 leaders to read out…"), the **coverage rule**, and the **backup bank**
   ("Blank page? Procurement→RAG · AP invoice triage→Agent…").
@@ -358,6 +390,20 @@ click/circulate this → launch the next.**
 - It should name or tee up the *next* slide's subject ("Now the one map that carries the whole
   program — the stack." → next slide is the stack).
 - The final slide's Bridge is the day's sign-off, not a transition.
+
+### 7f. Pre-flight — rehearse-before-the-room (optional; live-demo & high-stakes slides)
+Add a `Pre-flight` field (immediately after Move) on any slide the trainer must not meet cold:
+- **Networked / live-key demos** (a RAG pipeline with an optional model call, any live API step):
+  "run it once end to end before the room; the sample is X; the expected answer is *Y* — know it
+  cold; if the key or wifi fails, drive the offline path and say so — never debug live."
+- **Theatrical "break it live" beats** (a cold-open hallucination): hand over a *runnable*
+  instrument — the **exact prompt to paste**, the **expected wrong output**, the **recovery line**,
+  and the "if you'd rather not go live, the slide carries the same beat" fallback. An aspiration
+  ("open with a live agent hallucinating, if you can") is not enough — make it performable.
+- **Any moment with a single point of failure** the trainer owns (hardware, a pre-loaded artefact,
+  a document that must be staged): the "stage this before the session" checklist.
+Keep it short — it is the night-before card, not a second Do. Most slides never carry it; a
+watch-only or live-key demo always should. It reuses `.t`/`.lead1` styling — **no new CSS**.
 
 ---
 
@@ -501,10 +547,15 @@ The presenter deck is observable, so prove it. Use the same sandbox recipe as th
 
 1. Start the host static server (`/opt/homebrew/bin/node .claude/static-server.js`, sandbox
    disabled, background) and `preview_start`; navigate to the **presenter** file.
-2. Drive a `preview_eval` harness that walks `→` through **all 47 slides** and, on each, presses
+2. Drive a `preview_eval` harness that walks `→` through **all N slides** and, on each, presses
    `S` and reads back `#scriptBody` — confirm **every slide has a non-empty script** (no "No
    script for this slide yet."), and that Remember/Move/Say/Bridge are present (Do where the
-   archetype requires it).
+   archetype requires it, Pre-flight on every live-demo slide).
+2b. **Extract the Move clock anchors in order and verify they chain and sum** — monotonic, no
+   overlaps, each act's durations adding up to its day-plan window (this is where under-filled or
+   over-stuffed blocks surface). Also audit the confidence-bar devices across the deck: coverage
+   motif + `Harvest:` on every hands-on, `Bank it:` on artefact slides, widget data surfaced on
+   every driveable widget, Pre-flight on every live demo.
 3. Confirm the panel behaviour: `S` opens/closes the dock, `N` and `Esc` close it, the deck
    slides left by `--scriptw` when open, the chrome tracks, `scriptClose` works.
 4. Confirm the **freeze**: the on-glass content, widgets, and Takeaways are visually identical to
@@ -541,12 +592,29 @@ The presenter deck is not ready until **all** of these are true:
       principle) — not an instruction addressed to the room.
 - [ ] **Say** is first-person spoken register, re-teaches (never reads the slide), British
       spelling, `<em>`-stressed sparingly.
-- [ ] **Move** carries a timing/energy note; the durations roughly sum to the day-plan.
+- [ ] **Move** carries a timing/energy note; **clock anchors chain slide-to-slide with no overlaps
+      or contradictions, and each act's durations SUM to that act's day-plan window** (list the Move
+      clocks in order and verify — no empty act, no over-stuffed block). Tight/loose blocks carry a
+      **triage** directive (what to shave / where the buffer goes).
 - [ ] **Do** names widget controls *in order* / hands-on timing + coverage + backup bank /
       finale enrich→run→capture; contingencies folded in as "If asked X:".
 - [ ] The deck's own callbacks (confidence read, a prior-week rule it sharpens, the demo data
       baked into the widget, the coverage rule) are voiced on the slides they map to — every line
       sourced from the audience deck, no external file.
+
+**The confidence bar (a presenter must never meet a slide cold)**
+- [ ] **The five craft devices** (§16, 2026-07-16) are applied: clock anchors on every run-of-show
+      beat; the coverage-rule motif + `Harvest:` on **every** hands-on; `Bank it:` on every artefact
+      slide; dense `If asked X:`; drop-in backup banks.
+- [ ] **Widget data surfaced** — every driveable widget's baked-in inputs, expected outputs, and
+      on-screen cost/verdict values are read out of the JS and put in the Do; the trainer never
+      drives blind.
+- [ ] **Live-demo Pre-flight present** — every networked / live-key demo and every "break it live"
+      beat carries a §7f Pre-flight: rehearse-once, the expected answer/figure known cold, a concrete
+      input to type, and the offline/failure fallback. Theatrical beats are *performable* (exact
+      prompt + expected output + recovery line), not aspirational.
+- [ ] **Hard-questions covered** — the 3–4 slides a senior room pushes hardest (raw-model, data &
+      security, cost, autonomy) carry a sharp pre-loaded rebuttal.
 
 **Build & canon**
 - [ ] The §8 plumbing is present and correct; the CSS shell verified (dormant hooks reused, not
@@ -646,6 +714,46 @@ twin) is the **floor, not the ceiling.**
 - **Keep it lean.** When you add a rule, check whether it *replaces* a vaguer one.
 
 **Lessons log (newest first):**
+- **2026-07-16 · the confidence pass (never meet a slide cold).** An individual read of the Week-3
+  presenter deck — "standing here mid-slide, would the trainer wish for one more thing?" — surfaced
+  four gap classes that the five-device pass (below) doesn't catch. All four are now standing rules
+  (§6.6, §7b, §7d, §7f, §12 "confidence bar"):
+  1. **Timing must chain and sum, not just exist.** Per-slide durations aren't enough: the clock
+     anchors have to run monotonically with no contradictions, and each act's steps must add up to
+     its day-plan window. Week-3's first draft under-filled one act by ~30 min and over-stuffed the
+     closing block so its step clocks contradicted. Fix: chain-and-sum check in §12; ranges in Move
+     ("~15 min, ~14:57 → ~15:12"); a **triage** directive on every tight/loose block.
+  2. **Surface the widget's baked-in data.** A trainer driving a widget must be handed its exact
+     inputs, expected outputs, and on-screen values — read them out of the JS. Week-3's stress-test
+     attacks, chain cost values, and the RAG sample's answer were missing; the trainer would have
+     driven blind.
+  3. **Live demos need a Pre-flight (§7f, the new optional 6th field).** Any networked / live-key
+     demo or theatrical "break it live" beat carries rehearse-once + expected-answer-known-cold + a
+     concrete input + the offline fallback. "Open with a live hallucination, if you can" became a
+     *runnable* instrument: exact prompt, expected wrong output, recovery line.
+  4. **A hard-questions depth pass.** The 3–4 slides a senior room pushes hardest (raw-model vs.
+     built, data/security, cost, autonomy) each carry a sharp pre-loaded rebuttal.
+  These are pure script/field content — **no new CSS**, so byte-identical plumbing (100% design
+  parity) is preserved. The Pre-flight field reuses `.t`/`.lead1` styling.
+- **2026-07-16 · the five craft devices (Week-2 benchmark, made explicit).** A blind Week-3 build
+  reproduced the surface and the 5-field shape at 100% but the *script craft* only landed ~90% of
+  the Week-2 presenter deck. The gap was five signature devices the Week-2 scripts use relentlessly
+  and a first draft under-applies. Make them the house standard, checked on every script:
+  - **A · Clock anchors in Move.** Weld the wall-clock into Move on every run-of-show beat
+    ("~10:45", "then the tea break at 11:45", "~16:20"), not just a duration — the scripts must
+    pace to the day-plan slide's real times.
+  - **B · The coverage-rule motif.** Every hands-on Do repeats the signature line "Circulate; a
+    second facilitator floats so no one is stuck longer than a minute." A drumbeat, not a one-off.
+  - **C · "Harvest:" and "Bank it → / Capture:" forward-links.** Label the harvest move
+    ("Harvest: pull two or three leaders to read out X") and *wire every hands-on artefact forward
+    by name* ("Bank it: this sentence feeds The constitution and the Sprint agent"). This is what
+    turns N slides into one thread — do it by name, every hands-on.
+  - **D · Dense "If asked X:" contingencies.** Pre-load 1–2 real audience questions with crisp
+    answers on nearly every substantive slide — Week 2 runs ~double a first draft's density.
+  - **E · Fully-specified backup banks.** Fallbacks must be *drop-in ready* (a concrete substitute
+    problem: goal / input / break / missing layer), not "bring your Week-1 spec".
+  Coverage-motif + Harvest belong on *every* hands-on; Bank-it on every artefact slide; clock
+  anchors on every run-of-show beat; If-asked wherever a real question lands. Audit before shipping.
 - **2026-07-02 · single-source rule (audience deck only).** The presenter deck is now built from
   the **audience deck alone**. The old "secondary input" — a facilitator run-sheet / run-of-show /
   trainer-notes file — is removed as a source: it proved stale and unused (Week 2's
