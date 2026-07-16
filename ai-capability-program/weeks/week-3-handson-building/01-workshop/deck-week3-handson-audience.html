@@ -1,9 +1,9 @@
 <!doctype html>
 <!--
   AI Capability Program — Week 3 Audience Deck (Hands-On Agent Building).
-  Self-contained: inline CSS + vanilla JS, no network/build (the RAG live demo has an
-  OPTIONAL trainer-supplied Claude key path; everything else runs fully offline).
-  Nav: →/Space/↓/PageDown next · ←/↑/PageUp back · Home agenda · End last · N notes · F full-screen.
+  Self-contained: inline CSS + vanilla JS, no network/build — the RAG live demo runs
+  fully offline in the browser session (no API key, no network calls).
+  Nav: →/↓/PageDown next · ←/↑/PageUp back · Home agenda · End last · N notes · F full-screen. (Space does NOT advance — it's free for typing.)
   Built by converting Week-3 requirement slide 8 + the finished Week-3 pre-read (playbook: AUDIENCE-DECK-PLAYBOOK.md).
 -->
 <html lang="en">
@@ -254,7 +254,6 @@
   .ragd input[type=file]{display:none}
   .ragd .qinput{width:100%;max-width:40em;border:1px solid #c9d2da;border-radius:9px;padding:11px 13px;font:clamp(14px,1.3vw,16px) ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:#fff}
   .ragd .qinput:focus{outline:none;border-color:var(--p2);box-shadow:0 0 0 2px var(--p2s)}
-  .ragd .keyinput{width:100%;max-width:34em;border:1px solid #c9d2da;border-radius:8px;padding:9px 11px;font:13px ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:#fff}
   .ragd .out{background:#fbfdfd;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-top:9px;max-height:230px;overflow:auto}
   .ragd .out .oh{font:700 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;display:flex;justify-content:space-between;align-items:center}
   .ragd .chunk{border:1px solid var(--line);border-left:3px solid var(--p1);border-radius:8px;background:#fff;padding:8px 11px;margin:6px 0;font:clamp(12px,1.05vw,13.5px)/1.5 ui-sans-serif,system-ui,sans-serif;color:#24323c}
@@ -741,7 +740,7 @@ Cite the exact section you used. If the answer isn't in the document, say
           <div class="stitle"><span class="snum">5</span>Type a question &amp; embed it <span class="statuschip" id="rgQStatus">waiting</span></div>
           <div class="sdesc">Take a question from the keyboard, then embed it with the <b>same</b> vectoriser used on the document — or deliberately the wrong one, to see retrieval break.</div>
           <div class="controls" style="margin-bottom:8px">
-            <input class="qinput" id="rgQuery" placeholder="e.g. How many days of paternity leave do I get?">
+            <input class="qinput" id="rgQuery" placeholder="e.g. type a question your document answers">
           </div>
           <div class="controls">
             <span class="lbl">Query embedder</span>
@@ -777,24 +776,16 @@ Cite the exact section you used. If the answer isn't in the document, say
         </div>
         <div class="step p2step locked" id="rgStepGen">
           <div class="stitle"><span class="snum">8</span>Generate — a grounded answer <span class="statuschip" id="rgGenStatus">waiting for the prompt</span></div>
-          <div class="sdesc">Compose the answer strictly from the retrieved passages — cited, or an explicit "not found". Offline by default; optionally, send the exact prompt to a live model.</div>
+          <div class="sdesc">Compose the answer strictly from the retrieved passages — cited, or an explicit "not found". Runs fully in this browser session — no key, no network.</div>
           <div class="controls">
             <button class="btn" id="rgGenBtn" disabled style="background:var(--good)">Grounded answer (offline) →</button>
             <button class="btn ghost" id="rgUngBtn" disabled>Show ungrounded (from memory)</button>
           </div>
           <div id="rgAnsOut"></div>
-          <details class="promptfold" style="margin-top:12px"><summary>▸ Optional — generate with a live Claude model (trainer's own key)</summary>
-            <div class="sdesc" style="margin-top:6px">Paste your own Claude API key to send the assembled prompt to a live model and show a real generated answer. The key stays in this page for this session only — it is never stored or sent anywhere but Anthropic's API. Leave blank to stay fully offline.</div>
-            <div class="controls" style="flex-direction:column;align-items:stretch;gap:7px">
-              <input class="keyinput" id="rgKey" type="password" placeholder="sk-ant-… (optional; session only)" autocomplete="off">
-              <div class="controls"><button class="btn" id="rgLiveBtn" style="background:#2f5aa8">Generate with Claude →</button><span class="statuschip" id="rgLiveStatus" style="display:none"></span></div>
-            </div>
-            <div class="warnline">This is the one optional step that leaves the browser — a single call to Anthropic's API. Everything else is fully offline.</div>
-          </details>
         </div>
       </div>
       <span class="read"><b>What you sponsor:</b> retrieval method and top-k, and the mandate — "answer only from the context, cite the source, otherwise decline." RAG turns "the agent sounds confident" into "the agent can show you the source." That's the difference you're paying for.</span></div>
-    <div class="note"><div class="t">Takeaway</div><p>The climax. Type the paternity-leave question, embed it, retrieve — the paternity chunk scores highest; flip to the "wrong model" and watch the ranking collapse (that's the "same model for query and corpus" rule, felt). Assemble the prompt so they see the context+question+grounding instruction that goes to the model. Generate offline first (grounded, cited) and toggle ungrounded to show the fabrication. Then, if you want the wow, paste your key and run it live on Claude — same prompt, real answer. Try a question the document can't answer to show the honest "not found".</p></div>
+    <div class="note"><div class="t">Takeaway</div><p>The climax. Type a question your document answers, embed it, retrieve — the matching chunk scores highest; flip to the "wrong model" and watch the ranking collapse (that's the "same model for query and corpus" rule, felt). Assemble the prompt so they see the context+question+grounding instruction that goes to the model. Generate offline (grounded, cited) and toggle ungrounded to show the fabrication. Try a question the document can't answer to show the honest "not found".</p></div>
   </section>
 
 
@@ -806,7 +797,7 @@ Cite the exact section you used. If the answer isn't in the document, say
           <div class="stitle"><span class="snum">9</span>Semantic cache — repeats answer for free <span class="statuschip" id="rgCacheStatus">waiting for a first answer</span></div>
           <div class="sdesc">Every answered question is remembered in this session. Re-ask it <b>in different words</b> — the cache compares the <i>meaning</i> of the new question to past ones (cosine again, on the queries). A hit returns the stored answer instantly.</div>
           <div class="controls" style="margin-bottom:8px">
-            <input class="qinput" id="rgCacheQ" placeholder="Re-ask the earlier question, reworded — e.g. paternity leave, how many working days?">
+            <input class="qinput" id="rgCacheQ" placeholder="Re-ask the earlier question, reworded — in different words">
           </div>
           <div class="controls"><button class="btn" id="rgCacheBtn" disabled style="background:#8a3f86">Ask the cache →</button></div>
           <div id="rgCacheOut"></div>
@@ -1225,16 +1216,16 @@ When the leader says "Run the Spec Writer":
   <!-- ============ THE RAG ENCORE (the day's final image, before the close) ============ -->
   <section class="slide" data-deck="Week 3 · Hands-On Agent Building" data-mv="The RAG encore">
     <div class="stage"><span class="hobadge demo">Live encore — watch &nbsp;·&nbsp; 3 minutes</span><h2 class="head">Ask the machine again — it <span class="accent">remembers</span></h2>
-      <p class="hodo">This morning the open-book machine read the leave policy — chunked it, embedded it, retrieved from it, answered from it. One last question before we close: the same ask, <b>in different words</b>.</p>
+      <p class="hodo">This morning the open-book machine read your document — chunked it, embedded it, retrieved from it, answered from it. One last question before we close: the same ask, <b>in different words</b>.</p>
       <div class="lab ragd">
         <div class="controls" style="margin-bottom:8px">
-          <input class="qinput" id="rgEncoreQ" placeholder="Reword the morning's question — e.g. paternity leave: how many working days?">
+          <input class="qinput" id="rgEncoreQ" placeholder="Reword the morning's question — in different words">
         </div>
         <div class="controls"><button class="btn" id="rgEncoreBtn" style="background:#8a3f86">Ask →</button></div>
         <div id="rgEncoreOut"></div>
       </div>
       <span class="read"><b>The closing image:</b> this morning it read the book. This afternoon it remembers the answer — instantly, for nothing. That's the machine your grounded agents stand on, and the cost curve you now know how to sponsor.</span></div>
-    <div class="note"><div class="t">Takeaway</div><p>Three minutes, maximum theatre. Reword the morning's paternity question and hit Ask — the semantic cache matches the <b>meaning</b> of the new words to the morning's query and returns the stored answer instantly: zero model calls. Say the line, then go straight into the close and the confidence re-read. (If the open-book demo wasn't run today, the panel says so gracefully — the encore replays memory, it doesn't fake it.)</p></div>
+    <div class="note"><div class="t">Takeaway</div><p>Three minutes, maximum theatre. Reword the morning's question and hit Ask — the semantic cache matches the <b>meaning</b> of the new words to the morning's query and returns the stored answer instantly: zero model calls. Say the line, then go straight into the close and the confidence re-read. (If the open-book demo wasn't run today, the panel says so gracefully — the encore replays memory, it doesn't fake it.)</p></div>
   </section>
 
 
@@ -1282,7 +1273,8 @@ When the leader says "Run the Spec Writer":
   function next(){var s=slides[i],T=stepTotal(s);if(T){var k=+(s.dataset.step||1);if(k<T){showStep(s,k+1);return;}}go(i+1);}
   function prev(){var s=slides[i],T=stepTotal(s);if(T){var k=+(s.dataset.step||1);if(k>1){showStep(s,k-1);return;}}go(i-1,true);}
   document.addEventListener("keydown",function(e){
-    if(e.key==="ArrowRight"||e.key==="ArrowDown"||e.key===" "||e.key==="PageDown"){e.preventDefault();next();}
+    var t=e.target;if(t&&(/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||t.isContentEditable))return;
+    if(e.key==="ArrowRight"||e.key==="ArrowDown"||e.key==="PageDown"){e.preventDefault();next();}
     else if(e.key==="ArrowLeft"||e.key==="ArrowUp"||e.key==="PageUp"){e.preventDefault();prev();}
     else if(e.key==="Home"){e.preventDefault();go(1);}else if(e.key==="End"){e.preventDefault();go(N-1);}
     else if(e.key==="n"||e.key==="N"){notes.classList.toggle("open");}
@@ -1556,7 +1548,7 @@ When the leader says "Run the Spec Writer":
     function loadDoc(text,name){docText=text.replace(/\r/g,"");chunks=[];vectors=[];stored=false;qVec=null;lastRet=[];lastKept=[];assembled="";
       status("rgDocStatus",(name||"document")+" · "+docText.length+" chars","ok");
       $("rgDocOut").style.display="";$("rgDocMeta").textContent=docText.length+" characters";
-      $("rgDocBody").innerHTML='<div style="font:12.5px/1.6 ui-sans-serif,system-ui,sans-serif;color:#24323c;white-space:pre-wrap">'+esc(docText.slice(0,520))+(docText.length>520?" …":"")+'</div>';
+      $("rgDocBody").innerHTML='<div style="font:12.5px/1.6 ui-sans-serif,system-ui,sans-serif;color:#24323c;white-space:pre-wrap">'+esc(docText)+'</div>';
       unlock("rgStepChunk","rgChunkBtn");status("rgChunkStatus","ready to chunk");
       lock("rgStepEmbed","rgEmbedBtn");status("rgEmbedStatus","waiting for chunks");
       lock("rgStepStore");status("rgStoreStatus","waiting for vectors");
@@ -1698,22 +1690,6 @@ When the leader says "Run the Spec Writer":
     }
     $("rgGenBtn").addEventListener("click",doGenerate);
     $("rgUngBtn").addEventListener("click",doUngrounded);
-
-    /* ---- 8b · optional live Claude ---- */
-    $("rgLiveBtn").addEventListener("click",function(){
-      var key=($("rgKey").value||"").trim();
-      if(!assembled){status("rgLiveStatus","assemble the prompt first","");$("rgLiveStatus").style.display="";return;}
-      if(!key){status("rgLiveStatus","no key — staying offline; showing grounded answer","");$("rgLiveStatus").style.display="";doGenerate();return;}
-      var plain=$("rgPromptBody").textContent;
-      status("rgLiveStatus","calling Claude…","live");$("rgLiveStatus").style.display="";
-      fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-5",max_tokens:400,messages:[{role:"user",content:plain}]})})
-        .then(function(r){return r.json();})
-        .then(function(d){
-          if(d&&d.content&&d.content[0]&&d.content[0].text){$("rgAnsOut").innerHTML='<div class="answer live"><span class="albl">Live answer — Claude (Sonnet), same prompt</span>'+esc(d.content[0].text).replace(/\n/g,"<br>")+'</div>';status("rgLiveStatus","live answer received","live");}
-          else{var msg=(d&&d.error&&d.error.message)?d.error.message:"unexpected response";status("rgLiveStatus","error: "+msg+" — staying offline","");doGenerate();}
-        })
-        .catch(function(e){status("rgLiveStatus","request failed: "+e.message+" — staying offline","");doGenerate();});
-    });
 
     /* ---- 9 · semantic cache (Phase 03) — match meaning against past queries ---- */
     function bestCacheMatch(text){

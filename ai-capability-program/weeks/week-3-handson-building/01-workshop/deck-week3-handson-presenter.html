@@ -3,9 +3,9 @@
   AI Capability Program — Week 3 Presenter Deck (Hands-On Agent Building).
   The Week-3 audience deck, byte-for-byte on the glass, plus a per-slide presenter script
   (Remember → Move → Say → Do → Bridge) docked behind the S key — the trainer's private earpiece.
-  Self-contained: inline CSS + vanilla JS, no network/build (the RAG live demo has an
-  OPTIONAL trainer-supplied Claude key path; everything else runs fully offline).
-  Nav: →/Space/↓/PageDown next · ←/↑/PageUp back · Home agenda · End last · N notes · S script · F full-screen.
+  Self-contained: inline CSS + vanilla JS, no network/build — the RAG live demo runs
+  fully offline in the browser session (no API key, no network calls).
+  Nav: →/↓/PageDown next · ←/↑/PageUp back · Home agenda · End last · N notes · S script · F full-screen. (Space does NOT advance — it's free for typing.)
   Print: every slide stacks on its own page with the script inline as a white card; chrome/notes/panels drop.
   Built from the finished Week-3 audience deck alone (playbook: PRESENTER-DECK-PLAYBOOK.md).
 -->
@@ -257,7 +257,6 @@
   .ragd input[type=file]{display:none}
   .ragd .qinput{width:100%;max-width:40em;border:1px solid #c9d2da;border-radius:9px;padding:11px 13px;font:clamp(14px,1.3vw,16px) ui-sans-serif,system-ui,sans-serif;color:var(--ink);background:#fff}
   .ragd .qinput:focus{outline:none;border-color:var(--p2);box-shadow:0 0 0 2px var(--p2s)}
-  .ragd .keyinput{width:100%;max-width:34em;border:1px solid #c9d2da;border-radius:8px;padding:9px 11px;font:13px ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:#fff}
   .ragd .out{background:#fbfdfd;border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-top:9px;max-height:230px;overflow:auto}
   .ragd .out .oh{font:700 10px ui-sans-serif,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:7px;display:flex;justify-content:space-between;align-items:center}
   .ragd .chunk{border:1px solid var(--line);border-left:3px solid var(--p1);border-radius:8px;background:#fff;padding:8px 11px;margin:6px 0;font:clamp(12px,1.05vw,13.5px)/1.5 ui-sans-serif,system-ui,sans-serif;color:#24323c}
@@ -954,10 +953,17 @@ Cite the exact section you used. If the answer isn't in the document, say
     <div class="script">
       <div class="lead1"><span class="k">Remember</span>Ingestion runs once, ahead of any question — and getting chunking wrong severs a fact across passages, a defect that only shows up later at retrieval.</div>
       <div class="t">Move</div><p>You drive Phase 1; ~5 min, ~14:12. Four steps — load, chunk, embed, store. Narrate each output as it appears; the honesty is the point.</p>
-      <div class="t">Pre-flight</div><p>Before the session: run the whole RAG demo once end to end so nothing surprises you live. The sample is an <em>HR leave policy</em>; the questions and answers you'll use are baked in — <em>paternity = 10 working days; annual = 25 days; maternity = 26 weeks paid; sick = up to 10 days</em>. Know the paternity figure cold — it's the one you'll ask on the next slide.</p>
+      <div class="t">Pre-flight</div><p><b>THE DEMO IS A FILE UPLOAD — that is the whole point.</b> Upload <em>source/Laws-of-Cricket.txt</em> (a concise, well-structured laws reference — every topic is a self-contained passage, so retrieval is clean). Settings: chunk <b>By sentence</b> · embed <b>TF-IDF</b> · query embedder <b>Same model</b> · retrieval <b>Cosine</b> · Top-k <b>2</b>. (The HR sample stays only as a fallback if a file won't load.)</p>
+      <p><b>Verified questions</b> (run them once before the room — each returns the right passage): "How many ways can a batter be dismissed?" (→ the ten ways) · "When is a batter run out?" · "What is leg before wicket?" · "How many deliveries are in an over?" (→ six) · "Can a bowler bowl two consecutive overs?" (→ no) · "How long is the pitch?" (→ 22 yards) · "How many runs is a six?" · "What is a no ball?" · "What is the spirit of cricket?".</p>
+      <p><b>The rule that keeps answers relevant:</b> ask <em>specific</em> questions, one topic at a time, with distinctive words. The answer step returns the best-matching passage, so a well-aimed question gets a clean passage. (This file is written so even the aggregate "how many ways to get out?" has a real passage — that's the point of good source data.)</p>
+      <p><b>Honest note — the out-of-scope "refusal" beat is not reliable</b> on any single small document with this teaching-scale retriever: its confidence threshold is too coarse, so an unrelated question still scrapes a passage (verified — "bake a cake" still answers). Present the refusal as a <em>concept</em> ("a real system sets a threshold and declines below it"); don't stake a live click on it.</p>
+      <p><b>The safe rule for a clean answer every time:</b> ask <em>single-fact</em> "what is / when is / how many" questions — never "list all…", because the offline answer returns one sentence. And always keep the query embedder on <em>Same model</em>.</p>
+      <p><b>If you use the cricket file</b> (<em>source/MCC-LAWS-OF-CRICKET.txt</em>, cleaned) — these are verified to return relevant answers: "How many deliveries are in an over?" (6) · "Can a bowler bowl two consecutive overs?" (no) · "When is a batsman run out?" · "Who calls the start of play?" (the umpire at the bowler's end) · "What does the spirit of cricket mean?". Keep the out-of-document <em>honest-decline</em> beat on the HR sample — on the dense cricket text it doesn't reliably decline.</p>
       <div class="t">Say</div><p>"Step one, load — I'll use the sample HR leave policy. Step two, chunk — split it into passages, small enough to retrieve precisely, large enough to keep a fact whole. Watch the cuts move as I change the strategy. Switch to 'with overlap' — see the highlighted overlap? That's what stops a fact being sliced in half at a boundary."</p>
       <p>"Step three, embed — encode each chunk as a vector, a list of numbers standing for its meaning, so similar text sits close together. It's a real in-browser vectoriser — a hosted model uses hundreds of dimensions; same mechanism. And step four, store — deliberately anticlimactic: it's just an array held in this chat. That's the honest version of a 'vector database'. Nothing left the browser."</p>
-      <div class="t">Do</div><ul><li>Drive in order: Use the sample policy → Chunk it (switch strategy to "with overlap"; point at the highlighted overlap) → Embed it (show vectors are weighted terms) → Store.</li><li>Your sponsor call, said aloud: "chunk size, overlap, and the embedding model are <em>my</em> decisions — get chunking wrong and a fact is severed, and I won't see it until retrieval fails."</li><li>Keep repeating: "nothing leaves this browser." If a leader offers their own document, load it instead of the sample — it lands harder on real content.</li><li>If asked "is this the real thing or a toy?" — the mechanism is real; only the scale is small. A production store is the same array, bigger and on a server.</li></ul>
+      <div class="t">Do</div><ul><li>Drive in order: <b>Choose a file…</b> → pick <em>Laws-of-Cricket.txt</em> → <b>Chunk it</b> (By sentence) → <b>Embed it</b> (TF-IDF) → <b>Store</b>. The preview scrolls the true length, so the room sees the whole document went in.</li><li>Your sponsor call, said aloud: "chunk size, overlap, and the embedding model are <em>my</em> decisions — get chunking wrong and a fact is severed, and I won't see it until retrieval fails."</li><li>Keep repeating: "nothing leaves this browser — no key, no network." It runs entirely in this session.</li><li>If asked "is this the real thing or a toy?" — the mechanism is real; only the scale is small. A production store is the same array, bigger and on a server.</li></ul>
+      <div class="t">Show the contrast — CHUNKING</div><p>Just click — no typing. Click a strategy, then <b>Chunk it →</b>, and read the count aloud (counts for Laws-of-Cricket.txt):</p><ul><li><b>Fixed size</b> → "cut by character count — <b>49 chunks</b>."</li><li><b>With overlap</b> → "passages repeat text at the joins — <b>66 chunks</b>," and point at the yellow highlighted overlap.</li><li><b>Semantic</b> → "grouped by meaning — <b>51 chunks</b>."</li><li><b>By sentence</b> → "one whole sentence each — <b>52 chunks</b>." <b>Leave it here</b> — it keeps a fact whole.</li></ul>
+      <div class="t">Show the contrast — EMBEDDING</div><p>Just click. Click a strategy, then <b>Embed it →</b>:</p><ul><li><b>TF-IDF (weighted)</b> → "rare, meaningful words weighted highest; 'ball' and 'over' are everywhere so they count for little." <b>Use this one.</b></li><li><b>Term frequency (naive)</b> → "every word counted equally — noisier."</li><li><b>Char n-gram</b> → "matches letter patterns, not whole words."</li><li><b>Finish on TF-IDF → Embed it</b> before you move on — that's the reliable one for the query.</li></ul>
       <div class="t">Bridge &rarr;</div><p>"The book's read. Now ask it a question — and watch it answer from the page."</p>
     </div>
   </section>
@@ -970,7 +976,7 @@ Cite the exact section you used. If the answer isn't in the document, say
           <div class="stitle"><span class="snum">5</span>Type a question &amp; embed it <span class="statuschip" id="rgQStatus">waiting</span></div>
           <div class="sdesc">Take a question from the keyboard, then embed it with the <b>same</b> vectoriser used on the document — or deliberately the wrong one, to see retrieval break.</div>
           <div class="controls" style="margin-bottom:8px">
-            <input class="qinput" id="rgQuery" placeholder="e.g. How many days of paternity leave do I get?">
+            <input class="qinput" id="rgQuery" placeholder="e.g. type a question your document answers">
           </div>
           <div class="controls">
             <span class="lbl">Query embedder</span>
@@ -1006,31 +1012,28 @@ Cite the exact section you used. If the answer isn't in the document, say
         </div>
         <div class="step p2step locked" id="rgStepGen">
           <div class="stitle"><span class="snum">8</span>Generate — a grounded answer <span class="statuschip" id="rgGenStatus">waiting for the prompt</span></div>
-          <div class="sdesc">Compose the answer strictly from the retrieved passages — cited, or an explicit "not found". Offline by default; optionally, send the exact prompt to a live model.</div>
+          <div class="sdesc">Compose the answer strictly from the retrieved passages — cited, or an explicit "not found". Runs fully in this browser session — no key, no network.</div>
           <div class="controls">
             <button class="btn" id="rgGenBtn" disabled style="background:var(--good)">Grounded answer (offline) →</button>
             <button class="btn ghost" id="rgUngBtn" disabled>Show ungrounded (from memory)</button>
           </div>
           <div id="rgAnsOut"></div>
-          <details class="promptfold" style="margin-top:12px"><summary>▸ Optional — generate with a live Claude model (trainer's own key)</summary>
-            <div class="sdesc" style="margin-top:6px">Paste your own Claude API key to send the assembled prompt to a live model and show a real generated answer. The key stays in this page for this session only — it is never stored or sent anywhere but Anthropic's API. Leave blank to stay fully offline.</div>
-            <div class="controls" style="flex-direction:column;align-items:stretch;gap:7px">
-              <input class="keyinput" id="rgKey" type="password" placeholder="sk-ant-… (optional; session only)" autocomplete="off">
-              <div class="controls"><button class="btn" id="rgLiveBtn" style="background:#2f5aa8">Generate with Claude →</button><span class="statuschip" id="rgLiveStatus" style="display:none"></span></div>
-            </div>
-            <div class="warnline">This is the one optional step that leaves the browser — a single call to Anthropic's API. Everything else is fully offline.</div>
-          </details>
         </div>
       </div>
       <span class="read"><b>What you sponsor:</b> retrieval method and top-k, and the mandate — "answer only from the context, cite the source, otherwise decline." RAG turns "the agent sounds confident" into "the agent can show you the source." That's the difference you're paying for.</span></div>
-    <div class="note"><div class="t">Takeaway</div><p>The climax. Type the paternity-leave question, embed it, retrieve — the paternity chunk scores highest; flip to the "wrong model" and watch the ranking collapse (that's the "same model for query and corpus" rule, felt). Assemble the prompt so they see the context+question+grounding instruction that goes to the model. Generate offline first (grounded, cited) and toggle ungrounded to show the fabrication. Then, if you want the wow, paste your key and run it live on Claude — same prompt, real answer. Try a question the document can't answer to show the honest "not found".</p></div>
+    <div class="note"><div class="t">Takeaway</div><p>The climax. Type a question your document answers, embed it, retrieve — the matching chunk scores highest; flip to the "wrong model" and watch the ranking collapse (that's the "same model for query and corpus" rule, felt). Assemble the prompt so they see the context+question+grounding instruction that goes to the model. Generate offline (grounded, cited) and toggle ungrounded to show the fabrication. Try a question the document can't answer to show the honest "not found".</p></div>
     <div class="script">
       <div class="lead1"><span class="k">Remember</span>The same vectoriser must embed the query and the corpus — and "answer only from the context, else decline" is what turns confident-sounding into show-me-the-source.</div>
       <div class="t">Move</div><p>You drive Phase 2 — the climax; ~7 min, ~14:20. Slow down: this is where the whole day's thesis becomes visible. Four steps — embed the query, retrieve, assemble, generate.</p>
       <div class="t">Say</div><p>"Now sit the exam. I type a real question — 'how many days of paternity leave do I get?' — and embed it with the <em>same</em> model I used on the document. Retrieve: it scores every chunk and keeps the closest — watch, the paternity passage comes top. Now let me deliberately break it — flip to the <em>wrong</em> model for the query — and the ranking collapses. That's why the rule is 'same model for question and corpus', felt rather than told."</p>
       <p>"Assemble: it drops the retrieved passages into the prompt beside the question and the grounding instruction — <em>this exact text</em> is what goes to the model. Generate, offline first: a grounded, cited answer. Now toggle ungrounded — the fabrication, from memory. Same question, one shows its source, one makes it up."</p>
       <p>"And the honest test — I'll ask something the policy <em>can't</em> answer. Watch: instead of guessing, it says 'not found in the source'. That refusal is the entire difference between this morning's confident-and-wrong agent and one you'd stand behind."</p>
-      <div class="t">Do</div><ul><li>Drive: type the paternity question → Embed (same model) → Retrieve (paternity chunk tops) → flip to "different model" and re-retrieve to show the ranking collapse, then flip back → Assemble the prompt → Grounded answer (offline) → toggle "Show ungrounded" for the contrast.</li><li>Expected grounded answer to have in hand: <em>"10 working days of paid paternity leave"</em> ("within 6 months of the birth"). If it retrieves that, retrieval worked.</li><li>Then the out-of-document check — ask something the leave policy can't cover: <em>"what's the remote-working policy?"</em> or <em>"what's the mileage rate?"</em>. Watch it say "not found in the source" instead of guessing — name it as the day's thesis, proven live. Toggle ungrounded on the <em>same</em> question and it fabricates one; that contrast is the whole point.</li><li>Optional wow: paste your own Claude key in the fold and run the same prompt live — a real generated answer. If you do, say the key is session-only, one call to Anthropic.</li><li>If the key or wifi fails, or you'd rather not: the offline grounded answer already makes the point — drive that and move on; never debug live in front of the room.</li><li>Your sponsor call: retrieval method and top-k, and the mandate "answer only from the context, cite the source, otherwise decline."</li></ul>
+      <div class="t">Do</div><ul><li>The full click-by-click runbook — every exact string to type — is in <b>"Show the contrast"</b> below. Read it off the panel; don't improvise a question (this document rewards <em>specific</em> questions, not aggregates).</li><li>Everything runs offline — no key, no network. Keep the query embedder on <b>Same model</b> unless you're deliberately showing the failure.</li><li>Skip the out-of-scope "refusal" beat on the cricket file — it's unreliable on dense text (it may answer from a garbage passage). Show grounded answers; that's the win.</li><li>Your sponsor call: retrieval method and top-k, and the mandate "answer only from the context, cite the source, otherwise decline."</li></ul>
+      <div class="t">Grounded answers — TYPE THESE EXACTLY (Laws-of-Cricket.txt)</div><ul><li><b>Main.</b> Type: <b>How many ways can a batter be dismissed?</b> → Embed query (<b>Same model</b>) → Retrieve → Assemble → <b>Grounded answer (offline)</b>. Expect: <b>"…there are ten recognised ways in which a batter can be dismissed…"</b> cited to a passage.</li><li><b>More verified:</b> "When is a batter run out?" · "What is leg before wicket?" · "How many deliveries are in an over?" (→ six) · "How long is the pitch?" (→ 22 yards) · "How many runs is a six?" · "What is a no ball?" · "What is the spirit of cricket?".</li></ul>
+      <div class="t">Scenario 1 — WORDING changes the answer</div><ul><li>Type <b>get out</b> (two vague words) → Embed query → Retrieve → it returns <em>one</em> method ("Run out…"). Now type <b>How many ways can a batter be dismissed?</b> (specific) → the <em>whole list</em> comes back. Line to the room: "the question is half the system — distinctive, specific words retrieve better."</li></ul>
+      <div class="t">Scenario 2 — RETRIEVAL METHOD changes the answer</div><ul><li>Type <b>How many runs is a six?</b> → set retrieval to <b>Cosine</b> → Retrieve → correct ("…scores six runs"). Now set <b>Keyword</b> → Retrieve → it drifts to the title/intro (shared common words win). Set back to <b>Cosine</b>. Line: "cosine reads <em>meaning</em>; keyword only counts <em>shared words</em> — the mechanism changes the answer."</li></ul>
+      <div class="t">Scenario 3 — SAME vs DIFFERENT embedder (the killer)</div><ul><li>Type <b>When is a batter run out?</b> → click <b>Different model (wrong)</b> → Embed query → Retrieve → scores collapse, it declines. Click <b>Same model (correct)</b> → Embed query → Retrieve → it works. Line: "the question and the document must be embedded by the <em>same</em> model."</li></ul>
+      <div class="t">Scenario 4 — TOP-K &amp; grounded-vs-ungrounded</div><ul><li>Same query → set Top-k <b>4</b> → Retrieve (more passages feed the answer), back to <b>2</b> → Retrieve. Then click <b>Show ungrounded</b> once → a plausible, <em>uncited</em> "from general knowledge" answer — the fabrication grounding prevents. End on a clean grounded answer.</li></ul>
       <div class="t">Bridge &rarr;</div><p>"It reads and answers. Last phase — how you make it cheap, and prove it's honest."</p>
     </div>
   </section>
@@ -1044,7 +1047,7 @@ Cite the exact section you used. If the answer isn't in the document, say
           <div class="stitle"><span class="snum">9</span>Semantic cache — repeats answer for free <span class="statuschip" id="rgCacheStatus">waiting for a first answer</span></div>
           <div class="sdesc">Every answered question is remembered in this session. Re-ask it <b>in different words</b> — the cache compares the <i>meaning</i> of the new question to past ones (cosine again, on the queries). A hit returns the stored answer instantly.</div>
           <div class="controls" style="margin-bottom:8px">
-            <input class="qinput" id="rgCacheQ" placeholder="Re-ask the earlier question, reworded — e.g. paternity leave, how many working days?">
+            <input class="qinput" id="rgCacheQ" placeholder="Re-ask the earlier question, reworded — in different words">
           </div>
           <div class="controls"><button class="btn" id="rgCacheBtn" disabled style="background:#8a3f86">Ask the cache →</button></div>
           <div id="rgCacheOut"></div>
@@ -1063,7 +1066,7 @@ Cite the exact section you used. If the answer isn't in the document, say
       <div class="t">Move</div><p>You drive Phase 3; ~5 min, ~14:32 — the governance payoff, then straight into The Build at 14:40. Two moves: cache, then faithfulness.</p>
       <div class="t">Say</div><p>"Last phase — the part you actually fund. Cache: every answered question is remembered this session. Watch — I re-ask the paternity question in <em>different words</em>, and the cache matches the <em>meaning</em>, not the wording, and returns the stored answer instantly: zero model calls. That's your cost curve. The two risks you own: a <em>stale</em> entry after the policy changes, and an <em>over-eager</em> match to a genuinely different question."</p>
       <p>"Faithfulness: put the answer beside the passage it came from and check every key term traces back to the source. That's <em>evaluation</em> — run across a test set in build, sampled in production, never on every live reply. 'Every claim traceable' is what separates an auditable system from a merely confident one."</p>
-      <div class="t">Do</div><ul><li>Drive: re-ask the morning's question reworded → Ask the cache (hit, instant, "0 model calls") → Check faithfulness (answer beside source, key terms highlighted).</li><li>Name the two cache risks aloud as you show the hit — stale entry, over-eager match — "both are yours to set the policy on."</li><li>Your sponsor call: the cache's similarity threshold and refresh policy, and the faithfulness bar an answer must clear before anyone trusts the system.</li><li>If asked "so do I need to build all this?" — no; you sponsor it and set its thresholds. This vocabulary is so you can govern what engineering builds.</li><li>If asked "what does all this actually cost to run?" — three levers, all yours: retrieval adds a small per-question cost, the <em>cache</em> takes repeat questions to near-zero (you just saw it), and top-k trades tokens for coverage. The real saving isn't tokens — it's the wrong answers you didn't ship.</li></ul>
+      <div class="t">Do — type these exactly (cricket file)</div><ul><li><b>Prerequisite:</b> generate a cricket answer on the previous slide first — e.g. ask <b>How many deliveries are in an over?</b> (that fills the cache).</li><li><b>Cache:</b> in the cache box type exactly — <b>how many balls does an over have?</b> → <b>Ask the cache →</b>. Expect: <b>"Cache hit · 0 model calls"</b> and "matched your earlier question — same meaning." (Different words, same answer, instant, free.)</li><li><b>Faithfulness:</b> click <b>Check faithfulness →</b>. Expect: the last answer shown beside its source passage with the key terms highlighted — "every claim traceable."</li><li>Name the two cache risks aloud as you show the hit — stale entry, over-eager match — "both are yours to set the policy on."</li><li>Your sponsor call: the cache's similarity threshold and refresh policy, and the faithfulness bar an answer must clear before anyone trusts the system.</li><li>If asked "so do I need to build all this?" — no; you sponsor it and set its thresholds. This vocabulary is so you can govern what engineering builds.</li><li>If asked "what does all this actually cost to run?" — three levers, all yours: retrieval adds a small per-question cost, the <em>cache</em> takes repeat questions to near-zero (you just saw it), and top-k trades tokens for coverage. The real saving isn't tokens — it's the wrong answers you didn't ship.</li></ul>
       <div class="t">Bridge &rarr;</div><p>"That's the machine, end to end. Now put the day to work — your own build."</p>
     </div>
   </section>
@@ -1575,22 +1578,22 @@ When the leader says "Run the Spec Writer":
   <!-- ============ THE RAG ENCORE (the day's final image, before the close) ============ -->
   <section class="slide" data-deck="Week 3 · Hands-On Agent Building" data-mv="The RAG encore">
     <div class="stage"><span class="hobadge demo">Live encore — watch &nbsp;·&nbsp; 3 minutes</span><h2 class="head">Ask the machine again — it <span class="accent">remembers</span></h2>
-      <p class="hodo">This morning the open-book machine read the leave policy — chunked it, embedded it, retrieved from it, answered from it. One last question before we close: the same ask, <b>in different words</b>.</p>
+      <p class="hodo">This morning the open-book machine read your document — chunked it, embedded it, retrieved from it, answered from it. One last question before we close: the same ask, <b>in different words</b>.</p>
       <div class="lab ragd">
         <div class="controls" style="margin-bottom:8px">
-          <input class="qinput" id="rgEncoreQ" placeholder="Reword the morning's question — e.g. paternity leave: how many working days?">
+          <input class="qinput" id="rgEncoreQ" placeholder="Reword the morning's question — in different words">
         </div>
         <div class="controls"><button class="btn" id="rgEncoreBtn" style="background:#8a3f86">Ask →</button></div>
         <div id="rgEncoreOut"></div>
       </div>
       <span class="read"><b>The closing image:</b> this morning it read the book. This afternoon it remembers the answer — instantly, for nothing. That's the machine your grounded agents stand on, and the cost curve you now know how to sponsor.</span></div>
-    <div class="note"><div class="t">Takeaway</div><p>Three minutes, maximum theatre. Reword the morning's paternity question and hit Ask — the semantic cache matches the <b>meaning</b> of the new words to the morning's query and returns the stored answer instantly: zero model calls. Say the line, then go straight into the close and the confidence re-read. (If the open-book demo wasn't run today, the panel says so gracefully — the encore replays memory, it doesn't fake it.)</p></div>
+    <div class="note"><div class="t">Takeaway</div><p>Three minutes, maximum theatre. Reword the morning's question and hit Ask — the semantic cache matches the <b>meaning</b> of the new words to the morning's query and returns the stored answer instantly: zero model calls. Say the line, then go straight into the close and the confidence re-read. (If the open-book demo wasn't run today, the panel says so gracefully — the encore replays memory, it doesn't fake it.)</p></div>
     <div class="script">
       <div class="lead1"><span class="k">Remember</span>This morning it read the book; this afternoon it remembers the answer — instantly, for nothing. The closing image of the machine they now know how to sponsor.</div>
       <div class="t">Move</div><p>You drive; ~3 min, ~16:15 — maximum theatre, then straight into the close. One question, one click, one line.</p>
-      <div class="t">Say</div><p>"One last look at the machine before we close. This morning the open-book system read the leave policy — chunked it, embedded it, retrieved from it, answered from it. Now watch: I ask the <em>same</em> thing in completely different words."</p>
+      <div class="t">Say</div><p>"One last look at the machine before we close. This morning the open-book system read your document — chunked it, embedded it, retrieved from it, answered from it. Now watch: I ask the <em>same</em> thing in completely different words."</p>
       <p>"There — instant, zero model calls. The semantic cache matched the <em>meaning</em> of my new words to this morning's question and returned the stored answer for nothing. This morning it read the book; this afternoon it remembers — and that cost curve is exactly what you now know how to sponsor."</p>
-      <div class="t">Do</div><ul><li>Reword the morning's paternity question (e.g. <em>"paternity leave — how many working days?"</em>), hit Ask — the cache returns "10 working days" instantly at "0 model calls." Point at that, say the line, then move straight to the close; don't over-explain.</li><li>If the open-book demo wasn't run today, the panel says so gracefully — don't fake it; skip to the close.</li></ul>
+      <div class="t">Do</div><ul><li>Reword the morning's question (cricket file: earlier you asked <b>"How many deliveries are in an over?"</b> → now type <b>"how many balls does an over have?"</b>), hit Ask — the cache returns the same answer instantly at "0 model calls." Point at that, say the line, move to the close.</li><li>The cache only holds what you asked earlier <em>in this same session</em> — so re-use whichever question you actually ran in the RAG demo. If the demo wasn't run today, the panel says so gracefully — don't fake it; skip to the close.</li></ul>
       <div class="t">Bridge &rarr;</div><p>"Before the number — where to get help after today."</p>
     </div>
   </section>
@@ -1658,7 +1661,8 @@ When the leader says "Run the Spec Writer":
   function next(){var s=slides[i],T=stepTotal(s);if(T){var k=+(s.dataset.step||1);if(k<T){showStep(s,k+1);return;}}go(i+1);}
   function prev(){var s=slides[i],T=stepTotal(s);if(T){var k=+(s.dataset.step||1);if(k>1){showStep(s,k-1);return;}}go(i-1,true);}
   document.addEventListener("keydown",function(e){
-    if(e.key==="ArrowRight"||e.key==="ArrowDown"||e.key===" "||e.key==="PageDown"){e.preventDefault();next();}
+    var t=e.target;if(t&&(/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)||t.isContentEditable))return;
+    if(e.key==="ArrowRight"||e.key==="ArrowDown"||e.key==="PageDown"){e.preventDefault();next();}
     else if(e.key==="ArrowLeft"||e.key==="ArrowUp"||e.key==="PageUp"){e.preventDefault();prev();}
     else if(e.key==="Home"){e.preventDefault();go(1);}else if(e.key==="End"){e.preventDefault();go(N-1);}
     else if(e.key==="n"||e.key==="N"){notes.classList.toggle("open");body.classList.remove("script-open");}
@@ -1934,7 +1938,7 @@ When the leader says "Run the Spec Writer":
     function loadDoc(text,name){docText=text.replace(/\r/g,"");chunks=[];vectors=[];stored=false;qVec=null;lastRet=[];lastKept=[];assembled="";
       status("rgDocStatus",(name||"document")+" · "+docText.length+" chars","ok");
       $("rgDocOut").style.display="";$("rgDocMeta").textContent=docText.length+" characters";
-      $("rgDocBody").innerHTML='<div style="font:12.5px/1.6 ui-sans-serif,system-ui,sans-serif;color:#24323c;white-space:pre-wrap">'+esc(docText.slice(0,520))+(docText.length>520?" …":"")+'</div>';
+      $("rgDocBody").innerHTML='<div style="font:12.5px/1.6 ui-sans-serif,system-ui,sans-serif;color:#24323c;white-space:pre-wrap">'+esc(docText)+'</div>';
       unlock("rgStepChunk","rgChunkBtn");status("rgChunkStatus","ready to chunk");
       lock("rgStepEmbed","rgEmbedBtn");status("rgEmbedStatus","waiting for chunks");
       lock("rgStepStore");status("rgStoreStatus","waiting for vectors");
@@ -2076,22 +2080,6 @@ When the leader says "Run the Spec Writer":
     }
     $("rgGenBtn").addEventListener("click",doGenerate);
     $("rgUngBtn").addEventListener("click",doUngrounded);
-
-    /* ---- 8b · optional live Claude ---- */
-    $("rgLiveBtn").addEventListener("click",function(){
-      var key=($("rgKey").value||"").trim();
-      if(!assembled){status("rgLiveStatus","assemble the prompt first","");$("rgLiveStatus").style.display="";return;}
-      if(!key){status("rgLiveStatus","no key — staying offline; showing grounded answer","");$("rgLiveStatus").style.display="";doGenerate();return;}
-      var plain=$("rgPromptBody").textContent;
-      status("rgLiveStatus","calling Claude…","live");$("rgLiveStatus").style.display="";
-      fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:"claude-sonnet-5",max_tokens:400,messages:[{role:"user",content:plain}]})})
-        .then(function(r){return r.json();})
-        .then(function(d){
-          if(d&&d.content&&d.content[0]&&d.content[0].text){$("rgAnsOut").innerHTML='<div class="answer live"><span class="albl">Live answer — Claude (Sonnet), same prompt</span>'+esc(d.content[0].text).replace(/\n/g,"<br>")+'</div>';status("rgLiveStatus","live answer received","live");}
-          else{var msg=(d&&d.error&&d.error.message)?d.error.message:"unexpected response";status("rgLiveStatus","error: "+msg+" — staying offline","");doGenerate();}
-        })
-        .catch(function(e){status("rgLiveStatus","request failed: "+e.message+" — staying offline","");doGenerate();});
-    });
 
     /* ---- 9 · semantic cache (Phase 03) — match meaning against past queries ---- */
     function bestCacheMatch(text){
