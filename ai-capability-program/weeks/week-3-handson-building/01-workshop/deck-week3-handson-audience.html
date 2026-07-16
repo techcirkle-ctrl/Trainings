@@ -687,10 +687,10 @@ Cite the exact section you used. If the answer isn't in the document, say
         <span class="phaselbl p1">Phase 01 · Ingestion — runs once, ahead of any question</span>
         <div class="step" id="rgStepDoc">
           <div class="stitle"><span class="snum">1</span>Load a document <span class="statuschip" id="rgDocStatus">nothing loaded</span></div>
-          <div class="sdesc">Upload any long text document from this machine, or drop in the built-in sample (an HR leave policy). It never leaves the browser.</div>
+          <div class="sdesc">Upload any long text document from this machine, or drop in the built-in sample. It never leaves the browser.</div>
           <div class="controls">
             <label class="filepick">Choose a file…<input type="file" id="rgFile" accept=".txt,.md,.csv,text/plain"></label>
-            <button class="btn ghost" id="rgSample">Use the sample policy</button>
+            <button class="btn ghost" id="rgSample">Use the sample document</button>
           </div>
           <div class="out" id="rgDocOut" style="display:none"><div class="oh"><span>Document preview</span><span id="rgDocMeta"></span></div><div id="rgDocBody"></div></div>
         </div>
@@ -1686,7 +1686,7 @@ When the leader says "Run the Spec Writer":
       unlock("rgStepFaith","rgFaithBtn");status("rgFaithStatus","ready to check","ok");
     }
     function doUngrounded(){
-      $("rgAnsOut").innerHTML='<div class="answer ungrounded"><span class="albl">Ungrounded — no passage used (for contrast)</span>From general knowledge, without consulting your document: this is likely handled by standard policy, and the usual figure is around what most organisations offer.<div style="font:12.5px ui-sans-serif;color:#5c6b7a;margin-top:6px">⚠ No passage, no source to check — plausible and potentially wrong. This is the confident fabrication grounding prevents.</div></div>';
+      $("rgAnsOut").innerHTML='<div class="answer ungrounded"><span class="albl">Ungrounded — no passage used (for contrast)</span>From general knowledge, without consulting your document: this is widely assumed to be the case, and the usual answer is roughly the standard one — said with full confidence, and nothing to check it against.<div style="font:12.5px ui-sans-serif;color:#5c6b7a;margin-top:6px">⚠ No passage, no source to check — plausible and potentially wrong. This is the confident fabrication grounding prevents.</div></div>';
     }
     $("rgGenBtn").addEventListener("click",doGenerate);
     $("rgUngBtn").addEventListener("click",doUngrounded);
